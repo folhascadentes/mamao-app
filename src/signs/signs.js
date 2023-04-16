@@ -1,101 +1,147 @@
-export const signs = {
-  oi: {
+export const signs = [
+  {
     language: "libras",
     token: "oi",
-    sign: [
+    signSteps: [
       {
-        start: {
-          region: "torax",
-          configuration: "oi_cm",
-          palm: -1, // "left",
+        startPosition: {
+          dominantHand: {
+            bodyRegion: "torax",
+            handConfiguration: "oi_cm",
+            palmDirection: { x: -1 },
+          },
+          nonDominantHand: {},
         },
-        // Heurisitca para verificar se o movimento é circular
-        moviment: [
-          { y: 1, x: 1 }, // UP_RIGHT
-          { y: -1, x: 1 }, // DOWN_RIGHT,
-          { y: -1, x: -1 }, // DOWN_LEFT
-          { y: 1, x: -1 }, // UP_LEFT
-        ],
-        end: {
-          region: "torax",
-          configuration: "oi_cm",
-          palm: "left",
+        movements: {
+          dominantHand: [
+            { y: 1, x: 1 },
+            { y: -1, x: 1 },
+            { y: -1, x: -1 },
+            { y: 1, x: -1 },
+          ],
+          nonDominantHand: [],
+        },
+        endPosition: {
+          dominantHand: {
+            bodyRegion: "torax",
+            handConfiguration: "oi_cm",
+            palmDirection: { x: -1 },
+          },
+          nonDominantHand: {},
         },
       },
     ],
   },
-  bom: {
+  {
     language: "libras",
     token: "bom",
-    sign: [
+    signSteps: [
       {
-        start: {
-          region: "chin",
-          configuration: "s_cm",
+        startPosition: {
+          dominantHand: {
+            bodyRegion: "chin",
+            handConfiguration: "s_cm",
+            palmDirection: { z: -1 },
+          },
+          nonDominantHand: {},
         },
-        moviment: ["DOWN"], // LINEAR,
-        end: {
-          region: "upper_torax",
-          configuration: "open_hand_finger_apart_cm",
-          palm: "up",
+        movements: {
+          dominantHand: [{ y: -1 }],
+          nonDominantHand: [],
+        },
+        endPosition: {
+          dominantHand: {
+            bodyRegion: "upper_torax",
+            handConfiguration: "open_hand_finger_apart_cm",
+            palmDirection: { y: 1 },
+          },
+          nonDominantHand: {},
         },
       },
     ],
   },
-  beleza: {
+  {
     language: "libras",
     token: "beleza",
-    sign: [
+    signSteps: [
       {
-        start: {
-          region: "torax",
-          configuration: "thumbs_up_cm",
-          palm: "user",
+        startPosition: {
+          dominantHand: {
+            bodyRegion: "torax",
+            handConfiguration: "thumbs_up_cm",
+            palmDirection: { z: -1 },
+          },
+          nonDominantHand: {},
         },
-        end: {
-          region: "torax",
-          configuration: "thumbs_up_cm",
-          palm: "user",
+        movements: {
+          dominantHand: [],
+          nonDominantHand: [],
+        },
+        endPosition: {
+          dominantHand: {
+            bodyRegion: "torax",
+            handConfiguration: "thumbs_up_cm",
+            palmDirection: { z: -1 },
+          },
+          nonDominantHand: {},
         },
       },
     ],
   },
-  nome: {
+  {
     language: "libras",
     token: "nome",
-    sign: [
+    signSteps: [
       {
-        start: {
-          region: "torax_left",
-          configuration: "middle_index_finger_cm",
-          palm: "camera",
+        startPosition: {
+          dominantHand: {
+            bodyRegion: "torax_left",
+            handConfiguration: "middle_index_finger_cm",
+            palmDirection: { z: 1 },
+          },
+          nonDominantHand: {},
         },
-        moviment: ["RIGHT"],
-        end: {
-          region: "torax_right",
-          configuration: "middle_index_finger_cm",
-          palm: "camera",
+        movements: {
+          dominantHand: [{ x: 1 }],
+          nonDominantHand: [],
+        },
+        endPosition: {
+          dominantHand: {
+            bodyRegion: "torax_right",
+            handConfiguration: "middle_index_finger_cm",
+            palmDirection: { z: 1 },
+          },
+          nonDominantHand: {},
         },
       },
     ],
   },
-  meuNome: {
+  {
     language: "libras",
     token: "meu nome",
-    sign: [
+    signSteps: [
       {
-        start: {
-          region: "torax_left",
-          configuration: "middle_index_finger_cm",
-          palm: "user",
+        startPosition: {
+          dominantHand: {
+            bodyRegion: "torax_left",
+            handConfiguration: "middle_index_finger_cm",
+            palmDirection: "user",
+          },
+          nonDominantHand: {},
         },
-        moviment: ["RIGHT"],
-        end: {
-          region: "torax_right",
-          configuration: "middle_index_finger_cm",
-          palm: "user",
+        movements: {
+          dominantHand: [{ x: 1 }],
+          nonDominantHand: [],
+        },
+        endPosition: {
+          dominantHand: {
+            bodyRegion: "torax_right",
+            handConfiguration: "middle_index_finger_cm",
+            palmDirection: "user",
+          },
+          nonDominantHand: {},
         },
       },
     ],
   },
-};
+];
