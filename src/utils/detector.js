@@ -10,37 +10,50 @@ export class Detector {
     this.state = "configuration"; // "initialPosition" | "movement" | "finalPosition"
   }
 
-  run(subject, results) {
-    console.log(subject);
+  run(subject) {
     if (this.state === "configuration") {
       if (
-        subject.hand.dominantHand.handConfiguration ===
-          this.currentSign.start.handConfiguration &&
-        subject.hand.dominantHand.palm.x === this.currentSign.start.palmDirection
+        subject.hand.dominantHand.configuration ===
+          this.currentSign.startPosition.dominantHand.handConfiguration &&
+        Object.keys(
+          this.currentSign.startPosition.dominantHand.palmDirection
+        ).every(
+          (key) =>
+            subject.hand.dominantHand.palm[key] ===
+            this.currentSign.startPosition.dominantHand.palmDirection[key]
+        )
       ) {
         this.state = "initialPosition";
         this.offset = this.getRandomXY(25);
       }
     } else if (this.state === "initialPosition") {
-      this.initialPosition(subject, results);
-      this.movement = JSON.parse(JSON.stringify(this.currentSign.movement));
+      this.initialPosition(subject);
+      this.movements = JSON.parse(
+        JSON.stringify(this.currentSign.movements.dominantHand)
+      );
     } else if (this.state === "movement") {
-      if (this.movement === undefined || this.movement.length === 0) {
+      if (this.movements === undefined || this.movements.length === 0) {
         this.state = "finalPosition";
-      } else if (this.movement[0]) {
-        const movement = this.movement[0];
+      } else if (this.movements[0]) {
+        const movement = this.movements[0];
         const correctMovement = Object.keys(movement).every((key) => {
           return subject.hand.dominantHand.movement[key] === movement[key];
         });
         if (correctMovement) {
-          this.movement.shift();
+          this.movements.shift();
         }
       }
     } else if (this.state === "finalPosition") {
       if (
-        subject.hand.dominantHand.handConfiguration ===
-          this.currentSign.start.handConfiguration &&
-        subject.hand.dominantHand.palmDirection.x === this.currentSign.start.palmDirection
+        subject.hand.dominantHand.configuration ===
+          this.currentSign.endPosition.dominantHand.handConfiguration &&
+        Object.keys(
+          this.currentSign.endPosition.dominantHand.palmDirection
+        ).every(
+          (key) =>
+            subject.hand.dominantHand.palm[key] ===
+            this.currentSign.endPosition.dominantHand.palmDirection[key]
+        )
       ) {
         console.log("Uhaa");
         this.state = "configuration";
@@ -49,11 +62,11 @@ export class Detector {
     }
   }
 
-  initialPosition(subject, results) {
-    if (subject && results.poseLandmarks.length) {
+  initialPosition(subject) {
+    if (subject && subject.poseLandmarks.length) {
       const coordinate = getBodyRegionCoordinates(
-        this.currentSign.start.bodyRegion,
-        results.poseLandmarks
+        this.currentSign.startPosition.dominantHand.bodyRegion,
+        subject.poseLandmarks
       );
 
       const oldCoordinate = this.lastCoordinate ?? coordinate;
@@ -73,8 +86,8 @@ export class Detector {
         y: smoothCoordinate.y + this.offset.y,
       });
 
-      if (results.dominantHandLandmarks.length) {
-        const middle = getMiddlePoint(...results.dominantHandLandmarks);
+      if (subject.dominantHandLandmarks.length) {
+        const middle = getMiddlePoint(...subject.dominantHandLandmarks);
         const distance = Math.sqrt(
           Math.pow(middle.x - coordinate.x, 2) +
             Math.pow(middle.y - coordinate.y, 2)

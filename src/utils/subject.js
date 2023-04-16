@@ -26,6 +26,13 @@ export class Subject {
       nonDominantHandWorldLandmarks,
     } = this.parseHandsWorldLandmarks(results);
 
+    subject.dominantHandLandmarks = dominantHandLandmarks;
+    subject.nonDominantHandLandmarks = nonDominantHandLandmarks;
+    subject.dominantHandWorldLandmarks = dominantHandWorldLandmarks;
+    subject.nonDominantHandWorldLandmarks = nonDominantHandWorldLandmarks;
+    subject.poseLandmarks = results.poseLandmarks;
+    subject.poseWorldLandmarks = results.poseWorldLandmarks;
+
     this.updateSkeletonBuffer(
       dominantHandLandmarks,
       nonDominantHandLandmarks,

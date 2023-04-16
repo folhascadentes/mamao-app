@@ -47,7 +47,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
       const subjectData = subject.parse(results);
 
-      if (detector.run(subjectData, results)) {
+      if (detector.run(subjectData)) {
         detector = new Detector(signs[0], ctx);
       }
     });
