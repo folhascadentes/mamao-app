@@ -22,18 +22,55 @@ class Detector {
 
   constructor(sign, ctx) {
     this.sign = sign;
+    this.currentSign = sign.sign[0];
     this.ctx = ctx;
-    this.offset = getRandomXY(25);
+    this.state = "configuration"; // "initialPosition" | "moviment" | "finalPosition"
   }
 
   run(subject, results) {
-    this.initialPosition(subject, results);
+    if (this.state === "configuration") {
+      if (
+        subject.hand.right.configuration ===
+          this.currentSign.start.configuration &&
+        subject.hand.right.palm.x === this.currentSign.start.palm
+      ) {
+        this.state = "initialPosition";
+        this.offset = getRandomXY(25);
+      }
+    } else if (this.state === "initialPosition") {
+      this.initialPosition(subject, results);
+    } else if (this.state === "moviment") {
+      if (
+        this.currentSign.moviment === undefined ||
+        this.currentSign.moviment.length == 0
+      ) {
+        this.state = "finalPosition";
+      } else if (this.currentSign.moviment[0]) {
+        const moviment = this.currentSign.moviment[0];
+        const correctMoviment = Object.keys(moviment).every((key) => {
+          return subject.hand.right.moviment[key] === moviment[key];
+        });
+        if (correctMoviment) {
+          this.currentSign.moviment.shift();
+        }
+      }
+    } else if (this.state === "finalPosition") {
+      if (
+        subject.hand.right.configuration ===
+          this.currentSign.start.configuration &&
+        subject.hand.right.palm.x === this.currentSign.start.palm
+      ) {
+        console.log("Uhaa");
+        this.state = "configuration";
+        return true;
+      }
+    }
   }
 
   initialPosition(subject, results) {
     if (subject && results.poseLandmarks.length) {
       const coordinate = getBodyRegionCoordinates(
-        "torax",
+        this.currentSign.start.region,
         results.poseLandmarks
       );
 
@@ -53,10 +90,20 @@ class Detector {
           Math.floor(subject.body.angle / 10) * 10 * 2.9,
         y: smoothCoordinate.y + this.offset.y,
       });
+
+      if (results.rightHandLandmarks.length) {
+        const middle = getMiddlePoint(...results.rightHandLandmarks);
+        const distance = Math.sqrt(
+          Math.pow(middle.x - coordinate.x, 2) +
+            Math.pow(middle.y - coordinate.y, 2)
+        );
+
+        if (distance < this.CIRCLE_RADIUS * 2) {
+          this.state = "moviment";
+        }
+      }
     }
   }
-
-  instruction() {}
 
   drawCircle(landmark, color = "rgb(229, 123, 69, 0.8)") {
     this.ctx.beginPath();
@@ -107,9 +154,6 @@ function Recording({ setLoading, model, cameraSettings }) {
     const pose = initializePoseDetector();
 
     hands.onResults((results) => {
-      results.poseLandmarks = poseLandmarks;
-      results.poseWorldLandmarks = poseWorldLandmarks;
-
       renderCameraImage(results);
 
       const subject = initializeSujectObject();
@@ -120,6 +164,13 @@ function Recording({ setLoading, model, cameraSettings }) {
         rightHandWorldLandmarks,
         leftHandWorldLandmarks,
       } = parseLeftRightHandWorldLandmarks(results);
+
+      results.rightHandLandmarks = rightHandLandmarks;
+      results.leftHandLandmarks = leftHandLandmarks;
+      results.rightHandWorldLandmarks = rightHandWorldLandmarks;
+      results.leftHandWorldLandmarks = leftHandWorldLandmarks;
+      results.poseLandmarks = poseLandmarks;
+      results.poseWorldLandmarks = poseWorldLandmarks;
 
       updateSkeletonBuffer(
         rightHandLandmarks,
@@ -299,9 +350,9 @@ function Recording({ setLoading, model, cameraSettings }) {
     );
 
     return {
-      x: vector.x < 0 ? 1 : -1,
-      y: vector.y < 0 ? 1 : -1,
-      z: vector.z < 0 ? 1 : -1,
+      x: vector.x < 0 ? 1 : -1, // [-] = esquerda, [+] = direita
+      y: vector.y < 0 ? 1 : -1, // [-] = baixo, [+] = cima
+      z: vector.z < 0 ? 1 : -1, // [-] = usuario, [+] = camera
     };
   }
 

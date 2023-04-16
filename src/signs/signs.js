@@ -1,5 +1,3 @@
-// STATES
-// CHECK_START -> CHECK_IF_MOVIMENT -> CHECK_MOVIMENT -> CHECK_END -> CHECK_TIME
 export const signs = {
   oi: {
     language: "libras",
@@ -9,9 +7,15 @@ export const signs = {
         start: {
           region: "torax",
           configuration: "oi_cm",
-          palm: "left",
+          palm: -1, // "left",
         },
-        moviment: ["UP", "RIGHT", "DOWN", "LEFT"],
+        // Heurisitca para verificar se o movimento é circular
+        moviment: [
+          { y: 1, x: 1 }, // UP_RIGHT
+          { y: -1, x: 1 }, // DOWN_RIGHT,
+          { y: -1, x: -1 }, // DOWN_LEFT
+          { y: 1, x: -1 }, // UP_LEFT
+        ],
         end: {
           region: "torax",
           configuration: "oi_cm",
