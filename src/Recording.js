@@ -30,9 +30,9 @@ class Detector {
   run(subject, results) {
     if (this.state === "configuration") {
       if (
-        subject.hand.right.configuration ===
+        subject.hand.dominantHand.configuration ===
           this.currentSign.start.configuration &&
-        subject.hand.right.palm.x === this.currentSign.start.palm
+        subject.hand.dominantHand.palm.x === this.currentSign.start.palm
       ) {
         this.state = "initialPosition";
         this.offset = getRandomXY(25);
@@ -46,7 +46,7 @@ class Detector {
       } else if (this.moviment[0]) {
         const moviment = this.moviment[0];
         const correctMoviment = Object.keys(moviment).every((key) => {
-          return subject.hand.right.moviment[key] === moviment[key];
+          return subject.hand.dominantHand.moviment[key] === moviment[key];
         });
         if (correctMoviment) {
           this.moviment.shift();
@@ -54,9 +54,9 @@ class Detector {
       }
     } else if (this.state === "finalPosition") {
       if (
-        subject.hand.right.configuration ===
+        subject.hand.dominantHand.configuration ===
           this.currentSign.start.configuration &&
-        subject.hand.right.palm.x === this.currentSign.start.palm
+        subject.hand.dominantHand.palm.x === this.currentSign.start.palm
       ) {
         console.log("Uhaa");
         this.state = "configuration";
@@ -89,8 +89,8 @@ class Detector {
         y: smoothCoordinate.y + this.offset.y,
       });
 
-      if (results.rightHandLandmarks.length) {
-        const middle = getMiddlePoint(...results.rightHandLandmarks);
+      if (results.dominantHandLandmarks.length) {
+        const middle = getMiddlePoint(...results.dominantHandLandmarks);
         const distance = Math.sqrt(
           Math.pow(middle.x - coordinate.x, 2) +
             Math.pow(middle.y - coordinate.y, 2)
@@ -157,41 +157,41 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subject = initializeSujectObject();
 
       let {
-        rightHandLandmarks,
-        leftHandLandmarks,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks,
-      } = parseLeftRightHandWorldLandmarks(results);
+        dominantHandLandmarks,
+        nonDominantHandLandmarks,
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks,
+      } = parseHandsWorldLandmarks(results);
 
-      results.rightHandLandmarks = rightHandLandmarks;
-      results.leftHandLandmarks = leftHandLandmarks;
-      results.rightHandWorldLandmarks = rightHandWorldLandmarks;
-      results.leftHandWorldLandmarks = leftHandWorldLandmarks;
+      results.dominantHandLandmarks = dominantHandLandmarks;
+      results.nonDominantHandLandmarks = nonDominantHandLandmarks;
+      results.dominantHandWorldLandmarks = dominantHandWorldLandmarks;
+      results.nonDominantHandWorldLandmarks = nonDominantHandWorldLandmarks;
       results.poseLandmarks = poseLandmarks;
       results.poseWorldLandmarks = poseWorldLandmarks;
 
       updateSkeletonBuffer(
-        rightHandLandmarks,
-        leftHandLandmarks,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks
+        dominantHandLandmarks,
+        nonDominantHandLandmarks,
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks
       );
 
       setSubjectBodyAngle(subject);
       setSubjectHandShape(
         subject,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks
       );
       setSubjectHandPointing(
         subject,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks
       );
       setSubjectHandPalm(
         subject,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks
       );
       setSubjectHandMoviment(subject);
 
@@ -257,19 +257,22 @@ function Recording({ setLoading, model, cameraSettings }) {
     const [before, _, after] = skeletonBuffer.slice(-3);
 
     if (
-      before?.rightHandLandmarks.length &&
-      after?.rightHandLandmarks?.length
+      before?.dominantHandLandmarks.length &&
+      after?.dominantHandLandmarks?.length
     ) {
-      subject.hand.right.moviment = parseSubjectHandMoviment(
-        before.rightHandLandmarks,
-        after.rightHandLandmarks
+      subject.hand.dominantHand.moviment = parseSubjectHandMoviment(
+        before.dominantHandLandmarks,
+        after.dominantHandLandmarks
       );
     }
 
-    if (before?.leftHandLandmarks.length && after?.leftHandLandmarks?.length) {
-      subject.hand.left.moviment = parseSubjectHandMoviment(
-        before.leftHandLandmarks,
-        after.leftHandLandmarks
+    if (
+      before?.nonDominantHandLandmarks.length &&
+      after?.nonDominantHandLandmarks?.length
+    ) {
+      subject.hand.nonDominantHand.moviment = parseSubjectHandMoviment(
+        before.nonDominantHandLandmarks,
+        after.nonDominantHandLandmarks
       );
     }
   }
@@ -304,19 +307,19 @@ function Recording({ setLoading, model, cameraSettings }) {
   }
 
   function updateSkeletonBuffer(
-    rightHandLandmarks,
-    leftHandLandmarks,
-    rightHandWorldLandmarks,
-    leftHandWorldLandmarks
+    dominantHandLandmarks,
+    nonDominantHandLandmarks,
+    dominantHandWorldLandmarks,
+    nonDominantHandWorldLandmarks
   ) {
     if (poseLandmarks.length && poseWorldLandmarks.length) {
       skeletonBuffer.push({
         poseLandmarks,
         poseWorldLandmarks,
-        rightHandLandmarks,
-        leftHandLandmarks,
-        rightHandWorldLandmarks,
-        leftHandWorldLandmarks,
+        dominantHandLandmarks,
+        nonDominantHandLandmarks,
+        dominantHandWorldLandmarks,
+        nonDominantHandWorldLandmarks,
       });
 
       if (skeletonBuffer.length > BUFFER_SIZE) {
@@ -327,18 +330,25 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   function setSubjectHandPalm(
     subject,
-    rightHandWorldLandmarks,
-    leftHandWorldLandmarks
+    dominantHandWorldLandmarks,
+    nonDominantHandWorldLandmarks
   ) {
-    if (rightHandWorldLandmarks.length) {
-      subject.hand.right.palm = parseSubjectHandPalm(rightHandWorldLandmarks);
+    if (dominantHandWorldLandmarks.length) {
+      subject.hand.dominantHand.palm = parseSubjectHandPalm(
+        dominantHandWorldLandmarks
+      );
     }
 
-    if (leftHandWorldLandmarks.length) {
-      subject.hand.left.palm = parseSubjectHandPalm(leftHandWorldLandmarks);
-      subject.hand.left.palm.x = -subject.hand.left.palm.x;
-      subject.hand.left.palm.y = -subject.hand.left.palm.y;
-      subject.hand.left.palm.z = -subject.hand.left.palm.z;
+    if (nonDominantHandWorldLandmarks.length) {
+      subject.hand.nonDominantHand.palm = parseSubjectHandPalm(
+        nonDominantHandWorldLandmarks
+      );
+      subject.hand.nonDominantHand.palm.x =
+        -subject.hand.nonDominantHand.palm.x;
+      subject.hand.nonDominantHand.palm.y =
+        -subject.hand.nonDominantHand.palm.y;
+      subject.hand.nonDominantHand.palm.z =
+        -subject.hand.nonDominantHand.palm.z;
     }
   }
 
@@ -358,18 +368,18 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   function setSubjectHandPointing(
     subject,
-    rightHandWorldLandmarks,
-    lefthandWorldLandmarks
+    dominantHandWorldLandmarks,
+    nonDominantHandWorldLandmarks
   ) {
-    if (rightHandWorldLandmarks.length) {
-      subject.hand.right.ponting = parseSubjectHandPointing(
-        rightHandWorldLandmarks
+    if (dominantHandWorldLandmarks.length) {
+      subject.hand.dominantHand.ponting = parseSubjectHandPointing(
+        dominantHandWorldLandmarks
       );
     }
 
-    if (lefthandWorldLandmarks.length) {
-      subject.hand.left.ponting = parseSubjectHandPointing(
-        lefthandWorldLandmarks
+    if (nonDominantHandWorldLandmarks.length) {
+      subject.hand.nonDominantHand.ponting = parseSubjectHandPointing(
+        nonDominantHandWorldLandmarks
       );
     }
   }
@@ -413,26 +423,26 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   function setSubjectHandShape(
     subject,
-    rightHandWorldLandmarks,
-    leftHandWorldLandmarks
+    dominantHandWorldLandmarks,
+    nonDominantHandWorldLandmarks
   ) {
-    if (rightHandWorldLandmarks.length) {
+    if (dominantHandWorldLandmarks.length) {
       const { handShape, probability } = detectHandShape(
-        rightHandWorldLandmarks
+        dominantHandWorldLandmarks
       );
 
       if (probability > 0.5) {
-        subject.hand.right.configuration = handShape;
+        subject.hand.dominantHand.configuration = handShape;
       }
     }
 
-    if (leftHandWorldLandmarks.length) {
+    if (nonDominantHandWorldLandmarks.length) {
       const { handShape, probability } = detectHandShape(
-        leftHandWorldLandmarks
+        nonDominantHandWorldLandmarks
       );
 
       if (probability > 0.5) {
-        subject.hand.left.configuration = handShape;
+        subject.hand.nonDominantHand.configuration = handShape;
       }
     }
   }
@@ -443,7 +453,7 @@ function Recording({ setLoading, model, cameraSettings }) {
         angle: null,
       },
       hand: {
-        left: {
+        nonDominantHand: {
           ponting: null,
           palm: null,
           configuration: null,
@@ -453,7 +463,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             z: null,
           },
         },
-        right: {
+        dominantHand: {
           ponting: null,
           palm: null,
           configuration: null,
@@ -467,48 +477,48 @@ function Recording({ setLoading, model, cameraSettings }) {
     };
   }
 
-  function parseLeftRightHandWorldLandmarks(results) {
-    let leftHandLandmarks = [];
-    let rightHandLandmarks = [];
-    let leftHandWorldLandmarks = [];
-    let rightHandWorldLandmarks = [];
+  function parseHandsWorldLandmarks(results) {
+    let nonDominantHandLandmarks = [];
+    let dominantHandLandmarks = [];
+    let nonDominantHandWorldLandmarks = [];
+    let dominantHandWorldLandmarks = [];
 
     results.multiHandedness.forEach((hand) => {
       if (hand.label === "Right") {
-        leftHandLandmarks =
+        nonDominantHandLandmarks =
           (results.multiHandedness.length === 2
             ? results.multiHandLandmarks[hand.index]
             : results.multiHandLandmarks[0]) ?? [];
-        leftHandLandmarks = leftHandLandmarks.map((landmark) => {
+        nonDominantHandLandmarks = nonDominantHandLandmarks.map((landmark) => {
           return {
             x: landmark.x * canvasRef.current.width,
             y: landmark.y * canvasRef.current.height,
             z: landmark.z * canvasRef.current.width,
           };
         });
-        leftHandWorldLandmarks =
+        nonDominantHandWorldLandmarks =
           (results.multiHandedness.length === 2
             ? results.multiHandWorldLandmarks[hand.index]
             : results.multiHandWorldLandmarks[0]) ?? [];
       } else if (hand.label === "Left") {
-        rightHandLandmarks = (results.multiHandLandmarks[hand.index] ?? []).map(
-          (landmark) => {
-            return {
-              x: landmark.x * canvasRef.current.width,
-              y: landmark.y * canvasRef.current.height,
-              z: landmark.z * canvasRef.current.width,
-            };
-          }
-        );
-        rightHandWorldLandmarks =
+        dominantHandLandmarks = (
+          results.multiHandLandmarks[hand.index] ?? []
+        ).map((landmark) => {
+          return {
+            x: landmark.x * canvasRef.current.width,
+            y: landmark.y * canvasRef.current.height,
+            z: landmark.z * canvasRef.current.width,
+          };
+        });
+        dominantHandWorldLandmarks =
           results.multiHandWorldLandmarks[hand.index] ?? [];
       }
     });
     return {
-      rightHandLandmarks,
-      leftHandLandmarks,
-      rightHandWorldLandmarks,
-      leftHandWorldLandmarks,
+      dominantHandLandmarks,
+      nonDominantHandLandmarks,
+      dominantHandWorldLandmarks,
+      nonDominantHandWorldLandmarks,
     };
   }
 
