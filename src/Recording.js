@@ -17,7 +17,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
-  let detector = new Detector(signs[0], ctx);
+  let detector = new Detector(signs?.[0] ?? {}, ctx);
 
   useEffect(() => {
     setCtx(canvasRef.current.getContext("2d"));
@@ -48,7 +48,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
 
       if (detector.run(subjectData, results)) {
-        detector = new Detector(signs.oi, ctx);
+        detector = new Detector(signs[0], ctx);
       }
     });
 

@@ -53,7 +53,7 @@ export class Subject {
       nonDominantHandWorldLandmarks
     );
 
-    this.setSubjectHandMoviment(subject, this.buffer);
+    this.setSubjectHandMovement(subject, this.buffer);
 
     return subject;
   }
@@ -76,7 +76,7 @@ export class Subject {
             z: null, // [+] frente [-1] trás
           },
           configuration: null,
-          moviment: {
+          movement: {
             x: null, // [+] oposto a mão dominante [-1] direção mão dominante
             y: null, // [+] cima [-1] baixo
             z: null, // [+] frente [-1] trás
@@ -94,7 +94,7 @@ export class Subject {
             z: null,
           },
           configuration: null,
-          moviment: {
+          movement: {
             x: null,
             y: null,
             z: null,
@@ -318,14 +318,14 @@ export class Subject {
     };
   }
 
-  setSubjectHandMoviment(subject, buffer) {
+  setSubjectHandMovement(subject, buffer) {
     const [before, _, after] = buffer.slice(-3);
 
     if (
       before?.dominantHandLandmarks.length &&
       after?.dominantHandLandmarks?.length
     ) {
-      subject.hand.dominantHand.moviment = this.parseSubjectHandMoviment(
+      subject.hand.dominantHand.movement = this.parseSubjectHandMovement(
         before.dominantHandLandmarks,
         after.dominantHandLandmarks
       );
@@ -335,39 +335,39 @@ export class Subject {
       before?.nonDominantHandLandmarks.length &&
       after?.nonDominantHandLandmarks?.length
     ) {
-      subject.hand.nonDominantHand.moviment = this.parseSubjectHandMoviment(
+      subject.hand.nonDominantHand.movement = this.parseSubjectHandMovement(
         before.nonDominantHandLandmarks,
         after.nonDominantHandLandmarks
       );
     }
   }
 
-  parseSubjectHandMoviment(beforeHandLandmarks, afterHandLandmarks) {
+  parseSubjectHandMovement(beforeHandLandmarks, afterHandLandmarks) {
     const THRESHOLD = 15;
-    const moviment = {
+    const movement = {
       x: null,
       y: null,
       z: null,
     };
 
     if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
-      moviment.x = -1;
+      movement.x = -1;
     } else if (
       afterHandLandmarks[0].x - beforeHandLandmarks[0].x <
       -THRESHOLD
     ) {
-      moviment.x = 1;
+      movement.x = 1;
     }
 
     if (afterHandLandmarks[0].y - beforeHandLandmarks[0].y > THRESHOLD) {
-      moviment.y = -1;
+      movement.y = -1;
     } else if (
       afterHandLandmarks[0].y - beforeHandLandmarks[0].y <
       -THRESHOLD
     ) {
-      moviment.y = 1;
+      movement.y = 1;
     }
 
-    return moviment;
+    return movement;
   }
 }
