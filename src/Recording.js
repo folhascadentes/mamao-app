@@ -21,7 +21,7 @@ class Detector {
   CIRCLE_RADIUS = 40;
 
   constructor(sign, ctx) {
-    this.sign = sign;
+    this.sign = JSON.parse(JSON.stringify(sign));
     this.currentSign = sign.sign[0];
     this.ctx = ctx;
     this.state = "configuration"; // "initialPosition" | "moviment" | "finalPosition"
@@ -39,19 +39,17 @@ class Detector {
       }
     } else if (this.state === "initialPosition") {
       this.initialPosition(subject, results);
+      this.moviment = JSON.parse(JSON.stringify(this.currentSign.moviment));
     } else if (this.state === "moviment") {
-      if (
-        this.currentSign.moviment === undefined ||
-        this.currentSign.moviment.length == 0
-      ) {
+      if (this.moviment === undefined || this.moviment.length == 0) {
         this.state = "finalPosition";
-      } else if (this.currentSign.moviment[0]) {
-        const moviment = this.currentSign.moviment[0];
+      } else if (this.moviment[0]) {
+        const moviment = this.moviment[0];
         const correctMoviment = Object.keys(moviment).every((key) => {
           return subject.hand.right.moviment[key] === moviment[key];
         });
         if (correctMoviment) {
-          this.currentSign.moviment.shift();
+          this.moviment.shift();
         }
       }
     } else if (this.state === "finalPosition") {
@@ -197,7 +195,9 @@ function Recording({ setLoading, model, cameraSettings }) {
       );
       setSubjectHandMoviment(subject);
 
-      detector.run(subject, results);
+      if (detector.run(subject, results)) {
+        detector = new Detector(signs.oi, ctx);
+      }
     });
 
     pose.onResults((results) => {
