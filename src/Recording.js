@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { Hands } from "@mediapipe/hands";
 import { Pose } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
@@ -9,22 +9,74 @@ import {
   findPerpendicularVector,
   getPerpendicularVector,
 } from "./utils/geometrics";
+import { getBodyRegionCoordinates, getMiddlePoint } from "./utils/positions";
+
+function getRandomXY(V) {
+  const x = Math.random() * (2 * V) - V;
+  const y = Math.random() * (2 * V) - V;
+  return { x, y };
+}
 
 class Detector {
-  sign = null;
+  CIRCLE_RADIUS = 40;
 
-  constructor(sign) {
+  constructor(sign, ctx) {
     this.sign = sign;
+    this.ctx = ctx;
+    this.offset = getRandomXY(25);
   }
 
-  run(subject) {}
+  run(subject, results) {
+    this.initialPosition(subject, results);
+  }
+
+  initialPosition(subject, results) {
+    if (subject && results.poseLandmarks.length) {
+      const coordinate = getBodyRegionCoordinates(
+        "torax",
+        results.poseLandmarks
+      );
+
+      const oldCoordinate = this.lastCoordinate ?? coordinate;
+      const smoothCoordinate = getMiddlePoint(
+        oldCoordinate,
+        oldCoordinate,
+        oldCoordinate,
+        coordinate
+      );
+      this.lastCoordinate = coordinate;
+
+      this.drawCircle({
+        x:
+          smoothCoordinate.x +
+          this.offset.x +
+          Math.floor(subject.body.angle / 10) * 10 * 2.9,
+        y: smoothCoordinate.y + this.offset.y,
+      });
+    }
+  }
 
   instruction() {}
+
+  drawCircle(landmark, color = "rgb(229, 123, 69, 0.8)") {
+    this.ctx.beginPath();
+    this.ctx.arc(
+      landmark.x,
+      landmark.y,
+      this.CIRCLE_RADIUS,
+      0,
+      2 * Math.PI,
+      false
+    );
+    this.ctx.fillStyle = color;
+    this.ctx.fill();
+  }
 }
 
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [ctx, setCtx] = useState(null);
   const imageBuffer = [];
   const skeletonBuffer = [];
   const DURATION = 5;
@@ -33,9 +85,15 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
-  let detector = new Detector(signs.oi);
+  let detector = new Detector(signs.oi, ctx);
 
   useEffect(() => {
+    setCtx(canvasRef.current.getContext("2d"));
+
+    if (ctx) {
+      ctx.willReadFrequently = true;
+    }
+
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
         await hands.send({ image: videoRef.current });
@@ -49,6 +107,9 @@ function Recording({ setLoading, model, cameraSettings }) {
     const pose = initializePoseDetector();
 
     hands.onResults((results) => {
+      results.poseLandmarks = poseLandmarks;
+      results.poseWorldLandmarks = poseWorldLandmarks;
+
       renderCameraImage(results);
 
       const subject = initializeSujectObject();
@@ -85,7 +146,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       );
       setSubjectHandMoviment(subject);
 
-      detector.run(subject);
+      detector.run(subject, results);
     });
 
     pose.onResults((results) => {
@@ -130,7 +191,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             height="720"
             style={{
               transform: "scaleX(-1)",
-              borderRadius: "2.4rem",
+              borderRadius: "1.4rem",
             }}
           ></canvas>
         </div>
@@ -435,8 +496,6 @@ function Recording({ setLoading, model, cameraSettings }) {
   }
 
   function renderCameraImage(results) {
-    const ctx = canvasRef.current.getContext("2d");
-
     ctx.save();
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     ctx.drawImage(
