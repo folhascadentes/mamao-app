@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Hands } from "@mediapipe/hands";
-import { Pose } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import { signs } from "./signs/signs";
 import { Subject } from "./utils/subject";
 import { Detector } from "./utils/detector";
+import {
+  initalizeHandsDetector,
+  initializePoseDetector,
+} from "./utils/mediapipe";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
@@ -104,40 +106,6 @@ function Recording({ setLoading, model, cameraSettings }) {
       </div>
     </div>
   );
-
-  function initalizeHandsDetector() {
-    const hands = new Hands({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-      },
-    });
-
-    hands.setOptions({
-      maxNumHands: 2,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    });
-
-    return hands;
-  }
-
-  function initializePoseDetector() {
-    const pose = new Pose({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
-      },
-    });
-
-    pose.setOptions({
-      modelComplexity: 1,
-      smoothLandmarks: false,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    });
-
-    return pose;
-  }
 
   function renderCameraImage(results) {
     ctx.save();
