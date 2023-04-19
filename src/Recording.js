@@ -76,14 +76,14 @@ function Recording({ setLoading, model, cameraSettings }) {
   });
 
   return (
-    <div className="recording flex flex-col items-center justify-center mt-10">
+    <div className="recording flex flex-col items-center justify-center mt-6">
       <video
         ref={videoRef}
         className="input_video hidden"
         width="720"
         height="720"
       ></video>
-      <div className="flex space-x-16 justify-center">
+      <div className="flex flex-col space-y-4 md:flex-row md:space-x-16 justify-center">
         <div className="items-center">
           <canvas
             ref={canvasRef}
@@ -92,12 +92,18 @@ function Recording({ setLoading, model, cameraSettings }) {
             height="720"
             style={{
               transform: "scaleX(-1)",
+              zoom:
+                window.innerWidth <= 500
+                  ? "0.50"
+                  : window.innerHeight <= 800
+                  ? "0.7"
+                  : "",
               borderRadius: "1.4rem",
             }}
           ></canvas>
         </div>
-        <div style={{ width: "400px" }}>
-          <h1 className="text-3xl font-bold text-left mb-6">Instruções</h1>
+        <div>
+          <h1 className="text-3xl font-bold text-left md:mb-6">Instruções</h1>
         </div>
       </div>
     </div>
