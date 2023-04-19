@@ -153,37 +153,38 @@ export class Subject {
     let nonDominantHandWorldLandmarks = [];
     let dominantHandWorldLandmarks = [];
 
-    results.multiHandedness.forEach((hand) => {
-      if (hand.label === "Right") {
-        nonDominantHandLandmarks =
-          (results.multiHandedness.length === 2
-            ? results.multiHandLandmarks[hand.index]
-            : results.multiHandLandmarks[0]) ?? [];
-        nonDominantHandLandmarks = nonDominantHandLandmarks.map((landmark) => {
-          return {
-            x: landmark.x * this.canvasRef.current.width,
-            y: landmark.y * this.canvasRef.current.height,
-            z: landmark.z * this.canvasRef.current.width,
-          };
-        });
-        nonDominantHandWorldLandmarks =
-          (results.multiHandedness.length === 2
-            ? results.multiHandWorldLandmarks[hand.index]
-            : results.multiHandWorldLandmarks[0]) ?? [];
-      } else if (hand.label === "Left") {
-        dominantHandLandmarks = (
-          results.multiHandLandmarks[hand.index] ?? []
-        ).map((landmark) => {
-          return {
-            x: landmark.x * this.canvasRef.current.width,
-            y: landmark.y * this.canvasRef.current.height,
-            z: landmark.z * this.canvasRef.current.width,
-          };
-        });
+    results.multiHandedness.forEach((hand, index) => {
+      if (
+        // mediapipe joga as maos invertidas, porque espera a imagem invertida e não espelhada da
+        // camera
+        (this.dominantHand === "RIGHT" && hand.label === "Left") ||
+        (this.dominantHand === "LEFT" && hand.label === "Right")
+      ) {
+        dominantHandLandmarks = (results.multiHandLandmarks[index] ?? []).map(
+          (landmark) => {
+            return {
+              x: landmark.x * this.canvasRef.current.width,
+              y: landmark.y * this.canvasRef.current.height,
+              z: landmark.z * this.canvasRef.current.width,
+            };
+          }
+        );
         dominantHandWorldLandmarks =
-          results.multiHandWorldLandmarks[hand.index] ?? [];
+          results.multiHandWorldLandmarks[index] ?? [];
+      } else if (hand.label === "Left") {
+        nonDominantHandLandmarks = results.multiHandLandmarks[index].map(
+          (landmark) => {
+            return {
+              x: landmark.x * this.canvasRef.current.width,
+              y: landmark.y * this.canvasRef.current.height,
+              z: landmark.z * this.canvasRef.current.width,
+            };
+          }
+        );
+        nonDominantHandWorldLandmarks = results.multiHandWorldLandmarks[index];
       }
     });
+
     return {
       dominantHandLandmarks,
       nonDominantHandLandmarks,
