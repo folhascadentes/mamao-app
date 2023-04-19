@@ -66,9 +66,3 @@
     transform: rotate(360deg);
   }
 }
-
-canvas {
-  transform: "scaleX(-1)";
-  zoom: 0.9;
-  border-radius: "1rem";
-}
