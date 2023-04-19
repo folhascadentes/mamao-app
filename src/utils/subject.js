@@ -367,7 +367,7 @@ export class Subject {
   }
 
   parseSubjectHandMovement(beforeHandLandmarks, afterHandLandmarks) {
-    const THRESHOLD = 15;
+    const THRESHOLD = 5;
     const movement = {
       x: null,
       y: null,

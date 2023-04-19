@@ -24,7 +24,7 @@ export class Detector {
         )
       ) {
         this.state = "initialPosition";
-        this.offset = this.getRandomXY(25);
+        this.offset = this.getRandomXY(75);
       }
     } else if (this.state === "initialPosition") {
       this.initialPosition(subject);

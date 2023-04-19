@@ -5,7 +5,7 @@ function LoadingScreen() {
     <div id="loading-screen" className="text-white px-4">
       <div className="flex flex-col space-y-4 items-center justify-center">
         <div className="spinner mb-8"></div>
-        <div className="text-2xl">
+        <div className="text-3xl">
           Configurando sistema de captura
           <br />
           Aguarde cerca de 10 segundos
