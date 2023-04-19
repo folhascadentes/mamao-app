@@ -7,6 +7,7 @@ import {
   initalizeHandsDetector,
   initializePoseDetector,
 } from "./utils/mediapipe";
+import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
@@ -46,6 +47,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
 
       if (detector.run(subjectData)) {
+        okayFeedback();
         detector = new Detector(signs[0], ctx);
       }
 
@@ -75,6 +77,13 @@ function Recording({ setLoading, model, cameraSettings }) {
     camera.start();
   });
 
+  function okayFeedback() {
+    canvasRef.current.classList.remove("canvas-shadow");
+    setTimeout(() => {
+      canvasRef.current.classList.add("canvas-shadow");
+    }, 0);
+  }
+
   return (
     <div className="recording flex flex-col items-center justify-center mt-6">
       <video
@@ -83,7 +92,7 @@ function Recording({ setLoading, model, cameraSettings }) {
         width="720"
         height="720"
       ></video>
-      <div className="flex flex-col space-y-4 md:flex-row md:space-x-16 justify-center">
+      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
         <div className="items-center">
           <canvas
             ref={canvasRef}
@@ -104,6 +113,33 @@ function Recording({ setLoading, model, cameraSettings }) {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-left md:mb-6">Instruções</h1>
+          <div className="flex flex-col space-y-2">
+            <div className="flex space-x-3 items-center text-lg">
+              <MdOutlinePending
+                className="text-yellow-500 font-bold"
+                size={24}
+              />
+              <span>Ajuste a orientação da(s) mão(s)</span>
+            </div>
+            <div className="flex space-x-3 items-center text-lg">
+              <MdOutlinePending
+                className="text-yellow-500 font-bold"
+                size={24}
+              />
+              <span>Mova a(s) mão(s) para posição correta</span>
+            </div>
+            <div className="flex space-x-3 items-center text-lg">
+              <MdOutlinePending
+                className="text-yellow-500 font-bold"
+                size={24}
+              />
+              <span>Faça o movimento indicado</span>
+            </div>
+          </div>
+          <div className="flex space-x-3 items-center text-lg mt-6">
+            <MdDone className="text-green-500 font-bold" size={24} />
+            <span>Configure a(s) de mão(s) de forma correta</span>
+          </div>
         </div>
       </div>
     </div>

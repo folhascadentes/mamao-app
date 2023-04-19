@@ -93,7 +93,7 @@ export class Detector {
             Math.pow(middle.y - coordinate.y, 2)
         );
 
-        if (distance < this.CIRCLE_RADIUS * 2) {
+        if (distance < this.CIRCLE_RADIUS * 1.6) {
           this.state = "movement";
         }
       }
