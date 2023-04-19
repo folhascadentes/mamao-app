@@ -24,7 +24,13 @@ export default function App() {
   }, []);
 
   function startRecording() {
-    const constraints = { audio: false, video: true };
+    const constraints = {
+      audio: false,
+      video: {
+        width: 720,
+        height: 720,
+      },
+    };
 
     navigator.mediaDevices
       .getUserMedia(constraints)
