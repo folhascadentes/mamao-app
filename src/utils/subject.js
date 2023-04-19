@@ -1,8 +1,10 @@
 import * as tensorflow from "@tensorflow/tfjs";
 import {
-  getAngleWithXAxis,
+  angleBetweenTwoVectors,
   findPerpendicularVector,
+  getAngleWithXAxis,
   getPerpendicularVector,
+  pointDifference,
 } from "./geometrics";
 
 export class Subject {
@@ -327,25 +329,35 @@ export class Subject {
 
   setSubjectHandMovement(subject, buffer) {
     const [before, _, after] = buffer.slice(-3);
+    const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(
+      before.poseWorldLandmarks,
+      after.poseWorldLandmarks
+    );
 
     if (
       before?.dominantHandLandmarks.length &&
       after?.dominantHandLandmarks?.length
     ) {
-      subject.hand.dominantHand.movement = this.parseSubjectHandMovement(
-        before.dominantHandLandmarks,
-        after.dominantHandLandmarks
-      );
+      subject.hand.dominantHand.movement = {
+        ...this.parseSubjectHandMovement(
+          before.dominantHandLandmarks,
+          after.dominantHandLandmarks
+        ),
+        ...frontOrBackMoviment.dominantHand,
+      };
     }
 
     if (
       before?.nonDominantHandLandmarks.length &&
       after?.nonDominantHandLandmarks?.length
     ) {
-      subject.hand.nonDominantHand.movement = this.parseSubjectHandMovement(
-        before.nonDominantHandLandmarks,
-        after.nonDominantHandLandmarks
-      );
+      subject.hand.nonDominantHand.movement = {
+        ...this.parseSubjectHandMovement(
+          before.nonDominantHandLandmarks,
+          after.nonDominantHandLandmarks
+        ),
+        ...frontOrBackMoviment.nonDominantHand,
+      };
     }
   }
 
@@ -354,7 +366,6 @@ export class Subject {
     const movement = {
       x: null,
       y: null,
-      z: null,
     };
 
     if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
@@ -376,5 +387,59 @@ export class Subject {
     }
 
     return movement;
+  }
+
+  parseSubjectHandMovimentFrontOrBack(
+    beforePoseWolrdLanmarks,
+    afterPoseWolrdLanmarks
+  ) {
+    const rightArm = this.parseSubjectHandMovimentFrontOrBackUtil(
+      beforePoseWolrdLanmarks[12],
+      beforePoseWolrdLanmarks[14],
+      beforePoseWolrdLanmarks[16],
+      afterPoseWolrdLanmarks[12],
+      afterPoseWolrdLanmarks[14],
+      afterPoseWolrdLanmarks[16]
+    );
+    const leftArm = this.parseSubjectHandMovimentFrontOrBackUtil(
+      beforePoseWolrdLanmarks[11],
+      beforePoseWolrdLanmarks[13],
+      beforePoseWolrdLanmarks[15],
+      afterPoseWolrdLanmarks[11],
+      afterPoseWolrdLanmarks[13],
+      afterPoseWolrdLanmarks[15]
+    );
+
+    if (this.dominantHand === "right") {
+      return { dominantHand: rightArm, nonDominantHand: leftArm };
+    } else {
+      return { dominantHand: leftArm, nonDominantHand: rightArm };
+    }
+  }
+
+  parseSubjectHandMovimentFrontOrBackUtil(
+    beforeShoulder,
+    beforeElbow,
+    beforeWrist,
+    afterShoulder,
+    afterElbow,
+    afterWrist
+  ) {
+    const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
+    const beforeV2 = pointDifference(beforeElbow, beforeWrist);
+
+    const afterV1 = pointDifference(afterElbow, afterShoulder);
+    const afterV2 = pointDifference(afterElbow, afterWrist);
+
+    const afterAngle = angleBetweenTwoVectors(afterV1, afterV2);
+    const beforeAngle = angleBetweenTwoVectors(beforeV1, beforeV2);
+
+    if (afterAngle - beforeAngle > 7.5) {
+      return { z: 1 };
+    } else if (afterAngle - beforeAngle < -7.5) {
+      return { z: -1 };
+    } else {
+      return { z: null };
+    }
   }
 }

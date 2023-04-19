@@ -40,3 +40,25 @@ export function findPerpendicularVector(x, y, z) {
 
   return perpendicularVector;
 }
+
+export function pointDifference(point1, point2) {
+  return {
+    x: point2.x - point1.x,
+    y: point2.y - point1.y,
+    z: point2.z - point1.z,
+  };
+}
+
+export function angleBetweenTwoVectors(v1, v2) {
+  const dotProductValue = dotProduct(v1, v2);
+  const magnitudeValue = magnitude(v1) * magnitude(v2);
+  return (Math.acos(dotProductValue / magnitudeValue) * 180) / Math.PI;
+}
+
+function dotProduct(v1, v2) {
+  return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+}
+
+function magnitude(v) {
+  return Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2);
+}
