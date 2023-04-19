@@ -22,11 +22,7 @@ function Recording({ setLoading, model, cameraSettings }) {
   let detector = new Detector(signs?.[0] ?? {}, ctx);
 
   useEffect(() => {
-    setCtx(canvasRef.current.getContext("2d"));
-
-    if (ctx) {
-      ctx.willReadFrequently = true;
-    }
+    setCtx(canvasRef.current.getContext("2d", { willReadFrequently: true }));
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
@@ -52,11 +48,11 @@ function Recording({ setLoading, model, cameraSettings }) {
       if (detector.run(subjectData)) {
         detector = new Detector(signs[0], ctx);
       }
+
+      setLoading(false);
     });
 
     pose.onResults((results) => {
-      setLoading(false);
-
       if (results.poseWorldLandmarks) {
         poseWorldLandmarks = results.poseWorldLandmarks;
       } else {
