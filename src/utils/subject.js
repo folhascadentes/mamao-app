@@ -329,35 +329,38 @@ export class Subject {
 
   setSubjectHandMovement(subject, buffer) {
     const [before, _, after] = buffer.slice(-3);
-    const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(
-      before.poseWorldLandmarks,
-      after.poseWorldLandmarks
-    );
 
-    if (
-      before?.dominantHandLandmarks.length &&
-      after?.dominantHandLandmarks?.length
-    ) {
-      subject.hand.dominantHand.movement = {
-        ...this.parseSubjectHandMovement(
-          before.dominantHandLandmarks,
-          after.dominantHandLandmarks
-        ),
-        ...frontOrBackMoviment.dominantHand,
-      };
-    }
+    if (before?.poseWorldLandmarks.length && after?.poseWorldLandmarks.length) {
+      const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(
+        before.poseWorldLandmarks,
+        after.poseWorldLandmarks
+      );
 
-    if (
-      before?.nonDominantHandLandmarks.length &&
-      after?.nonDominantHandLandmarks?.length
-    ) {
-      subject.hand.nonDominantHand.movement = {
-        ...this.parseSubjectHandMovement(
-          before.nonDominantHandLandmarks,
-          after.nonDominantHandLandmarks
-        ),
-        ...frontOrBackMoviment.nonDominantHand,
-      };
+      if (
+        before?.dominantHandLandmarks.length &&
+        after?.dominantHandLandmarks.length
+      ) {
+        subject.hand.dominantHand.movement = {
+          ...this.parseSubjectHandMovement(
+            before.dominantHandLandmarks,
+            after.dominantHandLandmarks
+          ),
+          ...frontOrBackMoviment.dominantHand,
+        };
+      }
+
+      if (
+        before?.nonDominantHandLandmarks.length &&
+        after?.nonDominantHandLandmarks.length
+      ) {
+        subject.hand.nonDominantHand.movement = {
+          ...this.parseSubjectHandMovement(
+            before.nonDominantHandLandmarks,
+            after.nonDominantHandLandmarks
+          ),
+          ...frontOrBackMoviment.nonDominantHand,
+        };
+      }
     }
   }
 
@@ -410,7 +413,7 @@ export class Subject {
       afterPoseWolrdLanmarks[15]
     );
 
-    if (this.dominantHand === "right") {
+    if (this.dominantHand === "RIGHT") {
       return { dominantHand: rightArm, nonDominantHand: leftArm };
     } else {
       return { dominantHand: leftArm, nonDominantHand: rightArm };
@@ -425,6 +428,8 @@ export class Subject {
     afterElbow,
     afterWrist
   ) {
+    const THRESHOLD = 5;
+
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
     const beforeV2 = pointDifference(beforeElbow, beforeWrist);
 
@@ -434,9 +439,9 @@ export class Subject {
     const afterAngle = angleBetweenTwoVectors(afterV1, afterV2);
     const beforeAngle = angleBetweenTwoVectors(beforeV1, beforeV2);
 
-    if (afterAngle - beforeAngle > 7.5) {
+    if (afterAngle - beforeAngle > THRESHOLD) {
       return { z: 1 };
-    } else if (afterAngle - beforeAngle < -7.5) {
+    } else if (afterAngle - beforeAngle < -THRESHOLD) {
       return { z: -1 };
     } else {
       return { z: null };
