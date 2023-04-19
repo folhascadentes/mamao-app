@@ -1,4 +1,5 @@
 import * as tensorflow from "@tensorflow/tfjs";
+import { POSE_LANDMARKS } from "@mediapipe/pose";
 import {
   angleBetweenTwoVectors,
   findPerpendicularVector,
@@ -138,8 +139,8 @@ export class Subject {
   setSubjectBodyAngle(subject, results) {
     if (results.poseWorldLandmarks.length) {
       const vector = getPerpendicularVector(
-        results.poseWorldLandmarks[12],
-        results.poseWorldLandmarks[11]
+        results.poseWorldLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
+        results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER]
       );
       const angle = getAngleWithXAxis(vector);
 
@@ -398,20 +399,20 @@ export class Subject {
     afterPoseWolrdLanmarks
   ) {
     const rightArm = this.parseSubjectHandMovimentFrontOrBackUtil(
-      beforePoseWolrdLanmarks[12],
-      beforePoseWolrdLanmarks[14],
-      beforePoseWolrdLanmarks[16],
-      afterPoseWolrdLanmarks[12],
-      afterPoseWolrdLanmarks[14],
-      afterPoseWolrdLanmarks[16]
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_WRIST],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_WRIST]
     );
     const leftArm = this.parseSubjectHandMovimentFrontOrBackUtil(
-      beforePoseWolrdLanmarks[11],
-      beforePoseWolrdLanmarks[13],
-      beforePoseWolrdLanmarks[15],
-      afterPoseWolrdLanmarks[11],
-      afterPoseWolrdLanmarks[13],
-      afterPoseWolrdLanmarks[15]
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
+      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_WRIST],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
+      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_WRIST]
     );
 
     if (this.dominantHand === "RIGHT") {
