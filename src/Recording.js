@@ -10,9 +10,33 @@ import {
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
+  const steps = [
+    {
+      name: "configuration",
+      description: "Configure a(s) de mão(s) de forma correta",
+    },
+    {
+      name: "palmDirection",
+      description: "Ajuste a orientação da(s) mão(s)",
+    },
+    {
+      name: "initialPosition",
+      description: "Posicione a(s) de mão(s) de forma correta",
+    },
+    {
+      name: "movement",
+      description: "Realize os movimentos corretamente",
+    },
+    {
+      name: "finalPosition",
+      description: "Posicione a(s) de mão(s) de forma correta",
+    },
+  ];
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [ctx, setCtx] = useState(null);
+  const [todoActions, setTodoActions] = useState([]);
+  const [doneActions, setDoneActions] = useState([]);
   const imageBuffer = [];
   const DURATION = 5;
   const FPS = cameraSettings.frameRate;
@@ -27,8 +51,10 @@ function Recording({ setLoading, model, cameraSettings }) {
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
+        renderCameraImage({ image: videoRef.current });
         await hands.send({ image: videoRef.current });
         await pose.send({ image: videoRef.current });
+        setLoading(false);
       },
       width: 720,
       height: 720,
@@ -42,16 +68,27 @@ function Recording({ setLoading, model, cameraSettings }) {
       results.poseLandmarks = poseLandmarks;
       results.poseWorldLandmarks = poseWorldLandmarks;
 
-      renderCameraImage(results);
-
       const subjectData = subject.parse(results);
+      const response = detector.run(subjectData);
 
-      if (detector.run(subjectData)) {
+      if (response.result) {
         okayFeedback();
         detector = new Detector(signs[0], ctx);
+      } else {
+        let flag = false;
+        const todo = [];
+        const done = [];
+        steps.forEach((step) => {
+          if (response.state === step.name) {
+            flag = true;
+          }
+          if (flag) {
+            todo.push(step);
+          } else {
+            done.push(step);
+          }
+        });
       }
-
-      setLoading(false);
     });
 
     pose.onResults((results) => {
@@ -114,31 +151,29 @@ function Recording({ setLoading, model, cameraSettings }) {
         <div>
           <h1 className="text-3xl font-bold text-left md:mb-6">Instruções</h1>
           <div className="flex flex-col space-y-2">
-            <div className="flex space-x-3 items-center text-lg">
-              <MdOutlinePending
-                className="text-yellow-500 font-bold"
-                size={24}
-              />
-              <span>Ajuste a orientação da(s) mão(s)</span>
-            </div>
-            <div className="flex space-x-3 items-center text-lg">
-              <MdOutlinePending
-                className="text-yellow-500 font-bold"
-                size={24}
-              />
-              <span>Mova a(s) mão(s) para posição correta</span>
-            </div>
-            <div className="flex space-x-3 items-center text-lg">
-              <MdOutlinePending
-                className="text-yellow-500 font-bold"
-                size={24}
-              />
-              <span>Faça o movimento indicado</span>
-            </div>
+            {todoActions.map((step) => (
+              <div
+                key={step.name}
+                className="flex space-x-3 items-center text-lg"
+              >
+                <MdOutlinePending
+                  className="text-yellow-500 font-bold"
+                  size={24}
+                />
+                <span>{step.description}</span>
+              </div>
+            ))}
           </div>
-          <div className="flex space-x-3 items-center text-lg mt-6">
-            <MdDone className="text-green-500 font-bold" size={24} />
-            <span>Configure a(s) de mão(s) de forma correta</span>
+          <div className="flex flex-col space-y-2 mt-6">
+            {doneActions.map((step) => (
+              <div
+                key={step.name}
+                className="flex space-x-3 items-center text-lg"
+              >
+                <MdDone className="text-green-500 font-bold" size={24} />
+                <span>{step.description}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
