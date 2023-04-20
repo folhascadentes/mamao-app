@@ -57,9 +57,11 @@ export class Detector {
       ) {
         console.log("Uhaa");
         this.state = "configuration";
-        return true;
+        return { result: true };
       }
     }
+
+    return { state: this.state };
   }
 
   initialPosition(subject) {
