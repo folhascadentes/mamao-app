@@ -4,7 +4,7 @@ function Instructions({ startRecording }) {
   return (
     <div className="p-8 flex justify-center text-xl font-normal">
       <div style={{ width: "720px" }}>
-        <h1 className="text-3xl font-bold mb-10">Olá, Voluntário!</h1>
+        <h1 className="text-3xl text-center font-bold mb-10">Olá, Voluntário!</h1>
         <p className="text-left mb-2">
           Agradecemos por se tornar um voluntário e nos dar <b>uma mão</b>.
           Antes de começar, leia e siga as instruções abaixo:
