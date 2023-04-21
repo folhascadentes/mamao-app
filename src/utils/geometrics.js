@@ -38,7 +38,28 @@ export function findPerpendicularVector(x, y, z) {
     z: u.x * v.y - u.y * v.x,
   };
 
-  return perpendicularVector;
+  return normalizeVector(perpendicularVector);
+}
+
+function normalizeVector(vector) {
+  // Calculate the length of the vector
+  const length = Math.sqrt(vector.x ** 2 + vector.y ** 2 + vector.z ** 2);
+
+  // Divide each component of the vector by the length to obtain a unit vector
+  const unitVector = {
+    x: vector.x / length,
+    y: vector.y / length,
+    z: vector.z / length,
+  };
+
+  // Scale the unit vector by a factor of 2 and subtract 1 from each component
+  const normalizedVector = {
+    x: unitVector.x,
+    y: unitVector.y,
+    z: unitVector.z,
+  };
+
+  return normalizedVector;
 }
 
 export function pointDifference(point1, point2) {

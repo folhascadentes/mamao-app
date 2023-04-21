@@ -323,9 +323,9 @@ export class Subject {
     );
 
     return {
-      x: vector.x < 0 ? 1 : -1, // [-] = esquerda, [+] = direita
-      y: vector.y < 0 ? 1 : -1, // [-] = baixo, [+] = cima
-      z: vector.z < 0 ? 1 : -1, // [-] = usuario, [+] = camera
+      x: -vector.x, // [-] = esquerda, [+] = direita
+      y: -vector.y, // [-] = baixo, [+] = cima
+      z: -vector.z, // [-] = usuario, [+] = camera
     };
   }
 
