@@ -48,6 +48,7 @@ export class Detector {
   constructor(sign) {
     this.sign = sign;
     this.currentState = DetectorStates.HAND_CONFIGURATION;
+    this.memory = {};
     this.states = {
       [DetectorStates.HAND_CONFIGURATION]: handConfigurationState,
       [DetectorStates.PALM_DIRECTION]: palmDirectionState,
@@ -60,10 +61,18 @@ export class Detector {
   }
 
   run(subject) {
-    const response = this.states[this.currentState].onRun(this.sign, subject);
+    const response = this.states[this.currentState].onRun(
+      this.sign,
+      subject,
+      this.memory
+    );
 
     if (response?.valid) {
       this.currentState = this.states[this.currentState].nextState;
+
+      if (this.states[this.currentState].onInit) {
+        this.states[this.currentState].onInit(this.sign, this.memory);
+      }
     }
 
     return {
@@ -121,17 +130,46 @@ function checkHandDistanceToPosition(handLandmarks, position) {
 }
 
 const movementState = {
-  onRun: (sign, subject) => {
-    if (this.movements === undefined || this.movements.length === 0) {
-      this.state = "finalPosition";
-    } else if (this.movements[0]) {
-      const movement = this.movements[0];
-      const correctMovement = Object.keys(movement).every((key) => {
-        return subject.hand.dominantHand.movement[key] === movement[key];
-      });
-      if (correctMovement) {
-        this.movements.shift();
-      }
+  onInit: (sign, memory) => {
+    memory.movements = JSON.parse(JSON.stringify(sign.signSteps.movements));
+  },
+  onRun: (sign, subject, memory) => {
+    const dominantHandMoves = memory.movements.dominantHand[0];
+    const nonDominantHandMoves = memory.movements.nonDominantHand[0];
+
+    const correctDominantHandMovement = Object.keys(
+      dominantHandMoves ?? []
+    ).every((key) => {
+      return subject.hand.dominantHand.movement[key] === dominantHandMoves[key];
+    });
+
+    const correctNonDominantHandMovement = Object.keys(
+      nonDominantHandMoves ?? []
+    ).every((key) => {
+      return (
+        subject.hand.nonDominantHand.movement[key] === nonDominantHandMoves[key]
+      );
+    });
+
+    if (correctDominantHandMovement) {
+      memory.movements.dominantHand.shift();
+    }
+
+    if (correctNonDominantHandMovement) {
+      memory.movements.nonDominantHand.shift();
+    }
+
+    const noMoreDominantHandMoves =
+      memory.movements.dominantHand === undefined ||
+      memory.movements.dominantHand.length === 0;
+    const noMoreNonDominantHandMoves =
+      memory.movements.nonDominantHand === undefined ||
+      memory.movements.nonDominantHand.length === 0;
+
+    if (noMoreDominantHandMoves && noMoreNonDominantHandMoves) {
+      return { valid: true };
+    } else {
+      return { valid: false };
     }
   },
   nextState: DetectorStates.FINAL_POSITION,
