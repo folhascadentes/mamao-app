@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "@mediapipe/camera_utils";
 import { signs } from "./signs/signs";
 import { Subject } from "./utils/subject";
-import { Detector, DETECTOR_STEPS } from "./utils/detector";
+import { Detector, DETECTOR_STATES } from "./utils/detector";
 import {
   initalizeHandsDetector,
   initializePoseDetector,
@@ -44,7 +44,7 @@ function Recording({ setLoading, model, cameraSettings }) {
   };
 
   useEffect(() => {
-    const detector = new Detector(sign, canvasRef.current.getContext("2d"));
+    const detector = new Detector(sign);
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
@@ -68,25 +68,27 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
 
-      if (response.result) {
-        success();
-      } else {
-        let flag = false;
-        const todo = [];
-        const done = [];
-        DETECTOR_STEPS.forEach((step) => {
-          if (response.state === step.name) {
-            flag = true;
-          }
-          if (flag) {
-            todo.push(step);
-          } else {
-            done.push(step);
-          }
-        });
-        setDoneActions(done);
-        setTodoActions(todo);
-      }
+      console.log(response);
+
+      // if (response.result) {
+      //   success();
+      // } else {
+      //   let flag = false;
+      //   const todo = [];
+      //   const done = [];
+      //   DETECTOR_STATES.forEach((step) => {
+      //     if (response.state === step.name) {
+      //       flag = true;
+      //     }
+      //     if (flag) {
+      //       todo.push(step);
+      //     } else {
+      //       done.push(step);
+      //     }
+      //   });
+      //   setDoneActions(done);
+      //   setTodoActions(todo);
+      // }
     });
 
     pose.onResults(onResultPoseCallback);
