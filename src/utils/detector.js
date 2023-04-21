@@ -23,7 +23,7 @@ export const DETECTOR_STATES = [
   },
   {
     state: DetectorStates.INITIAL_POSITION,
-    description: "Posicione a(s) de mão(s) no lcoal correto",
+    description: "Posicione a(s) de mão(s) no local correto",
   },
   {
     state: DetectorStates.MOVEMENT,

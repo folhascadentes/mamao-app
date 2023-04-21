@@ -7,7 +7,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "oi_cm",
-          palmDirection: { x: -1 },
+          palmDirection: { x: -1, y: [-0.5, 0.5] },
         },
         nonDominantHand: {},
       },
@@ -24,7 +24,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "oi_cm",
-          palmDirection: { x: -1 },
+          palmDirection: { x: -1, y: [-0.5, 0.5] },
         },
         nonDominantHand: {},
       },
