@@ -23,6 +23,26 @@ function Recording({ setLoading, model, cameraSettings }) {
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
 
+  const onResultPoseCallback = (results) => {
+    if (results.poseWorldLandmarks) {
+      poseWorldLandmarks = results.poseWorldLandmarks;
+    } else {
+      poseWorldLandmarks = [];
+    }
+
+    if (results.poseLandmarks) {
+      poseLandmarks = results.poseLandmarks.map((landmark) => {
+        return {
+          x: landmark.x * canvasRef.current.width,
+          y: landmark.y * canvasRef.current.height,
+          z: landmark.z,
+        };
+      });
+    } else {
+      poseLandmarks = [];
+    }
+  };
+
   useEffect(() => {
     const detector = new Detector(sign, canvasRef.current.getContext("2d"));
 
@@ -69,25 +89,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       }
     });
 
-    pose.onResults((results) => {
-      if (results.poseWorldLandmarks) {
-        poseWorldLandmarks = results.poseWorldLandmarks;
-      } else {
-        poseWorldLandmarks = [];
-      }
-
-      if (results.poseLandmarks) {
-        poseLandmarks = results.poseLandmarks.map((landmark) => {
-          return {
-            x: landmark.x * canvasRef.current.width,
-            y: landmark.y * canvasRef.current.height,
-            z: landmark.z,
-          };
-        });
-      } else {
-        poseLandmarks = [];
-      }
-    });
+    pose.onResults(onResultPoseCallback);
 
     camera.start();
   }, []);
