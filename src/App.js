@@ -21,7 +21,7 @@ export default function App() {
         setModel(model);
       }
     })();
-  }, []);
+  }, [model]);
 
   function startRecording() {
     const constraints = {
