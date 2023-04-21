@@ -1,7 +1,7 @@
 export const signs = [
   {
     language: "libras",
-    token: "oi",
+    token: "Oi",
     signSteps: [
       {
         startPosition: {
@@ -34,7 +34,7 @@ export const signs = [
   },
   {
     language: "libras",
-    token: "bom",
+    token: "Bom",
     signSteps: [
       {
         startPosition: {
@@ -62,7 +62,7 @@ export const signs = [
   },
   {
     language: "libras",
-    token: "beleza",
+    token: "Beleza",
     signSteps: [
       {
         startPosition: {
@@ -90,7 +90,7 @@ export const signs = [
   },
   {
     language: "libras",
-    token: "nome",
+    token: "Nome",
     signSteps: [
       {
         startPosition: {
@@ -118,7 +118,7 @@ export const signs = [
   },
   {
     language: "libras",
-    token: "meu nome",
+    token: "Meu nome",
     signSteps: [
       {
         startPosition: {

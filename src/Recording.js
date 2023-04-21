@@ -19,14 +19,12 @@ function Recording({ setLoading, model, cameraSettings }) {
   const FPS = cameraSettings.frameRate;
   const BUFFER_SIZE = DURATION * FPS;
 
+  let sign = signs?.[0] ?? {};
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
 
   useEffect(() => {
-    const detector = new Detector(
-      signs?.[0] ?? {},
-      canvasRef.current.getContext("2d")
-    );
+    const detector = new Detector(sign, canvasRef.current.getContext("2d"));
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
@@ -110,7 +108,7 @@ function Recording({ setLoading, model, cameraSettings }) {
         height="720"
       ></video>
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
-        <div className="items-center">
+        <div className="flex justify-center items-center">
           <canvas
             ref={canvasRef}
             className="output_canvas_hands"
@@ -128,32 +126,42 @@ function Recording({ setLoading, model, cameraSettings }) {
             }}
           ></canvas>
         </div>
-        <div>
-          <h1 className="text-3xl font-bold text-left md:mb-6">Instruções</h1>
-          <div className="flex flex-col space-y-2">
-            {todoActions.map((step) => (
-              <div
-                key={step.name}
-                className="flex space-x-3 items-center text-lg"
-              >
-                <MdOutlinePending
-                  className="text-yellow-500 font-bold"
-                  size={24}
-                />
-                <span>{step.description}</span>
-              </div>
-            ))}
+        <div className="flex flex-col space-y-4">
+          <div>
+            <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
+            <span className="text-lg">
+              {sign.token} - {sign.language}
+            </span>
           </div>
-          <div className="flex flex-col space-y-2 mt-6">
-            {doneActions.map((step) => (
-              <div
-                key={step.name}
-                className="flex space-x-3 items-center text-lg"
-              >
-                <MdDone className="text-green-500 font-bold" size={24} />
-                <span>{step.description}</span>
-              </div>
-            ))}
+          <div>
+            <h1 className="text-xl md:text-3xl font-bold text-left mb-4 md:mb-6">
+              Instruções
+            </h1>
+            <div className="flex flex-col space-y-2">
+              {todoActions.map((step) => (
+                <div
+                  key={step.name}
+                  className="flex space-x-3 items-center text-lg"
+                >
+                  <MdOutlinePending
+                    className="text-yellow-500 font-bold"
+                    size={24}
+                  />
+                  <span>{step.description}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-col space-y-2 mt-6">
+              {doneActions.map((step) => (
+                <div
+                  key={step.name}
+                  className="flex space-x-3 items-center text-lg"
+                >
+                  <MdDone className="text-green-500 font-bold" size={24} />
+                  <span>{step.description}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
