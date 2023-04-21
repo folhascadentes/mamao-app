@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "@mediapipe/camera_utils";
 import { signs } from "./signs/signs";
 import { Subject } from "./utils/subject";
-import { Detector } from "./utils/detector";
+import { Detector, DETECTOR_STEPS } from "./utils/detector";
 import {
   initalizeHandsDetector,
   initializePoseDetector,
@@ -10,31 +10,8 @@ import {
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
-  const steps = [
-    {
-      name: "configuration",
-      description: "Configure a(s) de mão(s) de forma correta",
-    },
-    {
-      name: "palmDirection",
-      description: "Ajuste a orientação da(s) mão(s)",
-    },
-    {
-      name: "initialPosition",
-      description: "Posicione a(s) de mão(s) de forma correta",
-    },
-    {
-      name: "movement",
-      description: "Realize os movimentos corretamente",
-    },
-    {
-      name: "finalPosition",
-      description: "Posicione a(s) de mão(s) de forma correta",
-    },
-  ];
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [ctx, setCtx] = useState(null);
   const [todoActions, setTodoActions] = useState([]);
   const [doneActions, setDoneActions] = useState([]);
   const imageBuffer = [];
@@ -44,14 +21,16 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
-  let detector = new Detector(signs?.[0] ?? {}, ctx);
 
   useEffect(() => {
-    setCtx(canvasRef.current.getContext("2d", { willReadFrequently: true }));
+    const detector = new Detector(
+      signs?.[0] ?? {},
+      canvasRef.current.getContext("2d")
+    );
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
-        renderCameraImage({ image: videoRef.current });
+        renderCameraImage(videoRef.current);
         await hands.send({ image: videoRef.current });
         await pose.send({ image: videoRef.current });
         setLoading(false);
@@ -72,13 +51,12 @@ function Recording({ setLoading, model, cameraSettings }) {
       const response = detector.run(subjectData);
 
       if (response.result) {
-        okayFeedback();
-        detector = new Detector(signs[0], ctx);
+        success();
       } else {
         let flag = false;
         const todo = [];
         const done = [];
-        steps.forEach((step) => {
+        DETECTOR_STEPS.forEach((step) => {
           if (response.state === step.name) {
             flag = true;
           }
@@ -88,6 +66,8 @@ function Recording({ setLoading, model, cameraSettings }) {
             done.push(step);
           }
         });
+        setDoneActions(done);
+        setTodoActions(todo);
       }
     });
 
@@ -112,9 +92,9 @@ function Recording({ setLoading, model, cameraSettings }) {
     });
 
     camera.start();
-  });
+  }, []);
 
-  function okayFeedback() {
+  function success() {
     canvasRef.current.classList.remove("canvas-shadow");
     setTimeout(() => {
       canvasRef.current.classList.add("canvas-shadow");
@@ -180,11 +160,14 @@ function Recording({ setLoading, model, cameraSettings }) {
     </div>
   );
 
-  function renderCameraImage(results) {
+  function renderCameraImage(image) {
+    const ctx = canvasRef.current.getContext("2d", {
+      willReadFrequently: true,
+    });
     ctx.save();
     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     ctx.drawImage(
-      results.image,
+      image,
       0,
       0,
       canvasRef.current.width,

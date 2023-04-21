@@ -1,5 +1,28 @@
 import { getBodyRegionCoordinates, getMiddlePoint } from "./positions";
 
+export const DETECTOR_STEPS = [
+  {
+    name: "configuration",
+    description: "Configure a(s) de mão(s) de forma correta",
+  },
+  {
+    name: "palmDirection",
+    description: "Ajuste a orientação da(s) mão(s)",
+  },
+  {
+    name: "initialPosition",
+    description: "Posicione a(s) de mão(s) de forma correta",
+  },
+  {
+    name: "movement",
+    description: "Realize os movimentos corretamente",
+  },
+  {
+    name: "finalPosition",
+    description: "Posicione a(s) de mão(s) de forma correta",
+  },
+];
+
 export class Detector {
   CIRCLE_RADIUS = 40;
 
