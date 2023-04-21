@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "@mediapipe/camera_utils";
 import { signs } from "./signs/signs";
 import { Subject } from "./utils/subject";
-import { Detector, DETECTOR_STATES } from "./utils/detector";
+import { Detector, DetectorStates, DETECTOR_STATES } from "./utils/detector";
 import {
   initalizeHandsDetector,
   initializePoseDetector,
@@ -68,27 +68,28 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
 
-      console.log(response);
-
-      // if (response.result) {
-      //   success();
-      // } else {
-      //   let flag = false;
-      //   const todo = [];
-      //   const done = [];
-      //   DETECTOR_STATES.forEach((step) => {
-      //     if (response.state === step.name) {
-      //       flag = true;
-      //     }
-      //     if (flag) {
-      //       todo.push(step);
-      //     } else {
-      //       done.push(step);
-      //     }
-      //   });
-      //   setDoneActions(done);
-      //   setTodoActions(todo);
-      // }
+      if (
+        response.state === DetectorStates.HAND_CONFIGURATION &&
+        response.valid
+      ) {
+        success();
+      } else {
+        const todo = [];
+        const done = [];
+        let isCheckingTodoActions = false;
+        DETECTOR_STATES.forEach((step) => {
+          if (response.state === step.state) {
+            isCheckingTodoActions = true;
+          }
+          if (isCheckingTodoActions) {
+            todo.push(step);
+          } else {
+            done.push(step);
+          }
+        });
+        setDoneActions(done);
+        setTodoActions(todo);
+      }
     });
 
     pose.onResults(onResultPoseCallback);
@@ -144,7 +145,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             <div className="flex flex-col space-y-2">
               {todoActions.map((step) => (
                 <div
-                  key={step.name}
+                  key={step.state}
                   className="flex space-x-3 items-center text-lg"
                 >
                   <MdOutlinePending
@@ -158,7 +159,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             <div className="flex flex-col space-y-2 mt-6">
               {doneActions.map((step) => (
                 <div
-                  key={step.name}
+                  key={step.state}
                   className="flex space-x-3 items-center text-lg"
                 >
                   <MdDone className="text-green-500 font-bold" size={24} />

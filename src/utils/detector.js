@@ -18,27 +18,27 @@ export const DETECTOR_STATES = [
     description: "Configure a(s) de mão(s) de forma correta",
   },
   {
-    name: DetectorStates.PALM_DIRECTION,
+    state: DetectorStates.PALM_DIRECTION,
     description: "Ajuste a orientação da(s) mão(s)",
   },
   {
-    name: DetectorStates.INITIAL_POSITION,
+    state: DetectorStates.INITIAL_POSITION,
     description: "Posicione a(s) de mão(s) no lcoal correto",
   },
   {
-    name: DetectorStates.MOVEMENT,
+    state: DetectorStates.MOVEMENT,
     description: "Realize o(s) movimentos corretamente",
   },
   {
-    name: DetectorStates.FINAL_POSITION,
+    state: DetectorStates.FINAL_POSITION,
     description: "Posicione a(s) de mão(s) de forma correta",
   },
   {
-    name: DetectorStates.FINAL_PALM_DIRECTION,
+    state: DetectorStates.FINAL_PALM_DIRECTION,
     description: "Ajuste a orientação da(s) mão(s) após o movimento",
   },
   {
-    name: DetectorStates.FINAL_HAND_CONFIGURATION,
+    state: DetectorStates.FINAL_HAND_CONFIGURATION,
     description:
       "Ajuste a(s) mão(s) para a configuração correta após o movimento",
   },
