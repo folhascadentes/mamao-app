@@ -8,6 +8,7 @@ import {
   initializePoseDetector,
 } from "./utils/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
+import { getMiddlePoint } from "./utils/positions";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
@@ -61,12 +62,71 @@ function Recording({ setLoading, model, cameraSettings }) {
     const pose = initializePoseDetector();
     const subject = new Subject(canvasRef, BUFFER_SIZE, model);
 
+    function rotateVectorZ(vector, degrees) {
+      // Convert degrees to radians
+      const radians = (degrees * Math.PI) / 180;
+
+      // Apply rotation matrix for rotation around z-axis
+      const x = vector.x * Math.cos(radians) - vector.y * Math.sin(radians);
+      const y = vector.x * Math.sin(radians) + vector.y * Math.cos(radians);
+      const z = vector.z;
+
+      return { x, y, z };
+    }
+
     hands.onResults((results) => {
       results.poseLandmarks = poseLandmarks;
       results.poseWorldLandmarks = poseWorldLandmarks;
 
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
+
+      if (
+        subjectData.dominantHandLandmarks.length &&
+        response.state === DetectorStates.PALM_DIRECTION
+      ) {
+        const vector = subjectData.hand.dominantHand.palm;
+        const angleXY = (Math.atan2(vector.y, vector.x) * 180) / Math.PI;
+        const angleXZ = (Math.atan2(vector.z, vector.x) * 180) / Math.PI;
+
+        const ctx = canvasRef.current.getContext("2d");
+        const coordinate = getMiddlePoint(
+          subjectData.dominantHandLandmarks[0],
+          subjectData.dominantHandLandmarks[5],
+          subjectData.dominantHandLandmarks[17]
+        );
+        const offsetX = rotateVectorZ(
+          { x: 100, y: 0, z: 0 },
+          subjectData.body.angle
+        ).x;
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "#ed5b51";
+        ctx.beginPath();
+        ctx.moveTo(coordinate.x, coordinate.y);
+        ctx.lineTo(coordinate.x + offsetX, coordinate.y);
+        ctx.stroke();
+        ctx.moveTo(coordinate.x, coordinate.y);
+        ctx.lineTo(coordinate.x, coordinate.y - 100);
+        ctx.stroke();
+        ctx.strokeStyle = "#51ed7d";
+        ctx.beginPath();
+        ctx.moveTo(coordinate.x, coordinate.y);
+        ctx.lineTo(
+          coordinate.x -
+            rotateVectorZ(
+              { x: 100, y: 0, z: 0 },
+              angleXZ - subjectData.body.angle
+            ).x,
+          coordinate.y
+        );
+        ctx.stroke();
+        ctx.moveTo(coordinate.x, coordinate.y);
+        ctx.lineTo(
+          coordinate.x,
+          coordinate.y + rotateVectorX({ x: 0, y: 100, z: 0 }, angleXY).y
+        );
+        ctx.stroke();
+      }
 
       if (
         response.state === DetectorStates.HAND_CONFIGURATION &&
@@ -246,4 +306,16 @@ function PalmDirectionInstructions() {
       </div>
     </div>
   );
+}
+
+function rotateVectorX(vector, degrees) {
+  // Convert degrees to radians
+  const radians = (degrees * Math.PI) / 180;
+
+  // Apply rotation matrix for rotation around x-axis
+  const x = vector.x;
+  const y = vector.y * Math.cos(radians) - vector.z * Math.sin(radians);
+  const z = vector.y * Math.sin(radians) + vector.z * Math.cos(radians);
+
+  return { x, y, z };
 }
