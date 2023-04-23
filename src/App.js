@@ -16,7 +16,7 @@ export default function App() {
     (async function () {
       if (model === null) {
         const model = await tensorflow.loadLayersModel(
-          "https://app.mamao.dev.br/model/model.json"
+          "https://www.mamao.dev.br/model/model.json"
         );
         setModel(model);
       }
@@ -62,6 +62,14 @@ export default function App() {
             cameraSettings={cameraSettings}
           />
         )}
+      </div>
+      <div className="fixed bottom-0 right-0 mx-auto text-blue-800 w-96 text-center py-4">
+        <div className="flex space-x-4">
+          <a href="#">Sobre</a> <span>•</span>
+          <a href="#">Ajuda</a> <span>•</span>
+          <a href="#">Privacidade</a> <span>•</span>
+          <a href="#">Feedback</a>
+        </div>
       </div>
     </div>
   );

@@ -144,7 +144,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             </h1>
             <div className="flex flex-col space-y-2">
               {todoActions.map((step, index) => (
-                <div class="flex flex-col">
+                <div className="flex flex-col">
                   <div
                     key={step.state}
                     className="flex space-x-3 items-center text-lg"
@@ -159,23 +159,23 @@ function Recording({ setLoading, model, cameraSettings }) {
                     step.state === DetectorStates.HAND_CONFIGURATION && (
                       <div className="flex flex-col mx-8 my-4">
                         <div>
-                          1. Configure a mão dominante conforme as imagens
+                          1. Configure a <b>mão dominante</b> conforme as imagens
                           abaixo
                         </div>
-                        <div class="flex space-x-6 mt-4">
+                        <div className="flex space-x-6 mt-4">
                           <div className="flex flex-col text-center space-y-4">
                             <img
                               className="h-60"
                               src="/handshapes/oi_front.png"
                             />
-                            <span>Visão frontal</span>
+                            <span className="text-sm font-bold">Visão frontal</span>
                           </div>
                           <div className="flex flex-col text-center space-y-4">
                             <img
                               className="h-60"
                               src="/handshapes/oi_side.png"
                             />
-                            <span>Visão lateral</span>
+                            <span className="text-sm font-bold">Visão lateral</span>
                           </div>
                         </div>
                       </div>
