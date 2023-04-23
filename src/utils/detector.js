@@ -66,6 +66,7 @@ export class Detector {
       subject,
       this.memory
     );
+    const currentState = this.currentState;
 
     if (response?.valid) {
       this.currentState = this.states[this.currentState].nextState;
@@ -76,7 +77,7 @@ export class Detector {
     }
 
     return {
-      state: this.currentState,
+      state: currentState,
       ...response,
     };
   }

@@ -83,6 +83,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
       if (
         subjectData.dominantHandLandmarks.length &&
+        !response.valid &&
         response.state === DetectorStates.PALM_DIRECTION
       ) {
         const vector = subjectData.hand.dominantHand.palm;
@@ -126,10 +127,27 @@ function Recording({ setLoading, model, cameraSettings }) {
           coordinate.y + rotateVectorX({ x: 0, y: 100, z: 0 }, angleXY).y
         );
         ctx.stroke();
+      } else if (
+        subjectData.dominantHandLandmarks.length &&
+        !response.valid &&
+        response.state === DetectorStates.INITIAL_POSITION
+      ) {
+        const ctx = canvasRef.current.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(
+          response.dominantHandCoordinate.x,
+          response.dominantHandCoordinate.y,
+          50,
+          0,
+          2 * Math.PI,
+          false
+        );
+        ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
+        ctx.fill();
       }
 
       if (
-        response.state === DetectorStates.HAND_CONFIGURATION &&
+        response.state === DetectorStates.FINAL_HAND_CONFIGURATION &&
         response.valid
       ) {
         success();
