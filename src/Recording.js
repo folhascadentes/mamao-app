@@ -105,7 +105,7 @@ function Recording({ setLoading, model, cameraSettings }) {
   }
 
   return (
-    <div className="recording flex flex-col items-center justify-center mt-6">
+    <div className="recording flex flex-col justify-center mt-6">
       <video
         ref={videoRef}
         className="input_video hidden"
@@ -113,7 +113,7 @@ function Recording({ setLoading, model, cameraSettings }) {
         height="720"
       ></video>
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center">
           <canvas
             ref={canvasRef}
             className="output_canvas_hands"
@@ -131,7 +131,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             }}
           ></canvas>
         </div>
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
           <div>
             <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
             <span className="text-lg">
@@ -143,16 +143,43 @@ function Recording({ setLoading, model, cameraSettings }) {
               Instruções
             </h1>
             <div className="flex flex-col space-y-2">
-              {todoActions.map((step) => (
-                <div
-                  key={step.state}
-                  className="flex space-x-3 items-center text-lg"
-                >
-                  <MdOutlinePending
-                    className="text-yellow-500 font-bold"
-                    size={24}
-                  />
-                  <span>{step.description}</span>
+              {todoActions.map((step, index) => (
+                <div class="flex flex-col">
+                  <div
+                    key={step.state}
+                    className="flex space-x-3 items-center text-lg"
+                  >
+                    <MdOutlinePending
+                      className="text-yellow-500 font-bold"
+                      size={24}
+                    />
+                    <span>{step.description}</span>
+                  </div>
+                  {index === 0 &&
+                    step.state === DetectorStates.HAND_CONFIGURATION && (
+                      <div className="flex flex-col mx-8 my-4">
+                        <div>
+                          1. Configure a mão dominante conforme as imagens
+                          abaixo
+                        </div>
+                        <div class="flex space-x-6 mt-4">
+                          <div className="flex flex-col text-center space-y-4">
+                            <img
+                              className="h-60"
+                              src="/handshapes/oi_front.png"
+                            />
+                            <span>Visão frontal</span>
+                          </div>
+                          <div className="flex flex-col text-center space-y-4">
+                            <img
+                              className="h-60"
+                              src="/handshapes/oi_side.png"
+                            />
+                            <span>Visão lateral</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
               ))}
             </div>
