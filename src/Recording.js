@@ -120,6 +120,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             width="720"
             height="720"
             style={{
+              maxHeight: "720px",
               transform: "scaleX(-1)",
               zoom:
                 window.innerWidth <= 500
@@ -156,30 +157,13 @@ function Recording({ setLoading, model, cameraSettings }) {
                     <span>{step.description}</span>
                   </div>
                   {index === 0 &&
-                    step.state === DetectorStates.HAND_CONFIGURATION && (
-                      <div className="flex flex-col mx-8 my-4">
-                        <div>
-                          1. Configure a <b>mão dominante</b> conforme as imagens
-                          abaixo
-                        </div>
-                        <div className="flex space-x-6 mt-4">
-                          <div className="flex flex-col text-center space-y-4">
-                            <img
-                              className="h-60"
-                              src="/handshapes/oi_front.png"
-                            />
-                            <span className="text-sm font-bold">Visão frontal</span>
-                          </div>
-                          <div className="flex flex-col text-center space-y-4">
-                            <img
-                              className="h-60"
-                              src="/handshapes/oi_side.png"
-                            />
-                            <span className="text-sm font-bold">Visão lateral</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    (step.state === DetectorStates.HAND_CONFIGURATION ? (
+                      <HandConfigurationInstructions />
+                    ) : step.state === DetectorStates.PALM_DIRECTION ? (
+                      <PalmDirectionInstructions />
+                    ) : (
+                      ""
+                    ))}
                 </div>
               ))}
             </div>
@@ -232,3 +216,34 @@ function Recording({ setLoading, model, cameraSettings }) {
 }
 
 export default Recording;
+
+function HandConfigurationInstructions() {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Configure a <b>mão dominante</b> conforme as imagens abaixo
+      </div>
+      <div className="flex space-x-6 mt-4">
+        <div className="flex flex-col text-center space-y-4">
+          <img className="h-60" src="/handshapes/oi_front.png" />
+          <span className="text-sm font-bold">Visão frontal</span>
+        </div>
+        <div className="flex flex-col text-center space-y-4">
+          <img className="h-60" src="/handshapes/oi_side.png" />
+          <span className="text-sm font-bold">Visão lateral</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PalmDirectionInstructions() {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. A palma da <b>mão dominante</b> deve estar apontada para o lado{" "}
+        <b>esquerdo</b>
+      </div>
+    </div>
+  );
+}
