@@ -142,7 +142,7 @@ function Recording({ setLoading, model, cameraSettings }) {
           coordinate = response.dominantHandCoordinate;
         } else if (response.state === DetectorStates.MOVEMENT) {
           const ctx = canvasRef.current.getContext("2d");
-          drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 50);
+          drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
           angle += 15;
         }
       }
@@ -240,6 +240,8 @@ function Recording({ setLoading, model, cameraSettings }) {
                       <HandConfigurationInstructions />
                     ) : step.state === DetectorStates.PALM_DIRECTION ? (
                       <PalmDirectionInstructions />
+                    ) : step.state === DetectorStates.INITIAL_POSITION ? (
+                      <InitialPositionInstructions />
                     ) : step.state === DetectorStates.MOVEMENT ? (
                       <MovementInstructions />
                     ) : (
@@ -329,6 +331,16 @@ function PalmDirectionInstructions() {
   );
 }
 
+function InitialPositionInstructions() {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Posicione a <b>mão dominante</b> na região em destaque na tela
+      </div>
+    </div>
+  );
+}
+
 function MovementInstructions() {
   return (
     <div className="flex flex-col mx-8 my-4">
@@ -362,7 +374,7 @@ function drawPoint(ctx, angle, centerX, centerY, radius) {
 
   // Desenhe o ponto no canvas
   ctx.beginPath();
-  ctx.arc(pointX, pointY, 15, 0, 2 * Math.PI);
+  ctx.arc(pointX, pointY, 12, 0, 2 * Math.PI);
   ctx.fillStyle = "rgb(229, 123, 69, 0.9)";
   ctx.fill();
 }
