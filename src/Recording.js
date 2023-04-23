@@ -61,6 +61,8 @@ function Recording({ setLoading, model, cameraSettings }) {
     const hands = initalizeHandsDetector();
     const pose = initializePoseDetector();
     const subject = new Subject(canvasRef, BUFFER_SIZE, model);
+    let angle = 0;
+    let coordinate = { x: 0, y: 0 };
 
     function rotateVectorZ(vector, degrees) {
       // Convert degrees to radians
@@ -81,69 +83,68 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
 
-      if (
-        subjectData.dominantHandLandmarks.length &&
-        !response.valid &&
-        response.state === DetectorStates.PALM_DIRECTION
-      ) {
-        const vector = subjectData.hand.dominantHand.palm;
-        const angleXY = (Math.atan2(vector.y, vector.x) * 180) / Math.PI;
-        const angleXZ = (Math.atan2(vector.z, vector.x) * 180) / Math.PI;
+      if (subjectData.dominantHandLandmarks.length && !response.valid) {
+        if (response.state === DetectorStates.PALM_DIRECTION) {
+          const vector = subjectData.hand.dominantHand.palm;
+          const angleXY = (Math.atan2(vector.y, vector.x) * 180) / Math.PI;
+          const angleXZ = (Math.atan2(vector.z, vector.x) * 180) / Math.PI;
 
-        const ctx = canvasRef.current.getContext("2d");
-        const coordinate = getMiddlePoint(
-          subjectData.dominantHandLandmarks[0],
-          subjectData.dominantHandLandmarks[5],
-          subjectData.dominantHandLandmarks[17]
-        );
-        const offsetX = rotateVectorZ(
-          { x: 100, y: 0, z: 0 },
-          subjectData.body.angle
-        ).x;
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "#ed5b51";
-        ctx.beginPath();
-        ctx.moveTo(coordinate.x, coordinate.y);
-        ctx.lineTo(coordinate.x + offsetX, coordinate.y);
-        ctx.stroke();
-        ctx.moveTo(coordinate.x, coordinate.y);
-        ctx.lineTo(coordinate.x, coordinate.y - 100);
-        ctx.stroke();
-        ctx.strokeStyle = "#51ed7d";
-        ctx.beginPath();
-        ctx.moveTo(coordinate.x, coordinate.y);
-        ctx.lineTo(
-          coordinate.x -
-            rotateVectorZ(
-              { x: 100, y: 0, z: 0 },
-              angleXZ - subjectData.body.angle
-            ).x,
-          coordinate.y
-        );
-        ctx.stroke();
-        ctx.moveTo(coordinate.x, coordinate.y);
-        ctx.lineTo(
-          coordinate.x,
-          coordinate.y + rotateVectorX({ x: 0, y: 100, z: 0 }, angleXY).y
-        );
-        ctx.stroke();
-      } else if (
-        subjectData.dominantHandLandmarks.length &&
-        !response.valid &&
-        response.state === DetectorStates.INITIAL_POSITION
-      ) {
-        const ctx = canvasRef.current.getContext("2d");
-        ctx.beginPath();
-        ctx.arc(
-          response.dominantHandCoordinate.x,
-          response.dominantHandCoordinate.y,
-          50,
-          0,
-          2 * Math.PI,
-          false
-        );
-        ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
-        ctx.fill();
+          const ctx = canvasRef.current.getContext("2d");
+          const coordinate = getMiddlePoint(
+            subjectData.dominantHandLandmarks[0],
+            subjectData.dominantHandLandmarks[5],
+            subjectData.dominantHandLandmarks[17]
+          );
+          const offsetX = rotateVectorZ(
+            { x: 100, y: 0, z: 0 },
+            subjectData.body.angle
+          ).x;
+          ctx.lineWidth = 3;
+          ctx.strokeStyle = "#ed5b51";
+          ctx.beginPath();
+          ctx.moveTo(coordinate.x, coordinate.y);
+          ctx.lineTo(coordinate.x + offsetX, coordinate.y);
+          ctx.stroke();
+          ctx.moveTo(coordinate.x, coordinate.y);
+          ctx.lineTo(coordinate.x, coordinate.y - 100);
+          ctx.stroke();
+          ctx.strokeStyle = "#51ed7d";
+          ctx.beginPath();
+          ctx.moveTo(coordinate.x, coordinate.y);
+          ctx.lineTo(
+            coordinate.x -
+              rotateVectorZ(
+                { x: 100, y: 0, z: 0 },
+                angleXZ - subjectData.body.angle
+              ).x,
+            coordinate.y
+          );
+          ctx.stroke();
+          ctx.moveTo(coordinate.x, coordinate.y);
+          ctx.lineTo(
+            coordinate.x,
+            coordinate.y + rotateVectorX({ x: 0, y: 100, z: 0 }, angleXY).y
+          );
+          ctx.stroke();
+        } else if (response.state === DetectorStates.INITIAL_POSITION) {
+          const ctx = canvasRef.current.getContext("2d");
+          ctx.beginPath();
+          ctx.arc(
+            response.dominantHandCoordinate.x,
+            response.dominantHandCoordinate.y,
+            50,
+            0,
+            2 * Math.PI,
+            false
+          );
+          ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
+          ctx.fill();
+          coordinate = response.dominantHandCoordinate;
+        } else if (response.state === DetectorStates.MOVEMENT) {
+          const ctx = canvasRef.current.getContext("2d");
+          drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 50);
+          angle += 15;
+        }
       }
 
       if (
@@ -239,6 +240,8 @@ function Recording({ setLoading, model, cameraSettings }) {
                       <HandConfigurationInstructions />
                     ) : step.state === DetectorStates.PALM_DIRECTION ? (
                       <PalmDirectionInstructions />
+                    ) : step.state === DetectorStates.MOVEMENT ? (
+                      <MovementInstructions />
                     ) : (
                       ""
                     ))}
@@ -326,6 +329,17 @@ function PalmDirectionInstructions() {
   );
 }
 
+function MovementInstructions() {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Com a <b>mão dominante</b> faça um{" "}
+        <b>movimento circular em sentido horário</b>
+      </div>
+    </div>
+  );
+}
+
 function rotateVectorX(vector, degrees) {
   // Convert degrees to radians
   const radians = (degrees * Math.PI) / 180;
@@ -336,4 +350,19 @@ function rotateVectorX(vector, degrees) {
   const z = vector.y * Math.sin(radians) + vector.z * Math.cos(radians);
 
   return { x, y, z };
+}
+
+function drawPoint(ctx, angle, centerX, centerY, radius) {
+  // Converta o ângulo de graus para radianos
+  const radians = (angle * Math.PI) / 180;
+
+  // Calcule a posição do ponto usando coordenadas polares
+  const pointX = centerX + radius * Math.cos(radians);
+  const pointY = centerY + radius * Math.sin(radians);
+
+  // Desenhe o ponto no canvas
+  ctx.beginPath();
+  ctx.arc(pointX, pointY, 15, 0, 2 * Math.PI);
+  ctx.fillStyle = "rgb(229, 123, 69, 0.9)";
+  ctx.fill();
 }
