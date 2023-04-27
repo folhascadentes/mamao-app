@@ -318,7 +318,7 @@ export class Subject {
   parseSubjectHandPalm(handWorldLandmarks) {
     const vector = findPerpendicularVector(
       handWorldLandmarks[5],
-      handWorldLandmarks[13],
+      handWorldLandmarks[9],
       handWorldLandmarks[0]
     );
 
