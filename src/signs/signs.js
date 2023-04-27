@@ -7,7 +7,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "oi_cm",
-          palmDirection: { x: -1, y: [-0.5, 0.5] },
+          palmDirection: { x: -1, y: 0, z: 0 },
         },
         nonDominantHand: {},
       },
@@ -24,7 +24,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "oi_cm",
-          palmDirection: { x: -1, y: [-0.5, 0.5] },
+          palmDirection: { x: -1, y: 0, z: 0 },
         },
         nonDominantHand: {},
       },
@@ -38,7 +38,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "chin",
           handConfiguration: "s_cm",
-          palmDirection: { z: -1 },
+          palmDirection: { z: -1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -50,7 +50,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "upper_torax",
           handConfiguration: "open_hand_finger_apart_cm",
-          palmDirection: { y: 1 },
+          palmDirection: { y: 1, x: 0, z: 0 },
         },
         nonDominantHand: {},
       },
@@ -64,7 +64,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "thumbs_up_cm",
-          palmDirection: { z: -1 },
+          palmDirection: { z: -1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -76,7 +76,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax",
           handConfiguration: "thumbs_up_cm",
-          palmDirection: { z: -1 },
+          palmDirection: { z: -1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -90,7 +90,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax_left",
           handConfiguration: "middle_index_finger_cm",
-          palmDirection: { z: 1 },
+          palmDirection: { z: 1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -102,7 +102,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax_right",
           handConfiguration: "middle_index_finger_cm",
-          palmDirection: { z: 1 },
+          palmDirection: { z: 1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -116,7 +116,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax_left",
           handConfiguration: "middle_index_finger_cm",
-          palmDirection: "user",
+          palmDirection: { z: -1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
@@ -128,7 +128,7 @@ export const signs = [
         dominantHand: {
           bodyRegion: "torax_right",
           handConfiguration: "middle_index_finger_cm",
-          palmDirection: "user",
+          palmDirection: { z: -1, x: 0, y: 0 },
         },
         nonDominantHand: {},
       },
