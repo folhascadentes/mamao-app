@@ -13,7 +13,7 @@ import { MdOutlinePending, MdDone } from "react-icons/md";
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [sign, setSign] = useState(signs?.[10] ?? {});
+  const [sign, setSign] = useState(signs?.[0] ?? {});
   const [todoActions, setTodoActions] = useState([]);
   const [doneActions, setDoneActions] = useState([]);
   const imageBuffer = [];
@@ -62,8 +62,6 @@ function Recording({ setLoading, model, cameraSettings }) {
     const hands = initalizeHandsDetector();
     const pose = initializePoseDetector();
     const subject = new Subject(canvasRef, BUFFER_SIZE, model);
-    let angle = 0;
-    let coordinate = { x: 0, y: 0 };
 
     hands.onResults((results) => {
       results.poseLandmarks = poseLandmarks;
@@ -72,30 +70,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
 
-      instructor.instruct(subjectData, response.state, response.valid);
-
-      if (subjectData.dominantHandLandmarks.length && !response.valid) {
-        if (response.state === DetectorStates.INITIAL_POSITION) {
-          const ctx = canvasRef.current.getContext("2d");
-          ctx.beginPath();
-          ctx.arc(
-            response.dominantHandCoordinate.x,
-            response.dominantHandCoordinate.y,
-            50,
-            0,
-            2 * Math.PI,
-            false
-          );
-          ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
-          ctx.fill();
-          coordinate = response.dominantHandCoordinate;
-          angle = 0;
-        } else if (response.state === DetectorStates.MOVEMENT) {
-          // const ctx = canvasRef.current.getContext("2d");
-          // drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
-          // angle += 15;
-        }
-      }
+      instructor.instruct(subjectData, response);
 
       if (
         response.state === DetectorStates.FINAL_HAND_CONFIGURATION &&

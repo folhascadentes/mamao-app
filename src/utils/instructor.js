@@ -7,13 +7,18 @@ export class Instructor {
     this.sign = sign;
   }
 
-  instruct(subject, state, validState) {
-    if (subject.dominantHandLandmarks.length && !validState) {
+  instruct(subject, response) {
+    if (subject.dominantHandLandmarks.length && !response.valid) {
       if (
-        state === DetectorStates.PALM_DIRECTION ||
-        state === DetectorStates.FINAL_PALM_DIRECTION
+        response.state === DetectorStates.PALM_DIRECTION ||
+        response.state === DetectorStates.FINAL_PALM_DIRECTION
       ) {
-        this.instructPalmState(subject);
+        // - experimental -
+        // this.instructPalmState(subject);
+      } else if (response.state === DetectorStates.INITIAL_POSITION) {
+        this.instructInitialPosition(response);
+      } else if (response.state === DetectorStates.MOVEMENT) {
+        this.instructMovement();
       }
     }
   }
@@ -67,7 +72,28 @@ export class Instructor {
       coordinate.y + rotateVectorX(pivoVector, angleXY).y
     );
     this.ctx.stroke();
-    console.log(rotateVectorX(pivoVector, angleXY), angleXY);
+  }
+
+  instructInitialPosition(response) {
+    this.ctx.beginPath();
+    this.ctx.arc(
+      response.dominantHandCoordinate.x,
+      response.dominantHandCoordinate.y,
+      50,
+      0,
+      2 * Math.PI,
+      false
+    );
+    this.ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
+    this.ctx.fill();
+  }
+
+  instructMovement() {
+    //     let angle = 0;
+    //     let coordinate = { x: 0, y: 0 };
+    //     const ctx = canvasRef.current.getContext("2d");
+    //     drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
+    //     angle += 15;
   }
 }
 
