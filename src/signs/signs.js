@@ -148,7 +148,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
-          handConfiguration: "open_hand_finger_apart_cm",
+          handConfiguration: "open_hand_fingers_apart_cm",
           palmDirection: { y: 1, x: 0, z: 0 },
         },
         nonDominantHand: {},
@@ -246,7 +246,7 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ z: -1 }],
+        dominantHand: [{ z: -1 }, { z: 1 }],
         nonDominantHand: [],
       },
       endPosition: {
@@ -272,7 +272,7 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ z: 1 }],
+        dominantHand: [{ z: 1 }, { z: -1 }],
         nonDominantHand: [],
       },
       endPosition: {
@@ -403,7 +403,7 @@ export const signs = [
   },
   {
     language: "libras",
-    token: "Branco",
+    token: "Educado",
     signSteps: {
       startPosition: {
         dominantHand: {
