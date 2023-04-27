@@ -140,6 +140,7 @@ function Recording({ setLoading, model, cameraSettings }) {
           ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
           ctx.fill();
           coordinate = response.dominantHandCoordinate;
+          angle = 0;
         } else if (response.state === DetectorStates.MOVEMENT) {
           const ctx = canvasRef.current.getContext("2d");
           drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
@@ -192,25 +193,6 @@ function Recording({ setLoading, model, cameraSettings }) {
         height="720"
       ></video>
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
-        <div className="flex justify-center">
-          <canvas
-            ref={canvasRef}
-            className="output_canvas_hands"
-            width="720"
-            height="720"
-            style={{
-              maxHeight: "720px",
-              transform: "scaleX(-1)",
-              zoom:
-                window.innerWidth <= 500
-                  ? "0.50"
-                  : window.innerHeight <= 800
-                  ? "0.7"
-                  : "",
-              borderRadius: "1.4rem",
-            }}
-          ></canvas>
-        </div>
         <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
           <div>
             <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
@@ -262,6 +244,25 @@ function Recording({ setLoading, model, cameraSettings }) {
               ))}
             </div>
           </div>
+        </div>
+        <div className="flex justify-center">
+          <canvas
+            ref={canvasRef}
+            className="output_canvas_hands"
+            width="720"
+            height="720"
+            style={{
+              maxHeight: "720px",
+              transform: "scaleX(-1)",
+              zoom:
+                window.innerWidth <= 500
+                  ? "0.50"
+                  : window.innerHeight <= 800
+                  ? "0.7"
+                  : "",
+              borderRadius: "1.4rem",
+            }}
+          ></canvas>
         </div>
       </div>
     </div>
