@@ -1,4 +1,5 @@
 import { getBodyRegionCoordinates, getMiddlePoint } from "./positions";
+import { angleBetweenTwoVectors } from "./geometrics";
 
 const CIRCLE_RADIUS = 40;
 
@@ -239,15 +240,19 @@ function checkPalmDirection(
   subjectDominantHandPalmDirection,
   subjectNonDominantHandPalmDirection
 ) {
-  const dominantHandOkay = checkPalmDirectionUtil(
-    dominantHandPalmDirection ?? {},
-    subjectDominantHandPalmDirection
-  );
+  const dominantHandOkay =
+    !dominantHandPalmDirection ||
+    checkPalmDirectionUtil(
+      dominantHandPalmDirection,
+      subjectDominantHandPalmDirection
+    );
 
-  const nonDominantHandOkay = checkPalmDirectionUtil(
-    nonDominantHandPalmDirection ?? {},
-    subjectNonDominantHandPalmDirection
-  );
+  const nonDominantHandOkay =
+    !nonDominantHandPalmDirection ||
+    checkPalmDirectionUtil(
+      nonDominantHandPalmDirection,
+      subjectNonDominantHandPalmDirection
+    );
 
   if (dominantHandOkay && nonDominantHandOkay) {
     return { valid: true };
@@ -257,18 +262,8 @@ function checkPalmDirection(
 }
 
 function checkPalmDirectionUtil(palmDirection, subjectPalmDirection) {
-  return Object.keys(palmDirection).every((key) => {
-    if (Array.isArray(palmDirection[key])) {
-      const [min, max] = palmDirection[key];
-      return (
-        subjectPalmDirection[key] >= min && subjectPalmDirection[key] <= max
-      );
-    } else {
-      return (
-        Math.sign(subjectPalmDirection[key]) === Math.sign(palmDirection[key])
-      );
-    }
-  });
+  const angle = angleBetweenTwoVectors(palmDirection, subjectPalmDirection);
+  return angle < 45;
 }
 
 function checkHandPosition(

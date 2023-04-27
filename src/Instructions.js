@@ -2,9 +2,9 @@ import React from "react";
 
 function Instructions({ startRecording }) {
   return (
-    <div className="p-8 flex justify-center text-xl font-normal">
+    <div className="p-8 flex justify-center text-xl md:text-2xl font-normal">
       <div style={{ width: "720px" }}>
-        <h1 className="text-3xl text-center font-bold mb-10">Olá, Voluntário!</h1>
+        <h1 className="text-4xl text-center font-bold mb-10">Olá, Voluntário!</h1>
         <p className="text-left mb-2">
           Agradecemos por se tornar um voluntário e nos dar <b>uma mão</b>.
           Antes de começar, leia e siga as instruções abaixo:
@@ -32,7 +32,7 @@ function Instructions({ startRecording }) {
           <button
             type="button"
             onClick={startRecording}
-            className="bg-blue-500 text-white font-bold py-4 px-6 text-2xl rounded"
+            className="bg-blue-600 text-white font-bold py-4 px-6 text-2xl rounded-xl mb-10"
           >
             Começar
           </button>
