@@ -1,18 +1,19 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "@mediapipe/camera_utils";
-import { signs } from "./signs/signs";
+import { signs, handshapeImages } from "./signs/signs";
 import { Subject } from "./utils/subject";
 import { Detector, DetectorStates, DETECTOR_STATES } from "./utils/detector";
+import { Instructor } from "./utils/instructor";
 import {
   initalizeHandsDetector,
   initializePoseDetector,
 } from "./utils/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
-import { getMiddlePoint } from "./utils/positions";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const [sign, setSign] = useState(signs?.[10] ?? {});
   const [todoActions, setTodoActions] = useState([]);
   const [doneActions, setDoneActions] = useState([]);
   const imageBuffer = [];
@@ -20,7 +21,6 @@ function Recording({ setLoading, model, cameraSettings }) {
   const FPS = cameraSettings.frameRate;
   const BUFFER_SIZE = DURATION * FPS;
 
-  let sign = signs?.[0] ?? {};
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
 
@@ -46,6 +46,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
   useEffect(() => {
     const detector = new Detector(sign);
+    const instructor = new Instructor(canvasRef.current.getContext("2d"), sign);
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
@@ -64,18 +65,6 @@ function Recording({ setLoading, model, cameraSettings }) {
     let angle = 0;
     let coordinate = { x: 0, y: 0 };
 
-    function rotateVectorZ(vector, degrees) {
-      // Convert degrees to radians
-      const radians = (degrees * Math.PI) / 180;
-
-      // Apply rotation matrix for rotation around z-axis
-      const x = vector.x * Math.cos(radians) - vector.y * Math.sin(radians);
-      const y = vector.x * Math.sin(radians) + vector.y * Math.cos(radians);
-      const z = vector.z;
-
-      return { x, y, z };
-    }
-
     hands.onResults((results) => {
       results.poseLandmarks = poseLandmarks;
       results.poseWorldLandmarks = poseWorldLandmarks;
@@ -83,50 +72,10 @@ function Recording({ setLoading, model, cameraSettings }) {
       const subjectData = subject.parse(results);
       const response = detector.run(subjectData);
 
-      if (subjectData.dominantHandLandmarks.length && !response.valid) {
-        if (response.state === DetectorStates.PALM_DIRECTION) {
-          const vector = subjectData.hand.dominantHand.palm;
-          const angleXY = (Math.atan2(vector.y, vector.x) * 180) / Math.PI;
-          const angleXZ = (Math.atan2(vector.z, vector.x) * 180) / Math.PI;
+      instructor.instruct(subjectData, response.state, response.valid);
 
-          const ctx = canvasRef.current.getContext("2d");
-          const coordinate = getMiddlePoint(
-            subjectData.dominantHandLandmarks[0],
-            subjectData.dominantHandLandmarks[5],
-            subjectData.dominantHandLandmarks[17]
-          );
-          const offsetX = rotateVectorZ(
-            { x: 100, y: 0, z: 0 },
-            subjectData.body.angle
-          ).x;
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "#ed5b51";
-          ctx.beginPath();
-          ctx.moveTo(coordinate.x, coordinate.y);
-          ctx.lineTo(coordinate.x + offsetX, coordinate.y);
-          ctx.stroke();
-          ctx.moveTo(coordinate.x, coordinate.y);
-          ctx.lineTo(coordinate.x, coordinate.y - 100);
-          ctx.stroke();
-          ctx.strokeStyle = "#51ed7d";
-          ctx.beginPath();
-          ctx.moveTo(coordinate.x, coordinate.y);
-          ctx.lineTo(
-            coordinate.x -
-              rotateVectorZ(
-                { x: 100, y: 0, z: 0 },
-                angleXZ - subjectData.body.angle
-              ).x,
-            coordinate.y
-          );
-          ctx.stroke();
-          ctx.moveTo(coordinate.x, coordinate.y);
-          ctx.lineTo(
-            coordinate.x,
-            coordinate.y + rotateVectorX({ x: 0, y: 100, z: 0 }, angleXY).y
-          );
-          ctx.stroke();
-        } else if (response.state === DetectorStates.INITIAL_POSITION) {
+      if (subjectData.dominantHandLandmarks.length && !response.valid) {
+        if (response.state === DetectorStates.INITIAL_POSITION) {
           const ctx = canvasRef.current.getContext("2d");
           ctx.beginPath();
           ctx.arc(
@@ -142,9 +91,9 @@ function Recording({ setLoading, model, cameraSettings }) {
           coordinate = response.dominantHandCoordinate;
           angle = 0;
         } else if (response.state === DetectorStates.MOVEMENT) {
-          const ctx = canvasRef.current.getContext("2d");
-          drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
-          angle += 15;
+          // const ctx = canvasRef.current.getContext("2d");
+          // drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
+          // angle += 15;
         }
       }
 
@@ -219,7 +168,7 @@ function Recording({ setLoading, model, cameraSettings }) {
                   </div>
                   {index === 0 &&
                     (step.state === DetectorStates.HAND_CONFIGURATION ? (
-                      <HandConfigurationInstructions />
+                      <HandConfigurationInstructions sign={sign} />
                     ) : step.state === DetectorStates.PALM_DIRECTION ? (
                       <PalmDirectionInstructions />
                     ) : step.state === DetectorStates.INITIAL_POSITION ? (
@@ -301,22 +250,48 @@ function Recording({ setLoading, model, cameraSettings }) {
 
 export default Recording;
 
-function HandConfigurationInstructions() {
+function HandConfigurationInstructions({ sign }) {
+  const dominantHandConfiguration =
+    sign.signSteps.startPosition.dominantHand.handConfiguration;
+  const nonDominantHandConfiguration =
+    sign.signSteps.startPosition.nonDominantHand.handConfiguration;
+
   return (
-    <div className="flex flex-col mx-8 my-4">
-      <div>
-        1. Configure a <b>mão dominante</b> conforme as imagens abaixo
-      </div>
-      <div className="flex space-x-6 mt-4">
-        <div className="flex flex-col text-center space-y-4">
-          <img className="h-60" src="/handshapes/oi_front.png" />
-          <span className="text-sm font-bold">Visão frontal</span>
+    <div className="flex flex-col space-y-4 mx-8 my-4">
+      {dominantHandConfiguration && (
+        <div>
+          <div>
+            1. Configure a <b>mão direita</b> conforme as imagens abaixo
+          </div>
+          <div className="flex space-x-8 mt-4">
+            {handshapeImages[dominantHandConfiguration].map((image) => {
+              return (
+                <div className="flex flex-col text-center space-y-4">
+                  <img alt={image.alt} className="h-60" src={image.path} />
+                  <span className="text-sm font-bold">{image.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="flex flex-col text-center space-y-4">
-          <img className="h-60" src="/handshapes/oi_side.png" />
-          <span className="text-sm font-bold">Visão lateral</span>
+      )}
+      {nonDominantHandConfiguration && (
+        <div>
+          <div>
+            2. Configure a <b>mão esquerda</b> conforme as imagens abaixo
+          </div>
+          <div className="flex space-x-8 mt-4">
+            {handshapeImages[nonDominantHandConfiguration].map((image) => {
+              return (
+                <div className="flex flex-col text-center space-y-4">
+                  <img alt={image.alt} className="h-60" src={image.path} />
+                  <span className="text-sm font-bold">{image.label}</span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
@@ -327,6 +302,9 @@ function PalmDirectionInstructions() {
       <div>
         1. A palma da <b>mão dominante</b> deve estar apontada para o lado{" "}
         <b>esquerdo</b>
+      </div>
+      <div className="flex mt-4">
+        <img className="h-60" src="/handshapes/oi_palm_direction.png" />
       </div>
     </div>
   );
@@ -351,31 +329,4 @@ function MovementInstructions() {
       </div>
     </div>
   );
-}
-
-function rotateVectorX(vector, degrees) {
-  // Convert degrees to radians
-  const radians = (degrees * Math.PI) / 180;
-
-  // Apply rotation matrix for rotation around x-axis
-  const x = vector.x;
-  const y = vector.y * Math.cos(radians) - vector.z * Math.sin(radians);
-  const z = vector.y * Math.sin(radians) + vector.z * Math.cos(radians);
-
-  return { x, y, z };
-}
-
-function drawPoint(ctx, angle, centerX, centerY, radius) {
-  // Converta o ângulo de graus para radianos
-  const radians = (angle * Math.PI) / 180;
-
-  // Calcule a posição do ponto usando coordenadas polares
-  const pointX = centerX + radius * Math.cos(radians);
-  const pointY = centerY + radius * Math.sin(radians);
-
-  // Desenhe o ponto no canvas
-  ctx.beginPath();
-  ctx.arc(pointX, pointY, 12, 0, 2 * Math.PI);
-  ctx.fillStyle = "rgb(229, 123, 69, 0.9)";
-  ctx.fill();
 }
