@@ -63,6 +63,9 @@ export default function App() {
           />
         )}
       </div>
+      <div className="fixed bottom-0 left-0 mx-auto text-gray-800 w-40 text-center py-4">
+        Versão alfa-0.0
+      </div>
       <div className="fixed bottom-0 right-0 mx-auto text-blue-800 w-96 text-center py-4">
         <div className="flex space-x-4">
           <a href="#">Sobre</a> <span>•</span>
