@@ -147,7 +147,7 @@ export const signs = [
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "upper_torax",
+          bodyRegion: "torax_upper",
           handConfiguration: "open_hand_finger_apart_cm",
           palmDirection: { y: 1, x: 0, z: 0 },
         },
@@ -291,7 +291,7 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "a_cm",
           palmDirection: { x: 0, y: 0, z: -1 },
         },
@@ -303,7 +303,7 @@ export const signs = [
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "a_cm",
           palmDirection: { x: 0, y: 0, z: -1 },
         },
@@ -317,7 +317,7 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "y_cm",
           palmDirection: { x: -1, y: 0, z: 0 },
           pointingDirection: { x: 0, y: 1, z: 0 },
@@ -330,7 +330,7 @@ export const signs = [
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "y_cm",
           palmDirection: { x: -1, y: 0, z: 0 },
           pointingDirection: { x: 0, y: 1, z: 1 },
@@ -345,7 +345,7 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "y_cm",
           palmDirection: { x: -1, y: 0, z: 0 },
           pointingDirection: { x: 0, y: 1, z: 1 },
@@ -358,7 +358,7 @@ export const signs = [
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax_up",
+          bodyRegion: "torax_upper",
           handConfiguration: "y_cm",
           palmDirection: { x: -1, y: 0, z: 0 },
           pointingDirection: { x: 0, y: 1, z: 0 },

@@ -79,7 +79,7 @@ export class Instructor {
     this.ctx.arc(
       response.dominantHandCoordinate.x,
       response.dominantHandCoordinate.y,
-      50,
+      45,
       0,
       2 * Math.PI,
       false

@@ -273,7 +273,10 @@ function checkHandPosition(
   nonDominantHandLandmarks,
   poseLandmarks
 ) {
-  if (poseLandmarks) {
+  if (
+    poseLandmarks.length &&
+    (dominantHandLandmarks.length || nonDominantHandLandmarks.length)
+  ) {
     const dominantHandCoordinate = getBodyRegionCoordinates(
       dominantHandBodyRegion,
       poseLandmarks
