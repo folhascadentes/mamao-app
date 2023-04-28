@@ -130,11 +130,8 @@ function Recording({ setLoading, model, cameraSettings }) {
             </h1>
             <div className="flex flex-col space-y-2">
               {todoActions.map((step, index) => (
-                <div className="flex flex-col">
-                  <div
-                    key={step.state}
-                    className="flex space-x-3 items-center text-lg"
-                  >
+                <div key={step.state} className="flex flex-col">
+                  <div className="flex space-x-3 items-center text-lg">
                     <MdOutlinePending
                       className="text-yellow-500 font-bold"
                       size={24}
@@ -239,9 +236,12 @@ function HandConfigurationInstructions({ sign }) {
             1. Configure a <b>mão direita</b> conforme as imagens abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {handshapeImages[dominantHandConfiguration].map((image) => {
+            {handshapeImages[dominantHandConfiguration].map((image, index) => {
               return (
-                <div className="flex flex-col text-center space-y-4">
+                <div
+                  key={`handshape_do_${index}`}
+                  className="flex flex-col text-center space-y-4"
+                >
                   <img alt={image.alt} className="h-60" src={image.path} />
                   <span className="text-sm font-bold">{image.label}</span>
                 </div>
@@ -256,14 +256,19 @@ function HandConfigurationInstructions({ sign }) {
             2. Configure a <b>mão esquerda</b> conforme as imagens abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {handshapeImages[nonDominantHandConfiguration].map((image) => {
-              return (
-                <div className="flex flex-col text-center space-y-4">
-                  <img alt={image.alt} className="h-60" src={image.path} />
-                  <span className="text-sm font-bold">{image.label}</span>
-                </div>
-              );
-            })}
+            {handshapeImages[nonDominantHandConfiguration].map(
+              (image, index) => {
+                return (
+                  <div
+                    key={`handshape_ndo_${index}`}
+                    className="flex flex-col text-center space-y-4"
+                  >
+                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <span className="text-sm font-bold">{image.label}</span>
+                  </div>
+                );
+              }
+            )}
           </div>
         </div>
       )}
