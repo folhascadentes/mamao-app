@@ -17,7 +17,7 @@ export default function App() {
     (async function () {
       if (model === null) {
         const model = await tensorflow.loadLayersModel(
-          "https://www.mamao.dev.br/model/model.json"
+          "https://app.mamao.dev.br/model/model.json"
         );
         setModel(model);
       }
