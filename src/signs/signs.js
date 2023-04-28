@@ -1,4 +1,4 @@
-export const handshapeImages = {
+export const HandshapeImages = {
   a_cm: [
     {
       label: "Visão frontal",
@@ -105,9 +105,17 @@ const PalmDirection = {
   DOWN: { x: 0, y: -1, z: 0 },
 };
 
+export const PalmDirectionCategoryDescription = {
+  OPPOSITE: "esquerda",
+  FRONT: "frente",
+  BACK: "si mesmo",
+  UP: "cima",
+  DOWN: "baixo",
+};
+
 export const signs = [
   {
-    language: "libras",
+    language: "Libras",
     token: "Oi",
     signSteps: {
       startPosition: {
@@ -140,7 +148,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Bom",
     signSteps: {
       startPosition: {
@@ -168,7 +176,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Beleza",
     signSteps: {
       startPosition: {
@@ -196,7 +204,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Nome",
     signSteps: {
       startPosition: {
@@ -224,7 +232,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Meu nome",
     signSteps: {
       startPosition: {
@@ -252,7 +260,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Eu",
     signSteps: {
       startPosition: {
@@ -278,7 +286,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Você",
     signSteps: {
       startPosition: {
@@ -308,7 +316,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Agosto",
     signSteps: {
       startPosition: {
@@ -336,7 +344,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Avisar",
     signSteps: {
       startPosition: {
@@ -366,7 +374,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Me Avisar",
     signSteps: {
       startPosition: {
@@ -396,7 +404,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Branco",
     signSteps: {
       startPosition: {
@@ -434,7 +442,7 @@ export const signs = [
     },
   },
   {
-    language: "libras",
+    language: "Libras",
     token: "Educado",
     signSteps: {
       startPosition: {

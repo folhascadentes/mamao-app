@@ -1,6 +1,10 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Camera } from "@mediapipe/camera_utils";
-import { signs, handshapeImages } from "./signs/signs";
+import {
+  signs,
+  HandshapeImages,
+  PalmDirectionCategoryDescription,
+} from "./signs/signs";
 import { Subject } from "./utils/subject";
 import { Detector, DetectorStates, DETECTOR_STATES } from "./utils/detector";
 import { Instructor } from "./utils/instructor";
@@ -109,7 +113,7 @@ function Recording({ setLoading, model, cameraSettings }) {
   }
 
   return (
-    <div className="recording flex flex-col justify-center mt-6">
+    <div className="recording flex flex-col justify-center">
       <video
         ref={videoRef}
         className="input_video hidden"
@@ -120,9 +124,10 @@ function Recording({ setLoading, model, cameraSettings }) {
         <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
           <div>
             <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
-            <span className="text-lg">
-              {sign.token} - {sign.language}
-            </span>
+            <div className="text-lg">
+              Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
+              <b>{sign.language}</b> (0/20) vezes. Siga as instruções abaixo
+            </div>
           </div>
           <div>
             <h1 className="text-xl md:text-3xl font-bold text-left mb-4 md:mb-6">
@@ -142,11 +147,18 @@ function Recording({ setLoading, model, cameraSettings }) {
                     (step.state === DetectorStates.HAND_CONFIGURATION ? (
                       <HandConfigurationInstructions sign={sign} />
                     ) : step.state === DetectorStates.PALM_DIRECTION ? (
-                      <PalmDirectionInstructions />
+                      <PalmDirectionInstructions sign={sign} />
                     ) : step.state === DetectorStates.INITIAL_POSITION ? (
-                      <InitialPositionInstructions />
+                      <InitialPositionInstructions sign={sign} />
                     ) : step.state === DetectorStates.MOVEMENT ? (
-                      <MovementInstructions />
+                      <MovementInstructions sign={sign} />
+                    ) : step.state === DetectorStates.FINAL_POSITION ? (
+                      <FinalPositionInstructions sign={sign} />
+                    ) : step.state === DetectorStates.FINAL_PALM_DIRECTION ? (
+                      <FinalPalmDirectionInstructions sign={sign} />
+                    ) : step.state ===
+                      DetectorStates.FINAL_HAND_CONFIGURATION ? (
+                      <FinalHandConfigurationInstructions sign={sign} />
                     ) : (
                       ""
                     ))}
@@ -233,10 +245,11 @@ function HandConfigurationInstructions({ sign }) {
       {dominantHandConfiguration && (
         <div>
           <div>
-            1. Configure a <b>mão direita</b> conforme as imagens abaixo
+            1. Configure e mantenha a <b>mão direita</b> conforme as imagens
+            abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {handshapeImages[dominantHandConfiguration].map((image, index) => {
+            {HandshapeImages[dominantHandConfiguration].map((image, index) => {
               return (
                 <div
                   key={`handshape_do_${index}`}
@@ -253,10 +266,11 @@ function HandConfigurationInstructions({ sign }) {
       {nonDominantHandConfiguration && (
         <div>
           <div>
-            2. Configure a <b>mão esquerda</b> conforme as imagens abaixo
+            2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
+            abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {handshapeImages[nonDominantHandConfiguration].map(
+            {HandshapeImages[nonDominantHandConfiguration].map(
               (image, index) => {
                 return (
                   <div
@@ -276,37 +290,136 @@ function HandConfigurationInstructions({ sign }) {
   );
 }
 
-function PalmDirectionInstructions() {
+function PalmDirectionInstructions({ sign }) {
+  const dominantHandCategory =
+    sign.signSteps.startPosition.dominantHand.palmDirectionCategory;
+  const nonDominantHandCategory =
+    sign.signSteps.startPosition.nonDominantHand.palmDirectionCategory;
+
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. A palma da <b>mão dominante</b> deve estar apontada para o lado{" "}
-        <b>esquerdo</b>
+        1. Direcione e mantenha palma da mão <b>direita</b> deve estar apontada
+        para <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
       </div>
-      <div className="flex mt-4">
-        <img className="h-60" src="/handshapes/oi_palm_direction.png" />
+      {nonDominantHandCategory && (
+        <div>
+          2. Direcione e mantenha da mão <b>esquerda</b> deve estar apontada
+          para{" "}
+          <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function InitialPositionInstructions({ sign }) {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Posicione a <b>mão dominante</b> no círculo laranja na câmera
       </div>
     </div>
   );
 }
 
-function InitialPositionInstructions() {
-  return (
-    <div className="flex flex-col mx-8 my-4">
-      <div>
-        1. Posicione a <b>mão dominante</b> na região em destaque na tela
-      </div>
-    </div>
-  );
-}
-
-function MovementInstructions() {
+function MovementInstructions({ sign }) {
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
         1. Com a <b>mão dominante</b> faça um{" "}
         <b>movimento circular em sentido horário</b>
       </div>
+      <div>2. Acompanhe o movimento da bola laranja na câmera</div>
+    </div>
+  );
+}
+
+function FinalPositionInstructions({ sign }) {
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Posicione a <b>mão dominante</b> no círculo laranja na câmera
+      </div>
+    </div>
+  );
+}
+
+function FinalPalmDirectionInstructions({ sign }) {
+  const dominantHandCategory =
+    sign.signSteps.endPosition.dominantHand.palmDirectionCategory;
+  const nonDominantHandCategory =
+    sign.signSteps.endPosition.nonDominantHand.palmDirectionCategory;
+
+  return (
+    <div className="flex flex-col mx-8 my-4">
+      <div>
+        1. Direcione e mantenha palma da mão <b>direita</b> deve estar apontada
+        para <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
+      </div>
+      {nonDominantHandCategory && (
+        <div>
+          2. Direcione e mantenha da mão <b>esquerda</b> deve estar apontada
+          para{" "}
+          <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FinalHandConfigurationInstructions({ sign }) {
+  const dominantHandConfiguration =
+    sign.signSteps.endPosition.dominantHand.handConfiguration;
+  const nonDominantHandConfiguration =
+    sign.signSteps.endPosition.nonDominantHand.handConfiguration;
+
+  return (
+    <div className="flex flex-col space-y-4 mx-8 my-4">
+      {dominantHandConfiguration && (
+        <div>
+          <div>
+            1. Configure e mantenha a <b>mão direita</b> conforme as imagens
+            abaixo
+          </div>
+          <div className="flex space-x-8 mt-4">
+            {HandshapeImages[dominantHandConfiguration].map((image, index) => {
+              return (
+                <div
+                  key={`handshape_do_${index}`}
+                  className="flex flex-col text-center space-y-4"
+                >
+                  <img alt={image.alt} className="h-60" src={image.path} />
+                  <span className="text-sm font-bold">{image.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+      {nonDominantHandConfiguration && (
+        <div>
+          <div>
+            2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
+            abaixo
+          </div>
+          <div className="flex space-x-8 mt-4">
+            {HandshapeImages[nonDominantHandConfiguration].map(
+              (image, index) => {
+                return (
+                  <div
+                    key={`handshape_ndo_${index}`}
+                    className="flex flex-col text-center space-y-4"
+                  >
+                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <span className="text-sm font-bold">{image.label}</span>
+                  </div>
+                );
+              }
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

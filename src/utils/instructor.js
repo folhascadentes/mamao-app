@@ -5,6 +5,8 @@ export class Instructor {
   constructor(ctx, sign) {
     this.ctx = ctx;
     this.sign = sign;
+    this.angle = 0;
+    this.coordinate = { x: 0, y: 0 };
   }
 
   instruct(subject, response) {
@@ -86,14 +88,20 @@ export class Instructor {
     );
     this.ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
     this.ctx.fill();
+
+    this.coordinate = response.dominantHandCoordinate;
+    this.angle = 0;
   }
 
   instructMovement() {
-    //     let angle = 0;
-    //     let coordinate = { x: 0, y: 0 };
-    //     const ctx = canvasRef.current.getContext("2d");
-    //     drawPoint(ctx, 360 - (angle % 360), coordinate.x, coordinate.y, 75);
-    //     angle += 15;
+    drawPoint(
+      this.ctx,
+      360 - (this.angle % 360),
+      this.coordinate.x,
+      this.coordinate.y,
+      85
+    );
+    this.angle += 20;
   }
 }
 
