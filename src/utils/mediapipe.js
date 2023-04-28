@@ -11,8 +11,8 @@ export function initalizeHandsDetector() {
   hands.setOptions({
     maxNumHands: 2,
     modelComplexity: 1,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7,
   });
 
   return hands;
@@ -28,8 +28,8 @@ export function initializePoseDetector() {
   pose.setOptions({
     modelComplexity: 1,
     smoothLandmarks: false,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5,
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7,
   });
 
   return pose;
