@@ -153,7 +153,7 @@ function Recording({ setLoading, model, cameraSettings }) {
                 </div>
               ))}
             </div>
-            <div className="flex flex-col space-y-2 mt-6">
+            <div className="flex flex-col space-y-2 mt-10">
               {doneActions.map((step) => (
                 <div
                   key={step.state}

@@ -63,7 +63,7 @@ export default function App() {
           />
         )}
       </div>
-      <div className="fixed bottom-0 bg-white mx-auto w-full text-center py-4 px-6">
+      <div className="fixed bottom-0 bg-neutral-100 mx-auto w-full text-center py-4 px-6">
         <div className="flex flex-wrap">
           <div className="flex justify-center space-x-4 text-blue-800 ">
             <a href="#">Sobre</a> <span>•</span>
