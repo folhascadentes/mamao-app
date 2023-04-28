@@ -128,6 +128,7 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
+        dominantHandCategory: "CIRCULAR_MOTION",
         dominantHand: [
           { y: 1, x: 1 },
           { y: -1, x: 1 },
@@ -161,7 +162,8 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ y: -1 }],
+        dominantHandCategory: "",
+        dominantHand: [{ y: -1, z: 1 }],
         nonDominantHand: [],
       },
       endPosition: {

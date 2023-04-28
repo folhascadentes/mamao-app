@@ -6,7 +6,8 @@ export class Instructor {
     this.ctx = ctx;
     this.sign = sign;
     this.angle = 0;
-    this.coordinate = { x: 0, y: 0 };
+    this.dominantHandPosition = { x: 0, y: 0 };
+    this.nonDominantHandPosition = { x: 0, y: 0 };
   }
 
   instruct(subject, response) {
@@ -21,6 +22,8 @@ export class Instructor {
         this.instructInitialPosition(response);
       } else if (response.state === DetectorStates.MOVEMENT) {
         this.instructMovement();
+      } else if (response.state === DetectorStates.FINAL_POSITION) {
+        this.instructFinalPosition(response);
       }
     }
   }
@@ -77,31 +80,61 @@ export class Instructor {
   }
 
   instructInitialPosition(response) {
-    this.ctx.beginPath();
-    this.ctx.arc(
-      response.dominantHandCoordinate.x,
-      response.dominantHandCoordinate.y,
-      45,
-      0,
-      2 * Math.PI,
-      false
-    );
-    this.ctx.fillStyle = "rgb(229, 123, 69, 0.8)";
-    this.ctx.fill();
+    if (response.dominantHandCoordinate) {
+      drawCircle(
+        this.ctx,
+        response.dominantHandCoordinate.x,
+        response.dominantHandCoordinate.y,
+        45,
+        "rgb(229, 123, 69, 0.8)"
+      );
+    }
 
-    this.coordinate = response.dominantHandCoordinate;
+    if (response.nonDominantHandPosition) {
+      drawCircle(
+        this.ctx,
+        response.nonDominantHandCoordinate.x,
+        response.nonDominantHandCoordinate.y,
+        45,
+        "rgb(69, 104, 229, 0.8)"
+      );
+    }
+    this.dominantHandPosition = response.dominantHandCoordinate;
+    this.nonDominantHandPosition = response.nonDominantHandCoordinate;
     this.angle = 0;
   }
 
   instructMovement() {
-    drawPoint(
+    drawCirculateMotion(
       this.ctx,
       360 - (this.angle % 360),
-      this.coordinate.x,
-      this.coordinate.y,
+      this.dominantHandPosition.x,
+      this.dominantHandPosition.y,
       85
     );
     this.angle += 20;
+  }
+
+  instructFinalPosition(response) {
+    if (response.dominantHandCoordinate) {
+      drawCircle(
+        this.ctx,
+        response.dominantHandCoordinate.x,
+        response.dominantHandCoordinate.y,
+        45,
+        "rgb(229, 123, 69, 0.8)"
+      );
+    }
+
+    if (response.nonDominantHandPosition) {
+      drawCircle(
+        this.ctx,
+        response.nonDominantHandCoordinate.x,
+        response.nonDominantHandCoordinate.y,
+        45,
+        "rgb(69, 104, 229, 0.8)"
+      );
+    }
   }
 }
 
@@ -135,7 +168,14 @@ function rotateVectorX(vector, degrees) {
   return { x, y, z };
 }
 
-function drawPoint(ctx, angle, centerX, centerY, radius) {
+function drawCircle(ctx, centerX, centerY, radius, color) {
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function drawCirculateMotion(ctx, angle, centerX, centerY, radius) {
   // Converta o ângulo de graus para radianos
   const radians = (angle * Math.PI) / 180;
 

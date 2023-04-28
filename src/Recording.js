@@ -299,13 +299,12 @@ function PalmDirectionInstructions({ sign }) {
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Direcione e mantenha palma da mão <b>direita</b> deve estar apontada
-        para <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
+        1. Direcione e mantenha palma da mão <b>direita</b> apontado para{" "}
+        <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
       </div>
       {nonDominantHandCategory && (
         <div>
-          2. Direcione e mantenha da mão <b>esquerda</b> deve estar apontada
-          para{" "}
+          2. Direcione e mantenha da mão <b>esquerda</b> apontado para{" "}
           <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
         </div>
       )}
@@ -314,11 +313,18 @@ function PalmDirectionInstructions({ sign }) {
 }
 
 function InitialPositionInstructions({ sign }) {
+  const hasNonDominantHand =
+    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Posicione a <b>mão dominante</b> no círculo laranja na câmera
+        1. Posicione a <b>mão dominante</b> no <b>círculo laranja</b> na câmera
       </div>
+      {hasNonDominantHand && (
+        <div>
+          1. Posicione a <b>mão dominante</b> no <b>círculo azul</b> na câmera
+        </div>
+      )}
     </div>
   );
 }
@@ -336,11 +342,18 @@ function MovementInstructions({ sign }) {
 }
 
 function FinalPositionInstructions({ sign }) {
+  const hasNonDominantHand =
+    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Posicione a <b>mão dominante</b> no círculo laranja na câmera
+        1. Posicione a <b>mão dominante</b> no <b>círculo laranja</b> na câmera
       </div>
+      {hasNonDominantHand && (
+        <div>
+          1. Posicione a <b>mão dominante</b> no <b>círculo azul</b> na câmera
+        </div>
+      )}
     </div>
   );
 }
@@ -354,13 +367,12 @@ function FinalPalmDirectionInstructions({ sign }) {
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Direcione e mantenha palma da mão <b>direita</b> deve estar apontada
-        para <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
+        1. Direcione e mantenha palma da mão <b>direita</b> apontando para{" "}
+        <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
       </div>
       {nonDominantHandCategory && (
         <div>
-          2. Direcione e mantenha da mão <b>esquerda</b> deve estar apontada
-          para{" "}
+          2. Direcione e mantenha da mão <b>esquerda</b> apontando para{" "}
           <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
         </div>
       )}
