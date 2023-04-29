@@ -15,6 +15,7 @@ export class Subject {
     this.model = model;
     this.buffer = [];
     this.dominantHand = dominantHand;
+    this.frame = 0;
   }
 
   parse(results) {
@@ -70,6 +71,7 @@ export class Subject {
 
   initializeSujectObject() {
     return {
+      frame: this.frame,
       body: {
         angle: null, // [-] esquerda [+] direita
       },
@@ -123,6 +125,7 @@ export class Subject {
     poseWorldLandmarks
   ) {
     this.buffer.push({
+      frame: this.frame,
       poseLandmarks,
       poseWorldLandmarks,
       dominantHandLandmarks,
@@ -130,6 +133,7 @@ export class Subject {
       dominantHandWorldLandmarks,
       nonDominantHandWorldLandmarks,
     });
+    this.frame += 1;
 
     if (this.buffer.length > this.bufferSize) {
       this.buffer.shift();
@@ -330,7 +334,8 @@ export class Subject {
   }
 
   setSubjectHandMovement(subject, buffer) {
-    const [before, _, after] = buffer.slice(-3);
+    const before = buffer[buffer.length - 3];
+    const after = buffer[buffer.length - 1];
 
     if (before?.poseWorldLandmarks.length && after?.poseWorldLandmarks.length) {
       const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(

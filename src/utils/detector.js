@@ -140,6 +140,7 @@ function checkHandDistanceToPosition(handLandmarks, position) {
 const movementState = {
   onInit: (sign, memory) => {
     memory.movements = JSON.parse(JSON.stringify(sign.signSteps.movements));
+    memory.startFrame = undefined;
   },
   onRun: (sign, subject, memory) => {
     const dominantHandMoves = memory.movements.dominantHand[0];
@@ -161,10 +162,18 @@ const movementState = {
 
     if (correctDominantHandMovement) {
       memory.movements.dominantHand.shift();
+
+      if (!memory.startFrame) {
+        memory.startFrame = subject.frame - 5;
+      }
     }
 
     if (correctNonDominantHandMovement) {
       memory.movements.nonDominantHand.shift();
+
+      if (!memory.startFrame) {
+        memory.startFrame = subject.frame - 5;
+      }
     }
 
     const noMoreDominantHandMoves =
@@ -184,14 +193,20 @@ const movementState = {
 };
 
 const finalPositionState = {
-  onRun: (sign, subject) => {
-    return checkHandPosition(
+  onRun: (sign, subject, memory) => {
+    const response = checkHandPosition(
       sign.signSteps.endPosition.dominantHand.bodyRegion,
       sign.signSteps.endPosition.nonDominantHand.bodyRegion,
       subject.dominantHandLandmarks,
       subject.nonDominantHandLandmarks,
       subject.poseLandmarks ?? []
     );
+
+    if (response.valid) {
+      memory.endFrame = subject.frame;
+    }
+
+    return response;
   },
   nextState: DetectorStates.FINAL_PALM_DIRECTION,
 };
@@ -316,5 +331,9 @@ function checkHandPosition(
         nonDominantHandCoordinate,
       };
     }
+  } else {
+    return {
+      valid: false,
+    };
   }
 }
