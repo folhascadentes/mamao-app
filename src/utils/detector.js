@@ -61,6 +61,12 @@ export class Detector {
     };
   }
 
+  setSign(sign) {
+    this.sign = sign;
+    this.currentState = DetectorStates.HAND_CONFIGURATION;
+    this.memory = {};
+  }
+
   run(subject) {
     const response = this.states[this.currentState].onRun(
       this.sign,

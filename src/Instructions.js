@@ -18,7 +18,7 @@ function Instructions({ startRecording }) {
           <span className="text-orange-600 font-bold">uma mão</span>. Antes de
           começar, leia e siga as instruções abaixo:
         </p>
-        <ol className="list-decimal text-left ml-4 mt-4 mb-6">
+        <ol className="list-decimal text-left ml-4 mt-4 mb-10">
           <li className="mb-2">
             Encerre programas pesados no seu computador para melhorar o
             desempenho da plataforma. Ela utiliza inteligência artificial para
@@ -38,7 +38,7 @@ function Instructions({ startRecording }) {
           </li>
         </ol>
         <div className="text-center">
-          <div className="flex flex-wrap items-center justify-center space-x-3 mb-6">
+          <div className="flex flex-wrap items-center justify-center space-x-3 mb-10">
             <img src={letterC} title="C" alt="letra C" className="h-20" />
             <img src={letterO} title="O" alt="letra O" className="h-16" />
             <img src={letterM} title="M" alt="letra M" className="h-16" />

@@ -10,6 +10,10 @@ export class Instructor {
     this.nonDominantHandPosition = { x: 0, y: 0 };
   }
 
+  setSign(sign) {
+    this.sign = sign;
+  }
+
   instruct(subject, response) {
     if (subject.dominantHandLandmarks.length && !response.valid) {
       if (
