@@ -155,7 +155,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "chin",
-          handConfiguration: "o_cm",
+          handConfiguration: "a_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
         },

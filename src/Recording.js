@@ -131,9 +131,9 @@ function Recording({ setLoading, model, cameraSettings }) {
 
     if (signCounter === SIGN_N_TIMES) {
       setSignCounter(0);
-      setSign(signs[signIndex] ?? {});
-      detector.setSign(sign);
-      instructor.setSign(sign);
+      setSign(signs[signIndex]);
+      detector.setSign(signs[signIndex]);
+      instructor.setSign(signs[signIndex]);
       signIndex += 1;
     }
     // eslint-disable-next-line
