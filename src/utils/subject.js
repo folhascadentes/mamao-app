@@ -334,7 +334,7 @@ export class Subject {
   }
 
   setSubjectHandMovement(subject, buffer) {
-    const before = buffer[buffer.length - 3];
+    const before = buffer[buffer.length - 4];
     const after = buffer[buffer.length - 1];
 
     if (before?.poseWorldLandmarks.length && after?.poseWorldLandmarks.length) {
@@ -435,7 +435,7 @@ export class Subject {
     afterElbow,
     afterWrist
   ) {
-    const THRESHOLD = 5;
+    const THRESHOLD = 2.5;
 
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
     const beforeV2 = pointDifference(beforeElbow, beforeWrist);

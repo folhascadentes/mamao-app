@@ -237,7 +237,7 @@ const finalHandConfigurationState = {
     );
 
     if (response.valid) {
-      memory.endSignFrame = subject.frame + 3;
+      memory.endSignFrame = subject.frame;
     }
 
     return response;
