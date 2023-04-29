@@ -15,18 +15,26 @@ import {
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
-  const [sign, setSign] = useState(signs?.[0] ?? {});
-  const [todoActions, setTodoActions] = useState([]);
-  const [doneActions, setDoneActions] = useState([]);
-  const imageBuffer = [];
+  const SIGN_N_TIMES = 5;
   const DURATION = 5;
   const FPS = cameraSettings.frameRate;
   const BUFFER_SIZE = DURATION * FPS;
 
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const subjectRef = useRef(null);
+  const detectorRef = useRef(null);
+  const instructorRef = useRef(null);
+
+  const [sign, setSign] = useState(signs[0]);
+  const [signCounter, setSignCounter] = useState(0);
+  const [todoActions, setTodoActions] = useState([]);
+  const [doneActions, setDoneActions] = useState([]);
+
+  const imageBuffer = [];
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
+  let signIndex = 1;
 
   const onResultPoseCallback = (results) => {
     if (results.poseWorldLandmarks) {
@@ -48,9 +56,59 @@ function Recording({ setLoading, model, cameraSettings }) {
     }
   };
 
+  const onResultsHandsCallback = (results) => {
+    const subject = subjectRef.current;
+    const detector = detectorRef.current;
+    const instructor = instructorRef.current;
+
+    // merge pose and hands results
+    results.poseLandmarks = poseLandmarks;
+    results.poseWorldLandmarks = poseWorldLandmarks;
+
+    const subjectData = subject.parse(results);
+    const response = detector.run(subjectData);
+
+    instructor.instruct(subjectData, response);
+
+    if (
+      response.state === DetectorStates.FINAL_HAND_CONFIGURATION &&
+      response.valid
+    ) {
+      success();
+      setSignCounter((prevCounter) => prevCounter + 1);
+    } else {
+      const todo = [];
+      const done = [];
+      let isCheckingTodoActions = false;
+      DETECTOR_STATES.forEach((step) => {
+        if (response.state === step.state) {
+          isCheckingTodoActions = true;
+        }
+        if (isCheckingTodoActions) {
+          todo.push(step);
+        } else {
+          done.push(step);
+        }
+      });
+      setDoneActions(done);
+      setTodoActions(todo);
+    }
+  };
+
   useEffect(() => {
+    const subject = new Subject(canvasRef, BUFFER_SIZE, model);
     const detector = new Detector(sign);
     const instructor = new Instructor(canvasRef.current.getContext("2d"), sign);
+
+    subjectRef.current = subject;
+    detectorRef.current = detector;
+    instructorRef.current = instructor;
+
+    const hands = initalizeHandsDetector();
+    const pose = initializePoseDetector();
+
+    pose.onResults(onResultPoseCallback);
+    hands.onResults(onResultsHandsCallback);
 
     const camera = new Camera(videoRef.current, {
       onFrame: async () => {
@@ -63,54 +121,23 @@ function Recording({ setLoading, model, cameraSettings }) {
       height: 720,
     });
 
-    const hands = initalizeHandsDetector();
-    const pose = initializePoseDetector();
-    const subject = new Subject(canvasRef, BUFFER_SIZE, model);
-
-    hands.onResults((results) => {
-      results.poseLandmarks = poseLandmarks;
-      results.poseWorldLandmarks = poseWorldLandmarks;
-
-      const subjectData = subject.parse(results);
-      const response = detector.run(subjectData);
-
-      instructor.instruct(subjectData, response);
-
-      if (
-        response.state === DetectorStates.FINAL_HAND_CONFIGURATION &&
-        response.valid
-      ) {
-        success();
-      } else {
-        const todo = [];
-        const done = [];
-        let isCheckingTodoActions = false;
-        DETECTOR_STATES.forEach((step) => {
-          if (response.state === step.state) {
-            isCheckingTodoActions = true;
-          }
-          if (isCheckingTodoActions) {
-            todo.push(step);
-          } else {
-            done.push(step);
-          }
-        });
-        setDoneActions(done);
-        setTodoActions(todo);
-      }
-    });
-
-    pose.onResults(onResultPoseCallback);
-
     camera.start();
+    // eslint-disable-next-line
   }, []);
 
-  function success() {
-    canvasRef.current.classList.remove("canvas-shadow");
-    setTimeout(() => {
-      canvasRef.current.classList.add("canvas-shadow");
-    }, 0);
-  }
+  useEffect(() => {
+    const detector = detectorRef.current;
+    const instructor = instructorRef.current;
+
+    if (signCounter === SIGN_N_TIMES) {
+      setSignCounter(0);
+      setSign(signs[signIndex] ?? {});
+      detector.setSign(sign);
+      instructor.setSign(sign);
+      signIndex += 1;
+    }
+    // eslint-disable-next-line
+  }, [signCounter]);
 
   return (
     <div className="recording flex flex-col justify-center">
@@ -126,7 +153,8 @@ function Recording({ setLoading, model, cameraSettings }) {
             <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
             <div className="text-lg">
               Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
-              <b>{sign.language}</b> (0/20) vezes. Siga as instruções abaixo
+              <b>{sign.language}</b> ({signCounter}/{SIGN_N_TIMES}) vezes. Siga
+              as instruções abaixo
             </div>
           </div>
           <div>
@@ -229,6 +257,13 @@ function Recording({ setLoading, model, cameraSettings }) {
     if (imageBuffer.length > BUFFER_SIZE) {
       imageBuffer.shift();
     }
+  }
+
+  function success() {
+    canvasRef.current.classList.remove("canvas-shadow");
+    setTimeout(() => {
+      canvasRef.current.classList.add("canvas-shadow");
+    }, 0);
   }
 }
 
