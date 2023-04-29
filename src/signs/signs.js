@@ -163,7 +163,7 @@ export const signs = [
       },
       movements: {
         dominantHandCategory: "",
-        dominantHand: [{ y: -1, z: 1 }],
+        dominantHand: [{ y: -1, z: 1 }, { y: -1 }],
         nonDominantHand: [],
       },
       endPosition: {

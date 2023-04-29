@@ -36,6 +36,8 @@ function Recording({ setLoading, model, cameraSettings }) {
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
 
+  let buffer = [];
+
   const onResultPoseCallback = (results) => {
     if (results.poseWorldLandmarks) {
       poseWorldLandmarks = results.poseWorldLandmarks;
@@ -61,6 +63,8 @@ function Recording({ setLoading, model, cameraSettings }) {
     const detector = detectorRef.current;
     const instructor = instructorRef.current;
 
+    drawPointsDebug(buffer);
+
     // merge pose and hands results
     results.poseLandmarks = poseLandmarks;
     results.poseWorldLandmarks = poseWorldLandmarks;
@@ -74,8 +78,20 @@ function Recording({ setLoading, model, cameraSettings }) {
       response.state === DetectorStates.FINAL_HAND_CONFIGURATION &&
       response.valid
     ) {
-      success();
-      setSignCounter((prevCounter) => prevCounter + 1);
+      if (detector.memory.endSignFrame - detector.memory.endMovementFrame < 7) {
+        success();
+        setSignCounter((prevCounter) => prevCounter + 1);
+        const startIndex = subject.buffer.findIndex(
+          (value) => value.frame === detector.memory.startFrame
+        );
+        const endIndex = subject.buffer.findIndex(
+          (value) => value.frame === detector.memory.endSignFrame
+        );
+
+        buffer = subject.buffer.slice(startIndex, endIndex + 1);
+      } else {
+        failure();
+      }
     } else {
       const todo = [];
       const done = [];
@@ -229,6 +245,30 @@ function Recording({ setLoading, model, cameraSettings }) {
     </div>
   );
 
+  function drawPointsDebug(buffer) {
+    if (buffer.length) {
+      const ctx = canvasRef.current.getContext("2d");
+
+      const value = buffer.shift();
+
+      value.dominantHandLandmarks.forEach((landmark) => {
+        const { x, y } = landmark;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = "red";
+        ctx.fill();
+      });
+
+      value.poseLandmarks.forEach((landmark) => {
+        const { x, y } = landmark;
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = "blue";
+        ctx.fill();
+      });
+    }
+  }
+
   function renderCameraImage(image) {
     const ctx = canvasRef.current.getContext("2d", {
       willReadFrequently: true,
@@ -260,9 +300,16 @@ function Recording({ setLoading, model, cameraSettings }) {
   }
 
   function success() {
-    canvasRef.current.classList.remove("canvas-shadow");
+    canvasRef.current.classList.remove("canvas-success");
     setTimeout(() => {
-      canvasRef.current.classList.add("canvas-shadow");
+      canvasRef.current.classList.add("canvas-success");
+    }, 0);
+  }
+
+  function failure() {
+    canvasRef.current.classList.remove("canvas-failure");
+    setTimeout(() => {
+      canvasRef.current.classList.add("canvas-failure");
     }, 0);
   }
 }

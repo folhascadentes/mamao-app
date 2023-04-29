@@ -31,11 +31,11 @@ canvas {
   box-shadow: none;
 }
 
-.canvas-shadow {
-  animation: canvas-shadow-animation 0.75s 1;
+.canvas-success {
+  animation: canvas-success-animation 0.75s 1;
 }
 
-@keyframes canvas-shadow-animation {
+@keyframes canvas-success-animation {
   0% {
     box-shadow: 0 0 0 0 #2cf34a;
   }
@@ -44,5 +44,21 @@ canvas {
   }
   100% {
     box-shadow: 0 0 0 0 #2cf34a;
+  }
+}
+
+.canvas-failure {
+  animation: canvas-failure-animation 0.75s 1;
+}
+
+@keyframes canvas-failure-animation {
+  0% {
+    box-shadow: 0 0 0 0 #f35a2c;
+  }
+  50% {
+    box-shadow: 0 0 45px 0px #f35a2c;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #f35a2c;
   }
 }

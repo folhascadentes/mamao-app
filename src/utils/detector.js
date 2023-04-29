@@ -160,19 +160,25 @@ const movementState = {
       );
     });
 
-    if (correctDominantHandMovement) {
+    if (
+      correctDominantHandMovement &&
+      memory.movements.dominantHand.length > 0
+    ) {
       memory.movements.dominantHand.shift();
 
       if (!memory.startFrame) {
-        memory.startFrame = subject.frame - 5;
+        memory.startFrame = subject.frame - 3;
       }
     }
 
-    if (correctNonDominantHandMovement) {
+    if (
+      correctNonDominantHandMovement &&
+      memory.movements.nonDominantHand.length > 0
+    ) {
       memory.movements.nonDominantHand.shift();
 
       if (!memory.startFrame) {
-        memory.startFrame = subject.frame - 5;
+        memory.startFrame = subject.frame - 3;
       }
     }
 
@@ -231,7 +237,7 @@ const finalHandConfigurationState = {
     );
 
     if (response.valid) {
-      memory.endSignFrame = subject.frame;
+      memory.endSignFrame = subject.frame + 3;
     }
 
     return response;
