@@ -79,7 +79,7 @@ export class Detector {
       this.currentState = this.states[this.currentState].nextState;
 
       if (this.states[this.currentState].onInit) {
-        this.states[this.currentState].onInit(this.sign, this.memory);
+        this.states[this.currentState].onInit(this.sign, subject, this.memory);
       }
     }
 
@@ -138,7 +138,7 @@ function checkHandDistanceToPosition(handLandmarks, position) {
 }
 
 const movementState = {
-  onInit: (sign, memory) => {
+  onInit: (sign, subject, memory) => {
     memory.movements = JSON.parse(JSON.stringify(sign.signSteps.movements));
     memory.startFrame = undefined;
   },
@@ -193,20 +193,17 @@ const movementState = {
 };
 
 const finalPositionState = {
+  onInit: (sign, subject, memory) => {
+    memory.endMovementFrame = subject.frame;
+  },
   onRun: (sign, subject, memory) => {
-    const response = checkHandPosition(
+    return checkHandPosition(
       sign.signSteps.endPosition.dominantHand.bodyRegion,
       sign.signSteps.endPosition.nonDominantHand.bodyRegion,
       subject.dominantHandLandmarks,
       subject.nonDominantHandLandmarks,
       subject.poseLandmarks ?? []
     );
-
-    if (response.valid) {
-      memory.endFrame = subject.frame;
-    }
-
-    return response;
   },
   nextState: DetectorStates.FINAL_PALM_DIRECTION,
 };
@@ -225,13 +222,19 @@ const finalPalmDirectionState = {
 };
 
 const finalHandConfigurationState = {
-  onRun: (sign, subject) => {
+  onRun: (sign, subject, memory) => {
     const endPosition = sign.signSteps.endPosition;
-    return checkHandConfiguration(
+    const response = checkHandConfiguration(
       endPosition.dominantHand.handConfiguration,
       endPosition.nonDominantHand.handConfiguration,
       subject.hand.dominantHand.configuration
     );
+
+    if (response.valid) {
+      memory.endSignFrame = subject.frame;
+    }
+
+    return response;
   },
   nextState: DetectorStates.HAND_CONFIGURATION,
 };
