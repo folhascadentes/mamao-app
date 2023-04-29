@@ -25,6 +25,7 @@ function Recording({ setLoading, model, cameraSettings }) {
   const subjectRef = useRef(null);
   const detectorRef = useRef(null);
   const instructorRef = useRef(null);
+  const signIndex = useRef(1);
 
   const [sign, setSign] = useState(signs[0]);
   const [signCounter, setSignCounter] = useState(0);
@@ -34,7 +35,6 @@ function Recording({ setLoading, model, cameraSettings }) {
   const imageBuffer = [];
   let poseLandmarks = [];
   let poseWorldLandmarks = [];
-  let signIndex = 1;
 
   const onResultPoseCallback = (results) => {
     if (results.poseWorldLandmarks) {
@@ -131,10 +131,10 @@ function Recording({ setLoading, model, cameraSettings }) {
 
     if (signCounter === SIGN_N_TIMES) {
       setSignCounter(0);
-      setSign(signs[signIndex]);
-      detector.setSign(signs[signIndex]);
-      instructor.setSign(signs[signIndex]);
-      signIndex += 1;
+      setSign(signs[signIndex.current]);
+      detector.setSign(signs[signIndex.current]);
+      instructor.setSign(signs[signIndex.current]);
+      signIndex.current += 1;
     }
     // eslint-disable-next-line
   }, [signCounter]);
