@@ -208,7 +208,7 @@ export class Subject {
         dominantHandWorldLandmarks
       );
 
-      if (probability > 0.5) {
+      if (probability > 0.8) {
         subject.hand.dominantHand.configuration = handShape;
       }
     }
@@ -218,7 +218,7 @@ export class Subject {
         nonDominantHandWorldLandmarks
       );
 
-      if (probability > 0.5) {
+      if (probability > 0.8) {
         subject.hand.nonDominantHand.configuration = handShape;
       }
     }

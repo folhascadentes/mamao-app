@@ -116,10 +116,17 @@ const palmDirectionState = {
 };
 
 const initialPositionState = {
-  onRun: (sign, subject) => {
+  onInit: (sign, subject, memory) => {
+    setHandPostionsCoordinates(sign, subject, memory);
+  },
+  onRun: (sign, subject, memory) => {
+    if (!memory.dominantHandCoordinate) {
+      setHandPostionsCoordinates(sign, subject, memory);
+    }
+
     return checkHandPosition(
-      sign.signSteps.startPosition.dominantHand.bodyRegion,
-      sign.signSteps.startPosition.nonDominantHand.bodyRegion,
+      memory.dominantHandCoordinate,
+      memory.nonDominantHandCoordinate,
       subject.dominantHandLandmarks,
       subject.nonDominantHandLandmarks,
       subject.poseLandmarks ?? []
@@ -127,6 +134,46 @@ const initialPositionState = {
   },
   nextState: DetectorStates.MOVEMENT,
 };
+
+function setHandPostionsCoordinates(sign, subject, memory) {
+  if (!subject.poseLandmarks.length) {
+    return;
+  }
+
+  const startPositionDominantHandBodyRegion =
+    sign.signSteps.startPosition.dominantHand.bodyRegion;
+  const startPositionNonDominantHandBodyRegion =
+    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
+  const endPositionDominantHandBodyRegion =
+    sign.signSteps.endPosition.dominantHand.bodyRegion;
+  const endPositionNonDominantHandBodyRegion =
+    sign.signSteps.endPosition.nonDominantHand.bodyRegion;
+
+  const dominantHandCoordinate = getBodyRegionCoordinates(
+    startPositionDominantHandBodyRegion,
+    subject.poseLandmarks
+  );
+
+  const nonDominantHandCoordinate = getBodyRegionCoordinates(
+    startPositionNonDominantHandBodyRegion,
+    subject.poseLandmarks
+  );
+
+  const dominantHandEndCoordinate = getBodyRegionCoordinates(
+    endPositionDominantHandBodyRegion,
+    subject.poseLandmarks
+  );
+
+  const nonDominantHandEndCoordinate = getBodyRegionCoordinates(
+    endPositionNonDominantHandBodyRegion,
+    subject.poseLandmarks
+  );
+
+  memory.dominantHandCoordinate = dominantHandCoordinate;
+  memory.nonDominantHandCoordinate = nonDominantHandCoordinate;
+  memory.dominantHandEndCoordinate = dominantHandEndCoordinate;
+  memory.nonDominantHandEndCoordinate = nonDominantHandEndCoordinate;
+}
 
 function checkHandDistanceToPosition(handLandmarks, position) {
   const middle = getMiddlePoint(...handLandmarks);
@@ -204,8 +251,8 @@ const finalPositionState = {
   },
   onRun: (sign, subject, memory) => {
     return checkHandPosition(
-      sign.signSteps.endPosition.dominantHand.bodyRegion,
-      sign.signSteps.endPosition.nonDominantHand.bodyRegion,
+      memory.dominantHandEndCoordinate,
+      memory.nonDominantHandEndCoordinate,
       subject.dominantHandLandmarks,
       subject.nonDominantHandLandmarks,
       subject.poseLandmarks ?? []
@@ -297,8 +344,8 @@ function checkPalmDirectionUtil(palmDirection, subjectPalmDirection) {
 }
 
 function checkHandPosition(
-  dominantHandBodyRegion,
-  nonDominantHandBodyRegion,
+  dominantHandCoordinate,
+  nonDominantHandCoordinate,
   dominantHandLandmarks,
   nonDominantHandLandmarks,
   poseLandmarks
@@ -307,16 +354,6 @@ function checkHandPosition(
     poseLandmarks.length &&
     (dominantHandLandmarks.length || nonDominantHandLandmarks.length)
   ) {
-    const dominantHandCoordinate = getBodyRegionCoordinates(
-      dominantHandBodyRegion,
-      poseLandmarks
-    );
-
-    const nonDominantHandCoordinate = getBodyRegionCoordinates(
-      nonDominantHandBodyRegion,
-      poseLandmarks
-    );
-
     const dominantHandOkay =
       !dominantHandLandmarks.length ||
       checkHandDistanceToPosition(
