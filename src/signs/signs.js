@@ -121,7 +121,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 125,
           handConfiguration: "oi_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -170,7 +170,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 80,
           handConfiguration: "open_hand_fingers_apart_cm",
           palmDirection: PalmDirection.UP,
           palmDirectionCategory: "UP",
@@ -186,7 +186,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_left",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 80,
           handConfiguration: "middle_index_finger_cm",
           palmDirection: PalmDirection.FRONT,
           palmDirectionCategory: "FRONT",
@@ -200,7 +200,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax_right",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 80,
           handConfiguration: "middle_index_finger_cm",
           palmDirection: PalmDirection.FRONT,
           palmDirectionCategory: "FRONT",
@@ -216,7 +216,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_left",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 80,
           handConfiguration: "middle_index_finger_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
@@ -230,7 +230,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax_right",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 80,
           handConfiguration: "middle_index_finger_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
@@ -246,7 +246,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 100,
           handConfiguration: "index_finger_cm",
           pontingDirection: { x: 0, y: 0, z: -1 },
         },
@@ -259,7 +259,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 100,
           handConfiguration: "index_finger_cm",
           pontingDirection: { x: 0, y: 0, z: -1 },
         },
@@ -274,7 +274,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 100,
           handConfiguration: "index_finger_cm",
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
@@ -289,7 +289,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 100,
           handConfiguration: "index_finger_cm",
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
@@ -306,7 +306,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 125,
           handConfiguration: "a_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
