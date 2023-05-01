@@ -23,11 +23,22 @@ export class Instructor {
         // - experimental -
         // this.instructPalmState(subject);
       } else if (response.state === DetectorStates.INITIAL_POSITION) {
-        this.instructInitialPosition(response);
+        this.instructPosition(
+          response.memory.dominantHandCoordinate,
+          response.memory.nonDominantHandCoordinate
+        );
+        this.angle = 0;
       } else if (response.state === DetectorStates.MOVEMENT) {
+        this.instructPosition(
+          response.memory.dominantHandEndCoordinate,
+          response.memory.nonDominantHandEndCoordinate
+        );
         this.instructMovement();
       } else if (response.state === DetectorStates.FINAL_POSITION) {
-        this.instructFinalPosition(response);
+        this.instructPosition(
+          response.memory.dominantHandEndCoordinate,
+          response.memory.nonDominantHandEndCoordinate
+        );
       }
     }
   }
@@ -83,29 +94,28 @@ export class Instructor {
     this.ctx.stroke();
   }
 
-  instructInitialPosition(response) {
-    if (response.dominantHandCoordinate) {
+  instructPosition(dominantHandCoordinate, nonDominantHandCoordinate) {
+    if (dominantHandCoordinate) {
       drawCircle(
         this.ctx,
-        response.dominantHandCoordinate.x,
-        response.dominantHandCoordinate.y,
+        dominantHandCoordinate.x,
+        dominantHandCoordinate.y,
         45,
         "rgb(229, 123, 69, 0.8)"
       );
     }
 
-    if (response.nonDominantHandPosition) {
+    if (nonDominantHandCoordinate) {
       drawCircle(
         this.ctx,
-        response.nonDominantHandCoordinate.x,
-        response.nonDominantHandCoordinate.y,
+        nonDominantHandCoordinate.x,
+        nonDominantHandCoordinate.y,
         45,
         "rgb(69, 104, 229, 0.8)"
       );
     }
-    this.dominantHandPosition = response.dominantHandCoordinate;
-    this.nonDominantHandPosition = response.nonDominantHandCoordinate;
-    this.angle = 0;
+    this.dominantHandPosition = dominantHandCoordinate;
+    this.nonDominantHandPosition = nonDominantHandCoordinate;
   }
 
   instructMovement() {
@@ -117,28 +127,6 @@ export class Instructor {
       85
     );
     this.angle += 20;
-  }
-
-  instructFinalPosition(response) {
-    if (response.dominantHandCoordinate) {
-      drawCircle(
-        this.ctx,
-        response.dominantHandCoordinate.x,
-        response.dominantHandCoordinate.y,
-        45,
-        "rgb(229, 123, 69, 0.8)"
-      );
-    }
-
-    if (response.nonDominantHandPosition) {
-      drawCircle(
-        this.ctx,
-        response.nonDominantHandCoordinate.x,
-        response.nonDominantHandCoordinate.y,
-        45,
-        "rgb(69, 104, 229, 0.8)"
-      );
-    }
   }
 }
 

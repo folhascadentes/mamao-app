@@ -86,6 +86,7 @@ export class Detector {
     return {
       state: currentState,
       ...response,
+      memory: this.memory,
     };
   }
 }
