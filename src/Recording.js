@@ -80,7 +80,7 @@ function Recording({ setLoading, model, cameraSettings }) {
     ) {
       if (detector.memory.endSignFrame - detector.memory.endMovementFrame < 7) {
         success();
-        setSignCounter((prevCounter) => prevCounter + 1);
+        setSignCounter((prevCounter) => (prevCounter + 1) % signs.length);
         const startIndex = subject.buffer.findIndex(
           (value) => value.frame === detector.memory.startFrame
         );

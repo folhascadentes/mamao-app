@@ -206,8 +206,8 @@ function randomizeCoordinate(coordinate, radius) {
   if (coordinate) {
     var angle = Math.random() * 2 * Math.PI;
     var r = Math.random() * radius;
-    var x = r * Math.cos(angle) - radius / 2;
-    var y = r * Math.sin(angle) - radius / 2;
+    var x = r * Math.cos(angle);
+    var y = r * Math.sin(angle);
     return { x: coordinate.x + x, y: coordinate.y + y };
   }
 }
@@ -377,7 +377,7 @@ function checkPalmDirection(
 
 function checkPalmDirectionUtil(palmDirection, subjectPalmDirection) {
   const angle = angleBetweenTwoVectors(palmDirection, subjectPalmDirection);
-  return angle < 45;
+  return angle < 60;
 }
 
 function checkHandPosition(
