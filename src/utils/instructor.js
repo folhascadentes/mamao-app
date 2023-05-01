@@ -15,9 +15,10 @@ export class Instructor {
   }
 
   instruct(subject, response) {
-    if (subject.dominantHandLandmarks.length && !response.valid) {
+    if (!response.valid) {
       if (
-        response.state === DetectorStates.PALM_DIRECTION ||
+        (subject.dominantHandLandmarks.length &&
+          response.state === DetectorStates.PALM_DIRECTION) ||
         response.state === DetectorStates.FINAL_PALM_DIRECTION
       ) {
         // - experimental -
