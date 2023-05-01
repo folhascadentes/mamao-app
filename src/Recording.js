@@ -80,7 +80,7 @@ function Recording({ setLoading, model, cameraSettings }) {
     ) {
       if (detector.memory.endSignFrame - detector.memory.endMovementFrame < 7) {
         success();
-        setSignCounter((prevCounter) => (prevCounter + 1) % signs.length);
+        setSignCounter((prevCounter) => prevCounter + 1);
         const startIndex = subject.buffer.findIndex(
           (value) => value.frame === detector.memory.startFrame
         );
@@ -147,9 +147,9 @@ function Recording({ setLoading, model, cameraSettings }) {
 
     if (signCounter === SIGN_N_TIMES) {
       setSignCounter(0);
-      setSign(signs[signIndex.current]);
-      detector.setSign(signs[signIndex.current]);
-      instructor.setSign(signs[signIndex.current]);
+      setSign(signs[signIndex.current % signs.length]);
+      detector.setSign(signs[signIndex.current % signs.length]);
+      instructor.setSign(signs[signIndex.current % signs.length]);
       signIndex.current += 1;
     }
     // eslint-disable-next-line

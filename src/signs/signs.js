@@ -99,6 +99,7 @@ export const HandshapeImages = {
 
 const PalmDirection = {
   OPPOSITE: { x: -1, y: 0, z: 0 },
+  RIGHT: { x: 1, y: 0, z: 0 },
   FRONT: { x: 0, y: 0, z: 1 },
   BACK: { x: 0, y: 0, z: -1 },
   UP: { x: 0, y: 1, z: 0 },
@@ -107,6 +108,7 @@ const PalmDirection = {
 
 export const PalmDirectionCategoryDescription = {
   OPPOSITE: "esquerda",
+  RIGHT: "direita",
   FRONT: "frente",
   BACK: "si mesmo",
   UP: "cima",
@@ -114,42 +116,42 @@ export const PalmDirectionCategoryDescription = {
 };
 
 export const signs = [
-  // {
-  //   language: "Libras",
-  //   token: "Oi",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
-  //         bodyOffsetRadius: 100,
-  //         handConfiguration: "oi_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHandCategory: "CIRCULAR_MOTION",
-  //       dominanHandDescription: "faça um movimento circular em sentido horário",
-  //       dominantHand: [
-  //         { y: 1, x: 1 },
-  //         { y: -1, x: 1 },
-  //         { y: -1, x: -1 },
-  //         { y: 1, x: -1 },
-  //       ],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "oi_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Oi",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 100,
+          handConfiguration: "oi_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "CIRCULAR_MOTION",
+        dominanHandDescription: "faça um movimento circular em sentido horário",
+        dominantHand: [
+          { y: 1, x: 1 },
+          { y: -1, x: 1 },
+          { y: -1, x: -1 },
+          { y: 1, x: -1 },
+        ],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "oi_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
   {
     language: "Libras",
     token: "Bom",
@@ -248,37 +250,6 @@ export const signs = [
   },
   {
     language: "Libras",
-    token: "Eu",
-    signSteps: {
-      startPosition: {
-        dominantHand: {
-          bodyRegion: "torax",
-          bodyOffsetRadius: 75,
-          handConfiguration: "index_finger_cm",
-          pontingDirection: { x: 0, y: 0, z: -1 },
-        },
-        nonDominantHand: {},
-      },
-      movements: {
-        dominantHandCategory: "LINEAR_MOTION",
-        dominanHandDescription:
-          "mova em sua direção e após isso volte a posição inicial",
-        dominantHand: [{ z: -1 }, { z: 1 }],
-        nonDominantHand: [],
-      },
-      endPosition: {
-        dominantHand: {
-          bodyRegion: "torax",
-          bodyOffsetRadius: 75,
-          handConfiguration: "index_finger_cm",
-          pontingDirection: { x: 0, y: 0, z: -1 },
-        },
-        nonDominantHand: {},
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Você",
     signSteps: {
       startPosition: {
@@ -307,6 +278,39 @@ export const signs = [
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
           pontingDirection: { x: 0, y: 0, z: 1 },
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Eu",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 75,
+          handConfiguration: "index_finger_cm",
+          palmDirection: PalmDirection.RIGHT,
+          palmDirectionCategory: "RIGHT",
+          pontingDirection: { x: 0, y: 0, z: -1 },
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "mova em sua direção e após isso volte a posição inicial",
+        dominantHand: [{ z: -1 }, { z: 1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 75,
+          handConfiguration: "index_finger_cm",
+          pontingDirection: { x: 0, y: 0, z: -1 },
         },
         nonDominantHand: {},
       },
