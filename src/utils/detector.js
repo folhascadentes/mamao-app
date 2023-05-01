@@ -143,37 +143,73 @@ function setHandPostionsCoordinates(sign, subject, memory) {
 
   const startPositionDominantHandBodyRegion =
     sign.signSteps.startPosition.dominantHand.bodyRegion;
+  const startPositionDominantHandBodyOffset =
+    sign.signSteps.startPosition.dominantHand.bodyOffsetRadius;
   const startPositionNonDominantHandBodyRegion =
     sign.signSteps.startPosition.nonDominantHand.bodyRegion;
+  const startPositionNonDominantHandBodyOffset =
+    sign.signSteps.startPosition.nonDominantHand.bodyOffsetRadius;
   const endPositionDominantHandBodyRegion =
     sign.signSteps.endPosition.dominantHand.bodyRegion;
+  const endPositionDominantHandBodyOffset =
+    sign.signSteps.endPosition.dominantHand.bodyOffsetRadius;
   const endPositionNonDominantHandBodyRegion =
     sign.signSteps.endPosition.nonDominantHand.bodyRegion;
+  const endPositionNonDominantHandBodyOffset =
+    sign.signSteps.endPosition.nonDominantHand.bodyOffsetRadius;
 
-  const dominantHandCoordinate = getBodyRegionCoordinates(
-    startPositionDominantHandBodyRegion,
-    subject.poseLandmarks
+  const dominantHandCoordinate = randomizeCoordinate(
+    getBodyRegionCoordinates(
+      startPositionDominantHandBodyRegion,
+      subject.poseLandmarks
+    ),
+    startPositionDominantHandBodyOffset ?? 0
   );
 
-  const nonDominantHandCoordinate = getBodyRegionCoordinates(
-    startPositionNonDominantHandBodyRegion,
-    subject.poseLandmarks
+  const nonDominantHandCoordinate = randomizeCoordinate(
+    getBodyRegionCoordinates(
+      startPositionNonDominantHandBodyRegion,
+      subject.poseLandmarks
+    ),
+    startPositionNonDominantHandBodyOffset ?? 0
   );
 
-  const dominantHandEndCoordinate = getBodyRegionCoordinates(
-    endPositionDominantHandBodyRegion,
-    subject.poseLandmarks
-  );
+  const dominantHandEndCoordinate =
+    endPositionDominantHandBodyRegion === "same"
+      ? dominantHandCoordinate
+      : randomizeCoordinate(
+          getBodyRegionCoordinates(
+            endPositionDominantHandBodyRegion,
+            subject.poseLandmarks
+          ),
+          endPositionDominantHandBodyOffset ?? 0
+        );
 
-  const nonDominantHandEndCoordinate = getBodyRegionCoordinates(
-    endPositionNonDominantHandBodyRegion,
-    subject.poseLandmarks
-  );
+  const nonDominantHandEndCoordinate =
+    endPositionNonDominantHandBodyRegion === "same"
+      ? nonDominantHandCoordinate
+      : randomizeCoordinate(
+          getBodyRegionCoordinates(
+            endPositionNonDominantHandBodyRegion,
+            subject.poseLandmarks
+          ),
+          endPositionNonDominantHandBodyOffset ?? 0
+        );
 
   memory.dominantHandCoordinate = dominantHandCoordinate;
   memory.nonDominantHandCoordinate = nonDominantHandCoordinate;
   memory.dominantHandEndCoordinate = dominantHandEndCoordinate;
   memory.nonDominantHandEndCoordinate = nonDominantHandEndCoordinate;
+}
+
+function randomizeCoordinate(coordinate, radius) {
+  if (coordinate) {
+    var angle = Math.random() * 2 * Math.PI;
+    var r = Math.random() * radius;
+    var x = r * Math.cos(angle) - radius / 2;
+    var y = r * Math.sin(angle) - radius / 2;
+    return { x: coordinate.x + x, y: coordinate.y + y };
+  }
 }
 
 function checkHandDistanceToPosition(handLandmarks, position) {

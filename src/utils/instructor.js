@@ -33,7 +33,9 @@ export class Instructor {
           response.memory.dominantHandEndCoordinate,
           response.memory.nonDominantHandEndCoordinate
         );
-        this.instructMovement();
+        this.instructMovement(
+          this.sign.signSteps.movements.dominantHandCategory
+        );
       } else if (response.state === DetectorStates.FINAL_POSITION) {
         this.instructPosition(
           response.memory.dominantHandEndCoordinate,
@@ -103,6 +105,8 @@ export class Instructor {
         45,
         "rgb(229, 123, 69, 0.8)"
       );
+
+      this.dominantHandPosition = dominantHandCoordinate;
     }
 
     if (nonDominantHandCoordinate) {
@@ -113,20 +117,22 @@ export class Instructor {
         45,
         "rgb(69, 104, 229, 0.8)"
       );
+
+      this.nonDominantHandPosition = nonDominantHandCoordinate;
     }
-    this.dominantHandPosition = dominantHandCoordinate;
-    this.nonDominantHandPosition = nonDominantHandCoordinate;
   }
 
-  instructMovement() {
-    drawCirculateMotion(
-      this.ctx,
-      360 - (this.angle % 360),
-      this.dominantHandPosition.x,
-      this.dominantHandPosition.y,
-      85
-    );
-    this.angle += 20;
+  instructMovement(category) {
+    if (category === "CIRCULAR_MOTION") {
+      drawCirculateMotion(
+        this.ctx,
+        360 - (this.angle % 360),
+        this.dominantHandPosition.x,
+        this.dominantHandPosition.y,
+        85
+      );
+      this.angle += 20;
+    }
   }
 }
 
