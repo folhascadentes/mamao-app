@@ -114,41 +114,42 @@ export const PalmDirectionCategoryDescription = {
 };
 
 export const signs = [
-  {
-    language: "Libras",
-    token: "Oi",
-    signSteps: {
-      startPosition: {
-        dominantHand: {
-          bodyRegion: "torax",
-          bodyOffsetRadius: 100,
-          handConfiguration: "oi_cm",
-          palmDirection: PalmDirection.OPPOSITE,
-          palmDirectionCategory: "OPPOSITE",
-        },
-        nonDominantHand: {},
-      },
-      movements: {
-        dominantHandCategory: "CIRCULAR_MOTION",
-        dominantHand: [
-          { y: 1, x: 1 },
-          { y: -1, x: 1 },
-          { y: -1, x: -1 },
-          { y: 1, x: -1 },
-        ],
-        nonDominantHand: [],
-      },
-      endPosition: {
-        dominantHand: {
-          bodyRegion: "same",
-          handConfiguration: "oi_cm",
-          palmDirection: PalmDirection.OPPOSITE,
-          palmDirectionCategory: "OPPOSITE",
-        },
-        nonDominantHand: {},
-      },
-    },
-  },
+  // {
+  //   language: "Libras",
+  //   token: "Oi",
+  //   signSteps: {
+  //     startPosition: {
+  //       dominantHand: {
+  //         bodyRegion: "torax",
+  //         bodyOffsetRadius: 100,
+  //         handConfiguration: "oi_cm",
+  //         palmDirection: PalmDirection.OPPOSITE,
+  //         palmDirectionCategory: "OPPOSITE",
+  //       },
+  //       nonDominantHand: {},
+  //     },
+  //     movements: {
+  //       dominantHandCategory: "CIRCULAR_MOTION",
+  //       dominanHandDescription: "faça um movimento circular em sentido horário",
+  //       dominantHand: [
+  //         { y: 1, x: 1 },
+  //         { y: -1, x: 1 },
+  //         { y: -1, x: -1 },
+  //         { y: 1, x: -1 },
+  //       ],
+  //       nonDominantHand: [],
+  //     },
+  //     endPosition: {
+  //       dominantHand: {
+  //         bodyRegion: "same",
+  //         handConfiguration: "oi_cm",
+  //         palmDirection: PalmDirection.OPPOSITE,
+  //         palmDirectionCategory: "OPPOSITE",
+  //       },
+  //       nonDominantHand: {},
+  //     },
+  //   },
+  // },
   {
     language: "Libras",
     token: "Bom",
@@ -163,7 +164,9 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHandCategory: "",
+        dominantHandCategory: "PARABOLIC_MOTION",
+        dominanHandDescription:
+          "mova a mão até a outra bola laranja em um movimento parabólico e abrindo a mão",
         dominantHand: [{ y: -1, z: 1 }, { y: -1 }],
         nonDominantHand: [],
       },
@@ -194,7 +197,9 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ x: 1 }],
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription: "mova a mão até a outra bola laranja",
+        dominantHand: [{ x: 1 }, { x: 1 }, { x: 1 }],
         nonDominantHand: [],
       },
       endPosition: {
@@ -224,7 +229,9 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ x: 1 }],
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription: "mova a mão até a outra bola laranja",
+        dominantHand: [{ x: 1 }, { x: 1 }, { x: 1 }],
         nonDominantHand: [],
       },
       endPosition: {
@@ -253,6 +260,9 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "mova em sua direção e após isso volte a posição inicial",
         dominantHand: [{ z: -1 }, { z: 1 }],
         nonDominantHand: [],
       },
@@ -283,6 +293,9 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "mova em direção oposta ao seu corpo e após isso volte a posição inicial",
         dominantHand: [{ z: 1 }, { z: -1 }],
         nonDominantHand: [],
       },
@@ -314,6 +327,8 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
+        dominantHandCategory: "ZIG_ZAG_MOTION",
+        dominanHandDescription: "mova a mão para baixo e para cima duas vezes",
         dominantHand: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
         nonDominantHand: [],
       },

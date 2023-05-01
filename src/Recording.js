@@ -412,13 +412,18 @@ function InitialPositionInstructions({ sign }) {
 }
 
 function MovementInstructions({ sign }) {
+  const dominanHandDescription =
+    sign.signSteps.movements.dominanHandDescription;
+  const dominantHandCategory = sign.signSteps.movements.dominantHandCategory;
+
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Com a <b>mão dominante</b> faça um{" "}
-        <b>movimento circular em sentido horário</b>
+        1. Com a <b>mão dominante</b> {dominanHandDescription}
       </div>
-      <div>2. Acompanhe o movimento da bola laranja na câmera</div>
+      {dominantHandCategory === "CIRCULAR_MOTION" && (
+        <div>2. Acompanhe o movimento da bola laranja na câmera</div>
+      )}
     </div>
   );
 }
