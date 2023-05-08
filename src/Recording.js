@@ -222,7 +222,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             </div>
           </div>
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center relative">
           <canvas
             ref={canvasRef}
             className="output_canvas_hands"
@@ -240,6 +240,12 @@ function Recording({ setLoading, model, cameraSettings }) {
               borderRadius: "1.4rem",
             }}
           ></canvas>
+          <div
+            className="flex items-center justify-center text-6xl font-bold overlay"
+            style={{ color: "rgba(253, 179, 94)" }}
+          >
+            <p className="text-center uppercase">SINAL {sign.token}</p>
+          </div>
         </div>
       </div>
     </div>

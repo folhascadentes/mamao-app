@@ -62,3 +62,40 @@ canvas {
     box-shadow: 0 0 0 0 #f35a2c;
   }
 }
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 720px;
+  height: 720px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1.4rem;
+  backdrop-filter: blur(30px);
+  gap: 20px;
+  padding: 30px;
+  animation: overlay-show-hide 5s forwards;
+}
+
+@keyframes overlay-show-hide {
+  0% {
+    visibility: visible;
+    opacity: 0;
+  }
+  25% {
+    visibility: visible;
+    opacity: 1;
+  }
+  50% {
+    visibility: visible;
+    opacity: 1;
+  }
+  75% {
+    visibility: visible;
+    opacity: 1;
+  }
+  100% {
+    visibility: visible;
+    opacity: 0;
+  }
+}

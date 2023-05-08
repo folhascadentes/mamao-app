@@ -81,11 +81,11 @@ function LoadingScreen() {
   return (
     <div id="loading-screen" className="text-white px-4">
       <div className="flex flex-col space-y-8 items-center justify-center">
-        <div className="text-3xl">Configurando sistema de captura</div>
+        <div className="text-3xl font-bold">Configurando sistema de captura</div>
         {!progressData.url && <div className="spinner"></div>}
         {progressData.url && (
           <div className="flex-col space-y-4">
-            <div className="text-lg">
+            <div className="text-xl">
               Estamos carregando o sistema de inteligência artificial para
               reconhecer seus movimentos ({counter}/2)
             </div>
