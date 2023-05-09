@@ -16,6 +16,7 @@ export class Subject {
     this.buffer = [];
     this.dominantHand = dominantHand;
     this.frame = 0;
+    this.dataset = [];
   }
 
   parse(results) {
@@ -228,6 +229,9 @@ export class Subject {
     const inputData = landmarks
       .map((landmark) => [landmark.x, landmark.y, landmark.z])
       .flat();
+
+    this.dataset.push(inputData);
+    console.log(this.dataset)
     const inputTensor = tensorflow.tensor2d([inputData]);
     const prediction = this.model.predict(inputTensor);
     const predictionArray = prediction.arraySync();
