@@ -8,7 +8,7 @@ import {
   pointDifference,
 } from "./geometrics";
 
-const CAPTURE_HAND_DATA = true;
+const CAPTURE_HAND_DATA = false;
 
 export class Subject {
   constructor(canvasRef, bufferSize, model, dominantHand = "RIGHT") {
