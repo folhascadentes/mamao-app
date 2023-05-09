@@ -68,14 +68,14 @@ model.compile({
 
 console.log("Modelo MLP criado com sucesso");
 
-const indexFingerData = require("./indexFinger.js");
-const middleAndIndexFingerData = require("./middleAndIndexFinger.js");
-const oiCM = require("./oiCM.js");
-const openHand = require("./openHand.js");
-const openHandFingersApart = require("./openHandFingersApart.js");
-const shapeAFinger = require("./shapeAFinger.js");
-const shapeLFinger = require("./shapeLFinger.js");
-const shapeSFinger = require("./shapeSFinger.js");
+const indexFingerData = require("./index_finger.js");
+const middleAndIndexFingerData = require("./middle_index_finger.js");
+const oiCM = require("./oi.js");
+const openHand = require("./open_hand.js");
+const openHandFingersApart = require("./open_hand_fingers_apart.js");
+const shapeAFinger = require("./a.js");
+const shapeLFinger = require("./l.js");
+const shapeSFinger = require("./s.js");
 
 const inputData = [
   ...indexFingerData,
