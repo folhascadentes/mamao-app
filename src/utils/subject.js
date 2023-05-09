@@ -249,14 +249,22 @@ export class Subject {
     const indexOfMaxProbability = predictionArray[0].indexOf(maxProbability);
 
     const mapper = [
+      "a_cm",
+      "c_cm",
+      "d_cm",
+      "hand_cupping_cm",
+      "i_cm",
       "index_finger_cm",
+      "l_cm",
       "middle_index_finger_cm",
+      "o_cm",
       "oi_cm",
       "open_hand_cm",
       "open_hand_fingers_apart_cm",
-      "a_cm",
-      "l_cm",
+      "open_hand_thumb_apart_cm",
       "s_cm",
+      "thumb_finger_cm",
+      "y_cm",
     ];
 
     const handShape = mapper[indexOfMaxProbability];
