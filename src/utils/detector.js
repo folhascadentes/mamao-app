@@ -125,12 +125,15 @@ const initialPositionState = {
       setHandPostionsCoordinates(sign, subject, memory);
     }
 
-    return checkHandPosition(
-      memory.dominantHandCoordinate,
-      memory.nonDominantHandCoordinate,
-      subject.dominantHandLandmarks,
-      subject.nonDominantHandLandmarks,
-      subject.poseLandmarks ?? []
+    return (
+      memory.dominantHandCoordinate &&
+      checkHandPosition(
+        memory.dominantHandCoordinate,
+        memory.nonDominantHandCoordinate,
+        subject.dominantHandLandmarks,
+        subject.nonDominantHandLandmarks,
+        subject.poseLandmarks ?? []
+      )
     );
   },
   nextState: DetectorStates.MOVEMENT,
@@ -214,6 +217,7 @@ function randomizeCoordinate(coordinate, radius) {
 
 function checkHandDistanceToPosition(handLandmarks, position) {
   const middle = getMiddlePoint(...handLandmarks);
+
   const distance = Math.sqrt(
     Math.pow(middle.x - position.x, 2) + Math.pow(middle.y - position.y, 2)
   );

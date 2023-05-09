@@ -159,7 +159,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "chin",
-          handConfiguration: "a_cm",
+          handConfiguration: "o_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
         },
@@ -347,66 +347,66 @@ export const signs = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Avisar",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 0 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHand: [{ z: 1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 1 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Me Avisar",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 1 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHand: [{ z: -1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 0 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Avisar",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          handConfiguration: "y_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+          pointingDirection: { x: 0, y: 1, z: 0 },
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHand: [{ z: 1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          handConfiguration: "y_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+          pointingDirection: { x: 0, y: 1, z: 1 },
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Me Avisar",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          handConfiguration: "y_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+          pointingDirection: { x: 0, y: 1, z: 1 },
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHand: [{ z: -1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          handConfiguration: "y_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+          pointingDirection: { x: 0, y: 1, z: 0 },
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Branco",
@@ -483,32 +483,32 @@ export const signs = [
   //     },
   //   },
   // },
-  // {
-  //   language: "Libras",
-  //   token: "Beleza",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
-  //         handConfiguration: "thumbs_up_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHand: [],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
-  //         handConfiguration: "thumbs_up_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Beleza",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          handConfiguration: "thumbs_up_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHand: [],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          handConfiguration: "thumbs_up_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
 ];
