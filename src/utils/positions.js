@@ -27,6 +27,13 @@ export function getBodyRegionCoordinates(
       landmarks[12],
       landmarks[11]
     );
+  } else if (type === "torax_lower") {
+    return getMiddlePoint(
+      getMiddlePoint(landmarks[24], landmarks[23], landmarks[4], landmarks[1]),
+      landmarks[0],
+      landmarks[24],
+      landmarks[23]
+    );
   } else if (type === "torax_left") {
     return getMiddlePoint(landmarks[11], landmarks[23], landmarks[9]);
   } else if (type === "torax_right") {
