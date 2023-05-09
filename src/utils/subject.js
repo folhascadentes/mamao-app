@@ -8,6 +8,8 @@ import {
   pointDifference,
 } from "./geometrics";
 
+const CAPTURE_HAND_DATA = true;
+
 export class Subject {
   constructor(canvasRef, bufferSize, model, dominantHand = "RIGHT") {
     this.canvasRef = canvasRef;
@@ -16,6 +18,7 @@ export class Subject {
     this.buffer = [];
     this.dominantHand = dominantHand;
     this.frame = 0;
+    // Capture dataset: dev mode only
     this.dataset = [];
   }
 
@@ -177,7 +180,10 @@ export class Subject {
         );
         dominantHandWorldLandmarks =
           results.multiHandWorldLandmarks[index] ?? [];
-      } else if (hand.label === "Left") {
+      } else if (
+        (this.dominantHand === "LEFT" && hand.label === "Left") ||
+        (this.dominantHand === "RIGHT" && hand.label === "Right")
+      ) {
         nonDominantHandLandmarks = results.multiHandLandmarks[index].map(
           (landmark) => {
             return {
@@ -230,8 +236,11 @@ export class Subject {
       .map((landmark) => [landmark.x, landmark.y, landmark.z])
       .flat();
 
-    this.dataset.push(inputData);
-    console.log(this.dataset)
+    if (CAPTURE_HAND_DATA) {
+      this.dataset.push(inputData);
+      console.log(this.dataset);
+    }
+
     const inputTensor = tensorflow.tensor2d([inputData]);
     const prediction = this.model.predict(inputTensor);
     const predictionArray = prediction.arraySync();
