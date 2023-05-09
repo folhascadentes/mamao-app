@@ -1,4 +1,5 @@
 const tf = require("@tensorflow/tfjs-node-gpu");
+const fs = require("fs");
 
 // Criar um modelo MLP com 3 camadas
 function createMLPModel(inputSize, numClasses) {
@@ -52,9 +53,39 @@ function trainTestSplit(inputData, outputData, validationRatio) {
   };
 }
 
+function loadDataset(dirpath) {
+  const files = fs.readdirSync("libras");
+  const inputData = [];
+  const outputData = [];
+  const classes = files.length;
+
+  for (const [fileIndex, file] of files.entries()) {
+    const path = `${dirpath}/${file}`;
+    const data = require(path);
+    inputData.push(data);
+    outputData.push(
+      data.map(() => {
+        return Array.from(new Array(classes)).map((value, index) =>
+          index === fileIndex ? 1 : 0
+        );
+      })
+    );
+  }
+
+  return [
+    inputData.flat(),
+    outputData.flat(),
+    files.map((file) => file.split(".")[0] + "_cm"),
+  ];
+}
+
+const [inputData, outputData, classes] = loadDataset(`${__dirname}/libras`);
+
+console.log(classes)
+
 // Definir constantes
-const inputSize = 63;
-const numClasses = 8;
+const inputSize = inputData[0].length;
+const numClasses = outputData[0].length;
 
 // Criar o modelo MLP
 const model = createMLPModel(inputSize, numClasses);
@@ -68,87 +99,8 @@ model.compile({
 
 console.log("Modelo MLP criado com sucesso");
 
-const indexFingerData = require("./index_finger.js");
-const middleAndIndexFingerData = require("./middle_index_finger.js");
-const oiCM = require("./oi.js");
-const openHand = require("./open_hand.js");
-const openHandFingersApart = require("./open_hand_fingers_apart.js");
-const shapeAFinger = require("./a.js");
-const shapeLFinger = require("./l.js");
-const shapeSFinger = require("./s.js");
-const thumbFinger = require("./thumb_finger.js");
-const openHandThumbApart = require("./open_hand_thumb_apart.js");
-const handCupping = require("./hand_cupping.js");
-const shapeCFinger = require("./c.js");
-const shapeDFinger = require("./d.js");
-const shapeIFinger = require("./i.js");
-const shapeOFinger = require("./o.js");
-const shapeYFinger = require("./y.js");
-
-const inputData = [
-  ...indexFingerData,
-  ...middleAndIndexFingerData,
-  ...oiCM,
-  ...openHand,
-  ...openHandFingersApart,
-  ...shapeAFinger,
-  ...shapeLFinger,
-  ...shapeSFinger,
-  ...thumbFinger,
-  ...openHandThumbApart,
-  ...handCupping,
-  ...shapeCFinger,
-  ...shapeDFinger,
-  ...shapeIFinger,
-  ...shapeOFinger,
-  ...shapeYFinger,
-];
-
-const outputData = [
-  ...indexFingerData.map(() => [
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  ]),
-  ...middleAndIndexFingerData.map(() => [
-    0,
-    1,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    ,
-    0,
-    0,
-    0,
-  ]),
-  ...oiCM.map(() => [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...openHand.map(() => [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...openHandFingersApart.map(() => [
-    0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-  ]),
-  ...shapeAFinger.map(() => [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...shapeLFinger.map(() => [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...shapeSFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...thumbFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
-  ...openHandThumbApart.map(() => [
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-  ]),
-  ...handCupping.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]),
-  ...shapeCFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]),
-  ...shapeDFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]),
-  ...shapeIFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]),
-  ...shapeOFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]),
-  ...shapeYFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
-];
-
 const { inputTrain, outputTrain, inputValidation, outputValidation } =
-  trainTestSplit(inputData, outputData, 0.5);
+  trainTestSplit(inputData, outputData, 0.1);
 
 const inputTrainTensor = tf.tensor2d(inputTrain);
 const outputTrainTensor = tf.tensor2d(outputTrain);
