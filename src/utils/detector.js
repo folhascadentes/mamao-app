@@ -216,6 +216,10 @@ function randomizeCoordinate(coordinate, radius) {
 }
 
 function checkHandDistanceToPosition(handLandmarks, position) {
+  if (!position) {
+    return false;
+  }
+
   const middle = getMiddlePoint(...handLandmarks);
 
   const distance = Math.sqrt(
