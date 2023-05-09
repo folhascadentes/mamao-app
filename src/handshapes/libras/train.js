@@ -79,6 +79,7 @@ const shapeSFinger = require("./s.js");
 const thumbFinger = require("./thumb_finger.js");
 const openHandThumbApart = require("./open_hand_thumb_apart.js");
 const handCupping = require("./hand_cupping.js");
+const shapeCFinger = require("./c.js");
 
 const inputData = [
   ...indexFingerData,
@@ -92,20 +93,22 @@ const inputData = [
   ...thumbFinger,
   ...openHandThumbApart,
   ...handCupping,
+  ...shapeCFinger,
 ];
 
 const outputData = [
-  ...indexFingerData.map(() => [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...middleAndIndexFingerData.map(() => [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...oiCM.map(() => [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]),
-  ...openHand.map(() => [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
-  ...openHandFingersApart.map(() => [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]),
-  ...shapeAFinger.map(() => [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]),
-  ...shapeLFinger.map(() => [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]),
-  ...shapeSFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]),
-  ...thumbFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]),
-  ...openHandThumbApart.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]),
-  ...handCupping.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
+  ...indexFingerData.map(() => [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+  ...middleAndIndexFingerData.map(() => [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+  ...oiCM.map(() => [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+  ...openHand.map(() => [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0]),
+  ...openHandFingersApart.map(() => [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]),
+  ...shapeAFinger.map(() => [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]),
+  ...shapeLFinger.map(() => [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]),
+  ...shapeSFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0]),
+  ...thumbFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0]),
+  ...openHandThumbApart.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]),
+  ...handCupping.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]),
+  ...shapeCFinger.map(() => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]),
 ];
 
 const { inputTrain, outputTrain, inputValidation, outputValidation } =
