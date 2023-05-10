@@ -97,7 +97,8 @@ const handConfigurationState = {
     return checkHandConfiguration(
       startPosition.dominantHand.handConfiguration,
       startPosition.nonDominantHand.handConfiguration,
-      subject.hand.dominantHand.configuration
+      subject.hand.dominantHand.configuration,
+      subject.hand.nonDominantHand.configuration
     );
   },
   nextState: DetectorStates.PALM_DIRECTION,
@@ -325,7 +326,8 @@ const finalHandConfigurationState = {
     const response = checkHandConfiguration(
       endPosition.dominantHand.handConfiguration,
       endPosition.nonDominantHand.handConfiguration,
-      subject.hand.dominantHand.configuration
+      subject.hand.dominantHand.configuration,
+      subject.hand.nonDominantHand.configuration
     );
 
     if (response.valid) {
@@ -340,14 +342,15 @@ const finalHandConfigurationState = {
 function checkHandConfiguration(
   dominantHandConfiguration,
   nonDominantHandConfiguration,
-  detectedHandConfiguration
+  detectedDominantHandConfiguration,
+  detectedNonDominantHandConfiguration
 ) {
   const dominantHandOkay =
     !dominantHandConfiguration ||
-    detectedHandConfiguration === dominantHandConfiguration;
+    detectedDominantHandConfiguration === dominantHandConfiguration;
   const nonDominantHandOkay =
     !nonDominantHandConfiguration ||
-    detectedHandConfiguration === nonDominantHandConfiguration;
+    detectedNonDominantHandConfiguration === nonDominantHandConfiguration;
 
   if (dominantHandOkay && nonDominantHandOkay) {
     return { valid: true };
