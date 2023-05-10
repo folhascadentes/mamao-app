@@ -15,6 +15,7 @@ import {
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
+  const debuger = !!localStorage.getItem("debug");
   const SIGN_N_TIMES = 5;
   const DURATION = 5;
   const FPS = cameraSettings.frameRate;
@@ -63,14 +64,22 @@ function Recording({ setLoading, model, cameraSettings }) {
     const detector = detectorRef.current;
     const instructor = instructorRef.current;
 
-    drawPointsDebug(buffer);
-
     // merge pose and hands results
     results.poseLandmarks = poseLandmarks;
     results.poseWorldLandmarks = poseWorldLandmarks;
 
     const subjectData = subject.parse(results);
     const response = detector.run(subjectData);
+
+    if (debuger) {
+      drawPointsDebug(buffer);
+
+      if (subjectData.dominantHandLandmarks.length) {
+        const ctx = canvasRef.current.getContext("2d");
+        const landmarks = subjectData.dominantHandLandmarks;
+        drawHand(ctx, landmarks);
+      }
+    }
 
     instructor.instruct(subjectData, response);
 
@@ -257,21 +266,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
       const value = buffer.shift();
 
-      value.dominantHandLandmarks.forEach((landmark) => {
-        const { x, y } = landmark;
-        ctx.beginPath();
-        ctx.arc(x, y, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = "red";
-        ctx.fill();
-      });
-
-      value.poseLandmarks.forEach((landmark) => {
-        const { x, y } = landmark;
-        ctx.beginPath();
-        ctx.arc(x, y, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = "blue";
-        ctx.fill();
-      });
+      drawHand(ctx, value.dominantHandLandmarks);
     }
   }
 
@@ -527,4 +522,64 @@ function FinalHandConfigurationInstructions({ sign }) {
       )}
     </div>
   );
+}
+
+function drawHand(ctx, landmarks) {
+  drawHandPoints(ctx, landmarks);
+  drawHandConnectors(ctx, landmarks);
+}
+
+function drawHandPoints(ctx, landmarks) {
+  landmarks.forEach((landmark) => {
+    const { x, y } = landmark;
+    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 8);
+    gradient.addColorStop(0, "white"); // Starting color
+    gradient.addColorStop(1, "blue"); // Ending color
+    ctx.beginPath();
+    ctx.arc(x, y, 6, 0, 2 * Math.PI);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  });
+}
+
+function drawHandConnectors(ctx, landmarks) {
+  stroke(ctx, landmarks[1], landmarks[2]);
+  stroke(ctx, landmarks[2], landmarks[3]);
+  stroke(ctx, landmarks[3], landmarks[4]);
+
+  stroke(ctx, landmarks[5], landmarks[6]);
+  stroke(ctx, landmarks[6], landmarks[7]);
+  stroke(ctx, landmarks[7], landmarks[8]);
+
+  stroke(ctx, landmarks[9], landmarks[10]);
+  stroke(ctx, landmarks[10], landmarks[11]);
+  stroke(ctx, landmarks[11], landmarks[12]);
+
+  stroke(ctx, landmarks[13], landmarks[14]);
+  stroke(ctx, landmarks[14], landmarks[15]);
+  stroke(ctx, landmarks[15], landmarks[16]);
+
+  stroke(ctx, landmarks[17], landmarks[18]);
+  stroke(ctx, landmarks[18], landmarks[19]);
+  stroke(ctx, landmarks[19], landmarks[20]);
+
+  stroke(ctx, landmarks[0], landmarks[1]);
+  stroke(ctx, landmarks[1], landmarks[5]);
+  stroke(ctx, landmarks[5], landmarks[9]);
+  stroke(ctx, landmarks[9], landmarks[13]);
+  stroke(ctx, landmarks[13], landmarks[17]);
+  stroke(ctx, landmarks[17], landmarks[0]);
+}
+
+function stroke(ctx, p1, p2) {
+  const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+  gradient.addColorStop(0, "blue"); // Starting color
+  gradient.addColorStop(1, "white"); // Ending color
+  ctx.strokeStyle = gradient;
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.stroke();
 }
