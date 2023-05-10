@@ -72,12 +72,28 @@ function Recording({ setLoading, model, cameraSettings }) {
     const response = detector.run(subjectData);
 
     if (debuger) {
+      const ctx = canvasRef.current.getContext("2d");
+
       drawPointsDebug(buffer);
 
       if (subjectData.dominantHandLandmarks.length) {
-        const ctx = canvasRef.current.getContext("2d");
         const landmarks = subjectData.dominantHandLandmarks;
-        drawHand(ctx, landmarks, subjectData.hand.dominantHand.palm.z > 0);
+        drawHand(
+          ctx,
+          landmarks,
+          true,
+          subjectData.hand.dominantHand.palm.z > 0
+        );
+      }
+
+      if (subjectData.nonDominantHandLandmarks.length) {
+        const landmarks = subjectData.nonDominantHandLandmarks;
+        drawHand(
+          ctx,
+          landmarks,
+          false,
+          subjectData.hand.nonDominantHand.palm.z > 0
+        );
       }
     }
 
@@ -279,7 +295,7 @@ function Recording({ setLoading, model, cameraSettings }) {
 
       const value = buffer.shift();
 
-      drawHand(ctx, value.dominantHandLandmarks);
+      drawHand(ctx, value.dominantHandLandmarks, true);
     }
   }
 
@@ -544,87 +560,78 @@ function FinalHandConfigurationInstructions({ sign }) {
   );
 }
 
-function drawHand(ctx, landmarks, palmDirection) {
-  drawHandConnectors(ctx, landmarks, palmDirection);
-  drawHandPoints(ctx, landmarks);
+function drawHand(ctx, landmarks, isDominant, palmDirection) {
+  drawHandConnectors(ctx, landmarks, isDominant, palmDirection);
 }
 
-function drawHandPoints(ctx, landmarks) {
-  landmarks.forEach((landmark) => {
-    const { x, y } = landmark;
-    const gradient = ctx.createRadialGradient(x, y, 0, x, y, 8);
-    gradient.addColorStop(0, "orange");
-    gradient.addColorStop(1, "white");
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, 2 * Math.PI);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-  });
-}
+function drawHandConnectors(ctx, landmarks, isDominant, palmDirection) {
+  const palm = [
+    landmarks[0],
+    landmarks[1],
+    landmarks[5],
+    landmarks[9],
+    landmarks[13],
+    landmarks[17],
+    landmarks[0],
+  ];
 
-function drawHandConnectors(ctx, landmarks, palmDirection) {
   if (palmDirection) {
-    polygon(ctx, [
-      landmarks[0],
-      landmarks[1],
-      landmarks[5],
-      landmarks[9],
-      landmarks[13],
-      landmarks[17],
-      landmarks[0],
-    ]);
+    drawPolygon(ctx, palm, isDominant);
   }
-  stroke(ctx, landmarks[1], landmarks[2]);
-  stroke(ctx, landmarks[2], landmarks[3]);
-  stroke(ctx, landmarks[3], landmarks[4]);
 
-  stroke(ctx, landmarks[5], landmarks[6]);
-  stroke(ctx, landmarks[6], landmarks[7]);
-  stroke(ctx, landmarks[7], landmarks[8]);
+  const strokes = [
+    [landmarks[1], landmarks[2]],
+    [landmarks[2], landmarks[3]],
+    [landmarks[3], landmarks[4]],
+    [landmarks[5], landmarks[6]],
+    [landmarks[6], landmarks[7]],
+    [landmarks[7], landmarks[8]],
+    [landmarks[9], landmarks[10]],
+    [landmarks[10], landmarks[11]],
+    [landmarks[11], landmarks[12]],
+    [landmarks[13], landmarks[14]],
+    [landmarks[14], landmarks[15]],
+    [landmarks[15], landmarks[16]],
+    [landmarks[17], landmarks[18]],
+    [landmarks[18], landmarks[19]],
+    [landmarks[19], landmarks[20]],
+  ];
 
-  stroke(ctx, landmarks[9], landmarks[10]);
-  stroke(ctx, landmarks[10], landmarks[11]);
-  stroke(ctx, landmarks[11], landmarks[12]);
+  strokes.sort((a, b) => {
+    if (a[1].z < b[1].z) {
+      return 1;
+    }
+    if (a[1].z > b[1].z) {
+      return -1;
+    }
+    return 0;
+  });
 
-  stroke(ctx, landmarks[13], landmarks[14]);
-  stroke(ctx, landmarks[14], landmarks[15]);
-  stroke(ctx, landmarks[15], landmarks[16]);
-
-  stroke(ctx, landmarks[17], landmarks[18]);
-  stroke(ctx, landmarks[18], landmarks[19]);
-  stroke(ctx, landmarks[19], landmarks[20]);
+  strokes.forEach((stroke) => {
+    drawStroke(ctx, stroke[0], stroke[1], isDominant);
+  });
 
   if (!palmDirection) {
-    polygon(ctx, [
-      landmarks[0],
-      landmarks[1],
-      landmarks[5],
-      landmarks[9],
-      landmarks[13],
-      landmarks[17],
-      landmarks[0],
-    ]);
+    drawPolygon(ctx, palm, isDominant);
   }
 }
 
-function stroke(ctx, p1, p2) {
+function drawStroke(ctx, p1, p2, isDominant) {
   const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
-  gradient.addColorStop(0, "white");
-  gradient.addColorStop(0.75, "orange");
-  gradient.addColorStop(1, "orange");
+  gradient.addColorStop(0, isDominant ? "#ffc685" : "#8985ff");
+  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
   ctx.strokeStyle = gradient;
-  ctx.lineWidth = 8;
-  ctx.lineCap = "round";
+  ctx.lineWidth = 10;
   ctx.beginPath();
   ctx.moveTo(p1.x, p1.y);
   ctx.lineTo(p2.x, p2.y);
   ctx.stroke();
 }
 
-function polygon(ctx, pts) {
+function drawPolygon(ctx, pts, isDominant) {
   const gradient = ctx.createLinearGradient(0, 0, 720, 720);
-  gradient.addColorStop(0, "orange");
-  gradient.addColorStop(1, "white");
+  gradient.addColorStop(0, isDominant ? "#ffdeb8" : "#bab8ff");
+  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
 
   ctx.beginPath();
   ctx.moveTo(pts[0].x, pts[0].y);

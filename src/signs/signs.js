@@ -154,6 +154,38 @@ export const signs = [
   },
   {
     language: "Libras",
+    token: "Bom",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "chin",
+          handConfiguration: "o_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "PARABOLIC_MOTION",
+        dominanHandDescription:
+          "mova a mão até a outra bola laranja em um movimento parabólico e abrindo a mão",
+        dominantHand: [{ y: -1, z: 1 }, { y: -1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          bodyOffsetRadius: 65,
+          handConfiguration: "open_hand_fingers_apart_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Branco",
     signSteps: {
       startPosition: {
@@ -220,38 +252,7 @@ export const signs = [
       },
     },
   },
-  {
-    language: "Libras",
-    token: "Bom",
-    signSteps: {
-      startPosition: {
-        dominantHand: {
-          bodyRegion: "chin",
-          handConfiguration: "o_cm",
-          palmDirection: PalmDirection.BACK,
-          palmDirectionCategory: "BACK",
-        },
-        nonDominantHand: {},
-      },
-      movements: {
-        dominantHandCategory: "PARABOLIC_MOTION",
-        dominanHandDescription:
-          "mova a mão até a outra bola laranja em um movimento parabólico e abrindo a mão",
-        dominantHand: [{ y: -1, z: 1 }, { y: -1 }],
-        nonDominantHand: [],
-      },
-      endPosition: {
-        dominantHand: {
-          bodyRegion: "torax_upper",
-          bodyOffsetRadius: 65,
-          handConfiguration: "open_hand_fingers_apart_cm",
-          palmDirection: PalmDirection.UP,
-          palmDirectionCategory: "UP",
-        },
-        nonDominantHand: {},
-      },
-    },
-  },
+
   {
     language: "Libras",
     token: "Nome",
