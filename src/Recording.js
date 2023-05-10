@@ -16,7 +16,7 @@ import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const debuger = !!localStorage.getItem("debug");
-  const SIGN_N_TIMES = 5;
+  const SIGN_N_TIMES = 3;
   const DURATION = 5;
   const FPS = cameraSettings.frameRate;
   const BUFFER_SIZE = DURATION * FPS;
@@ -124,6 +124,7 @@ function Recording({ setLoading, model, cameraSettings }) {
     const subject = new Subject(canvasRef, BUFFER_SIZE, model);
     const detector = new Detector(sign);
     const instructor = new Instructor(canvasRef.current.getContext("2d"), sign);
+    let loaded = false;
 
     subjectRef.current = subject;
     detectorRef.current = detector;
@@ -140,7 +141,11 @@ function Recording({ setLoading, model, cameraSettings }) {
         renderCameraImage(videoRef.current);
         await hands.send({ image: videoRef.current });
         await pose.send({ image: videoRef.current });
-        setLoading(false);
+        if (!loaded) {
+          setLoading(false);
+          changeSign();
+          loaded = true;
+        }
       },
       width: 720,
       height: 720,
@@ -155,6 +160,7 @@ function Recording({ setLoading, model, cameraSettings }) {
     const instructor = instructorRef.current;
 
     if (signCounter === SIGN_N_TIMES) {
+      changeSign();
       setSignCounter(0);
       setSign(signs[signIndex.current % signs.length]);
       detector.setSign(signs[signIndex.current % signs.length]);
@@ -250,10 +256,15 @@ function Recording({ setLoading, model, cameraSettings }) {
             }}
           ></canvas>
           <div
-            className="flex items-center justify-center text-6xl font-bold overlay"
-            style={{ color: "rgba(253, 179, 94)" }}
+            id="canvas-overlay"
+            className="flex items-center justify-center text-6xl font-bold uppercase absolute opacity-0"
+            style={{
+              color: "rgba(253, 179, 94)",
+              height: "720px",
+              width: "720px",
+            }}
           >
-            <p className="text-center uppercase">SINAL {sign.token}</p>
+            SINAL {sign.token}
           </div>
         </div>
       </div>
@@ -311,6 +322,13 @@ function Recording({ setLoading, model, cameraSettings }) {
     canvasRef.current.classList.remove("canvas-failure");
     setTimeout(() => {
       canvasRef.current.classList.add("canvas-failure");
+    }, 0);
+  }
+
+  function changeSign() {
+    document.querySelector("#canvas-overlay").classList.remove("overlay");
+    setTimeout(() => {
+      document.querySelector("#canvas-overlay").classList.add("overlay");
     }, 0);
   }
 }

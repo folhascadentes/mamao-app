@@ -118,6 +118,42 @@ export const PalmDirectionCategoryDescription = {
 export const signs = [
   {
     language: "Libras",
+    token: "Oi",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 100,
+          handConfiguration: "oi_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "CIRCULAR_MOTION",
+        dominanHandDescription: "faça um movimento circular em sentido horário",
+        dominantHand: [
+          { y: 1, x: 1 },
+          { y: -1, x: 1 },
+          { y: -1, x: -1 },
+          { y: 1, x: -1 },
+        ],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "oi_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Branco",
     signSteps: {
       startPosition: {
@@ -179,42 +215,6 @@ export const signs = [
           handConfiguration: "thumb_finger_cm",
           palmDirection: PalmDirection.BACK,
           palmDirectionCategory: "BACK",
-        },
-        nonDominantHand: {},
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Oi",
-    signSteps: {
-      startPosition: {
-        dominantHand: {
-          bodyRegion: "torax",
-          bodyOffsetRadius: 100,
-          handConfiguration: "oi_cm",
-          palmDirection: PalmDirection.OPPOSITE,
-          palmDirectionCategory: "OPPOSITE",
-        },
-        nonDominantHand: {},
-      },
-      movements: {
-        dominantHandCategory: "CIRCULAR_MOTION",
-        dominanHandDescription: "faça um movimento circular em sentido horário",
-        dominantHand: [
-          { y: 1, x: 1 },
-          { y: -1, x: 1 },
-          { y: -1, x: -1 },
-          { y: 1, x: -1 },
-        ],
-        nonDominantHand: [],
-      },
-      endPosition: {
-        dominantHand: {
-          bodyRegion: "same",
-          handConfiguration: "oi_cm",
-          palmDirection: PalmDirection.OPPOSITE,
-          palmDirectionCategory: "OPPOSITE",
         },
         nonDominantHand: {},
       },
@@ -286,7 +286,7 @@ export const signs = [
   },
   {
     language: "Libras",
-    token: "Meu nome",
+    token: "Meu-nome",
     signSteps: {
       startPosition: {
         dominantHand: {
@@ -452,7 +452,7 @@ export const signs = [
   },
   {
     language: "Libras",
-    token: "Me Avisar",
+    token: "Me-avisar",
     signSteps: {
       startPosition: {
         dominantHand: {

@@ -64,17 +64,12 @@ canvas {
 }
 
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 720px;
-  height: 720px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 1.4rem;
   backdrop-filter: blur(30px);
   gap: 20px;
   padding: 30px;
-  animation: overlay-show-hide 5s forwards;
+  animation: overlay-show-hide 2s forwards;
 }
 
 @keyframes overlay-show-hide {
