@@ -1,7 +1,7 @@
 import { getBodyRegionCoordinates, getMiddlePoint } from "./positions";
 import { angleBetweenTwoVectors } from "./geometrics";
 
-const CIRCLE_RADIUS = 40;
+export const CIRCLE_RADIUS = 40;
 
 export const DetectorStates = {
   HAND_CONFIGURATION: "HAND_CONFIGURATION",

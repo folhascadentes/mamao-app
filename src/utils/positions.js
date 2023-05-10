@@ -38,10 +38,18 @@ export function getBodyRegionCoordinates(
     return getMiddlePoint(landmarks[11], landmarks[23], landmarks[9]);
   } else if (type === "torax_right") {
     return getMiddlePoint(landmarks[12], landmarks[24], landmarks[10]);
+  } else if (type === "torax_right_lower") {
+    return getMiddlePoint(
+      getMiddlePoint(landmarks[24], landmarks[4], landmarks[1]),
+      landmarks[24]
+    );
   } else if (type === "arm_upper") {
     return rightDominantHand
-      ? getMiddlePoint(landmarks[11])
-      : getMiddlePoint(landmarks[12]);
+      ? getMiddlePoint(landmarks[13], {
+          x: landmarks[13].x,
+          y: landmarks[13].y - 200,
+        })
+      : getMiddlePoint(landmarks[14]);
   } else if (type === "arm_extended") {
     return rightDominantHand
       ? getMiddlePoint(landmarks[11], landmarks[23])

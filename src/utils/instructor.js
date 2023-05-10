@@ -1,5 +1,6 @@
 import { DetectorStates } from "./detector";
 import { getMiddlePoint } from "./positions";
+import { CIRCLE_RADIUS } from "./detector";
 
 export class Instructor {
   constructor(ctx, sign) {
@@ -103,7 +104,7 @@ export class Instructor {
         this.ctx,
         dominantHandCoordinate.x,
         dominantHandCoordinate.y,
-        45,
+        CIRCLE_RADIUS,
         "rgb(229, 123, 69, 0.8)"
       );
 
@@ -115,7 +116,7 @@ export class Instructor {
         this.ctx,
         nonDominantHandCoordinate.x,
         nonDominantHandCoordinate.y,
-        45,
+        CIRCLE_RADIUS,
         "rgb(69, 104, 229, 0.8)"
       );
 
