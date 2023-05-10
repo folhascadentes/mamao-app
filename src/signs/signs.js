@@ -79,7 +79,7 @@ export const HandshapeImages = {
       path: "/handshapes/s_side.png",
     },
   ],
-  thumbs_up_cm: [
+  thumb_finger_cm: [
     {
       label: "Visão frontal",
       path: "/handshapes/thumbs_up_front.png",
@@ -116,6 +116,74 @@ export const PalmDirectionCategoryDescription = {
 };
 
 export const signs = [
+  {
+    language: "Libras",
+    token: "Branco",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "arm_upper",
+          handConfiguration: "open_hand_fingers_apart_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+        nonDominantHand: {
+          bodyRegion: "arm_extended",
+          bodyOffsetRadius: 50,
+          handConfiguration: "s_cm",
+          palmDirection: PalmDirection.DOWN,
+          palmDirectionCategory: "DOWN",
+        },
+      },
+      movements: {
+        dominantHand: [{ z: 1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "wrist",
+          handConfiguration: "open_hand_fingers_apart_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+        nonDominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "s_cm",
+          palmDirection: PalmDirection.DOWN,
+          palmDirectionCategory: "DOWN",
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Beleza",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 125,
+          handConfiguration: "thumb_finger_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHand: [],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "thumb_finger_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
   {
     language: "Libras",
     token: "Oi",
@@ -354,6 +422,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
+          bodyOffsetRadius: 75,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -362,12 +431,16 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ z: 1 }],
+        dominantHandCategory: "PARABOLIC_MOTION",
+        dominanHandDescription:
+          "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+        dominantHand: [{ z: 1 }, { y: -1, z: 1 }],
         nonDominantHand: [],
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax_upper",
+          bodyRegion: "torax_lower",
+          bodyOffsetRadius: 75,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -383,7 +456,8 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "torax_upper",
+          bodyRegion: "torax",
+          bodyOffsetRadius: 75,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -392,12 +466,16 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHand: [{ z: -1 }],
+        dominantHandCategory: "PARABOLIC_MOTION",
+        dominanHandDescription:
+          "mova a mão até a outra bola laranja em um movimento parabólico em sua direação",
+        dominantHand: [{ y: 1, z: -1 }, { z: -1 }],
         nonDominantHand: [],
       },
       endPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
+          bodyOffsetRadius: 75,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -407,107 +485,41 @@ export const signs = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Branco",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "arm_upper",
-  //         handConfiguration: "open_hand_fingers_apart_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
-  //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "arm_extended",
-  //         handConfiguration: "s_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
-  //       },
-  //     },
-  //     movements: {
-  //       dominantHand: [{ z: 1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "wrist",
-  //         handConfiguration: "open_hand_fingers_apart_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
-  //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "arm_extended",
-  //         handConfiguration: "s_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Educado",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "arm_upper",
-  //         handConfiguration: "open_hand_fingers_apart_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
-  //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "arm_extended",
-  //         handConfiguration: "l_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
-  //       },
-  //     },
-  //     movements: {
-  //       dominantHand: [{ z: 1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "wrist",
-  //         handConfiguration: "open_hand_fingers_apart_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
-  //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "arm_extended",
-  //         handConfiguration: "l_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
-  //       },
-  //     },
-  //   },
-  // },
   {
     language: "Libras",
-    token: "Beleza",
+    token: "Educado",
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "torax",
-          handConfiguration: "thumbs_up_cm",
-          palmDirection: PalmDirection.BACK,
-          palmDirectionCategory: "BACK",
+          bodyRegion: "arm_upper",
+          handConfiguration: "open_hand_fingers_apart_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
         },
-        nonDominantHand: {},
+        nonDominantHand: {
+          bodyRegion: "arm_extended",
+          handConfiguration: "l_cm",
+          palmDirection: PalmDirection.DOWN,
+          palmDirectionCategory: "DOWN",
+        },
       },
       movements: {
-        dominantHand: [],
+        dominantHand: [{ z: 1 }],
         nonDominantHand: [],
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax",
-          handConfiguration: "thumbs_up_cm",
-          palmDirection: PalmDirection.BACK,
-          palmDirectionCategory: "BACK",
+          bodyRegion: "wrist",
+          handConfiguration: "open_hand_fingers_apart_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
         },
-        nonDominantHand: {},
+        nonDominantHand: {
+          bodyRegion: "arm_extended",
+          handConfiguration: "l_cm",
+          palmDirection: PalmDirection.DOWN,
+          palmDirectionCategory: "DOWN",
+        },
       },
     },
   },
