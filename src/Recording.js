@@ -181,11 +181,13 @@ function Recording({ setLoading, model, cameraSettings }) {
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
         <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
           <div>
-            <h1 className="text-3xl font-bold text-left mb-4">Sinal</h1>
+            <h1 className="text-3xl font-bold text-left mb-4">
+              Sinal ({signCounter} de {SIGN_N_TIMES})
+            </h1>
             <div className="text-lg">
               Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
-              <b>{sign.language}</b> ({signCounter}/{SIGN_N_TIMES}) vezes. Siga
-              as instruções abaixo
+              <b>{sign.language}</b> {SIGN_N_TIMES} vezes. Siga as instruções
+              abaixo
             </div>
           </div>
           <div>

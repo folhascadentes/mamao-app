@@ -76,18 +76,21 @@ function LoadingScreen() {
 
   useEffect(() => {
     patchXMLHttpRequest();
+  // eslint-disable-next-line
   }, []);
 
   return (
     <div id="loading-screen" className="text-white px-4">
       <div className="flex flex-col space-y-8 items-center justify-center">
-        <div className="text-3xl font-bold">Configurando sistema de captura</div>
+        <div className="text-3xl font-bold">
+          Configurando sistema de captura
+        </div>
         {!progressData.url && <div className="spinner"></div>}
         {progressData.url && (
           <div className="flex-col space-y-4">
             <div className="text-xl">
               Estamos carregando o sistema de inteligência artificial para
-              reconhecer seus movimentos ({counter}/2)
+              reconhecer seus movimentos ({counter} de 2)
             </div>
             <div className="w-100">
               <ProgressBar
