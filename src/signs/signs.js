@@ -539,7 +539,7 @@ export const signs = [
         nonDominantHand: {},
       },
       movements: {
-        dominantHandCategory: "PARABOLIC_MOTION",
+        dominantHandCategory: "LINAR_MOTION",
         dominanHandDescription:
           "mova a mão até o queixo tocando ele duas vezes",
         dominantHand: [{ z: -1 }, { z: 1 }, { z: -1 }],
@@ -549,6 +549,39 @@ export const signs = [
         dominantHand: {
           bodyRegion: "chin",
           handConfiguration: "thumb_touch_index_fingers_closed_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Futuro",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          bodyOffsetRadius: 50,
+          handConfiguration: "f_cm",
+          palmDirection: PalmDirection.OPPOSITE,
+          palmDirectionCategory: "OPPOSITE",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "PARABOLIC_MOTION",
+        dominanHandDescription:
+          "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+        dominantHand: [{ z: -1 }, { z: 1 }, { z: -1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 50,
+          handConfiguration: "f_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
         },
