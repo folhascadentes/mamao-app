@@ -660,4 +660,169 @@ export const signs = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Porque",
+  },
+  {
+    language: "Libras",
+    token: "Sim",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax_left",
+          bodyOffsetRadius: 50,
+          handConfiguration: "s_cm",
+          palmDirection: PalmDirection.FRONT,
+          palmDirectionCategory: "FRONT",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "WRIST_MOTION",
+        dominanHandDescription: "",
+        dominantHand: [],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "s_cm",
+          palmDirection: PalmDirection.FRONT,
+          palmDirectionCategory: "FRONT",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Não",
+  },
+  {
+    language: "Libras",
+    token: "Tchau",
+  },
+  {
+    language: "Libras",
+    token: "Gostar",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 100,
+          handConfiguration: "open_hand_thumb_apart_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "CIRCULAR_MOTION",
+        dominanHandDescription:
+          "faça um movimento circular com a mão colada ao seu corpo",
+        dominantHand: [
+          [
+            { y: 1, x: 1 },
+            { y: -1, x: 1 },
+            { y: -1, x: -1 },
+            { y: 1, x: -1 },
+          ],
+          [
+            { y: 1, x: -1 },
+            { y: -1, x: -1 },
+            { y: -1, x: 1 },
+            { y: 1, x: 1 },
+          ],
+        ],
+        dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "open_hand_thumb_apart_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Meu",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetRadius: 30,
+          handConfiguration: "open_hand_thumb_apart_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "mova em sua direção e após isso volte a posição inicial",
+        dominantHand: [{ z: -1 }, { z: 1 }],
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "open_hand_thumb_apart_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Ter",
+  },
+  {
+    language: "Libras",
+    token: "Dia",
+  },
+  {
+    language: "Libras",
+    token: "Rapido",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax_upper",
+          bodyOffsetRadius: 75,
+          handConfiguration: "claw_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+      movements: {
+        dominantHandCategory: "ZIG_ZAG_MOTION",
+        dominanHandDescription: "mova a mão para baixo e para cima duas vezes",
+        dominantHand: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+        dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
+        nonDominantHand: [],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "claw_cm",
+          palmDirection: PalmDirection.BACK,
+          palmDirectionCategory: "BACK",
+        },
+        nonDominantHand: {},
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Certeza",
+  },
 ];

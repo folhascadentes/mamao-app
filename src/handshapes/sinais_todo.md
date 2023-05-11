@@ -1,13 +1,6 @@
-- Nome
-- Meu
-- Me chamo
-- Oi
 - Ola
 - Tudo
 - Beleza
-- Certeza
-- Eu
-- Voce
 - Espaco // A-N-A ESPACO P-A-U-L-A
 - Aqui
 - Novo
@@ -16,7 +9,6 @@
 - Tenho
 - Mulher
 - Homem
-
 
 Olá
 Tchau
