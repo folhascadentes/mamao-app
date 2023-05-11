@@ -232,64 +232,133 @@ function checkHandDistanceToPosition(handLandmarks, position) {
 
 const movementState = {
   onInit: (sign, subject, memory) => {
-    memory.movements = JSON.parse(JSON.stringify(sign.signSteps.movements));
+    memory.dominantHandStartFrame = {};
+    memory.dominantMovementsStartIndex = {};
+    memory.dominantMovementsCurrentIndex = {};
+    memory.nonDominantHandStartFrame = {};
+    memory.nonDominantMovementsStartIndex = {};
+    memory.nonDominantMovementsCurrentIndex = {};
     memory.startFrame = undefined;
   },
   onRun: (sign, subject, memory) => {
-    const dominantHandMoves = memory.movements.dominantHand[0];
-    const nonDominantHandMoves = memory.movements.nonDominantHand[0];
+    const dominantHandMoves = sign.signSteps.movements.dominantHand;
+    const nonDominantHandMoves = sign.signSteps.movements.nonDominantHand;
 
-    const correctDominantHandMovement = Object.keys(
-      dominantHandMoves ?? []
-    ).every((key) => {
-      return subject.hand.dominantHand.movement[key] === dominantHandMoves[key];
-    });
-
-    const correctNonDominantHandMovement = Object.keys(
-      nonDominantHandMoves ?? []
-    ).every((key) => {
-      return (
-        subject.hand.nonDominantHand.movement[key] === nonDominantHandMoves[key]
+    const dominantHandOkay =
+      !(dominantHandMoves ?? []).length ||
+      checkMovement(
+        subject.hand.dominantHand.movement,
+        Array.isArray(dominantHandMoves[0])
+          ? dominantHandMoves
+          : [dominantHandMoves],
+        memory.dominantMovementsStartIndex,
+        memory.dominantMovementsCurrentIndex,
+        memory.dominantHandStartFrame,
+        sign.signSteps.movements.dominantHand.circularPolicy,
+        subject.frame
       );
-    });
 
-    if (
-      correctDominantHandMovement &&
-      memory.movements.dominantHand.length > 0
-    ) {
-      memory.movements.dominantHand.shift();
+    const nonDominantHandOkay =
+      !(nonDominantHandMoves ?? []).length ||
+      checkMovement(
+        subject.hand.nonDominantHand.movement,
+        Array.isArray(nonDominantHandMoves[0])
+          ? nonDominantHandMoves
+          : [nonDominantHandMoves],
+        memory.nonDominantMovementsStartIndex,
+        memory.nonDominantMovementsCurrentIndex,
+        memory.nonDominantHandStartFrame,
+        sign.signSteps.movements.nonDominantHand.circularPolicy,
+        subject.frame
+      );
 
-      if (!memory.startFrame) {
-        memory.startFrame = subject.frame;
-      }
+    const valid = dominantHandOkay && nonDominantHandOkay;
+
+    if (valid) {
+      memory.startFrame = Math.min(
+        ...Object.values(memory.dominantHandStartFrame)
+      );
     }
 
-    if (
-      correctNonDominantHandMovement &&
-      memory.movements.nonDominantHand.length > 0
-    ) {
-      memory.movements.nonDominantHand.shift();
-
-      if (!memory.startFrame) {
-        memory.startFrame = subject.frame;
-      }
-    }
-
-    const noMoreDominantHandMoves =
-      memory.movements.dominantHand === undefined ||
-      memory.movements.dominantHand.length === 0;
-    const noMoreNonDominantHandMoves =
-      memory.movements.nonDominantHand === undefined ||
-      memory.movements.nonDominantHand.length === 0;
-
-    if (noMoreDominantHandMoves && noMoreNonDominantHandMoves) {
-      return { valid: true };
-    } else {
-      return { valid: false };
-    }
+    return {
+      valid,
+    };
   },
   nextState: DetectorStates.FINAL_POSITION,
 };
+
+/**
+ 
+Dado um vetor de possíveis movimentos desejado como 
+[
+  [
+    { y: 1, x: 1 },
+    { y: -1, x: 1 },
+    { y: -1, x: -1 },
+    { y: 1, x: -1 },
+  ],
+  [
+    { y: 1, x: -1 },
+    { y: -1, x: -1 },
+    { y: -1, x: 1 },
+    { y: 1, x: 1 },
+  ]
+] 
+que representa um movimento horário ou não horário, 
+verifica se uma das sequencias de movimento é completada.
+Caso seja, retorna true, caso contrário, retorna false.
+ */
+function checkMovement(
+  subjectMovement,
+  movements,
+  startIndex,
+  currentIndex,
+  startFrame,
+  circularPolicy,
+  frame
+) {
+  for (const [index, movement] of movements.entries()) {
+    if (startIndex[index] === null || startIndex[index] === undefined) {
+      const moveIndex = movement.findIndex((expectedMovement) =>
+        checkSameMovement(subjectMovement, expectedMovement)
+      );
+
+      // Caso circularPolicy = true, então apenas considera o primeiro movimento
+      // de cada sequência de movimentos
+      if ((circularPolicy && moveIndex === 0) || moveIndex > 0) {
+        startIndex[index] = moveIndex;
+        startFrame[index] = frame;
+        currentIndex[index] = (moveIndex + 1) % movement.length;
+      }
+    } else if (startIndex[index]) {
+      const movementIndex = currentIndex[index];
+      const currentMovement = movement[movementIndex];
+      const isCorrectMovement = checkSameMovement(
+        subjectMovement,
+        currentMovement
+      );
+
+      if (isCorrectMovement) {
+        currentIndex[index] = (movementIndex + 1) % movement.length;
+      }
+    }
+
+    if (
+      startIndex[index] !== undefined &&
+      currentIndex[index] === startIndex[index]
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function checkSameMovement(subjectMovement, expectedMovement) {
+  return Object.keys(expectedMovement ?? []).every((key) => {
+    return subjectMovement[key] === expectedMovement[key];
+  });
+}
 
 const finalPositionState = {
   onInit: (sign, subject, memory) => {
