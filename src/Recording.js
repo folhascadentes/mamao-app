@@ -16,7 +16,7 @@ import { MdOutlinePending, MdDone } from "react-icons/md";
 
 function Recording({ setLoading, model, cameraSettings }) {
   const debuger = !!localStorage.getItem("debug");
-  const SIGN_N_TIMES = 5;
+  const SIGN_N_TIMES = 3;
   const DURATION = 5;
   const FPS = cameraSettings.frameRate;
   const BUFFER_SIZE = DURATION * FPS;
@@ -565,6 +565,10 @@ function drawHand(ctx, landmarks, isDominant, palmDirection) {
 }
 
 function drawHandConnectors(ctx, landmarks, isDominant, palmDirection) {
+  if (!landmarks.length) {
+    return;
+  }
+
   const palm = [
     landmarks[0],
     landmarks[1],
