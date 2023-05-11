@@ -7,6 +7,7 @@ export class Instructor {
     this.ctx = ctx;
     this.sign = sign;
     this.angle = 0;
+    this.orientation = Math.random() > 0.5 ? 1 : -1;
     this.dominantHandPosition = { x: 0, y: 0 };
     this.nonDominantHandPosition = { x: 0, y: 0 };
   }
@@ -30,6 +31,7 @@ export class Instructor {
           response.memory.nonDominantHandCoordinate
         );
         this.angle = 0;
+        this.orientation = Math.random() > 0.5 ? 1 : -1;
       } else if (response.state === DetectorStates.MOVEMENT) {
         this.instructPosition(
           response.memory.dominantHandEndCoordinate,
@@ -133,7 +135,11 @@ export class Instructor {
         this.dominantHandPosition.y,
         85
       );
-      this.angle += 20;
+      if (this.orientation > 0) {
+        this.angle += 20;
+      } else {
+        this.angle -= 20;
+      }
     }
   }
 }
