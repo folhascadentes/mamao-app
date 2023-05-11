@@ -589,4 +589,49 @@ export const signs = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Hoje",
+    signSteps: {
+      startPosition: {
+        dominantHand: {
+          bodyRegion: "torax",
+          bodyOffsetVertical: 50,
+          handConfiguration: "open_hand_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+        nonDominantHand: {
+          bodyRegion: "side",
+          handConfiguration: "open_hand_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+      },
+      movements: {
+        dominantHandCategory: "LINEAR_MOTION",
+        nonDominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "Mova a mão lateralmente para dentro e para fora duas vezes",
+        nonDominanHandDescription:
+          "Mova a mão lateralmente para dentro e para fora duas vezes",
+        dominantHand: [{ x: -1 }, { x: 1 }, { x: -1 }],
+        nonDominantHand: [{ x: 1 }, { x: -1 }, { x: 1 }],
+      },
+      endPosition: {
+        dominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "open_hand_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+        nonDominantHand: {
+          bodyRegion: "same",
+          handConfiguration: "open_hand_cm",
+          palmDirection: PalmDirection.UP,
+          palmDirectionCategory: "UP",
+        },
+      },
+    },
+  },
 ];
