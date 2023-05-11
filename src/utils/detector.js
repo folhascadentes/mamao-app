@@ -260,7 +260,7 @@ const movementState = {
       memory.movements.dominantHand.shift();
 
       if (!memory.startFrame) {
-        memory.startFrame = subject.frame - 6;
+        memory.startFrame = subject.frame;
       }
     }
 
@@ -271,7 +271,7 @@ const movementState = {
       memory.movements.nonDominantHand.shift();
 
       if (!memory.startFrame) {
-        memory.startFrame = subject.frame - 6;
+        memory.startFrame = subject.frame;
       }
     }
 
@@ -293,7 +293,7 @@ const movementState = {
 
 const finalPositionState = {
   onInit: (sign, subject, memory) => {
-    memory.endMovementFrame = subject.frame + 6;
+    memory.endMovementFrame = subject.frame;
   },
   onRun: (sign, subject, memory) => {
     return checkHandPosition(

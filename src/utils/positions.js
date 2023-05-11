@@ -56,8 +56,14 @@ export function getBodyRegionCoordinates(
       : getMiddlePoint(landmarks[12], landmarks[24]);
   } else if (type === "wrist") {
     return rightDominantHand
-      ? getMiddlePoint(landmarks[15])
-      : getMiddlePoint(landmarks[16]);
+      ? getMiddlePoint(landmarks[15], {
+          x: landmarks[15].x,
+          y: landmarks[15].y - 100,
+        })
+      : getMiddlePoint(landmarks[16], {
+          x: landmarks[16].x,
+          y: landmarks[16].y - 100,
+        });
   }
 }
 
