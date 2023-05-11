@@ -325,12 +325,15 @@ function checkMovement(
 
       // Caso circularPolicy = true, então apenas considera o primeiro movimento
       // de cada sequência de movimentos
-      if ((circularPolicy && moveIndex === 0) || moveIndex > 0) {
+      if (
+        (circularPolicy && moveIndex === 0) ||
+        (!circularPolicy && moveIndex >= 0)
+      ) {
         startIndex[index] = moveIndex;
         startFrame[index] = frame;
         currentIndex[index] = (moveIndex + 1) % movement.length;
       }
-    } else if (startIndex[index]) {
+    } else if (startIndex[index] !== null && startIndex[index] !== undefined) {
       const movementIndex = currentIndex[index];
       const currentMovement = movement[movementIndex];
       const isCorrectMovement = checkSameMovement(
