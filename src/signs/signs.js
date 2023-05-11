@@ -132,13 +132,22 @@ export const signs = [
       },
       movements: {
         dominantHandCategory: "CIRCULAR_MOTION",
-        dominanHandDescription: "faça um movimento circular em sentido horário",
+        dominanHandDescription: "faça um movimento circular",
         dominantHand: [
-          { y: 1, x: 1 },
-          { y: -1, x: 1 },
-          { y: -1, x: -1 },
-          { y: 1, x: -1 },
+          [
+            { y: 1, x: 1 },
+            { y: -1, x: 1 },
+            { y: -1, x: -1 },
+            { y: 1, x: -1 },
+          ],
+          [
+            { y: 1, x: -1 },
+            { y: -1, x: -1 },
+            { y: -1, x: 1 },
+            { y: 1, x: 1 },
+          ],
         ],
+        dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
         nonDominantHand: [],
       },
       endPosition: {
@@ -190,20 +199,24 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "arm_upper",
+          bodyRegion: ["shoulder", "elbow"],
+          bodyRegionTrack: true,
           handConfiguration: "l_cm",
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
         },
         nonDominantHand: {
           bodyRegion: "torax_right_lower",
-          handConfiguration: "a_cm",
+          handConfiguration: ["a_cm", "s_cm"],
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
         },
       },
       movements: {
-        dominantHand: [{ z: 1 }],
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+        dominantHand: [],
         nonDominantHand: [],
       },
       endPosition: {
@@ -215,7 +228,7 @@ export const signs = [
         },
         nonDominantHand: {
           bodyRegion: "same",
-          handConfiguration: "a_cm",
+          handConfiguration: ["a_cm", "s_cm"],
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
         },
@@ -228,33 +241,45 @@ export const signs = [
     signSteps: {
       startPosition: {
         dominantHand: {
-          bodyRegion: "arm_upper",
-          handConfiguration: "open_hand_fingers_apart_cm",
+          bodyRegion: ["shoulder", "elbow"],
+          bodyRegionTrack: true,
+          handConfiguration: [
+            "open_hand_cm",
+            "open_hand_thumb_apart_cm",
+            "open_hand_fingers_apart_cm",
+          ],
           palmDirection: PalmDirection.UP,
           palmDirectionCategory: "UP",
         },
         nonDominantHand: {
           bodyRegion: "torax_right_lower",
           bodyOffsetRadius: 30,
-          handConfiguration: "s_cm",
+          handConfiguration: ["a_cm", "s_cm"],
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
         },
       },
       movements: {
-        dominantHand: [{ x: 1 }, { x: 1 }],
+        dominantHandCategory: "LINEAR_MOTION",
+        dominanHandDescription:
+          "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+        dominantHand: [],
         nonDominantHand: [],
       },
       endPosition: {
         dominantHand: {
           bodyRegion: "wrist",
-          handConfiguration: "open_hand_fingers_apart_cm",
+          handConfiguration: [
+            "open_hand_cm",
+            "open_hand_thumb_apart_cm",
+            "open_hand_fingers_apart_cm",
+          ],
           palmDirection: PalmDirection.UP,
           palmDirectionCategory: "UP",
         },
         nonDominantHand: {
           bodyRegion: "same",
-          handConfiguration: "s_cm",
+          handConfiguration: ["a_cm", "s_cm"],
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
         },
@@ -362,7 +387,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 30,
           handConfiguration: "index_finger_cm",
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
@@ -380,7 +405,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 90,
           handConfiguration: "index_finger_cm",
           palmDirection: PalmDirection.DOWN,
           palmDirectionCategory: "DOWN",
@@ -397,7 +422,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 30,
           handConfiguration: "index_finger_cm",
           palmDirection: PalmDirection.RIGHT,
           palmDirectionCategory: "RIGHT",
@@ -415,7 +440,7 @@ export const signs = [
       endPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 90,
           handConfiguration: "index_finger_cm",
           pontingDirection: { x: 0, y: 0, z: -1 },
         },
@@ -441,6 +466,7 @@ export const signs = [
         dominantHandCategory: "ZIG_ZAG_MOTION",
         dominanHandDescription: "mova a mão para baixo e para cima duas vezes",
         dominantHand: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+        dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
         nonDominantHand: [],
       },
       endPosition: {
@@ -461,7 +487,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 50,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -496,7 +522,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax",
-          bodyOffsetRadius: 75,
+          bodyOffsetRadius: 50,
           handConfiguration: "y_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -563,7 +589,7 @@ export const signs = [
       startPosition: {
         dominantHand: {
           bodyRegion: "torax_upper",
-          bodyOffsetRadius: 50,
+          bodyOffsetRadius: 30,
           handConfiguration: "f_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -579,8 +605,8 @@ export const signs = [
       },
       endPosition: {
         dominantHand: {
-          bodyRegion: "torax",
-          bodyOffsetRadius: 50,
+          bodyRegion: "torax_lower",
+          bodyOffsetRadius: 90,
           handConfiguration: "f_cm",
           palmDirection: PalmDirection.OPPOSITE,
           palmDirectionCategory: "OPPOSITE",
@@ -609,8 +635,8 @@ export const signs = [
         },
       },
       movements: {
-        dominantHandCategory: "LINEAR_MOTION",
-        nonDominantHandCategory: "LINEAR_MOTION",
+        dominantHandCategory: "ZIG_ZAG_MOTION",
+        nonDominantHandCategory: "ZIG_ZAG_MOTION",
         dominanHandDescription:
           "Mova a mão lateralmente para dentro e para fora duas vezes",
         nonDominanHandDescription:
