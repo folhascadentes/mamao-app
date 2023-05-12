@@ -197,7 +197,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
         <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
           <div>
-            <h1 className="text-3xl font-bold text-left mb-4">
+            <h1 className="text-3xl text-left mb-4">
               Sinal ({signCounter} de {SIGN_N_TIMES})
             </h1>
             <div className="text-lg">
@@ -207,7 +207,7 @@ function Recording({ setLoading, model, cameraSettings }) {
             </div>
           </div>
           <div>
-            <h1 className="text-xl md:text-3xl font-bold text-left mb-4 md:mb-6">
+            <h1 className="text-xl md:text-3xl text-left mb-4 md:mb-6">
               Instruções
             </h1>
             <div className="flex flex-col space-y-2">
@@ -258,7 +258,7 @@ function Recording({ setLoading, model, cameraSettings }) {
         <div className="flex justify-center relative">
           <canvas
             ref={canvasRef}
-            className="output_canvas_hands"
+            className="output_canvas_hands border-4 border-neutral-200"
             width="720"
             height="720"
             style={{
@@ -270,7 +270,7 @@ function Recording({ setLoading, model, cameraSettings }) {
                   : window.innerHeight <= 800
                   ? "0.7"
                   : "",
-              borderRadius: "1.4rem",
+              borderRadius: "1rem",
             }}
           ></canvas>
           <div

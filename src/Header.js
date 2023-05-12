@@ -23,7 +23,7 @@ function Header() {
         <button
           title="Ação de aumentar tamanho do texto [+]"
           aria-describedby="Ação de aumentar tamanho do texto"
-          className={`hover:bg-gray-200 rounded-xl p-4 font-bold`}
+          className={`hover:bg-gray-200 rounded-xl p-4`}
           onClick={handleIncreaseFontSize}
           style={{ fontSize: "24px" }}
         >
@@ -32,7 +32,7 @@ function Header() {
         <button
           title="Ação de aumentar diminuir do texto [-]"
           aria-describedby="Ação de aumentar diminuir do texto"
-          className={`hover:bg-gray-200 rounded-xl p-4 font-bold`}
+          className={`hover:bg-gray-200 rounded-xl p-4`}
           onClick={handleDecreaseFontSize}
           style={{ fontSize: "24px" }}
         >

@@ -65,7 +65,7 @@ canvas {
 
 .overlay {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 1.4rem;
+  border-radius: 1rem;
   backdrop-filter: blur(30px);
   gap: 20px;
   padding: 30px;

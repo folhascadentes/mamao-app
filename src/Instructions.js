@@ -8,9 +8,9 @@ import letterR from "./assets/letterR.svg";
 
 function Instructions({ startRecording }) {
   return (
-    <div className="p-6 flex justify-center text-lg md:text-xl font-normal">
+    <div className="p-6 flex justify-center md:text-lg font-normal">
       <div style={{ width: "720px" }}>
-        <h1 className="text-3xl md:text-4xl text-center font-bold mb-6 md:mb-10">
+        <h1 className="text-3xl md:text-4xl text-center mb-6 md:mb-10">
           Olá, <span className="text-orange-600">Voluntário</span>!
         </h1>
         <p className="text-left mb-2">
@@ -50,7 +50,7 @@ function Instructions({ startRecording }) {
           <button
             type="button"
             onClick={startRecording}
-            className="bg-blue-600 text-white font-bold py-4 px-8 text-2xl rounded-xl mb-10"
+            className="bg-indigo-600 text-white py-4 px-8 text-2xl rounded-xl mb-10"
           >
             Começar <span className="text-base">[C]</span>
           </button>

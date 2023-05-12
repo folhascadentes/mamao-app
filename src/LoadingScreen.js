@@ -28,7 +28,7 @@ const ProgressBar = ({ url, progress, contentLength, elapsedTime }) => {
         <div className="flex-grow"></div>
         <div>{estimatedTime.toFixed(2)} segundos</div>
       </div>
-      <div className="flex flex-col text-sm">
+      <div className="flex flex-col space-y-2 text-sm">
         <div>Dependencia: {url}</div>
         <div>Tamanho do Conteúdo: {contentLength} bytes</div>
       </div>
@@ -81,14 +81,14 @@ function LoadingScreen() {
 
   return (
     <div id="loading-screen" className="text-white px-4">
-      <div className="flex flex-col space-y-8 items-center justify-center">
-        <div className="text-3xl font-bold">
+      <div className="flex flex-col space-y-10 items-center justify-center">
+        <div className="text-4xl">
           Configurando sistema de captura
         </div>
         {!progressData.url && <div className="spinner"></div>}
         {progressData.url && (
-          <div className="flex-col space-y-4">
-            <div className="text-xl">
+          <div className="flex-col space-y-8">
+            <div className="text-lg">
               Estamos carregando o sistema de inteligência artificial para
               reconhecer seus movimentos ({counter} de 2)
             </div>
