@@ -625,7 +625,8 @@ function drawStroke(ctx, p1, p2, isDominant) {
   gradient.addColorStop(0, isDominant ? "#ffc685" : "#8985ff");
   gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
   ctx.strokeStyle = gradient;
-  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.lineWidth = 14;
   ctx.beginPath();
   ctx.moveTo(p1.x, p1.y);
   ctx.lineTo(p2.x, p2.y);
@@ -646,6 +647,9 @@ function drawPolygon(ctx, pts, isDominant) {
 
   ctx.fillStyle = gradient;
   ctx.strokeStyle = gradient;
+
+  ctx.lineJoin = "round";
+  ctx.miterLimit = 6;
 
   ctx.fill();
   ctx.stroke();
