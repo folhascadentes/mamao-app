@@ -41,15 +41,6 @@ export class Subject {
     subject.poseLandmarks = results.poseLandmarks;
     subject.poseWorldLandmarks = results.poseWorldLandmarks;
 
-    this.updateSkeletonBuffer(
-      dominantHandLandmarks,
-      nonDominantHandLandmarks,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks,
-      results.poseLandmarks,
-      results.poseWorldLandmarks
-    );
-
     this.setSubjectHandShape(
       subject,
       dominantHandWorldLandmarks,
@@ -66,6 +57,16 @@ export class Subject {
       subject,
       dominantHandWorldLandmarks,
       nonDominantHandWorldLandmarks
+    );
+
+    this.updateSkeletonBuffer(
+      subject,
+      dominantHandLandmarks,
+      nonDominantHandLandmarks,
+      dominantHandWorldLandmarks,
+      nonDominantHandWorldLandmarks,
+      results.poseLandmarks,
+      results.poseWorldLandmarks
     );
 
     this.setSubjectHandMovement(subject, this.buffer);
@@ -121,6 +122,7 @@ export class Subject {
   }
 
   updateSkeletonBuffer(
+    subject,
     dominantHandLandmarks,
     nonDominantHandLandmarks,
     dominantHandWorldLandmarks,
@@ -130,6 +132,7 @@ export class Subject {
   ) {
     this.buffer.push({
       frame: this.frame,
+      subject,
       poseLandmarks,
       poseWorldLandmarks,
       dominantHandLandmarks,

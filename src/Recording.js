@@ -295,7 +295,11 @@ function Recording({ setLoading, model, cameraSettings }) {
 
       const value = buffer.shift();
 
-      drawHand(ctx, value.dominantHandLandmarks, true);
+      drawHand(
+        ctx,
+        value.dominantHandLandmarks,
+        value.subject.hand.dominantHand.palm.z > 0
+      );
     }
   }
 
