@@ -26,7 +26,8 @@ function Instructions({ startRecording }) {
             vídeos automaticamente.
           </li>
           <li className="mb-2">
-            Certifique-se de que apenas você apareça como protagonista no vídeo.
+            Certifique-se de que apenas você apareça no vídeo e que esteja
+            visível da cintura para cima.
           </li>
           <li className="mb-2">
             Permita o acesso à câmera na plataforma, garantindo seu correto
