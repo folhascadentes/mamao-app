@@ -298,6 +298,7 @@ function Recording({ setLoading, model, cameraSettings }) {
       drawHand(
         ctx,
         value.dominantHandLandmarks,
+        true,
         value.subject.hand.dominantHand.palm.z > 0
       );
     }
