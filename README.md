@@ -1,3 +1,33 @@
+# Mamão
+
+Welcome to Mamão, an innovative open-source platform designed to crowdsource the collection of sign language data. Our goal is to create a comprehensive, diverse, and high-quality dataset for training Artificial Intelligence (AI) methods. This dataset will be used to build robust sign language recognizers and, consequently, effective sign language translators.
+
+Mamão is a community-driven project. We believe in the power of open data and open source to drive innovation and inclusivity. The data collected through Mamão is openly available to researchers, developers, and anyone interested in advancing sign language recognition and translation technology.
+
+In addition to data collection, Mamão also enables open-source AI development. Users can contribute to the development of AI models directly through our platform. By fostering a collaborative environment, we aim to accelerate progress in sign language translation and make communication more accessible for everyone.
+
+Join us in our mission to bridge the gap between sign language and spoken languages, and help us create a world where everyone can communicate freely and easily, regardless of their hearing ability. Together, we can make a difference. Welcome to Mamão!
+
+You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word for papaya, a tropical fruit. However, the name choice goes beyond that. It's a playful pun on the phrase "uma mão" which means "a hand" in Portuguese, and is similar to the English phrase "give a hand". This resonates with the core purpose of our platform: facilitating sign language learning and practice, which is primarily done using hands. Through Mamão, we aim to 'give a hand' to those seeking to communicate using sign languages, and to those striving to develop new technologies to bridge the communication gap for the deaf and hard of hearing community.
+
+## High-Level Architecture Overview
+
+Our platform is composed of three main components working together to facilitate sign language crowdsourcing. These components are the Subject, Detector, and Instructor.
+
+### Subject
+
+The Subject component is responsible for collecting data about the user's sign language performance. This includes tracking and recording various characteristics such as hand position, hand shape, movement patterns, body angle, and more. By capturing these details, the Subject component provides a comprehensive set of data that can be used to analyze the user's sign language execution.
+
+### Detector
+
+The Detector component plays a critical role in assessing the user's sign language performance. Given the characteristics collected by the Subject and the specification of the sign, the Detector determines whether the sign was performed correctly. It compares the user's execution with the expected execution described in the sign's specification and provides feedback on the user's accuracy.
+
+### Instructor
+
+The Instructor component is designed to guide and assist users in learning and practicing sign language. Given the sign's specification and the characteristics collected from the user by the Subject, the Instructor provides real-time guidance to help the user improve. This may include instructions on how to adjust hand shape or position, tips for improving movement patterns, and more.
+
+By combining these three components, our platform offers a comprehensive solution for sign language practice and learning. The Subject, Detector, and Instructor work together to provide a supportive, informative, and interactive experience for users.
+
 ## What is a Sign?
 
 In this section, we outline the key characteristics of a sign. For those who may not be familiar, a sign in sign language is a visual-gestural unit of meaning. Just as spoken languages use sounds combined in different ways to form words, sign languages use gestures (signs), made primarily with the hands, but also involving facial expressions and body movements. Each sign is made up of a number of components that define its meaning and usage.
@@ -113,3 +143,111 @@ The options field provides additional settings for more specific or complex sign
 - options.location.horizontalOffset (number): Adds randomness to the sign's location along the x-axis. This can introduce variation in the horizontal position of the sign.
 - options.location.same (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position at the end of the sign is the same as at the start.
 - options.location.side (boolean): This is valid only for the non-dominant hand. When set to true, it indicates that the y-axis of the non-dominant hand will be the same as the y-axis of the dominant hand.
+
+### Constants for Sign Specification
+
+When creating a sign specification, the following constants are used to indicate hand shapes, locations, and orientations.
+
+```javascript
+const HandShape = {
+  libras: {
+    A: "a",
+    B: "b",
+    C: "c",
+    D: "d",
+    E: "e",
+    F: "f",
+    G: "g",
+    H: "h",
+    I: "i",
+    J: "j",
+    K: "k",
+    L: "l",
+    M: "m",
+    N: "n",
+    O: "o",
+    P: "p",
+    Q: "q",
+    R: "r",
+    S: "s",
+    T: "t",
+    U: "u",
+    V: "v",
+    W: "w",
+    X: "x",
+    Y: "y",
+  },
+};
+
+const Location = {
+  FOREHEAD: "forehead",
+  FOREHEAD_LEFT: "forehead_left",
+  FOREHEAD_RIGHT: "forehead_right",
+  NOSE: "nose",
+  EYE_LEFT: "eye_left",
+  EYE_LEFT_INNER: "eye_left_inner",
+  EYE_LEFT_OUTER: "eye_left_outer",
+  EYE_RIGHT: "eye_right",
+  EYE_RIGHT_INNER: "eye_right_inner",
+  EYE_RIGHT_OUTER: "eye_right_outer",
+  EAR_LEFT: "ear_left",
+  EAR_RIGHT: "ear_right",
+  CHEEK_LEFT: "cheek_left",
+  CHEEK_RIGHT: "cheek_right",
+  MOUTH: "mouth",
+  MOUTH_LEFT: "mouth_left",
+  MOUTH_RIGHT: "mouth_right",
+  CHIN: "chin",
+  SHOULDER_LEFT: "shoulder_left",
+  SHOULDER_RIGHT: "shoulder_right",
+  ELBOW_LEFT: "elbow_left",
+  ELBOW_RIGHT: "elbow_right",
+  WRIST_LEFT: "wrist_left",
+  WRIST_RIGHT: "wrist_right",
+  PALM_LEFT: "palm_left",
+  PALM_RIGHT: "palm_right",
+  THUMB_LEFT: "thumb_cmc_left",
+  THUMB_RIGHT: "thumb_cmc_right",
+  INDEX_LEFT: "index_mcp_left",
+  INDEX_RIGHT: "index_mcp_right",
+  MIDDLE_LEFT: "middle_mcp_left",
+  MIDDLE_RIGHT: "middle_mcp_right",
+  RING_LEFT: "ring_mcp_left",
+  RING_RIGHT: "ring_mcp_right",
+  PINKY_LEFT: "pinky_mcp_left",
+  PINKY_RIGHT: "pinky_mcp_right",
+  TORAX: "torax",
+  TORAX_LEFT: "torax_left",
+  TORAX_RIGHT: "torax_right",
+  TORAX_UPPER: "torax_upper",
+  TORAX_UPPER_LEFT: "torax_upper_left",
+  TORAX_UPPER_RIGHT: "torax_upper_right",
+  TORAX_LOWER: "torax_lower",
+  TORAX_LOWER_LEFT: "torax_lower_left",
+  TORAX_LOWER_RIGHT: "torax_lower_right",
+  BELLY: "belly",
+  HIP_LEFT: "hip_left",
+  HIP_RIGHT: "hip_right",
+};
+
+const PalmOrientation = {
+  UP: "up",
+  DOWN: "down",
+  LEFT: "left",
+  RIGHT: "right",
+  FRONT: "front",
+  BACK: "back",
+};
+
+const HandOrientation = {
+  UP: "up",
+  DOWN: "down",
+  LEFT: "left",
+  RIGHT: "right",
+  FRONT: "front",
+  BACK: "back",
+};
+```
+
+### `movement`
+
