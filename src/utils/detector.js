@@ -145,20 +145,24 @@ function setHandPostionsCoordinates(sign, subject, memory) {
     return;
   }
 
-  const startPositionDominantHandBodyRegion =
-    sign.signSteps.startPosition.dominantHand.bodyRegion;
+  const startPositionDominantHandBodyRegion = parseBodyPosition(
+    sign.signSteps.startPosition.dominantHand.bodyRegion
+  );
   const startPositionDominantHandBodyOffset =
     sign.signSteps.startPosition.dominantHand.bodyOffsetRadius;
-  const startPositionNonDominantHandBodyRegion =
-    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
+  const startPositionNonDominantHandBodyRegion = parseBodyPosition(
+    sign.signSteps.startPosition.nonDominantHand.bodyRegion
+  );
   const startPositionNonDominantHandBodyOffset =
     sign.signSteps.startPosition.nonDominantHand.bodyOffsetRadius;
-  const endPositionDominantHandBodyRegion =
-    sign.signSteps.endPosition.dominantHand.bodyRegion;
+  const endPositionDominantHandBodyRegion = parseBodyPosition(
+    sign.signSteps.endPosition.dominantHand.bodyRegion
+  );
   const endPositionDominantHandBodyOffset =
     sign.signSteps.endPosition.dominantHand.bodyOffsetRadius;
-  const endPositionNonDominantHandBodyRegion =
-    sign.signSteps.endPosition.nonDominantHand.bodyRegion;
+  const endPositionNonDominantHandBodyRegion = parseBodyPosition(
+    sign.signSteps.endPosition.nonDominantHand.bodyRegion
+  );
   const endPositionNonDominantHandBodyOffset =
     sign.signSteps.endPosition.nonDominantHand.bodyOffsetRadius;
 
@@ -204,6 +208,23 @@ function setHandPostionsCoordinates(sign, subject, memory) {
   memory.nonDominantHandCoordinate = nonDominantHandCoordinate;
   memory.dominantHandEndCoordinate = dominantHandEndCoordinate;
   memory.nonDominantHandEndCoordinate = nonDominantHandEndCoordinate;
+}
+
+function parseBodyPosition(bodyPosition) {
+  if (Array.isArray(bodyPosition)) {
+    return getRandomElementFromArray(bodyPosition);
+  } else {
+    return bodyPosition;
+  }
+}
+
+function getRandomElementFromArray(array) {
+  if (array.length === 0) {
+    return null;
+  }
+
+  var randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
 }
 
 function randomizeCoordinate(coordinate, radius) {
