@@ -20,7 +20,7 @@ export default function App(): JSX.Element {
 
   useEffect(() => {
     (async function () {
-      if (model === null) {
+      if (model === undefined) {
         const model = await tensorflow.loadLayersModel(
           "http://localhost:3000/model/model.json"
         );
