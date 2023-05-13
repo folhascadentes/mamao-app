@@ -7,11 +7,16 @@ import Footer from "./Footer";
 import Instructions from "./Instructions";
 import Recording from "./Recording";
 
-export default function App() {
-  const [screen, setScreen] = useState("instructions");
-  const [loading, setLoading] = useState(false);
-  const [cameraSettings, setCameraSettings] = useState(null);
-  const [model, setModel] = useState(null);
+enum ScreenState {
+  INSTRUCTIONS = "instructions",
+  RECORDING = "recording",
+}
+
+export default function App(): JSX.Element {
+  const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
+  const [model, setModel] = useState<tensorflow.LayersModel>();
 
   useEffect(() => {
     (async function () {
@@ -40,7 +45,7 @@ export default function App() {
         const settings = track.getSettings();
 
         setCameraSettings(settings);
-        setScreen("recording");
+        setScreen(ScreenState.RECORDING);
         setLoading(true);
       })
       .catch((error) => {
@@ -49,14 +54,14 @@ export default function App() {
   }
 
   return (
-    <div className="App">
+    <div>
       {loading && <LoadingScreen />}
       <div id="application" className="mb-10">
         <Header />
-        {screen === "instructions" && (
+        {screen === ScreenState.INSTRUCTIONS && (
           <Instructions startRecording={startRecording} />
         )}
-        {screen === "recording" && (
+        {screen === ScreenState.RECORDING && (
           <Recording
             setLoading={setLoading}
             model={model}
