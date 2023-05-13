@@ -251,3 +251,56 @@ const HandOrientation = {
 
 ### `movement`
 
+The movement field in the sign object is used to describe the specific movements required to perform a sign. This field is divided into two subfields: dominant and nonDominant, representing the movements of the dominant and non-dominant hands respectively.
+
+```json
+{
+  "dominant": {
+    "detect": [
+      { "y": 1, "x": 1 },
+      { "y": -1, "x": 1 },
+      { "y": -1, "x": -1 },
+      { "y": 1, "x": -1 }
+    ],
+    "forbidden": [],
+    "options": {
+      "detect": {
+        "circular": true
+      }
+    },
+    "metadata": {
+      "description": "Perform a circular movement",
+      "type": "CIRCULAR"
+    }
+  },
+  "nonDominant": {}
+}
+```
+
+In the dominant and nonDominant subfields, you can specify various properties:
+
+- detect: This field holds an array of objects defining the required movements for the sign. Each object should match the structure of the movement object defined below. If this field holds an array of arrays, it indicates that multiple movement patterns can be used to validate the sign.
+- forbidden: This field contains an array of movements that should not be performed when executing the sign. Each object in the array should match the structure of the movement object.
+- options: This field can contain additional options for detecting the movement.
+- metadata: This field contains additional descriptive information about the movement. The description subfield provides a human-readable explanation of the movement, and the type subfield categorizes the movement into one of several predefined types: CIRCULAR, LINEAR, PARABOLICAL, ZIG_ZAG, SHAKE.
+
+The movement object structure is as follows:
+
+```json
+{
+  "x": "-1|0|1", // Movement along the X-axis (left, still, right)
+  "y": "-1|0|1", // Movement along the Y-axis (up, still, down)
+  "z": "-1|0|1", // Movement along the Z-axis (back, still, front)
+  "rotateWrist": "boolean", // Whether the sign requires wrist rotation
+  "wristExtension": "boolean", // Whether the sign requires wrist extension (lifting the back of your hand)
+  "wristFlexion": "boolean", // Whether the sign requires wrist flexion (bending your hand downward)
+  "wristAbduction": "boolean", // Whether the sign requires wrist abduction (moving your hand towards the thumb side)
+  "wristAdduction": "boolean" // Whether the sign requires wrist adduction (moving your hand towards the little finger side)
+}
+```
+
+Each field in the movement object describes a specific aspect of the hand movement required for the sign. These fields can be used to define very precise movements, enabling accurate detection and instruction of signs.
+
+The options field provides additional settings for more specific or complex signs
+
+- options.detect.circular: This means the movement can start at any position of the array of movement objects.
