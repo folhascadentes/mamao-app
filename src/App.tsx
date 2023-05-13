@@ -22,7 +22,7 @@ export default function App(): JSX.Element {
     (async function () {
       if (model === undefined) {
         const model = await tensorflow.loadLayersModel(
-          "http://localhost:3000/model/model.json"
+          process.env.HAND_SHAPE_MODEL_URL as string
         );
         setModel(model);
       }
