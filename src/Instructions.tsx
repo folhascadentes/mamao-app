@@ -6,7 +6,11 @@ import letterM from "./assets/letterM.svg";
 import letterO from "./assets/letterO.svg";
 import letterR from "./assets/letterR.svg";
 
-function Instructions({ startRecording }) {
+function Instructions({
+  startRecording,
+}: {
+  startRecording: () => void;
+}): JSX.Element {
   return (
     <div className="p-6 flex justify-center md:text-lg font-normal">
       <div style={{ width: "720px" }}>
