@@ -22,7 +22,8 @@
     "@tensorflow/tfjs-node-gpu": "^4.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0"
+    "@testing-library/user-event": "^13.5.0",
+    "file-loader": "^6.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

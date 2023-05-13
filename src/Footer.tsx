@@ -1,6 +1,6 @@
 import React from "react";
 
-function Footer() {
+function Footer(): JSX.Element {
   return (
     <footer className="fixed bottom-0 bg-neutral-100 mx-auto w-full text-center py-4 px-6">
       <div className="flex flex-wrap">

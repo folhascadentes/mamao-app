@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import papayaLogo from "./assets/papaya.png";
 
-function Header() {
+function Header(): JSX.Element {
   const [fontSize, setFontSize] = useState(100);
 
-  const handleIncreaseFontSize = () => {
+  function handleIncreaseFontSize(): void {
     setFontSize(fontSize + 10);
-  };
+  }
 
-  const handleDecreaseFontSize = () => {
+  function handleDecreaseFontSize(): void {
     setFontSize(fontSize - 10);
-  };
+  }
 
   return (
     <header className="w-full">

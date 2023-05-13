@@ -7,13 +7,13 @@ interface DownloadProgress {
   url: string;
 }
 
-function LoadingScreen() {
+function LoadingScreen(): JSX.Element {
   const TOTAL_FILES_DOWNLOAD = 2;
   const [progressData, setProgressData] = useState<DownloadProgress>();
   const [counter, setCounter] = useState<number>(0);
   let patchApplied: boolean = false;
 
-  const patchXMLHttpRequest = () => {
+  function patchXMLHttpRequest(): void {
     if (patchApplied) {
       return;
     }
@@ -55,7 +55,7 @@ function LoadingScreen() {
 
       originalOpen.apply(this, arguments as any);
     };
-  };
+  }
 
   useEffect(() => {
     patchXMLHttpRequest();
@@ -90,12 +90,12 @@ function LoadingScreen() {
 
 export default LoadingScreen;
 
-const ProgressBar = ({
+function ProgressBar({
   url,
   progress,
   contentLength,
   elapsedTime,
-}: DownloadProgress) => {
+}: DownloadProgress): JSX.Element {
   const remainingTime = (elapsedTime / progress) * (100 - progress);
   const estimatedTime = remainingTime;
 
@@ -129,4 +129,4 @@ const ProgressBar = ({
       </div>
     </div>
   );
-};
+}

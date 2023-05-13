@@ -22,14 +22,15 @@ export default function App(): JSX.Element {
     (async function () {
       if (model === undefined) {
         const model = await tensorflow.loadLayersModel(
-          process.env.HAND_SHAPE_MODEL_URL as string
+          process.env.REACT_APP_HAND_SHAPE_MODEL_URL as string
         );
         setModel(model);
       }
     })();
-  }, [model]);
+  // eslint-disable-next-line
+  }, []);
 
-  function startRecording() {
+  function startRecording(): void {
     const constraints = {
       audio: false,
       video: {
