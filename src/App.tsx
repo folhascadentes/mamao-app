@@ -16,15 +16,15 @@ export default function App(): JSX.Element {
   const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
-  const [model, setModel] = useState<tensorflow.LayersModel>();
+  const [handShapeModel, setHandShapeModel] = useState<tensorflow.LayersModel>();
 
   useEffect(() => {
     (async function () {
-      if (model === undefined) {
+      if (handShapeModel === undefined) {
         const model = await tensorflow.loadLayersModel(
           process.env.REACT_APP_HAND_SHAPE_MODEL_URL as string
         );
-        setModel(model);
+        setHandShapeModel(model);
       }
     })();
   // eslint-disable-next-line
@@ -65,7 +65,7 @@ export default function App(): JSX.Element {
         {screen === ScreenState.RECORDING && (
           <Recording
             setLoading={setLoading}
-            model={model}
+            handShapeModel={handShapeModel}
             cameraSettings={cameraSettings}
           />
         )}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import papayaLogo from "./assets/papaya.png";
 
 function Header(): JSX.Element {
-  const [fontSize, setFontSize] = useState(100);
+  const [fontSize, setFontSize] = useState<number>(100);
 
   function handleIncreaseFontSize(): void {
     setFontSize(fontSize + 10);

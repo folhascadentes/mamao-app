@@ -8,7 +8,7 @@ interface DownloadProgress {
 }
 
 function LoadingScreen(): JSX.Element {
-  const TOTAL_FILES_DOWNLOAD = 2;
+  const TOTAL_FILES_DOWNLOAD: number = 2;
   const [progressData, setProgressData] = useState<DownloadProgress>();
   const [counter, setCounter] = useState<number>(0);
   let patchApplied: boolean = false;
@@ -29,14 +29,14 @@ function LoadingScreen(): JSX.Element {
       username?: string | null,
       password?: string | null
     ) {
-      const startTime = new Date().getTime();
+      const startTime: number = new Date().getTime();
 
       setCounter((counter) => counter + 1);
 
       this.addEventListener("progress", (event) => {
         if (event.lengthComputable) {
-          const percentComplete = (event.loaded / event.total) * 100;
-          const elapsedTime = (new Date().getTime() - startTime) / 1000;
+          const percentComplete: number = (event.loaded / event.total) * 100;
+          const elapsedTime: number = (new Date().getTime() - startTime) / 1000;
           setProgressData({
             url: url.toString(),
             progress: percentComplete,
@@ -96,8 +96,7 @@ function ProgressBar({
   contentLength,
   elapsedTime,
 }: DownloadProgress): JSX.Element {
-  const remainingTime = (elapsedTime / progress) * (100 - progress);
-  const estimatedTime = remainingTime;
+  const remainingTime: number = (elapsedTime / progress) * (100 - progress);
 
   return (
     <div className="flex flex-col space-y-2">
@@ -121,7 +120,7 @@ function ProgressBar({
       <div className="flex">
         <div>{progress.toFixed(2)}%</div>
         <div className="flex-grow"></div>
-        <div>{estimatedTime.toFixed(2)} segundos</div>
+        <div>{remainingTime.toFixed(2)} segundos</div>
       </div>
       <div className="flex flex-col space-y-2 text-sm">
         <div>Dependencia: {url}</div>
