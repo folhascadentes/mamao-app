@@ -1,7 +1,10 @@
-import { Hands } from "@mediapipe/hands";
-import { Pose } from "@mediapipe/pose";
+import { Hands, Results as _HandResults } from "@mediapipe/hands";
+import { Pose, Results as _PoseResults } from "@mediapipe/pose";
 
-export function initalizeHandsDetector() {
+export type HandResults = _HandResults;
+export type PoseResults = _PoseResults;
+
+export function initalizeHandsDetector(): Hands {
   const hands = new Hands({
     locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
@@ -18,7 +21,7 @@ export function initalizeHandsDetector() {
   return hands;
 }
 
-export function initializePoseDetector() {
+export function initializePoseDetector(): Pose {
   const pose = new Pose({
     locateFile: (file) => {
       return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
