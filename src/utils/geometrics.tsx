@@ -88,3 +88,22 @@ function magnitude(v: Coordinate) {
   // Calculate the magnitude (length) of the vector
   return Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2);
 }
+
+export function getMiddlePoint(
+  coordinates: Coordinate[],
+  offset = { x: 0, y: 0 }
+): Coordinate {
+  let totalX = 0;
+  let totalY = 0;
+  const len = coordinates.length;
+
+  for (let i = 0; i < len; i++) {
+    totalX += coordinates[i].x;
+    totalY += coordinates[i].y;
+  }
+
+  const midX = totalX / len;
+  const midY = totalY / len;
+
+  return { x: midX + offset.x, y: midY + offset.y, z: 0 };
+}
