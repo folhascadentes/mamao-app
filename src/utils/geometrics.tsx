@@ -1,32 +1,36 @@
 export function getPerpendicularVector(v1: Coordinate, v2: Coordinate) {
-  // Calcula o vetor diretor V entre P1 e P2
+  // Calculate the direction vector V between P1 and P2
   var V = { x: v2.x - v1.x, y: v2.y - v1.y, z: v2.z - v1.z };
 
-  // Define um vetor W no eixo Z
+  // Define a vector W on the Z axis
   var W = { x: 0, y: 1, z: 0 };
 
-  // Calcula o vetor perpendicular N usando o produto vetorial entre V e W
+  // Calculate the perpendicular vector N using the cross product between V and W
   var Nx = V.y * W.z - V.z * W.y;
   var Ny = V.z * W.x - V.x * W.z;
   var Nz = V.x * W.y - V.y * W.x;
   var N = { x: Nx, y: Ny, z: Nz };
 
-  // Retorna o vetor perpendicular
+  // Return the perpendicular vector
   return N;
 }
 
 export function getAngleWithXAxis(v: Coordinate) {
-  // Calcula o ângulo entre o vetor v e o eixo x
+  // Calculate the angle between vector v and the x-axis
   var angle = Math.atan2(v.z, v.x);
 
-  // Converte o ângulo de radianos para graus
+  // Convert the angle from radians to degrees
   angle = (angle * 180) / Math.PI;
 
-  // Retorna o ângulo
+  // Return the angle
   return angle;
 }
 
-export function findPerpendicularVector(v1: Coordinate, v2: Coordinate, v3: Coordinate) {
+export function findPerpendicularVector(
+  v1: Coordinate,
+  v2: Coordinate,
+  v3: Coordinate
+) {
   // Step 1: Find two vectors that lie on the plane
   const u = { x: v1.x - v2.x, y: v1.y - v2.y, z: v1.z - v2.z };
   const v = { x: v1.x - v3.x, y: v1.y - v3.y, z: v1.z - v3.z };
@@ -81,5 +85,6 @@ function dotProduct(v1: Coordinate, v2: Coordinate) {
 }
 
 function magnitude(v: Coordinate) {
+  // Calculate the magnitude (length) of the vector
   return Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2);
 }
