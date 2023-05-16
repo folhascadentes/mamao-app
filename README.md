@@ -107,7 +107,7 @@ Both dominant and nonDominant have the same structure and parameters:
     "location": ["Location.SHOULDER_LEFT", "Location.ELBOW_LEFT"],
     "handShape": "HandShape.libras.L",
     "palmOrientation": "PalmOrientation.DOWN",
-    "handOrieation": "HandOrientation.LEFT",
+    "handOrientation": "HandOrientation.LEFT",
     "options": {
       "location": {
         "track": true
@@ -291,7 +291,7 @@ The movement object structure is as follows:
   "x": "-1|0|1", // Movement along the X-axis (left, still, right)
   "y": "-1|0|1", // Movement along the Y-axis (up, still, down)
   "z": "-1|0|1", // Movement along the Z-axis (back, still, front)
-  "rotateWrist": "boolean", // Whether the sign requires wrist rotation
+  "wristRootate": "boolean", // Whether the sign requires wrist rotation
   "wristExtension": "boolean", // Whether the sign requires wrist extension (lifting the back of your hand)
   "wristFlexion": "boolean", // Whether the sign requires wrist flexion (bending your hand downward)
   "wristAbduction": "boolean", // Whether the sign requires wrist abduction (moving your hand towards the thumb side)
