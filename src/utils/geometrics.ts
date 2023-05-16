@@ -74,7 +74,7 @@ export function pointDifference(v1: Coordinate, v2: Coordinate) {
   };
 }
 
-export function angleBetweenTwoVectors(v1: Coordinate, v2: Coordinate) {
+export function angleBetweenTwoVectors(v1: Vector, v2: Vector) {
   const dotProductValue = dotProduct(v1, v2);
   const magnitudeValue = magnitude(v1) * magnitude(v2);
   return (Math.acos(dotProductValue / magnitudeValue) * 180) / Math.PI;
