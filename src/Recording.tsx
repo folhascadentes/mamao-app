@@ -4,15 +4,23 @@ import { Camera } from "@mediapipe/camera_utils";
 import {
   signs,
   HandshapeImages,
-  PalmDirectionCategoryDescription,
+  PalmOrientation,
+  PalmOrientationDescription,
+  Sign,
 } from "./signs";
 import { Subject } from "./utils/subject";
-import { Detector, DetectorStates, DETECTOR_STATES } from "./utils/detector";
-import { Instructor } from "./utils/instructor";
 import {
+  Detector,
+  DetectorStates,
+  DetectorState,
+  DETECTOR_STATES,
+} from "./utils/detector";
+import { Instructor, drawHand } from "./utils/instructor";
+import {
+  HandResults,
   initalizeHandsDetector,
   initializePoseDetector,
-  HandResults,
+  PoseResults,
 } from "./utils/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
@@ -31,25 +39,24 @@ function Recording({
   const FPS: number = cameraSettings.frameRate ?? 24;
   const BUFFER_SIZE: number = DURATION * FPS;
 
-  const videoRef = useRef<HTMLVideoElement>();
-  const canvasRef = useRef<HTMLCanvasElement>();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
   const detectorRef = useRef<Detector>();
   const instructorRef = useRef<Instructor>();
   const signIndex = useRef<number>(1);
 
-  const [sign, setSign] = useState(signs[0]);
-  const [signCounter, setSignCounter] = useState(0);
-  const [todoActions, setTodoActions] = useState([]);
-  const [doneActions, setDoneActions] = useState([]);
+  const [sign, setSign] = useState<Sign>(signs[0]);
+  const [signCounter, setSignCounter] = useState<number>(0);
+  const [todoActions, setTodoActions] = useState<DetectorState[]>([]);
+  const [doneActions, setDoneActions] = useState<DetectorState[]>([]);
 
   const imageBuffer: ImageData[] = [];
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
-
   let buffer = [];
 
-  const onResultPoseCallback = (results) => {
+  const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
       poseWorldLandmarks = results.poseWorldLandmarks;
     } else {
@@ -57,10 +64,11 @@ function Recording({
     }
 
     if (results.poseLandmarks) {
-      poseLandmarks = results.poseLandmarks.map((landmark) => {
+      const canvas = canvasRef.current as HTMLCanvasElement;
+      poseLandmarks = results.poseLandmarks.map((landmark: Coordinate) => {
         return {
-          x: landmark.x * canvasRef.current?.width,
-          y: landmark.y * canvasRef.current?.height,
+          x: landmark.x * canvas.width,
+          y: landmark.y * canvas.height,
           z: landmark.z,
         };
       });
@@ -69,20 +77,23 @@ function Recording({
     }
   };
 
-  const onResultsHandsCallback = (results: HandResults) => {
+  const onResultsHandsCallback = (handResults: HandResults) => {
     const subject = subjectRef.current;
     const detector = detectorRef.current;
     const instructor = instructorRef.current;
 
-    // merge pose and hands results
-    results.poseLandmarks = poseLandmarks;
-    results.poseWorldLandmarks = poseWorldLandmarks;
+    const results: HandResults &
+      Pick<PoseResults, "poseLandmarks" | "poseWorldLandmarks"> = {
+      ...handResults,
+      poseLandmarks,
+      poseWorldLandmarks,
+    };
 
     const subjectData = subject?.parse(results);
     const response = detector?.run(subjectData);
 
     if (debuger) {
-      const ctx = canvasRef.current.getContext("2d");
+      const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
 
       drawPointsDebug(buffer);
 
@@ -107,12 +118,9 @@ function Recording({
       }
     }
 
-    instructor.instruct(subjectData, response);
+    instructor?.instruct(subjectData, response);
 
-    if (
-      response.state === DetectorStates.FINAL_HAND_SHAPE &&
-      response.valid
-    ) {
+    if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
       if (detector.memory.endSignFrame - detector.memory.endMovementFrame < 7) {
         success();
         setSignCounter((prevCounter) => prevCounter + 1);
@@ -128,8 +136,8 @@ function Recording({
         failure();
       }
     } else {
-      const todo = [];
-      const done = [];
+      const todo: DetectorState[] = [];
+      const done: DetectorState[] = [];
       let isCheckingTodoActions = false;
       DETECTOR_STATES.forEach((step) => {
         if (response.state === step.state) {
@@ -153,7 +161,12 @@ function Recording({
       handShapeModel
     );
     const detector = new Detector(sign);
-    const instructor = new Instructor(canvasRef.current.getContext("2d"), sign);
+    const instructor = new Instructor(
+      (canvasRef.current as HTMLCanvasElement).getContext(
+        "2d"
+      ) as CanvasRenderingContext2D,
+      sign
+    );
     let loaded = false;
 
     subjectRef.current = subject;
@@ -166,14 +179,15 @@ function Recording({
     pose.onResults(onResultPoseCallback);
     hands.onResults(onResultsHandsCallback);
 
-    const camera = new Camera(videoRef.current, {
+    const camera = new Camera(videoRef.current as HTMLVideoElement, {
       onFrame: async () => {
-        renderCameraImage(videoRef.current);
-        await hands.send({ image: videoRef.current });
-        await pose.send({ image: videoRef.current });
+        const video = videoRef.current as HTMLVideoElement;
+        renderCameraImage(video as HTMLVideoElement);
+        await hands.send({ image: video });
+        await pose.send({ image: video });
         if (!loaded) {
           setLoading(false);
-          changeSign();
+          showSign();
           loaded = true;
         }
       },
@@ -190,11 +204,11 @@ function Recording({
     const instructor = instructorRef.current;
 
     if (signCounter === SIGN_N_TIMES) {
-      changeSign();
+      showSign();
       setSignCounter(0);
       setSign(signs[signIndex.current % signs.length]);
-      detector.setSign(signs[signIndex.current % signs.length]);
-      instructor.setSign(signs[signIndex.current % signs.length]);
+      detector?.setSign(signs[signIndex.current % signs.length]);
+      instructor?.setSign(signs[signIndex.current % signs.length]);
       signIndex.current += 1;
     }
     // eslint-disable-next-line
@@ -236,20 +250,19 @@ function Recording({
                   </div>
                   {index === 0 &&
                     (step.state === DetectorStates.HAND_SHAPE ? (
-                      <HandConfigurationInstructions sign={sign} />
+                      <HandShapeInstructions sign={sign} />
                     ) : step.state === DetectorStates.PALM_ORIENTATION ? (
-                      <PalmDirectionInstructions sign={sign} />
+                      <PalmOrientationInstructions sign={sign} />
                     ) : step.state === DetectorStates.INITIAL_LOCATION ? (
-                      <InitialPositionInstructions sign={sign} />
+                      <InitialLocationInstructions sign={sign} />
                     ) : step.state === DetectorStates.MOVEMENT ? (
                       <MovementInstructions sign={sign} />
                     ) : step.state === DetectorStates.FINAL_LOCATION ? (
-                      <FinalPositionInstructions sign={sign} />
+                      <FinalLocationInstructions sign={sign} />
                     ) : step.state === DetectorStates.FINAL_PALM_ORIENTATION ? (
-                      <FinalPalmDirectionInstructions sign={sign} />
-                    ) : step.state ===
-                      DetectorStates.FINAL_HAND_SHAPE ? (
-                      <FinalHandConfigurationInstructions sign={sign} />
+                      <FinalPalmOrientationInstructions sign={sign} />
+                    ) : step.state === DetectorStates.FINAL_HAND_SHAPE ? (
+                      <FinalHandShapeInstructions sign={sign} />
                     ) : (
                       ""
                     ))}
@@ -355,21 +368,21 @@ function Recording({
     }
   }
 
-  function success() {
+  function success(): void {
     canvasRef.current?.classList.remove("canvas-success");
     setTimeout(() => {
       canvasRef.current?.classList.add("canvas-success");
     }, 0);
   }
 
-  function failure() {
+  function failure(): void {
     canvasRef.current?.classList.remove("canvas-failure");
     setTimeout(() => {
       canvasRef.current?.classList.add("canvas-failure");
     }, 0);
   }
 
-  function changeSign() {
+  function showSign(): void {
     document.querySelector("#canvas-overlay")?.classList.remove("overlay");
     setTimeout(() => {
       document.querySelector("#canvas-overlay")?.classList.add("overlay");
@@ -379,44 +392,43 @@ function Recording({
 
 export default Recording;
 
-function HandConfigurationInstructions({ sign }) {
-  const dominantHandConfiguration =
-    sign.signSteps.startPosition.dominantHand.handConfiguration;
-  const nonDominantHandConfiguration =
-    sign.signSteps.startPosition.nonDominantHand.handConfiguration;
+function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
+  const dominantHandShape = sign.steps.start.dominant.handShape;
+  const nonDominantHandShape = sign.steps.start.nonDominant?.handShape;
 
   return (
     <div className="flex flex-col space-y-4 mx-8 my-4">
-      {dominantHandConfiguration && (
+      {dominantHandShape && (
         <div>
           <div>
             1. Configure e mantenha a <b>mão direita</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {HandshapeImages[dominantHandConfiguration].map((image, index) => {
-              return (
-                <div
-                  key={`handshape_do_${index}`}
-                  className="flex flex-col text-center space-y-4"
-                >
-                  <img alt={image.alt} className="h-60" src={image.path} />
-                  <span className="text-sm font-bold">{image.label}</span>
-                </div>
-              );
-            })}
+            {HandshapeImages[dominantHandShape] &&
+              HandshapeImages[dominantHandShape].map((image, index) => {
+                return (
+                  <div
+                    key={`handshape_do_${index}`}
+                    className="flex flex-col text-center space-y-4"
+                  >
+                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <span className="text-sm font-bold">{image.label}</span>
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}
-      {nonDominantHandConfiguration && (
+      {nonDominantHandShape && (
         <div>
           <div>
             2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {HandshapeImages[nonDominantHandConfiguration].map(
-              (image, index) => {
+            {HandshapeImages[nonDominantHandShape] &&
+              HandshapeImages[nonDominantHandShape].map((image, index) => {
                 return (
                   <div
                     key={`handshape_ndo_${index}`}
@@ -426,8 +438,7 @@ function HandConfigurationInstructions({ sign }) {
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );
-              }
-            )}
+              })}
           </div>
         </div>
       )}
@@ -435,31 +446,28 @@ function HandConfigurationInstructions({ sign }) {
   );
 }
 
-function PalmDirectionInstructions({ sign }) {
-  const dominantHandCategory =
-    sign.signSteps.startPosition.dominantHand.palmDirectionCategory;
-  const nonDominantHandCategory =
-    sign.signSteps.startPosition.nonDominantHand.palmDirectionCategory;
+function PalmOrientationInstructions({ sign }: { sign: Sign }): JSX.Element {
+  const dominantCategory = sign.steps.start.dominant.palmOrientation;
+  const nonDominantCategory = sign.steps.start.nonDominant?.palmOrientation;
 
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
         1. Direcione e mantenha palma da mão <b>direita</b> apontado para{" "}
-        <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
+        <b>{PalmOrientationDescription[dominantCategory]}</b>
       </div>
-      {nonDominantHandCategory && (
+      {nonDominantCategory && (
         <div>
           2. Direcione e mantenha da mão <b>esquerda</b> apontado para{" "}
-          <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
+          <b>{PalmOrientationDescription[nonDominantCategory]}</b>
         </div>
       )}
     </div>
   );
 }
 
-function InitialPositionInstructions({ sign }) {
-  const hasNonDominantHand =
-    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
+function InitialLocationInstructions({ sign }: { sign: Sign }): JSX.Element {
+  const hasNonDominantHand = sign.steps.start.nonDominant?.location;
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
@@ -474,10 +482,10 @@ function InitialPositionInstructions({ sign }) {
   );
 }
 
-function MovementInstructions({ sign }) {
+function MovementInstructions({ sign }: { sign: Sign }): JSX.Element {
   const dominanHandDescription =
-    sign.signSteps.movements.dominanHandDescription;
-  const dominantHandCategory = sign.signSteps.movements.dominantHandCategory;
+    sign.steps.movement.dominant.metadata.description;
+  const dominantHandCategory = sign.steps.movement.dominant.metadata.type;
 
   return (
     <div className="flex flex-col mx-8 my-4">
@@ -491,9 +499,8 @@ function MovementInstructions({ sign }) {
   );
 }
 
-function FinalPositionInstructions({ sign }) {
-  const hasNonDominantHand =
-    sign.signSteps.startPosition.nonDominantHand.bodyRegion;
+function FinalLocationInstructions({ sign }: { sign: Sign }): JSX.Element {
+  const hasNonDominantHand = sign.steps.start.nonDominant?.location;
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
@@ -508,66 +515,67 @@ function FinalPositionInstructions({ sign }) {
   );
 }
 
-function FinalPalmDirectionInstructions({ sign }) {
-  const dominantHandCategory =
-    sign.signSteps.endPosition.dominantHand.palmDirectionCategory;
-  const nonDominantHandCategory =
-    sign.signSteps.endPosition.nonDominantHand.palmDirectionCategory;
+function FinalPalmOrientationInstructions({
+  sign,
+}: {
+  sign: Sign;
+}): JSX.Element {
+  const dominantCategory = sign.steps.end.dominant.palmOrientation;
+  const nonDominantCategory = sign.steps.end.nonDominant?.palmOrientation;
 
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
         1. Direcione e mantenha palma da mão <b>direita</b> apontando para{" "}
-        <b>{PalmDirectionCategoryDescription[dominantHandCategory]}</b>
+        <b>{PalmOrientationDescription[dominantCategory]}</b>
       </div>
-      {nonDominantHandCategory && (
+      {nonDominantCategory && (
         <div>
           2. Direcione e mantenha da mão <b>esquerda</b> apontando para{" "}
-          <b>{PalmDirectionCategoryDescription[nonDominantHandCategory]}</b>
+          <b>{PalmOrientationDescription[nonDominantCategory]}</b>
         </div>
       )}
     </div>
   );
 }
 
-function FinalHandConfigurationInstructions({ sign }) {
-  const dominantHandConfiguration =
-    sign.signSteps.endPosition.dominantHand.handConfiguration;
-  const nonDominantHandConfiguration =
-    sign.signSteps.endPosition.nonDominantHand.handConfiguration;
+function FinalHandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
+  const dominantHandShape = sign.steps.end.dominant.handShape;
+  const nonDominantHandShape = sign.steps.end?.nonDominant?.handShape;
 
   return (
     <div className="flex flex-col space-y-4 mx-8 my-4">
-      {dominantHandConfiguration && (
+      {dominantHandShape && (
         <div>
           <div>
             1. Configure e mantenha a <b>mão direita</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {HandshapeImages[dominantHandConfiguration].map((image, index) => {
-              return (
-                <div
-                  key={`handshape_do_${index}`}
-                  className="flex flex-col text-center space-y-4"
-                >
-                  <img alt={image.alt} className="h-60" src={image.path} />
-                  <span className="text-sm font-bold">{image.label}</span>
-                </div>
-              );
-            })}
+            {HandshapeImages[dominantHandShape] &&
+              HandshapeImages[dominantHandShape].map((image, index) => {
+                return (
+                  <div
+                    key={`handshape_do_${index}`}
+                    className="flex flex-col text-center space-y-4"
+                  >
+                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <span className="text-sm font-bold">{image.label}</span>
+                  </div>
+                );
+              })}
           </div>
         </div>
       )}
-      {nonDominantHandConfiguration && (
+      {nonDominantHandShape && (
         <div>
           <div>
             2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-8 mt-4">
-            {HandshapeImages[nonDominantHandConfiguration].map(
-              (image, index) => {
+            {HandshapeImages[nonDominantHandShape] &&
+              HandshapeImages[nonDominantHandShape].map((image, index) => {
                 return (
                   <div
                     key={`handshape_ndo_${index}`}
@@ -577,125 +585,10 @@ function FinalHandConfigurationInstructions({ sign }) {
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );
-              }
-            )}
+              })}
           </div>
         </div>
       )}
     </div>
   );
-}
-
-function drawHand(
-  ctx: CanvasRenderingContext2D,
-  landmarks: Coordinate[],
-  isDominant: boolean,
-  isPalmDirectionFront: boolean
-) {
-  drawHandConnectors(ctx, landmarks, isDominant, isPalmDirectionFront);
-}
-
-function drawHandConnectors(
-  ctx: CanvasRenderingContext2D,
-  landmarks: Coordinate[],
-  isDominant: boolean,
-  isPalmDirectionFront: boolean
-) {
-  if (!landmarks.length) {
-    return;
-  }
-
-  const palm = [
-    landmarks[0],
-    landmarks[1],
-    landmarks[5],
-    landmarks[9],
-    landmarks[13],
-    landmarks[17],
-    landmarks[0],
-  ];
-
-  if (isPalmDirectionFront) {
-    drawPolygon(ctx, palm, isDominant);
-  }
-
-  const strokes = [
-    [landmarks[1], landmarks[2]],
-    [landmarks[2], landmarks[3]],
-    [landmarks[3], landmarks[4]],
-    [landmarks[5], landmarks[6]],
-    [landmarks[6], landmarks[7]],
-    [landmarks[7], landmarks[8]],
-    [landmarks[9], landmarks[10]],
-    [landmarks[10], landmarks[11]],
-    [landmarks[11], landmarks[12]],
-    [landmarks[13], landmarks[14]],
-    [landmarks[14], landmarks[15]],
-    [landmarks[15], landmarks[16]],
-    [landmarks[17], landmarks[18]],
-    [landmarks[18], landmarks[19]],
-    [landmarks[19], landmarks[20]],
-  ];
-
-  strokes.sort((a, b) => {
-    if (a[1].z < b[1].z) {
-      return 1;
-    }
-    if (a[1].z > b[1].z) {
-      return -1;
-    }
-    return 0;
-  });
-
-  strokes.forEach((stroke) => {
-    drawStroke(ctx, stroke[0], stroke[1], isDominant);
-  });
-
-  if (!isPalmDirectionFront) {
-    drawPolygon(ctx, palm, isDominant);
-  }
-}
-
-function drawStroke(
-  ctx: CanvasRenderingContext2D,
-  p1: Coordinate,
-  p2: Coordinate,
-  isDominant: boolean
-) {
-  const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
-  gradient.addColorStop(0, isDominant ? "#ffc685" : "#8985ff");
-  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
-  ctx.strokeStyle = gradient;
-  ctx.lineCap = "round";
-  ctx.lineWidth = 14;
-  ctx.beginPath();
-  ctx.moveTo(p1.x, p1.y);
-  ctx.lineTo(p2.x, p2.y);
-  ctx.stroke();
-}
-
-function drawPolygon(
-  ctx: CanvasRenderingContext2D,
-  landmarks: Coordinate[],
-  isDominant: boolean
-) {
-  const gradient = ctx.createLinearGradient(0, 0, 720, 720);
-  gradient.addColorStop(0, isDominant ? "#ffdeb8" : "#bab8ff");
-  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
-
-  ctx.beginPath();
-  ctx.moveTo(landmarks[0].x, landmarks[0].y);
-  for (let i = 1; i < landmarks.length; i++) {
-    ctx.lineTo(landmarks[i].x, landmarks[i].y);
-  }
-  ctx.closePath();
-
-  ctx.fillStyle = gradient;
-  ctx.strokeStyle = gradient;
-
-  ctx.lineJoin = "round";
-  ctx.miterLimit = 6;
-
-  ctx.fill();
-  ctx.stroke();
 }
