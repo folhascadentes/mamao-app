@@ -8,7 +8,7 @@ import {
   PalmOrientationDescription,
   Sign,
 } from "./signs";
-import { Subject } from "./utils/subject";
+import { Subject, SubjectData } from "./utils/subject";
 import {
   Detector,
   DetectorStates,
@@ -21,6 +21,7 @@ import {
   initalizeHandsDetector,
   initializePoseDetector,
   PoseResults,
+  Results,
 } from "./utils/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
 
@@ -52,9 +53,9 @@ function Recording({
   const [doneActions, setDoneActions] = useState<DetectorState[]>([]);
 
   const imageBuffer: ImageData[] = [];
+  let movementBuffer: SubjectData[] = [];
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
-  let buffer = [];
 
   const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
@@ -78,8 +79,8 @@ function Recording({
   };
 
   const onResultsHandsCallback = (handResults: HandResults) => {
-    const subject = subjectRef.current;
-    const detector = detectorRef.current;
+    const subject = subjectRef.current as Subject;
+    const detector = detectorRef.current as Detector;
     const instructor = instructorRef.current;
 
     const results: HandResults &
@@ -89,31 +90,37 @@ function Recording({
       poseWorldLandmarks,
     };
 
-    const subjectData = subject?.parse(results);
-    const response = detector?.run(subjectData);
+    const subjectData = subject.parse(results);
+    const response = detector.run(subjectData);
 
     if (debuger) {
       const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
 
-      drawPointsDebug(buffer);
+      drawHandDebugMode(movementBuffer);
 
-      if (subjectData.dominantHandLandmarks.length) {
-        const landmarks = subjectData.dominantHandLandmarks;
+      if (
+        subjectData.readings.dominantLandmarks.length &&
+        subjectData.hand.dominant.palm?.z
+      ) {
+        const landmarks = subjectData.readings.dominantLandmarks;
         drawHand(
-          ctx,
+          ctx as CanvasRenderingContext2D,
           landmarks,
           true,
-          subjectData.hand.dominantHand.palm.z > 0
+          subjectData.hand.dominant.palm.z > 0
         );
       }
 
-      if (subjectData.nonDominantHandLandmarks.length) {
-        const landmarks = subjectData.nonDominantHandLandmarks;
+      if (
+        subjectData.readings.nonDominantLandmarks.length &&
+        subjectData.hand.nonDominant.palm?.z
+      ) {
+        const landmarks = subjectData.readings.nonDominantLandmarks;
         drawHand(
-          ctx,
+          ctx as CanvasRenderingContext2D,
           landmarks,
           false,
-          subjectData.hand.nonDominantHand.palm.z > 0
+          subjectData.hand.nonDominant.palm.z > 0
         );
       }
     }
@@ -121,17 +128,20 @@ function Recording({
     instructor?.instruct(subjectData, response);
 
     if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
-      if (detector.memory.endSignFrame - detector.memory.endMovementFrame < 7) {
+      const memory = detector.getMemory();
+
+      if (memory.endSignFrame - memory.endMovementFrame < 7) {
         success();
         setSignCounter((prevCounter) => prevCounter + 1);
-        const startIndex = subject.buffer.findIndex(
-          (value) => value.frame === detector.memory.startFrame
+        const buffer = subject?.getBuffer() as SubjectData[];
+        const startIndex = buffer.findIndex(
+          (value) => value.frame === memory.startFrame
         );
-        const endIndex = subject.buffer.findIndex(
-          (value) => value.frame === detector.memory.endSignFrame
+        const endIndex = buffer.findIndex(
+          (value) => value.frame === memory.endSignFrame
         );
 
-        buffer = subject.buffer.slice(startIndex, endIndex + 1);
+        movementBuffer = buffer.slice(startIndex, endIndex + 1);
       } else {
         failure();
       }
@@ -316,24 +326,24 @@ function Recording({
     </div>
   );
 
-  function drawPointsDebug(buffer) {
+  function drawHandDebugMode(buffer: SubjectData[]): void {
     if (buffer.length) {
       const ctx = canvasRef.current?.getContext("2d");
 
       const value = buffer.shift();
 
-      if (ctx) {
+      if (value && ctx && value.hand.dominant.palm?.z) {
         drawHand(
           ctx,
-          value.dominantHandLandmarks,
+          value.readings.dominantLandmarks,
           true,
-          value.subject.hand.dominantHand.palm.z > 0
+          value.hand.dominant.palm.z > 0
         );
       }
     }
   }
 
-  function renderCameraImage(image: HTMLVideoElement) {
+  function renderCameraImage(image: HTMLVideoElement): void {
     if (canvasRef.current) {
       const ctx = canvasRef.current.getContext("2d", {
         willReadFrequently: true,

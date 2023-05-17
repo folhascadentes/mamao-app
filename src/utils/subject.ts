@@ -80,7 +80,7 @@ export class Subject {
     this.setSubjectHandShape(subject);
     this.setSubjectHandPointing(subject);
     this.setSubjectHandPalm(subject);
-    this.updateSkeletonBuffer(subject);
+    this.updateBuffer(subject);
     this.setSubjectHandMovement(subject);
 
     return subject;
@@ -129,7 +129,7 @@ export class Subject {
     return subject;
   }
 
-  private updateSkeletonBuffer(subject: SubjectData): void {
+  private updateBuffer(subject: SubjectData): void {
     this.buffer.push(subject);
 
     if (this.buffer.length > this.bufferSize) {
