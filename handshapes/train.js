@@ -78,7 +78,7 @@ function loadDataset(dirpath) {
   return [
     inputData.flat(),
     outputData.flat(),
-    files.map((file) => file.split(".")[0] + "_cm"),
+    files.map((file) => file.split(".")[0]),
   ];
 }
 
