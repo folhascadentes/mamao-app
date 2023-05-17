@@ -1,7 +1,8 @@
 import {
-  Location,
-  HandShape,
   HandOrientation,
+  HandShape,
+  Location,
+  MovementType,
   PalmOrientation,
   Sign,
 } from "./types";
@@ -30,7 +31,7 @@ export const signs: Sign[] = [
           forbidden: [{ x: -1 }],
           metadata: {
             description: "mova a mão até a outra bola laranja",
-            type: "LIENAR_MOTION",
+            type: MovementType.LINEAR_MOTION,
           },
         },
       },

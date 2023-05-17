@@ -2,11 +2,12 @@ import React, { useRef, useEffect, useState } from "react";
 import * as tensorflow from "@tensorflow/tfjs";
 import { Camera } from "@mediapipe/camera_utils";
 import {
-  signs,
-  HandshapeImages,
   // PalmOrientation,
+  HandshapeImages,
+  MovementType,
   PalmOrientationDescription,
   Sign,
+  signs,
 } from "./signs";
 import { Subject, SubjectData } from "./utils/subject";
 import {
@@ -501,7 +502,7 @@ function MovementInstructions({ sign }: { sign: Sign }): JSX.Element {
       <div>
         1. Com a <b>mão dominante</b> {dominanHandDescription}
       </div>
-      {dominantHandCategory === "CIRCULAR_MOTION" && (
+      {dominantHandCategory === MovementType.CIRCULAR_MOTION && (
         <div>2. Acompanhe o movimento da bola laranja na câmera</div>
       )}
     </div>

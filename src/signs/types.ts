@@ -50,6 +50,11 @@ interface MovementConfiguration {
   };
 }
 
+export enum MovementType {
+  LINEAR_MOTION = "LINEAR_MOTION",
+  CIRCULAR_MOTION = "CIRCULAR_MOTION",
+}
+
 export interface MovementAxis {
   x?: 1 | -1;
   y?: 1 | -1;
