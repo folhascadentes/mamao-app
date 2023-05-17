@@ -425,7 +425,7 @@ function handCloseToLocation(
   landmarks: Coordinate[],
   position: Coordinate
 ): boolean {
-  if (!position) {
+  if (!position || !landmarks.length) {
     return false;
   }
 
@@ -622,12 +622,12 @@ function checkHandPosition(
     poseLandmarks.length &&
     (dominantLandmarks.length || nonDominantLandmarks.length)
   ) {
-    const dominantOkay =
-      !dominantLandmarks.length ||
-      handCloseToLocation(dominantLandmarks, dominantCoordinate);
+    const dominantOkay = handCloseToLocation(
+      dominantLandmarks,
+      dominantCoordinate
+    );
 
     const nonDominantOkay =
-      !nonDominantLandmarks.length ||
       !nonDominantCoordinate ||
       handCloseToLocation(nonDominantLandmarks, nonDominantCoordinate);
 
