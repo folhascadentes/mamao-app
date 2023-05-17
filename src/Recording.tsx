@@ -4,7 +4,7 @@ import { Camera } from "@mediapipe/camera_utils";
 import {
   signs,
   HandshapeImages,
-  PalmOrientation,
+  // PalmOrientation,
   PalmOrientationDescription,
   Sign,
 } from "./signs";
@@ -83,8 +83,7 @@ function Recording({
     const detector = detectorRef.current as Detector;
     const instructor = instructorRef.current;
 
-    const results: HandResults &
-      Pick<PoseResults, "poseLandmarks" | "poseWorldLandmarks"> = {
+    const results: Results = {
       ...handResults,
       poseLandmarks,
       poseWorldLandmarks,
@@ -414,7 +413,7 @@ function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
             1. Configure e mantenha a <b>mão direita</b> conforme as imagens
             abaixo
           </div>
-          <div className="flex space-x-8 mt-4">
+          <div className="flex space-x-16 mt-4">
             {HandshapeImages[dominantHandShape] &&
               HandshapeImages[dominantHandShape].map((image, index) => {
                 return (
@@ -436,7 +435,7 @@ function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
             2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
             abaixo
           </div>
-          <div className="flex space-x-8 mt-4">
+          <div className="flex space-x-16 mt-4">
             {HandshapeImages[nonDominantHandShape] &&
               HandshapeImages[nonDominantHandShape].map((image, index) => {
                 return (

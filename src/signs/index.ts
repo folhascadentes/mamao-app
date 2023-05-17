@@ -1,10 +1,7 @@
-export * from "./instruction";
-export * from "./types";
-
 import {
   Location,
   HandShape,
-  HandOrientation,
+  // HandOrientation,
   PalmOrientation,
   Sign,
 } from "./types";
@@ -727,3 +724,6 @@ export const signs: Sign[] = [
   //   token: "Certeza",
   // },
 ];
+
+export * from "./instruction";
+export * from "./types";

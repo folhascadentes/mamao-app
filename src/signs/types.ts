@@ -150,7 +150,7 @@ export const HandShape = {
     W: "w",
     X: "x",
     Y: "y",
-    middleAndIndexFinger: "middle_and_index_finger",
+    middleAndIndexFinger: "middleAndIndexFinger",
   },
 };
 

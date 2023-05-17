@@ -73,7 +73,7 @@ export const HandshapeImages: {
       path: "/handshapes/index_finger_side.png",
     },
   ],
-  mideAndIndexFinger: [
+  middleAndIndexFinger: [
     {
       label: "Visão frontal",
       path: "/handshapes/middle_index_finger_front.png",
