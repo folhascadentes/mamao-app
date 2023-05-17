@@ -74,6 +74,13 @@ export interface DetectorMemory {
   endSignFrame: number | undefined;
 }
 
+export interface DetectorData {
+  [key: string]: any;
+  memory: DetectorMemory;
+  state: DetectorStates;
+  valid: boolean;
+}
+
 export class Detector {
   private sign: Sign;
   private currentState: DetectorStates;
@@ -105,12 +112,7 @@ export class Detector {
     return this.memory;
   }
 
-  public run(subject: SubjectData): {
-    [key: string]: any;
-    memory: DetectorMemory;
-    state: DetectorStates;
-    valid: boolean;
-  } {
+  public run(subject: SubjectData): DetectorData {
     const response = this.states[this.currentState].onRun(
       this.sign,
       subject,

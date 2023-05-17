@@ -1,5 +1,6 @@
-import { DetectorStates, CIRCLE_RADIUS } from "./detector";
+import { DetectorData, DetectorStates, CIRCLE_RADIUS } from "./detector";
 import { Sign } from "../signs";
+import { SubjectData } from "./subject";
 
 export class Instructor {
   private ctx: CanvasRenderingContext2D;
@@ -22,27 +23,25 @@ export class Instructor {
     this.sign = sign;
   }
 
-  public instruct(subject, response): void {
+  public instruct(subject: SubjectData, response: DetectorData): void {
     if (!response.valid) {
       if (response.state === DetectorStates.INITIAL_LOCATION) {
         this.instructPosition(
-          response.memory.dominantHandCoordinate,
-          response.memory.nonDominantHandCoordinate
+          response.memory.dominantCoordinate,
+          response.memory.nonDominantCoordinate
         );
         this.angle = 0;
         this.orientation = Math.random() > 0.5 ? 1 : -1;
       } else if (response.state === DetectorStates.MOVEMENT) {
         this.instructPosition(
-          response.memory.dominantHandEndCoordinate,
-          response.memory.nonDominantHandEndCoordinate
+          response.memory.dominantEndCoordinate,
+          response.memory.nonDominantEndCoordinate
         );
-        this.instructMovement(
-          this.sign.steps.movement.dominantHandCategory
-        );
+        this.instructMovement(this.sign.steps.movement.dominant.metadata.type);
       } else if (response.state === DetectorStates.FINAL_LOCATION) {
         this.instructPosition(
-          response.memory.dominantHandEndCoordinate,
-          response.memory.nonDominantHandEndCoordinate
+          response.memory.dominantEndCoordinate,
+          response.memory.nonDominantEndCoordinate
         );
       }
     }
@@ -50,7 +49,7 @@ export class Instructor {
 
   private instructPosition(
     dominantLocation: Coordinate,
-    nonDominantLocation: Coordinate
+    nonDominantLocation?: Coordinate
   ): void {
     if (dominantLocation) {
       this.drawCircle(
@@ -122,4 +121,118 @@ export class Instructor {
     this.ctx.fillStyle = "rgb(229, 123, 69, 0.9)";
     this.ctx.fill();
   }
+}
+
+export function drawHand(
+  ctx: CanvasRenderingContext2D,
+  landmarks: Coordinate[],
+  isDominant: boolean,
+  isPalmDirectionFront: boolean
+) {
+  drawHandConnectors(ctx, landmarks, isDominant, isPalmDirectionFront);
+}
+
+function drawHandConnectors(
+  ctx: CanvasRenderingContext2D,
+  landmarks: Coordinate[],
+  isDominant: boolean,
+  isPalmDirectionFront: boolean
+) {
+  if (!landmarks.length) {
+    return;
+  }
+
+  const palm = [
+    landmarks[0],
+    landmarks[1],
+    landmarks[5],
+    landmarks[9],
+    landmarks[13],
+    landmarks[17],
+    landmarks[0],
+  ];
+
+  if (isPalmDirectionFront) {
+    drawPolygon(ctx, palm, isDominant);
+  }
+
+  const strokes = [
+    [landmarks[1], landmarks[2]],
+    [landmarks[2], landmarks[3]],
+    [landmarks[3], landmarks[4]],
+    [landmarks[5], landmarks[6]],
+    [landmarks[6], landmarks[7]],
+    [landmarks[7], landmarks[8]],
+    [landmarks[9], landmarks[10]],
+    [landmarks[10], landmarks[11]],
+    [landmarks[11], landmarks[12]],
+    [landmarks[13], landmarks[14]],
+    [landmarks[14], landmarks[15]],
+    [landmarks[15], landmarks[16]],
+    [landmarks[17], landmarks[18]],
+    [landmarks[18], landmarks[19]],
+    [landmarks[19], landmarks[20]],
+  ];
+
+  strokes.sort((a, b) => {
+    if (a[1].z < b[1].z) {
+      return 1;
+    }
+    if (a[1].z > b[1].z) {
+      return -1;
+    }
+    return 0;
+  });
+
+  strokes.forEach((stroke) => {
+    drawStroke(ctx, stroke[0], stroke[1], isDominant);
+  });
+
+  if (!isPalmDirectionFront) {
+    drawPolygon(ctx, palm, isDominant);
+  }
+}
+
+function drawStroke(
+  ctx: CanvasRenderingContext2D,
+  p1: Coordinate,
+  p2: Coordinate,
+  isDominant: boolean
+) {
+  const gradient = ctx.createLinearGradient(p1.x, p1.y, p2.x, p2.y);
+  gradient.addColorStop(0, isDominant ? "#ffc685" : "#8985ff");
+  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
+  ctx.strokeStyle = gradient;
+  ctx.lineCap = "round";
+  ctx.lineWidth = 14;
+  ctx.beginPath();
+  ctx.moveTo(p1.x, p1.y);
+  ctx.lineTo(p2.x, p2.y);
+  ctx.stroke();
+}
+
+function drawPolygon(
+  ctx: CanvasRenderingContext2D,
+  landmarks: Coordinate[],
+  isDominant: boolean
+) {
+  const gradient = ctx.createLinearGradient(0, 0, 720, 720);
+  gradient.addColorStop(0, isDominant ? "#ffdeb8" : "#bab8ff");
+  gradient.addColorStop(1, isDominant ? "#ff8c08" : "#4d47ff");
+
+  ctx.beginPath();
+  ctx.moveTo(landmarks[0].x, landmarks[0].y);
+  for (let i = 1; i < landmarks.length; i++) {
+    ctx.lineTo(landmarks[i].x, landmarks[i].y);
+  }
+  ctx.closePath();
+
+  ctx.fillStyle = gradient;
+  ctx.strokeStyle = gradient;
+
+  ctx.lineJoin = "round";
+  ctx.miterLimit = 6;
+
+  ctx.fill();
+  ctx.stroke();
 }
