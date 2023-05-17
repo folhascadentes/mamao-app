@@ -9,15 +9,6 @@ import {
   Sign,
 } from "./types";
 
-export const PalmOrientationDescriptor = {
-  OPPOSITE: { x: -1, y: 0, z: 0 },
-  RIGHT: { x: 1, y: 0, z: 0 },
-  FRONT: { x: 0, y: 0, z: 1 },
-  BACK: { x: 0, y: 0, z: -1 },
-  UP: { x: 0, y: 1, z: 0 },
-  DOWN: { x: 0, y: -1, z: 0 },
-};
-
 export const signs: Sign[] = [
   {
     language: "Libras",

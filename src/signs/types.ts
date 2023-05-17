@@ -50,10 +50,13 @@ interface MovementConfiguration {
   };
 }
 
-interface Movement {
-  x?: 1 | 0 | -1;
-  y?: 1 | 0 | -1;
-  z?: 1 | 0 | -1;
+export interface MovementAxis {
+  x?: 1 | -1;
+  y?: 1 | -1;
+  z?: 1 | -1;
+}
+
+export interface Movement extends MovementAxis {
   wristRotate?: boolean;
   wristExtension?: boolean;
   wristFlexion?: boolean;
@@ -62,54 +65,54 @@ interface Movement {
 }
 
 export enum Location {
-  FOREHEAD = "forehead",
-  FOREHEAD_LEFT = "forehead_left",
-  FOREHEAD_RIGHT = "forehead_right",
-  NOSE = "nose",
-  EYE_LEFT = "eye_left",
-  EYE_LEFT_INNER = "eye_left_inner",
-  EYE_LEFT_OUTER = "eye_left_outer",
-  EYE_RIGHT = "eye_right",
-  EYE_RIGHT_INNER = "eye_right_inner",
-  EYE_RIGHT_OUTER = "eye_right_outer",
-  EAR_LEFT = "ear_left",
-  EAR_RIGHT = "ear_right",
-  CHEEK_LEFT = "cheek_left",
-  CHEEK_RIGHT = "cheek_right",
-  MOUTH = "mouth",
-  MOUTH_LEFT = "mouth_left",
-  MOUTH_RIGHT = "mouth_right",
-  CHIN = "chin",
-  SHOULDER_LEFT = "shoulder_left",
-  SHOULDER_RIGHT = "shoulder_right",
-  ELBOW_LEFT = "elbow_left",
-  ELBOW_RIGHT = "elbow_right",
-  WRIST_LEFT = "wrist_left",
-  WRIST_RIGHT = "wrist_right",
-  PALM_LEFT = "palm_left",
-  PALM_RIGHT = "palm_right",
-  THUMB_LEFT = "thumb_cmc_left",
-  THUMB_RIGHT = "thumb_cmc_right",
-  INDEX_LEFT = "index_mcp_left",
-  INDEX_RIGHT = "index_mcp_right",
-  MIDDLE_LEFT = "middle_mcp_left",
-  MIDDLE_RIGHT = "middle_mcp_right",
-  RING_LEFT = "ring_mcp_left",
-  RING_RIGHT = "ring_mcp_right",
-  PINKY_LEFT = "pinky_mcp_left",
-  PINKY_RIGHT = "pinky_mcp_right",
-  TORAX = "torax",
-  TORAX_LEFT = "torax_left",
-  TORAX_RIGHT = "torax_right",
-  TORAX_UPPER = "torax_upper",
-  TORAX_UPPER_LEFT = "torax_upper_left",
-  TORAX_UPPER_RIGHT = "torax_upper_right",
-  TORAX_LOWER = "torax_lower",
-  TORAX_LOWER_LEFT = "torax_lower_left",
-  TORAX_LOWER_RIGHT = "torax_lower_right",
-  BELLY = "belly",
-  HIP_LEFT = "hip_left",
-  HIP_RIGHT = "hip_right",
+  FOREHEAD = "FOREHEAD",
+  FOREHEAD_LEFT = "FOREHEAD_LEFT",
+  FOREHEAD_RIGHT = "FOREHEAD_RIGHT",
+  NOSE = "NOSE",
+  EYE_LEFT = "EYE_LEFT",
+  EYE_LEFT_INNER = "EYE_LEFT_INNER",
+  EYE_LEFT_OUTER = "EYE_LEFT_OUTER",
+  EYE_RIGHT = "EYE_RIGHT",
+  EYE_RIGHT_INNER = "EYE_RIGHT_INNER",
+  EYE_RIGHT_OUTER = "EYE_RIGHT_OUTER",
+  EAR_LEFT = "EAR_LEFT",
+  EAR_RIGHT = "EAR_RIGHT",
+  CHEEK_LEFT = "CHEEK_LEFT",
+  CHEEK_RIGHT = "CHEEK_RIGHT",
+  MOUTH = "MOUTH",
+  MOUTH_LEFT = "MOUTH_LEFT",
+  MOUTH_RIGHT = "MOUTH_RIGHT",
+  CHIN = "CHIN",
+  SHOULDER_LEFT = "SHOULDER_LEFT",
+  SHOULDER_RIGHT = "SHOULDER_RIGHT",
+  ELBOW_LEFT = "ELBOW_LEFT",
+  ELBOW_RIGHT = "ELBOW_RIGHT",
+  WRIST_LEFT = "WRIST_LEFT",
+  WRIST_RIGHT = "WRIST_RIGHT",
+  PALM_LEFT = "PALM_LEFT",
+  PALM_RIGHT = "PALM_RIGHT",
+  THUMB_LEFT = "THUMB_CMC_LEFT",
+  THUMB_RIGHT = "THUMB_CMC_RIGHT",
+  INDEX_LEFT = "INDEX_MCP_LEFT",
+  INDEX_RIGHT = "INDEX_MCP_RIGHT",
+  MIDDLE_LEFT = "MIDDLE_MCP_LEFT",
+  MIDDLE_RIGHT = "MIDDLE_MCP_RIGHT",
+  RING_LEFT = "RING_MCP_LEFT",
+  RING_RIGHT = "RING_MCP_RIGHT",
+  PINKY_LEFT = "PINKY_MCP_LEFT",
+  PINKY_RIGHT = "PINKY_MCP_RIGHT",
+  TORAX = "TORAX",
+  TORAX_LEFT = "TORAX_LEFT",
+  TORAX_RIGHT = "TORAX_RIGHT",
+  TORAX_UPPER = "TORAX_UPPER",
+  TORAX_UPPER_LEFT = "TORAX_UPPER_LEFT",
+  TORAX_UPPER_RIGHT = "TORAX_UPPER_RIGHT",
+  TORAX_LOWER = "TORAX_LOWER",
+  TORAX_LOWER_LEFT = "TORAX_LOWER_LEFT",
+  TORAX_LOWER_RIGHT = "TORAX_LOWER_RIGHT",
+  BELLY = "BELLY",
+  HIP_LEFT = "HIP_LEFT",
+  HIP_RIGHT = "HIP_RIGHT",
 }
 
 type LeafValues<T> = T extends object
@@ -118,7 +121,7 @@ type LeafValues<T> = T extends object
     }[keyof T]
   : T;
 
-type HandShapeType = LeafValues<typeof HandShape>;
+export type HandShapeType = LeafValues<typeof HandShape>;
 
 export const HandShape = {
   libras: {
@@ -152,19 +155,39 @@ export const HandShape = {
 };
 
 export enum PalmOrientation {
-  UP = "up",
-  DOWN = "down",
-  LEFT = "left",
-  RIGHT = "right",
-  FRONT = "front",
-  BACK = "back",
+  BACK = "BACK",
+  DOWN = "DOWN",
+  FRONT = "FRONT",
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  UP = "UP",
 }
 
+export const PalmOrientationDescriptor: {
+  [key in PalmOrientation]: Vector;
+} = {
+  [PalmOrientation.BACK]: { x: 0, y: 0, z: -1 },
+  [PalmOrientation.DOWN]: { x: 0, y: -1, z: 0 },
+  [PalmOrientation.FRONT]: { x: 0, y: 0, z: 1 },
+  [PalmOrientation.LEFT]: { x: -1, y: 0, z: 0 },
+  [PalmOrientation.RIGHT]: { x: 1, y: 0, z: 0 },
+  [PalmOrientation.UP]: { x: 0, y: 1, z: 0 },
+};
+
+export const PalmOrientationDescription: { [K in PalmOrientation]: string } = {
+  [PalmOrientation.BACK]: "para si",
+  [PalmOrientation.DOWN]: "baixo",
+  [PalmOrientation.FRONT]: "frente",
+  [PalmOrientation.LEFT]: "esquerda",
+  [PalmOrientation.RIGHT]: "direita",
+  [PalmOrientation.UP]: "cima",
+};
+
 export enum HandOrientation {
-  UP = "up",
-  DOWN = "down",
-  LEFT = "left",
-  RIGHT = "right",
-  FRONT = "front",
-  BACK = "back",
+  BACK = "BACK",
+  DOWN = "DOWN",
+  FRONT = "FRONT",
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  UP = "UP",
 }

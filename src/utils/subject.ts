@@ -14,7 +14,7 @@ import { HandShapeType, Movement, MovementAxis } from "../signs";
 const CAPTURE_HAND_DATA = false;
 
 export interface SubjectData {
-  frame: number | undefined;
+  frame: number;
   body: {
     // [-] left [+] right
     angle: number | undefined;
@@ -84,6 +84,10 @@ export class Subject {
     this.setSubjectHandMovement(subject);
 
     return subject;
+  }
+
+  public getBuffer(): SubjectData[] {
+    return this.buffer;
   }
 
   private initializeSujectObject(results: Results): SubjectData {
