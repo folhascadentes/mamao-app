@@ -1,5 +1,6 @@
 import * as tensorflow from "@tensorflow/tfjs";
 import { POSE_LANDMARKS } from "@mediapipe/pose";
+import { Results } from "./mediapipe";
 import {
   angleBetweenTwoVectors,
   findPerpendicularVector,
@@ -7,14 +8,51 @@ import {
   getPerpendicularVector,
   pointDifference,
 } from "./geometrics";
+import { HandShapeType, Movement, MovementAxis } from "../signs";
 
+// Developement mode only for capture dataset for handshape
 const CAPTURE_HAND_DATA = false;
+
+export interface SubjectData {
+  frame: number | undefined;
+  body: {
+    // [-] left [+] right
+    angle: number | undefined;
+  };
+  hand: {
+    dominant: SubjectHandData;
+    nonDominant: SubjectHandData;
+  };
+  readings: SubjectReadings;
+}
+
+interface SubjectHandData {
+  // x [+] dominant hand oposite direction [-1] dominant hand direction
+  // y [+] up [-1] down
+  // z [+] front [-1] back
+  ponting: Vector | undefined;
+  // [+] dominant hand oposite direction [-1] dominant hand direction
+  // [+] up [-1] down
+  // [+] front [-1] back
+  palm: Vector | undefined;
+  handShape: HandShapeType | undefined;
+  movement: Movement;
+}
+
+interface SubjectReadings {
+  dominantLandmarks: Coordinate[];
+  nonDominantLandmarks: Coordinate[];
+  dominantWorldLandmarks: Coordinate[];
+  nonDominantWorldLandmarks: Coordinate[];
+  poseLandmarks: Coordinate[];
+  poseWorldLandmarks: Coordinate[];
+}
 
 export class Subject {
   private canvas: HTMLCanvasElement;
   private bufferSize: number;
   private model: tensorflow.LayersModel;
-  private buffer: any[];
+  private buffer: SubjectData[];
   private dominantHand: "RIGHT" | "LEFT";
   private frame: number;
   private dataset: any[];
@@ -35,132 +73,71 @@ export class Subject {
     this.dataset = [];
   }
 
-  public parse(results) {
-    const subject = this.initializeSujectObject();
+  public parse(results: Results): SubjectData {
+    const subject = this.initializeSujectObject(results);
 
     this.setSubjectBodyAngle(subject, results);
-
-    const {
-      dominantHandLandmarks,
-      nonDominantHandLandmarks,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks,
-    } = this.parseHandsWorldLandmarks(results);
-
-    subject.dominantHandLandmarks = dominantHandLandmarks;
-    subject.nonDominantHandLandmarks = nonDominantHandLandmarks;
-    subject.dominantHandWorldLandmarks = dominantHandWorldLandmarks;
-    subject.nonDominantHandWorldLandmarks = nonDominantHandWorldLandmarks;
-    subject.poseLandmarks = results.poseLandmarks;
-    subject.poseWorldLandmarks = results.poseWorldLandmarks;
-
-    this.setSubjectHandShape(
-      subject,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks
-    );
-
-    this.setSubjectHandPointing(
-      subject,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks
-    );
-
-    this.setSubjectHandPalm(
-      subject,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks
-    );
-
-    this.updateSkeletonBuffer(
-      subject,
-      dominantHandLandmarks,
-      nonDominantHandLandmarks,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks,
-      results.poseLandmarks,
-      results.poseWorldLandmarks
-    );
-
-    this.setSubjectHandMovement(subject, this.buffer);
+    this.setSubjectHandShape(subject);
+    this.setSubjectHandPointing(subject);
+    this.setSubjectHandPalm(subject);
+    this.updateSkeletonBuffer(subject);
+    this.setSubjectHandMovement(subject);
 
     return subject;
   }
 
-  private initializeSujectObject() {
-    return {
+  private initializeSujectObject(results: Results): SubjectData {
+    const {
+      dominantLandmarks,
+      nonDominantLandmarks,
+      dominantWorldLandmarks,
+      nonDominantWorldLandmarks,
+    } = this.parseHandsLandmarks(results);
+
+    const subject = {
       frame: this.frame,
       body: {
-        angle: null, // [-] esquerda [+] direita
+        angle: undefined,
       },
       hand: {
-        nonDominantHand: {
-          ponting: {
-            x: null, // [+] oposto a mão dominante [-1] direção mão dominante
-            y: null, // [+] cima [-1] baixo
-            z: null, // [+] frente [-1] trás
-          },
-          palm: {
-            x: null, // [+] oposto a mão dominante [-1] direção mão dominante
-            y: null, // [+] cima [-1] baixo
-            z: null, // [+] frente [-1] trás
-          },
-          configuration: null,
-          movement: {
-            x: null, // [+] oposto a mão dominante [-1] direção mão dominante
-            y: null, // [+] cima [-1] baixo
-            z: null, // [+] frente [-1] trás
-          },
+        dominant: {
+          ponting: undefined,
+
+          palm: undefined,
+          handShape: undefined,
+          movement: {},
         },
-        dominantHand: {
-          ponting: {
-            x: null,
-            y: null,
-            z: null,
-          },
-          palm: {
-            x: null,
-            y: null,
-            z: null,
-          },
-          configuration: null,
-          movement: {
-            x: null,
-            y: null,
-            z: null,
-          },
+        nonDominant: {
+          ponting: undefined,
+          palm: undefined,
+          handShape: undefined,
+          movement: {},
         },
       },
+      readings: {
+        dominantLandmarks,
+        nonDominantLandmarks,
+        dominantWorldLandmarks,
+        nonDominantWorldLandmarks,
+        poseLandmarks: results.poseLandmarks,
+        poseWorldLandmarks: results.poseWorldLandmarks,
+      },
     };
+
+    this.frame += 1;
+
+    return subject;
   }
 
-  private updateSkeletonBuffer(
-    subject,
-    dominantHandLandmarks,
-    nonDominantHandLandmarks,
-    dominantHandWorldLandmarks,
-    nonDominantHandWorldLandmarks,
-    poseLandmarks,
-    poseWorldLandmarks
-  ) {
-    this.buffer.push({
-      frame: this.frame,
-      subject,
-      poseLandmarks,
-      poseWorldLandmarks,
-      dominantHandLandmarks,
-      nonDominantHandLandmarks,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks,
-    });
-    this.frame += 1;
+  private updateSkeletonBuffer(subject: SubjectData): void {
+    this.buffer.push(subject);
 
     if (this.buffer.length > this.bufferSize) {
       this.buffer.shift();
     }
   }
 
-  private setSubjectBodyAngle(subject, results) {
+  private setSubjectBodyAngle(subject: SubjectData, results: Results): void {
     if (results.poseWorldLandmarks.length) {
       const vector = getPerpendicularVector(
         results.poseWorldLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
@@ -172,11 +149,16 @@ export class Subject {
     }
   }
 
-  private parseHandsWorldLandmarks(results) {
-    let nonDominantHandLandmarks = [];
-    let dominantHandLandmarks = [];
-    let nonDominantHandWorldLandmarks = [];
-    let dominantHandWorldLandmarks = [];
+  private parseHandsLandmarks(results: Results): {
+    dominantLandmarks: Coordinate[];
+    nonDominantLandmarks: Coordinate[];
+    dominantWorldLandmarks: Coordinate[];
+    nonDominantWorldLandmarks: Coordinate[];
+  } {
+    let nonDominantLandmarks: Coordinate[] = [];
+    let dominantLandmarks: Coordinate[] = [];
+    let nonDominantWorldLandmarks: Coordinate[] = [];
+    let dominantWorldLandmarks: Coordinate[] = [];
 
     results.multiHandedness.forEach((hand, index) => {
       if (
@@ -185,7 +167,7 @@ export class Subject {
         (this.dominantHand === "RIGHT" && hand.label === "Left") ||
         (this.dominantHand === "LEFT" && hand.label === "Right")
       ) {
-        dominantHandLandmarks = (results.multiHandLandmarks[index] ?? []).map(
+        dominantLandmarks = (results.multiHandLandmarks[index] ?? []).map(
           (landmark) => {
             return {
               x: landmark.x * this.canvas.width,
@@ -194,13 +176,12 @@ export class Subject {
             };
           }
         );
-        dominantHandWorldLandmarks =
-          results.multiHandWorldLandmarks[index] ?? [];
+        dominantWorldLandmarks = results.multiHandWorldLandmarks[index] ?? [];
       } else if (
         (this.dominantHand === "LEFT" && hand.label === "Left") ||
         (this.dominantHand === "RIGHT" && hand.label === "Right")
       ) {
-        nonDominantHandLandmarks = results.multiHandLandmarks[index].map(
+        nonDominantLandmarks = results.multiHandLandmarks[index].map(
           (landmark) => {
             return {
               x: landmark.x * this.canvas.width,
@@ -209,46 +190,50 @@ export class Subject {
             };
           }
         );
-        nonDominantHandWorldLandmarks = results.multiHandWorldLandmarks[index];
+        nonDominantWorldLandmarks = results.multiHandWorldLandmarks[index];
       }
     });
 
     return {
-      dominantHandLandmarks,
-      nonDominantHandLandmarks,
-      dominantHandWorldLandmarks,
-      nonDominantHandWorldLandmarks,
+      dominantLandmarks,
+      nonDominantLandmarks,
+      dominantWorldLandmarks,
+      nonDominantWorldLandmarks,
     };
   }
 
-  private setSubjectHandShape(
-    subject,
-    dominantHandWorldLandmarks,
-    nonDominantHandWorldLandmarks
-  ) {
-    if (dominantHandWorldLandmarks.length) {
+  private setSubjectHandShape(subject: SubjectData): void {
+    const dominantWorldLandmarks = subject.readings.dominantWorldLandmarks;
+    const nonDominantWorldLandmarks =
+      subject.readings.nonDominantWorldLandmarks;
+    const PROBABILITY_THRESHOLD = 0.8;
+
+    if (dominantWorldLandmarks.length) {
       const { handShape, probability } = this.detectHandShape(
-        dominantHandWorldLandmarks
+        dominantWorldLandmarks
       );
 
-      if (probability > 0.8) {
-        subject.hand.dominantHand.configuration = handShape;
+      if (probability > PROBABILITY_THRESHOLD) {
+        subject.hand.dominant.handShape = handShape;
       }
     }
 
-    if (nonDominantHandWorldLandmarks.length) {
+    if (nonDominantWorldLandmarks.length) {
       const { handShape, probability } = this.detectHandShape(
-        nonDominantHandWorldLandmarks
+        nonDominantWorldLandmarks
       );
 
-      if (probability > 0.8) {
-        subject.hand.nonDominantHand.configuration = handShape;
+      if (probability > PROBABILITY_THRESHOLD) {
+        subject.hand.nonDominant.handShape = handShape;
       }
     }
   }
 
-  private detectHandShape(landmarks: Coordinate[]) {
-    const inputData = landmarks
+  private detectHandShape(landmarks: Coordinate[]): {
+    handShape: HandShapeType;
+    probability: number;
+  } {
+    const inputData: number[] = landmarks
       .map((landmark) => [landmark.x, landmark.y, landmark.z])
       .flat();
 
@@ -259,28 +244,28 @@ export class Subject {
 
     const inputTensor = tensorflow.tensor2d([inputData]);
     const prediction = this.model.predict(inputTensor);
-    const predictionArray = prediction.arraySync();
+    const predictionArray: number[][] = (prediction as any).arraySync();
 
     const maxProbability = Math.max(...predictionArray[0]);
     const indexOfMaxProbability = predictionArray[0].indexOf(maxProbability);
 
     const mapper = [
-      "a_cm",
-      "c_cm",
-      "d_cm",
-      "hand_cupping_cm",
-      "i_cm",
-      "index_finger_cm",
-      "l_cm",
-      "middle_index_finger_cm",
-      "o_cm",
-      "oi_cm",
-      "open_hand_cm",
-      "open_hand_fingers_apart_cm",
-      "open_hand_thumb_apart_cm",
-      "s_cm",
-      "thumb_finger_cm",
-      "y_cm",
+      "a",
+      "c",
+      "d",
+      "i",
+      "l",
+      "o",
+      "s",
+      "y",
+      "handCupping",
+      "indexFinger",
+      "middleAndIndexFinger",
+      "oi",
+      "openHandFingersApart",
+      "openHandThumbApart",
+      "openHand",
+      "thumbFinger",
     ];
 
     const handShape = mapper[indexOfMaxProbability];
@@ -289,25 +274,25 @@ export class Subject {
     return { handShape, probability };
   }
 
-  private setSubjectHandPointing(
-    subject,
-    dominantHandWorldLandmarks,
-    nonDominantHandWorldLandmarks
-  ) {
-    if (dominantHandWorldLandmarks.length) {
-      subject.hand.dominantHand.ponting = this.parseSubjectHandPointing(
-        dominantHandWorldLandmarks
+  private setSubjectHandPointing(subject: SubjectData): void {
+    const dominantWorldLandmarks = subject.readings.dominantWorldLandmarks;
+    const nonDominantWorldLandmarks =
+      subject.readings.nonDominantWorldLandmarks;
+
+    if (dominantWorldLandmarks.length) {
+      subject.hand.dominant.ponting = this.parseSubjectHandPointing(
+        dominantWorldLandmarks
       );
     }
 
-    if (nonDominantHandWorldLandmarks.length) {
-      subject.hand.nonDominantHand.ponting = this.parseSubjectHandPointing(
-        nonDominantHandWorldLandmarks
+    if (nonDominantWorldLandmarks.length) {
+      subject.hand.nonDominant.ponting = this.parseSubjectHandPointing(
+        nonDominantWorldLandmarks
       );
     }
   }
 
-  private parseSubjectHandPointing(handWorldLandmarks) {
+  private parseSubjectHandPointing(handWorldLandmarks: Coordinate[]): Vector {
     const xy = Math.floor(
       (-Math.atan2(
         handWorldLandmarks[9].y - handWorldLandmarks[0].y,
@@ -332,31 +317,28 @@ export class Subject {
     };
   }
 
-  private setSubjectHandPalm(
-    subject,
-    dominantHandWorldLandmarks,
-    nonDominantHandWorldLandmarks
-  ) {
-    if (dominantHandWorldLandmarks.length) {
-      subject.hand.dominantHand.palm = this.parseSubjectHandPalm(
-        dominantHandWorldLandmarks
+  private setSubjectHandPalm(subject: SubjectData): void {
+    const dominantWorldLandmarks = subject.readings.dominantWorldLandmarks;
+    const nonDominantWorldLandmarks =
+      subject.readings.nonDominantWorldLandmarks;
+
+    if (dominantWorldLandmarks.length) {
+      subject.hand.dominant.palm = this.parseSubjectHandPalm(
+        dominantWorldLandmarks
       );
     }
 
-    if (nonDominantHandWorldLandmarks.length) {
-      subject.hand.nonDominantHand.palm = this.parseSubjectHandPalm(
-        nonDominantHandWorldLandmarks
+    if (nonDominantWorldLandmarks.length) {
+      subject.hand.nonDominant.palm = this.parseSubjectHandPalm(
+        nonDominantWorldLandmarks
       );
-      subject.hand.nonDominantHand.palm.x =
-        -subject.hand.nonDominantHand.palm.x;
-      subject.hand.nonDominantHand.palm.y =
-        -subject.hand.nonDominantHand.palm.y;
-      subject.hand.nonDominantHand.palm.z =
-        -subject.hand.nonDominantHand.palm.z;
+      subject.hand.nonDominant.palm.x = -subject.hand.nonDominant.palm.x;
+      subject.hand.nonDominant.palm.y = -subject.hand.nonDominant.palm.y;
+      subject.hand.nonDominant.palm.z = -subject.hand.nonDominant.palm.z;
     }
   }
 
-  private parseSubjectHandPalm(handWorldLandmarks) {
+  private parseSubjectHandPalm(handWorldLandmarks: Coordinate[]): Vector {
     const vector = findPerpendicularVector(
       handWorldLandmarks[5],
       handWorldLandmarks[9],
@@ -364,55 +346,62 @@ export class Subject {
     );
 
     return {
-      x: -vector.x, // [-] = esquerda, [+] = direita
-      y: -vector.y, // [-] = baixo, [+] = cima
-      z: -vector.z, // [-] = usuario, [+] = camera
+      x: -vector.x, // [-] = left, [+] = right
+      y: -vector.y, // [-] = down, [+] = up
+      z: -vector.z, // [-] = user, [+] = camera
     };
   }
 
-  private setSubjectHandMovement(subject, buffer) {
-    const before = buffer[buffer.length - 4];
-    const after = buffer[buffer.length - 1];
+  private setSubjectHandMovement(subject: SubjectData): void {
+    const before = this.buffer[this.buffer.length - 4];
+    const after = this.buffer[this.buffer.length - 1];
 
-    if (before?.poseWorldLandmarks.length && after?.poseWorldLandmarks.length) {
+    if (
+      before?.readings.poseWorldLandmarks.length &&
+      after?.readings.poseWorldLandmarks.length
+    ) {
       const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(
-        before.poseWorldLandmarks,
-        after.poseWorldLandmarks
+        before.readings.poseWorldLandmarks,
+        after.readings.poseWorldLandmarks
       );
 
       if (
-        before?.dominantHandLandmarks.length &&
-        after?.dominantHandLandmarks.length
+        before?.readings.dominantLandmarks.length &&
+        after?.readings.dominantLandmarks.length
       ) {
-        subject.hand.dominantHand.movement = {
+        subject.hand.dominant.movement = {
           ...this.parseSubjectHandMovement(
-            before.dominantHandLandmarks,
-            after.dominantHandLandmarks
+            before.readings.dominantLandmarks,
+            after.readings.dominantLandmarks
           ),
-          ...frontOrBackMoviment.dominantHand,
+          ...frontOrBackMoviment.dominant,
         };
       }
 
       if (
-        before?.nonDominantHandLandmarks.length &&
-        after?.nonDominantHandLandmarks.length
+        before?.readings.nonDominantLandmarks.length &&
+        after?.readings.nonDominantLandmarks.length
       ) {
-        subject.hand.nonDominantHand.movement = {
+        subject.hand.nonDominant.movement = {
           ...this.parseSubjectHandMovement(
-            before.nonDominantHandLandmarks,
-            after.nonDominantHandLandmarks
+            before.readings.nonDominantLandmarks,
+            after.readings.nonDominantLandmarks
           ),
-          ...frontOrBackMoviment.nonDominantHand,
+          ...frontOrBackMoviment.nonDominant,
         };
       }
     }
   }
 
-  private parseSubjectHandMovement(beforeHandLandmarks, afterHandLandmarks) {
+  private parseSubjectHandMovement(
+    beforeHandLandmarks: Coordinate[],
+    afterHandLandmarks: Coordinate[]
+  ): MovementAxis {
     const THRESHOLD = 5;
-    const movement = {
-      x: null,
-      y: null,
+    const movement: MovementAxis = {
+      x: undefined,
+      y: undefined,
+      z: undefined,
     };
 
     if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
@@ -437,9 +426,12 @@ export class Subject {
   }
 
   private parseSubjectHandMovimentFrontOrBack(
-    beforePoseWolrdLanmarks,
-    afterPoseWolrdLanmarks
-  ) {
+    beforePoseWolrdLanmarks: Coordinate[],
+    afterPoseWolrdLanmarks: Coordinate[]
+  ): {
+    dominant: Pick<MovementAxis, "z">;
+    nonDominant: Pick<MovementAxis, "z">;
+  } {
     const rightArm = this.parseSubjectHandMovimentFrontOrBackUtil(
       beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
       beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
@@ -458,20 +450,20 @@ export class Subject {
     );
 
     if (this.dominantHand === "RIGHT") {
-      return { dominantHand: rightArm, nonDominantHand: leftArm };
+      return { dominant: rightArm, nonDominant: leftArm };
     } else {
-      return { dominantHand: leftArm, nonDominantHand: rightArm };
+      return { dominant: leftArm, nonDominant: rightArm };
     }
   }
 
   private parseSubjectHandMovimentFrontOrBackUtil(
-    beforeShoulder,
-    beforeElbow,
-    beforeWrist,
-    afterShoulder,
-    afterElbow,
-    afterWrist
-  ) {
+    beforeShoulder: Coordinate,
+    beforeElbow: Coordinate,
+    beforeWrist: Coordinate,
+    afterShoulder: Coordinate,
+    afterElbow: Coordinate,
+    afterWrist: Coordinate
+  ): Pick<MovementAxis, "z"> {
     const THRESHOLD = 2.5;
 
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
@@ -488,7 +480,7 @@ export class Subject {
     } else if (afterAngle - beforeAngle < -THRESHOLD) {
       return { z: -1 };
     } else {
-      return { z: null };
+      return { z: undefined };
     }
   }
 }

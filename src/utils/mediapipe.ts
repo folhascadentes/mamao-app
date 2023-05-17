@@ -3,6 +3,8 @@ import { Pose, Results as _PoseResults } from "@mediapipe/pose";
 
 export type HandResults = _HandResults;
 export type PoseResults = _PoseResults;
+export type Results = HandResults &
+  Pick<PoseResults, "poseLandmarks" | "poseWorldLandmarks">;
 
 export function initalizeHandsDetector(): Hands {
   const hands = new Hands({
