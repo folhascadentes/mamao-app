@@ -1,6 +1,8 @@
 import { getLocationCoordinate } from "./locations";
 import { angleBetweenTwoVectors, getMiddlePoint } from "./geometrics";
 import {
+  HandOrientation,
+  HandOrientationDescriptor,
   Location,
   Movement,
   PalmOrientation,
@@ -139,7 +141,11 @@ export class Detector {
 
 interface State {
   onInit?: (sign: Sign, subject: SubjectData, memory: any) => void;
-  onRun: (sign: Sign, subject: SubjectData, memory: any) => any;
+  onRun: (
+    sign: Sign,
+    subject: SubjectData,
+    memory: any
+  ) => { valid: boolean; [key: string]: any };
   nextState: DetectorStates;
 }
 
@@ -159,12 +165,20 @@ const handConfigurationState: State = {
 const palmOrientationState = {
   onRun: (sign: Sign, subject: SubjectData) => {
     const start = sign.steps.start;
-    return checkPalmOrientation(
+    const palmOrientation = checkPalmOrientation(
       start.dominant.palmOrientation,
       start.nonDominant?.palmOrientation,
       subject.hand.dominant.palm,
       subject.hand.nonDominant.palm
     );
+    const handOrientation = checkHandOrientation(
+      start.dominant.handOrientation,
+      start.nonDominant?.handOrientation,
+      subject.hand.dominant.ponting,
+      subject.hand.nonDominant.ponting
+    );
+
+    return { valid: palmOrientation.valid && handOrientation.valid };
   },
   nextState: DetectorStates.INITIAL_LOCATION,
 };
@@ -190,6 +204,61 @@ const initialPositionState = {
     );
   },
   nextState: DetectorStates.MOVEMENT,
+};
+
+const movementState = {
+  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    memory.dominantStartFrame = {};
+    memory.dominantMovementsStartIndex = {};
+    memory.dominantMovementsCurrentIndex = {};
+    memory.nonDominantStartFrame = {};
+    memory.nonDominantMovementsStartIndex = {};
+    memory.nonDominantMovementsCurrentIndex = {};
+    memory.startFrame = undefined;
+  },
+  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    const dominantMoves = sign.steps.movement.dominant.detect;
+    const nonDominantMoves = sign.steps.movement.nonDominant?.detect;
+
+    const dominantOkay =
+      dominantMoves === undefined ||
+      checkMovement(
+        subject.hand.dominant.movement,
+        Array.isArray(dominantMoves[0])
+          ? (dominantMoves as [Movement[]])
+          : [dominantMoves as Movement[]],
+        memory.dominantMovementsStartIndex,
+        memory.dominantMovementsCurrentIndex,
+        memory.dominantStartFrame,
+        !!sign.steps.movement.dominant.options?.detect.circular,
+        subject.frame
+      );
+
+    const nonDominantOkay =
+      nonDominantMoves === undefined ||
+      checkMovement(
+        subject.hand.nonDominant.movement,
+        Array.isArray(nonDominantMoves[0])
+          ? (nonDominantMoves as [Movement[]])
+          : [nonDominantMoves as Movement[]],
+        memory.nonDominantMovementsStartIndex,
+        memory.nonDominantMovementsCurrentIndex,
+        memory.nonDominantStartFrame,
+        !!sign.steps.movement.nonDominant?.options?.detect.circular,
+        subject.frame
+      );
+
+    const valid = dominantOkay && nonDominantOkay;
+
+    if (valid) {
+      memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame));
+    }
+
+    return {
+      valid,
+    };
+  },
+  nextState: DetectorStates.FINAL_LOCATION,
 };
 
 function setHandPostionsCoordinates(
@@ -268,6 +337,61 @@ function setHandPostionsCoordinates(
   memory.nonDominantEndCoordinate = nonDominantEndCoordinate;
 }
 
+const finalPositionState = {
+  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    memory.endMovementFrame = subject.frame;
+  },
+  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    return checkHandPosition(
+      memory.dominantEndCoordinate,
+      memory.nonDominantEndCoordinate,
+      subject.readings.dominantLandmarks,
+      subject.readings.nonDominantLandmarks,
+      subject.readings.poseLandmarks ?? []
+    );
+  },
+  nextState: DetectorStates.FINAL_PALM_ORIENTATION,
+};
+
+const finalPalmOrientationState = {
+  onRun: (sign: Sign, subject: SubjectData) => {
+    const end = sign.steps.end;
+    const palmOrientation = checkPalmOrientation(
+      end.dominant.palmOrientation,
+      end.nonDominant?.palmOrientation,
+      subject.hand.dominant.palm,
+      subject.hand.nonDominant.palm
+    );
+    const handOrientation = checkHandOrientation(
+      end.dominant.handOrientation,
+      end.nonDominant?.handOrientation,
+      subject.hand.dominant.ponting,
+      subject.hand.nonDominant.ponting
+    );
+    return { valid: palmOrientation.valid && handOrientation.valid };
+  },
+  nextState: DetectorStates.FINAL_HAND_SHAPE,
+};
+
+const finalHandShapeState = {
+  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    const end = sign.steps.end;
+    const response = checkHandShape(
+      end.dominant.handShape,
+      end.nonDominant?.handShape,
+      subject.hand.dominant.handShape,
+      subject.hand.nonDominant.handShape
+    );
+
+    if (response.valid) {
+      memory.endSignFrame = subject.frame;
+    }
+
+    return response;
+  },
+  nextState: DetectorStates.HAND_SHAPE,
+};
+
 function parseLocation(
   location: Location | Location[] | undefined
 ): Location | undefined {
@@ -313,61 +437,6 @@ function handCloseToLocation(
 
   return distance < CIRCLE_RADIUS * 1.8;
 }
-
-const movementState = {
-  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    memory.dominantStartFrame = {};
-    memory.dominantMovementsStartIndex = {};
-    memory.dominantMovementsCurrentIndex = {};
-    memory.nonDominantStartFrame = {};
-    memory.nonDominantMovementsStartIndex = {};
-    memory.nonDominantMovementsCurrentIndex = {};
-    memory.startFrame = undefined;
-  },
-  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    const dominantMoves = sign.steps.movement.dominant.detect;
-    const nonDominantMoves = sign.steps.movement.nonDominant?.detect;
-
-    const dominantOkay =
-      dominantMoves === undefined ||
-      checkMovement(
-        subject.hand.dominant.movement,
-        Array.isArray(dominantMoves[0])
-          ? (dominantMoves as [Movement[]])
-          : [dominantMoves as Movement[]],
-        memory.dominantMovementsStartIndex,
-        memory.dominantMovementsCurrentIndex,
-        memory.dominantStartFrame,
-        !!sign.steps.movement.dominant.options?.detect.circular,
-        subject.frame
-      );
-
-    const nonDominantOkay =
-      nonDominantMoves === undefined ||
-      checkMovement(
-        subject.hand.nonDominant.movement,
-        Array.isArray(nonDominantMoves[0])
-          ? (nonDominantMoves as [Movement[]])
-          : [nonDominantMoves as Movement[]],
-        memory.nonDominantMovementsStartIndex,
-        memory.nonDominantMovementsCurrentIndex,
-        memory.nonDominantStartFrame,
-        !!sign.steps.movement.nonDominant?.options?.detect.circular,
-        subject.frame
-      );
-
-    const valid = dominantOkay && nonDominantOkay;
-
-    if (valid) {
-      memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame));
-    }
-
-    return {
-      valid,
-    };
-  },
-  nextState: DetectorStates.FINAL_LOCATION,
-};
 
 /**
  
@@ -455,54 +524,6 @@ function checkSameMovement(
   });
 }
 
-const finalPositionState = {
-  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    memory.endMovementFrame = subject.frame;
-  },
-  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    return checkHandPosition(
-      memory.dominantEndCoordinate,
-      memory.nonDominantEndCoordinate,
-      subject.readings.dominantLandmarks,
-      subject.readings.nonDominantLandmarks,
-      subject.readings.poseLandmarks ?? []
-    );
-  },
-  nextState: DetectorStates.FINAL_PALM_ORIENTATION,
-};
-
-const finalPalmOrientationState = {
-  onRun: (sign: Sign, subject: SubjectData) => {
-    const end = sign.steps.end;
-    return checkPalmOrientation(
-      end.dominant.palmOrientation,
-      end.nonDominant?.palmOrientation,
-      subject.hand.dominant.palm,
-      subject.hand.nonDominant.palm
-    );
-  },
-  nextState: DetectorStates.FINAL_HAND_SHAPE,
-};
-
-const finalHandShapeState = {
-  onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    const end = sign.steps.end;
-    const response = checkHandShape(
-      end.dominant.handShape,
-      end.nonDominant?.handShape,
-      subject.hand.dominant.handShape,
-      subject.hand.nonDominant.handShape
-    );
-
-    if (response.valid) {
-      memory.endSignFrame = subject.frame;
-    }
-
-    return response;
-  },
-  nextState: DetectorStates.HAND_SHAPE,
-};
-
 function checkHandShape(
   dominantShape: string | undefined,
   nonDominantShape: string | undefined,
@@ -529,14 +550,14 @@ function checkPalmOrientation(
 ): { valid: boolean } {
   const dominantOkay =
     !dominantPalmOrientation ||
-    checkPalmOrientationUtil(
+    checkOrientationUtil(
       PalmOrientationDescriptor[dominantPalmOrientation],
       subjectDominantPalmOrientation
     );
 
   const nonDominantOkay =
     !nonDominantPalmOrientation ||
-    checkPalmOrientationUtil(
+    checkOrientationUtil(
       PalmOrientationDescriptor[nonDominantPalmOrientation],
       subjectNonDominantPalmOrientation
     );
@@ -548,14 +569,41 @@ function checkPalmOrientation(
   }
 }
 
-function checkPalmOrientationUtil(
-  palmOrientation: Vector,
-  subjectPalmOrientation?: Vector
+function checkHandOrientation(
+  dominantHandOrientation: HandOrientation | undefined,
+  nonDominantHandOrientation: HandOrientation | undefined,
+  subjectDominantHandOrientation: Vector | undefined,
+  subjectNonDominantHandOrientation: Vector | undefined
+): { valid: boolean } {
+  const dominantOkay =
+    !dominantHandOrientation ||
+    checkOrientationUtil(
+      HandOrientationDescriptor[dominantHandOrientation],
+      subjectDominantHandOrientation
+    );
+
+  const nonDominantOkay =
+    !nonDominantHandOrientation ||
+    checkOrientationUtil(
+      PalmOrientationDescriptor[nonDominantHandOrientation],
+      subjectNonDominantHandOrientation
+    );
+
+  if (dominantOkay && nonDominantOkay) {
+    return { valid: true };
+  } else {
+    return { valid: false };
+  }
+}
+
+function checkOrientationUtil(
+  orientation: Vector,
+  subjectOrientation?: Vector
 ): boolean {
-  if (!subjectPalmOrientation) {
+  if (!subjectOrientation) {
     return false;
   }
-  const angle = angleBetweenTwoVectors(palmOrientation, subjectPalmOrientation);
+  const angle = angleBetweenTwoVectors(orientation, subjectOrientation);
   return angle < 60;
 }
 

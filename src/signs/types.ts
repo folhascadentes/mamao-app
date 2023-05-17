@@ -191,3 +191,14 @@ export enum HandOrientation {
   RIGHT = "RIGHT",
   UP = "UP",
 }
+
+export const HandOrientationDescriptor: {
+  [key in HandOrientation]: Vector;
+} = {
+  [HandOrientation.BACK]: { x: 0, y: 0, z: -1 },
+  [HandOrientation.DOWN]: { x: 0, y: -1, z: 0 },
+  [HandOrientation.FRONT]: { x: 0, y: 0, z: 1 },
+  [HandOrientation.LEFT]: { x: -1, y: 0, z: 0 },
+  [HandOrientation.RIGHT]: { x: 1, y: 0, z: 0 },
+  [HandOrientation.UP]: { x: 0, y: 1, z: 0 },
+};

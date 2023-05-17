@@ -45,7 +45,7 @@ export function findPerpendicularVector(
   return normalizeVector(perpendicularVector);
 }
 
-function normalizeVector(v: Coordinate) {
+export function normalizeVector(v: Coordinate) {
   // Calculate the length of the vector
   const length = Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2);
 

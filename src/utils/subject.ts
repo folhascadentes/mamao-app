@@ -6,6 +6,7 @@ import {
   findPerpendicularVector,
   getAngleWithXAxis,
   getPerpendicularVector,
+  normalizeVector,
   pointDifference,
 } from "./geometrics";
 import { HandShapeType, Movement, MovementAxis } from "../signs";
@@ -106,7 +107,6 @@ export class Subject {
       hand: {
         dominant: {
           ponting: undefined,
-
           palm: undefined,
           handShape: undefined,
           movement: {},
@@ -297,28 +297,9 @@ export class Subject {
   }
 
   private parseSubjectHandPointing(handWorldLandmarks: Coordinate[]): Vector {
-    const xy = Math.floor(
-      (-Math.atan2(
-        handWorldLandmarks[9].y - handWorldLandmarks[0].y,
-        handWorldLandmarks[9].x - handWorldLandmarks[0].x
-      ) *
-        180) /
-        Math.PI
+    return normalizeVector(
+      pointDifference(handWorldLandmarks[9], handWorldLandmarks[0])
     );
-    const xz = Math.floor(
-      (-Math.atan2(
-        handWorldLandmarks[9].z - handWorldLandmarks[0].z,
-        handWorldLandmarks[9].x - handWorldLandmarks[0].x
-      ) *
-        180) /
-        Math.PI
-    );
-
-    return {
-      x: Math.abs(xy) < 90 ? -1 : 1,
-      y: xy > 0 ? 1 : -1,
-      z: xz > 0 ? 1 : -1,
-    };
   }
 
   private setSubjectHandPalm(subject: SubjectData): void {

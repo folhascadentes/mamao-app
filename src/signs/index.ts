@@ -1,7 +1,7 @@
 import {
   Location,
   HandShape,
-  // HandOrientation,
+  HandOrientation,
   PalmOrientation,
   Sign,
 } from "./types";
@@ -16,6 +16,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_LEFT,
           handShape: HandShape.libras.middleAndIndexFinger,
           palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               radiusOffset: 75,
