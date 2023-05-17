@@ -16,7 +16,8 @@ export default function App(): JSX.Element {
   const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
-  const [handShapeModel, setHandShapeModel] = useState<tensorflow.LayersModel>();
+  const [handShapeModel, setHandShapeModel] =
+    useState<tensorflow.LayersModel>();
 
   useEffect(() => {
     (async function () {
@@ -27,7 +28,7 @@ export default function App(): JSX.Element {
         setHandShapeModel(model);
       }
     })();
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   function startRecording(): void {
@@ -65,8 +66,8 @@ export default function App(): JSX.Element {
         {screen === ScreenState.RECORDING && (
           <Recording
             setLoading={setLoading}
-            handShapeModel={handShapeModel}
-            cameraSettings={cameraSettings}
+            handShapeModel={handShapeModel as tensorflow.LayersModel}
+            cameraSettings={cameraSettings as MediaTrackSettings}
           />
         )}
       </div>
