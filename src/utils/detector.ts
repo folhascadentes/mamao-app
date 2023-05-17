@@ -531,14 +531,14 @@ function checkPalmOrientation(
     !dominantPalmOrientation ||
     checkPalmOrientationUtil(
       PalmOrientationDescriptor[dominantPalmOrientation],
-      subjectDominantPalmOrientation as Vector
+      subjectDominantPalmOrientation
     );
 
   const nonDominantOkay =
     !nonDominantPalmOrientation ||
     checkPalmOrientationUtil(
       PalmOrientationDescriptor[nonDominantPalmOrientation],
-      subjectNonDominantPalmOrientation as Vector
+      subjectNonDominantPalmOrientation
     );
 
   if (dominantOkay && nonDominantOkay) {
@@ -550,8 +550,11 @@ function checkPalmOrientation(
 
 function checkPalmOrientationUtil(
   palmOrientation: Vector,
-  subjectPalmOrientation: Vector
+  subjectPalmOrientation?: Vector
 ): boolean {
+  if (!subjectPalmOrientation) {
+    return false;
+  }
   const angle = angleBetweenTwoVectors(palmOrientation, subjectPalmOrientation);
   return angle < 60;
 }
