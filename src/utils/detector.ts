@@ -447,6 +447,10 @@ function setHandPostionsCoordinates(
 
     memory.nonDominantCoordinate = coordinate;
     memory.nonDominantCoordinateOffset = offset;
+
+    if (sign.steps.start.nonDominant.options?.location.side) {
+      memory.nonDominantCoordinate.y = memory.dominantCoordinate.y;
+    }
   }
 
   if (
@@ -485,6 +489,10 @@ function setHandPostionsCoordinates(
 
       memory.nonDominantEndCoordinate = coordinate;
       memory.nonDominantEndCoordinateOffset = offset;
+
+      if (sign.steps.end.nonDominant.options?.location.side) {
+        memory.nonDominantEndCoordinate.y = memory.dominantEndCoordinate.y;
+      }
     }
   }
 }
