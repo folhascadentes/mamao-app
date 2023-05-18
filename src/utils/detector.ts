@@ -11,7 +11,7 @@ import {
 } from "../signs";
 import { SubjectData } from "./subject";
 
-export const CIRCLE_RADIUS = 40;
+export const CIRCLE_RADIUS = 30;
 
 export enum DetectorStates {
   HAND_SHAPE = "HAND_SHAPE",
@@ -83,6 +83,16 @@ export interface DetectorData {
   valid: boolean;
 }
 
+interface State {
+  onInit?: (sign: Sign, subject: SubjectData, memory: any) => void;
+  onRun: (
+    sign: Sign,
+    subject: SubjectData,
+    memory: any
+  ) => { valid: boolean; [key: string]: any };
+  nextState: DetectorStates;
+}
+
 export class Detector {
   private sign: Sign;
   private currentState: DetectorStates;
@@ -137,16 +147,6 @@ export class Detector {
       memory: this.memory,
     };
   }
-}
-
-interface State {
-  onInit?: (sign: Sign, subject: SubjectData, memory: any) => void;
-  onRun: (
-    sign: Sign,
-    subject: SubjectData,
-    memory: any
-  ) => { valid: boolean; [key: string]: any };
-  nextState: DetectorStates;
 }
 
 const handConfigurationState: State = {
@@ -261,82 +261,6 @@ const movementState = {
   nextState: DetectorStates.FINAL_LOCATION,
 };
 
-function setHandPostionsCoordinates(
-  sign: Sign,
-  subject: SubjectData,
-  memory: DetectorMemory
-): void {
-  if (!subject.readings.poseLandmarks.length) {
-    return;
-  }
-
-  const startDominantLocation = parseLocation(
-    sign.steps.start.dominant.location
-  ) as Location;
-  const startDominantOffset =
-    sign.steps.start.dominant.options?.location.radiusOffset;
-  const startNonDominanLocation = parseLocation(
-    sign.steps.start.nonDominant?.location
-  );
-  const startNonDominantOffset =
-    sign.steps.start.nonDominant?.options?.location.radiusOffset;
-  const endDominantLocation = parseLocation(
-    sign.steps.end.dominant.location
-  ) as Location;
-  const endDominantOffset =
-    sign.steps.end.dominant.options?.location.radiusOffset;
-  const endNonDominantLocation = parseLocation(
-    sign.steps.end.nonDominant?.location
-  );
-  const endNonDominantOffset =
-    sign.steps.end.nonDominant?.options?.location.radiusOffset;
-
-  const dominantCoordinate = randomizeCoordinate(
-    getLocationCoordinate(
-      startDominantLocation,
-      subject.readings.poseLandmarks
-    ),
-    startDominantOffset ?? 0
-  );
-
-  const nonDominantCoordinate =
-    startNonDominanLocation &&
-    randomizeCoordinate(
-      getLocationCoordinate(
-        startNonDominanLocation,
-        subject.readings.poseLandmarks
-      ),
-      startNonDominantOffset ?? 0
-    );
-
-  const dominantEndCoordinate = sign.steps.end.dominant.options?.location.same
-    ? dominantCoordinate
-    : randomizeCoordinate(
-        getLocationCoordinate(
-          endDominantLocation,
-          subject.readings.poseLandmarks
-        ),
-        endDominantOffset ?? 0
-      );
-
-  const nonDominantEndCoordinate = sign.steps.end.nonDominant?.options?.location
-    .same
-    ? nonDominantCoordinate
-    : endNonDominantLocation &&
-      randomizeCoordinate(
-        getLocationCoordinate(
-          endNonDominantLocation,
-          subject.readings.poseLandmarks
-        ),
-        endNonDominantOffset ?? 0
-      );
-
-  memory.dominantCoordinate = dominantCoordinate;
-  memory.nonDominantCoordinate = nonDominantCoordinate;
-  memory.dominantEndCoordinate = dominantEndCoordinate;
-  memory.nonDominantEndCoordinate = nonDominantEndCoordinate;
-}
-
 const finalPositionState = {
   onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     memory.endMovementFrame = subject.frame;
@@ -400,6 +324,70 @@ function parseLocation(
   } else {
     return location;
   }
+}
+
+function setHandPostionsCoordinates(
+  sign: Sign,
+  subject: SubjectData,
+  memory: DetectorMemory
+): void {
+  if (!subject.readings.poseLandmarks.length) {
+    return;
+  }
+
+  const startDominantLocation = parseLocation(
+    sign.steps.start.dominant.location
+  ) as Location;
+  const startDominantOffset =
+    sign.steps.start.dominant.options?.location.radiusOffset;
+  const startNonDominanLocation = parseLocation(
+    sign.steps.start.nonDominant?.location
+  );
+  const startNonDominantOffset =
+    sign.steps.start.nonDominant?.options?.location.radiusOffset;
+  const endDominantLocation = parseLocation(
+    sign.steps.end.dominant.location
+  ) as Location;
+  const endDominantOffset =
+    sign.steps.end.dominant.options?.location.radiusOffset;
+  const endNonDominantLocation = parseLocation(
+    sign.steps.end.nonDominant?.location
+  );
+  const endNonDominantOffset =
+    sign.steps.end.nonDominant?.options?.location.radiusOffset;
+
+  const dominantCoordinate = randomizeCoordinate(
+    getLocationCoordinate(startDominantLocation, subject.readings),
+    startDominantOffset ?? 0
+  );
+
+  const nonDominantCoordinate =
+    startNonDominanLocation &&
+    randomizeCoordinate(
+      getLocationCoordinate(startNonDominanLocation, subject.readings),
+      startNonDominantOffset ?? 0
+    );
+
+  const dominantEndCoordinate = sign.steps.end.dominant.options?.location.same
+    ? dominantCoordinate
+    : randomizeCoordinate(
+        getLocationCoordinate(endDominantLocation, subject.readings),
+        endDominantOffset ?? 0
+      );
+
+  const nonDominantEndCoordinate = sign.steps.end.nonDominant?.options?.location
+    .same
+    ? nonDominantCoordinate
+    : endNonDominantLocation &&
+      randomizeCoordinate(
+        getLocationCoordinate(endNonDominantLocation, subject.readings),
+        endNonDominantOffset ?? 0
+      );
+
+  memory.dominantCoordinate = dominantCoordinate;
+  memory.nonDominantCoordinate = nonDominantCoordinate;
+  memory.dominantEndCoordinate = dominantEndCoordinate;
+  memory.nonDominantEndCoordinate = nonDominantEndCoordinate;
 }
 
 function chooseArrayElement(array: any[]): any {
