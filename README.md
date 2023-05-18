@@ -18,6 +18,8 @@ You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word
 4. [Scope and Variation in Sign Languages](#scope-and-variation-in-sign-languages)
 5. [How specifying a Sign](#how-specifying-a-sign)
 6. [Project Roadmap](#project-roadmap)
+7. [Getting Started](#getting-started)
+8. [Data Collection and Training](#data-collection-and-training)
 
 ## Product Requirements
 
@@ -380,3 +382,51 @@ In this phase, we will focus on:
 - Continuing to refine and enhance our platform based on user feedback and needs.
 
 Please note that this roadmap is a living document and may be subject to changes as the project evolves. Feedback, suggestions, and contributions are always welcome at each stage of the project.
+
+## Getting Started
+
+### Running the Application Locally
+
+You can serve the application locally using Node Package Manager (npm). If you have npm installed, you can start the application with the following command:
+
+```bash
+npm start
+```
+
+This command will start a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
+
+### Deployment
+
+We currently have a deploy.sh script for deploying the application to an AWS environment. Please note that this script is currently hardcoded to a specific AWS account and we aim to make it more flexible in future updates.
+
+### Environment Variables
+
+Please be aware that some environment variables are currently hardcoded in the code. This is something we recognize as a limitation and we aim to refactor this to use a .env file or a similar mechanism to handle environment-specific variables.
+
+### Development Version
+
+You can access the current development version of the application at app.mamao.dev.br.
+
+Please note that this is a work in progress and we appreciate your understanding as we continue to improve and optimize the application. We welcome any feedback and contributions to help make our application better!
+
+## Data Collection and Training
+
+The following sections pertain to the techniques and methods used within the platform to collect sign data and train the underlying models. These methods are used for the collection and representation of sign data, contributing to the training and functionality of the platform. They do not directly relate to the final product, which is the database of sign language gestures.
+
+### Handshapes Dataset
+
+Within the root directory of this project, you'll find a folder named handshapes. This folder contains the datasets for handshapes in the libras subfolder. These datasets are used for training a neural network to detect handshapes.
+
+### Neural Network Training
+
+There's also a train.js script within the handshapes directory that is used to train a neural network for handshape detection. This script utilizes the datasets in the handshapes/libras folder.
+
+### Data Logging
+
+Within the src/utils/subject.ts file, you'll find a constant CAPTURE_HAND_DATA. If this is set to true, the application will start logging the MediaPipe landmarks and printing them to the console. This method was used to collect the handshape datasets, by forming the hand in front of the camera and rotating it to capture all possible angles for both the right and left hands. In the future, we plan to create a guided feature to make it easier to add new handshapes.
+
+### Handshape Art Generation
+
+Also within the handshapes directory is a script named make_example. This script takes a PNG image of a hand demonstrating a handshape and converts it into an art piece consistent with the style displayed on the platform. This artwork serves as a guide, helping users understand the form of the hand for a particular sign. It contributes to enhancing the overall user experience and provides additional clarity on handshapes for sign language learners.
+
+Examples of arts generated are found in public/handshapes.
