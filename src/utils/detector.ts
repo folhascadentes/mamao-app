@@ -9,7 +9,7 @@ import {
   PalmOrientationDescriptor,
   Sign,
 } from "../signs";
-import { SubjectData } from "./subject";
+import { SubjectData, SubjectReadings } from "./subject";
 
 export const CIRCLE_RADIUS = 30;
 
@@ -106,9 +106,9 @@ export class Detector {
     this.states = {
       [DetectorStates.HAND_SHAPE]: handConfigurationState,
       [DetectorStates.PALM_ORIENTATION]: palmOrientationState,
-      [DetectorStates.INITIAL_LOCATION]: initialPositionState,
+      [DetectorStates.INITIAL_LOCATION]: initialLocationState,
       [DetectorStates.MOVEMENT]: movementState,
-      [DetectorStates.FINAL_LOCATION]: finalPositionState,
+      [DetectorStates.FINAL_LOCATION]: finalLocationState,
       [DetectorStates.FINAL_PALM_ORIENTATION]: finalPalmOrientationState,
       [DetectorStates.FINAL_HAND_SHAPE]: finalHandShapeState,
     };
@@ -183,7 +183,7 @@ const palmOrientationState = {
   nextState: DetectorStates.INITIAL_LOCATION,
 };
 
-const initialPositionState = {
+const initialLocationState = {
   onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     setHandPostionsCoordinates(sign, subject, memory);
   },
@@ -261,7 +261,7 @@ const movementState = {
   nextState: DetectorStates.FINAL_LOCATION,
 };
 
-const finalPositionState = {
+const finalLocationState = {
   onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     memory.endMovementFrame = subject.frame;
   },
@@ -316,16 +316,6 @@ const finalHandShapeState = {
   nextState: DetectorStates.HAND_SHAPE,
 };
 
-function parseLocation(
-  location: Location | Location[] | undefined
-): Location | undefined {
-  if (Array.isArray(location)) {
-    return chooseArrayElement(location);
-  } else {
-    return location;
-  }
-}
-
 function setHandPostionsCoordinates(
   sign: Sign,
   subject: SubjectData,
@@ -335,59 +325,54 @@ function setHandPostionsCoordinates(
     return;
   }
 
-  const startDominantLocation = parseLocation(
-    sign.steps.start.dominant.location
-  ) as Location;
-  const startDominantOffset =
-    sign.steps.start.dominant.options?.location.radiusOffset;
-  const startNonDominanLocation = parseLocation(
-    sign.steps.start.nonDominant?.location
-  );
-  const startNonDominantOffset =
-    sign.steps.start.nonDominant?.options?.location.radiusOffset;
-  const endDominantLocation = parseLocation(
-    sign.steps.end.dominant.location
-  ) as Location;
-  const endDominantOffset =
-    sign.steps.end.dominant.options?.location.radiusOffset;
-  const endNonDominantLocation = parseLocation(
-    sign.steps.end.nonDominant?.location
-  );
-  const endNonDominantOffset =
-    sign.steps.end.nonDominant?.options?.location.radiusOffset;
-
-  const dominantCoordinate = randomizeCoordinate(
-    getLocationCoordinate(startDominantLocation, subject.readings),
-    startDominantOffset ?? 0
+  memory.dominantCoordinate = findLocationCoordinate(
+    sign.steps.start.dominant.location,
+    subject.readings,
+    sign.steps.start.dominant.options?.location
   );
 
-  const nonDominantCoordinate =
-    startNonDominanLocation &&
-    randomizeCoordinate(
-      getLocationCoordinate(startNonDominanLocation, subject.readings),
-      startNonDominantOffset ?? 0
+  if (sign.steps.start.nonDominant?.location) {
+    memory.nonDominantCoordinate = findLocationCoordinate(
+      sign.steps.start.nonDominant.location,
+      subject.readings,
+      sign.steps.start.nonDominant.options?.location
     );
+  }
 
-  const dominantEndCoordinate = sign.steps.end.dominant.options?.location.same
-    ? dominantCoordinate
-    : randomizeCoordinate(
-        getLocationCoordinate(endDominantLocation, subject.readings),
-        endDominantOffset ?? 0
-      );
+  memory.dominantEndCoordinate = findLocationCoordinate(
+    sign.steps.end.dominant.location,
+    subject.readings,
+    sign.steps.end.dominant.options?.location
+  );
 
-  const nonDominantEndCoordinate = sign.steps.end.nonDominant?.options?.location
-    .same
-    ? nonDominantCoordinate
-    : endNonDominantLocation &&
-      randomizeCoordinate(
-        getLocationCoordinate(endNonDominantLocation, subject.readings),
-        endNonDominantOffset ?? 0
-      );
+  if (sign.steps.end.nonDominant?.location) {
+    memory.nonDominantEndCoordinate = findLocationCoordinate(
+      sign.steps.end.nonDominant.location,
+      subject.readings,
+      sign.steps.end.nonDominant.options?.location
+    );
+  }
+}
 
-  memory.dominantCoordinate = dominantCoordinate;
-  memory.nonDominantCoordinate = nonDominantCoordinate;
-  memory.dominantEndCoordinate = dominantEndCoordinate;
-  memory.nonDominantEndCoordinate = nonDominantEndCoordinate;
+function findLocationCoordinate(
+  location: Location | Location[],
+  readings: SubjectReadings,
+  options?: {
+    horizontalOffset?: number;
+    radiusOffset?: number;
+    verticalOffset?: number;
+  }
+) {
+  const coordinate = getLocationCoordinate(parseLocation(location), readings);
+  return randomizeCoordinate(coordinate, options);
+}
+
+function parseLocation(location: Location | Location[]): Location {
+  if (Array.isArray(location)) {
+    return chooseArrayElement(location);
+  } else {
+    return location;
+  }
 }
 
 function chooseArrayElement(array: any[]): any {
@@ -400,6 +385,25 @@ function chooseArrayElement(array: any[]): any {
 
 function randomizeCoordinate(
   coordinate: Coordinate,
+  options?: {
+    horizontalOffset?: number;
+    radiusOffset?: number;
+    verticalOffset?: number;
+  }
+): Coordinate {
+  if (options?.radiusOffset !== undefined) {
+    return randomizeRadiusOffset(coordinate, options.radiusOffset);
+  } else if (options?.horizontalOffset !== undefined) {
+    return randomizeHorizontalOffset(coordinate, options.horizontalOffset);
+  } else if (options?.verticalOffset !== undefined) {
+    return randomizeVerticalOffset(coordinate, options.verticalOffset);
+  } else {
+    return coordinate;
+  }
+}
+
+function randomizeRadiusOffset(
+  coordinate: Coordinate,
   radius: number
 ): Coordinate {
   const angle = Math.random() * 2 * Math.PI;
@@ -407,6 +411,16 @@ function randomizeCoordinate(
   const x = r * Math.cos(angle);
   const y = r * Math.sin(angle);
   return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+}
+
+function randomizeHorizontalOffset(coordinate: Coordinate, offset: number) {
+  const x = Math.random() * offset - offset / 2;
+  return { x: coordinate.x + x, y: coordinate.y, z: 0 };
+}
+
+function randomizeVerticalOffset(coordinate: Coordinate, offset: number) {
+  const y = Math.random() * offset - offset / 2;
+  return { x: coordinate.x, y: coordinate.y + y, z: 0 };
 }
 
 function handCloseToLocation(
