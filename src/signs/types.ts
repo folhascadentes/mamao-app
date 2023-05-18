@@ -25,15 +25,25 @@ interface SignConfiguration {
   palmOrientation: PalmOrientation;
   handOrientation?: HandOrientation;
   options?: {
-    location: {
-      track?: boolean;
-      radiusOffset?: number;
-      verticalOffset?: number;
-      horizontalOffset?: number;
-      same?: boolean;
-      side?: string;
-    };
+    location: SignConfigurationLocationOptions;
   };
+}
+
+export interface SignConfigurationLocationOptions {
+  track?: boolean;
+  radiusOffset?:
+    | number
+    | {
+        value: number;
+        leftLimitValue?: number;
+        rightLimitValue?: number;
+        upLimitValue?: number;
+        downLimitValue?: number;
+      };
+  verticalOffset?: number;
+  horizontalOffset?: number;
+  same?: boolean;
+  side?: string;
 }
 
 interface MovementConfiguration {

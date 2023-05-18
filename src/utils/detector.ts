@@ -8,6 +8,7 @@ import {
   PalmOrientation,
   PalmOrientationDescriptor,
   Sign,
+  SignConfigurationLocationOptions,
 } from "../signs";
 import { SubjectData, SubjectReadings } from "./subject";
 
@@ -442,11 +443,7 @@ function setHandPostionsCoordinates(
 function findLocationCoordinate(
   location: Location | Location[],
   readings: SubjectReadings,
-  options?: {
-    horizontalOffset?: number;
-    radiusOffset?: number;
-    verticalOffset?: number;
-  }
+  options?: SignConfigurationLocationOptions
 ) {
   const coordinate = getLocationCoordinate(parseLocation(location), readings);
   return randomizeCoordinate(coordinate, options);
@@ -470,11 +467,7 @@ function chooseArrayElement(array: any[]): any {
 
 function randomizeCoordinate(
   coordinate: Coordinate,
-  options?: {
-    horizontalOffset?: number;
-    radiusOffset?: number;
-    verticalOffset?: number;
-  }
+  options?: SignConfigurationLocationOptions
 ): Coordinate {
   if (options?.radiusOffset !== undefined) {
     return randomizeRadiusOffset(coordinate, options.radiusOffset);
@@ -489,13 +482,38 @@ function randomizeCoordinate(
 
 function randomizeRadiusOffset(
   coordinate: Coordinate,
-  radius: number
+  radius:
+    | number
+    | {
+        value: number;
+        leftLimitValue?: number;
+        rightLimitValue?: number;
+        upLimitValue?: number;
+        downLimitValue?: number;
+      }
 ): Coordinate {
+  const radiusValue = typeof radius === "number" ? radius : radius.value;
   const angle = Math.random() * 2 * Math.PI;
-  const r = Math.random() * radius;
-  const x = r * Math.cos(angle);
-  const y = r * Math.sin(angle);
-  return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+  const r = (Math.random() * 2 - 1) * radiusValue; // Pick a value between [-radius, +radius]
+
+  if (typeof radius === "number") {
+    const x = r * Math.cos(angle);
+    const y = r * Math.sin(angle);
+    return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+  } else {
+    const radiusX = Math.min(
+      radius.rightLimitValue ?? r,
+      Math.max(r, radius.leftLimitValue ?? r)
+    );
+    const radiusY = Math.min(
+      radius.upLimitValue ?? r,
+      Math.max(r, radius.downLimitValue ?? r)
+    );
+    const x = radiusX * Math.cos(angle);
+    const y = radiusY * Math.sin(angle);
+
+    return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+  }
 }
 
 function randomizeHorizontalOffset(coordinate: Coordinate, offset: number) {
