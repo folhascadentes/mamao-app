@@ -40,7 +40,7 @@ interface SubjectHandData {
   movement: Movement;
 }
 
-interface SubjectReadings {
+export interface SubjectReadings {
   dominantLandmarks: Coordinate[];
   nonDominantLandmarks: Coordinate[];
   dominantWorldLandmarks: Coordinate[];
