@@ -9,7 +9,7 @@ export function getLocationCoordinate(
   readings: SubjectReadings
 ): Coordinate {
   const { poseLandmarks, dominantLandmarks, nonDominantLandmarks } = readings;
-  const mapper: Partial<{ [key in Location]: () => Coordinate }> = {
+  const mapper: { [key in Location]: () => Coordinate } = {
     [Location.FOREHEAD]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
@@ -168,24 +168,183 @@ export function getLocationCoordinate(
     [Location.PINKY_RIGHT]: () => {
       return dominantLandmarks[20];
     },
-    // [Location.TORAX]: () => {},
-    // [Location.TORAX_LEFT]: () => {},
-    // [Location.TORAX_RIGHT]: () => {},
-    // [Location.TORAX_UPPER]: () => {},
-    // [Location.TORAX_UPPER_LEFT]: () => {},
-    // [Location.TORAX_UPPER_RIGHT]: () => {},
-    // [Location.TORAX_LOWER]: () => {},
-    // [Location.TORAX_LOWER_LEFT]: () => {},
-    // [Location.TORAX_LOWER_RIGHT]: () => {},
-    // [Location.BELLY]: () => {},
-    // [Location.HIP_LEFT]: () => {},
-    // [Location.HIP_RIGHT]: () => {},
+    [Location.TORAX]: () => {
+      return getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        getMiddlePoint([poseLandmarks[11], poseLandmarks[12]]),
+      ]);
+    },
+    [Location.TORAX_LEFT]: () => {
+      return getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[11],
+      ]);
+    },
+    [Location.TORAX_RIGHT]: () => {
+      return getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[12],
+      ]);
+    },
+    [Location.TORAX_UPPER]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const torax = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        getMiddlePoint([poseLandmarks[11], poseLandmarks[12]]),
+      ]);
+
+      return {
+        x: torax.x,
+        y: torax.y - distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.TORAX_UPPER_LEFT]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const toraxLeft = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[11],
+      ]);
+      return {
+        x: toraxLeft.x,
+        y: toraxLeft.y - distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.TORAX_UPPER_RIGHT]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const toraxRight = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[12],
+      ]);
+      return {
+        x: toraxRight.x,
+        y: toraxRight.y - distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.TORAX_LOWER]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const torax = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        getMiddlePoint([poseLandmarks[11], poseLandmarks[12]]),
+      ]);
+
+      return {
+        x: torax.x,
+        y: torax.y + distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.TORAX_LOWER_LEFT]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const toraxLeft = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[11],
+      ]);
+      return {
+        x: toraxLeft.x,
+        y: toraxLeft.y + distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.TORAX_LOWER_RIGHT]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const toraxRight = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        poseLandmarks[12],
+      ]);
+      return {
+        x: toraxRight.x,
+        y: toraxRight.y + distanceMouthEyebrows.y * 1.4,
+        z: 0,
+      };
+    },
+    [Location.BELLY]: () => {
+      const distanceMouthEyebrows = pointDifference(
+        getMiddlePoint([poseLandmarks[1], poseLandmarks[4]]),
+        getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
+      );
+      const torax = getMiddlePoint([
+        getMiddlePoint([
+          poseLandmarks[11],
+          poseLandmarks[12],
+          poseLandmarks[23],
+          poseLandmarks[24],
+        ]),
+        getMiddlePoint([poseLandmarks[11], poseLandmarks[12]]),
+      ]);
+
+      return {
+        x: torax.x,
+        y: torax.y + distanceMouthEyebrows.y * 3,
+        z: 0,
+      };
+    },
+    [Location.HIP_LEFT]: () => {
+      return poseLandmarks[23];
+    },
+    [Location.HIP_RIGHT]: () => {
+      return poseLandmarks[24];
+    },
   };
 
-  if (mapper[type] !== undefined) {
-    // @ts-ignore
-    return mapper[type]();
-  } else {
-    return { x: 0, y: 0, z: 0 };
-  }
+  return mapper[type]();
 }
