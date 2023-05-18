@@ -10,6 +10,36 @@ Join us in our mission to bridge the gap between sign language and spoken langua
 
 You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word for papaya, a tropical fruit. However, the name choice goes beyond that. It's a playful pun on the phrase "uma mão" which means "a hand" in Portuguese, and is similar to the English phrase "give a hand". This resonates with the core purpose of our platform: facilitating sign language learning and practice, which is primarily done using hands. Through Mamão, we aim to 'give a hand' to those seeking to communicate using sign languages, and to those striving to develop new technologies to bridge the communication gap for the deaf and hard of hearing community.
 
+## Product Requirements
+
+In developing our open-source crowdsourcing platform for training sign language recognition methods, we've identified several crucial product requirements. These requirements will guide our design and development processes, and are essential in creating a platform that is not only effective and secure, but also accessible and engaging.
+
+### Accessibility
+
+A central tenet of our platform is accessibility. Given that our project's primary mission is to enhance accessibility in technology, particularly for those who communicate via sign language, we're committed to ensuring our platform is fully accessible to all users, including those with physical or cognitive disabilities. Conforming to the highest web accessibility standards, supporting assistive technologies, and designing an easily navigable and understandable user experience are not just goals, but necessities. To ensure continuous improvement in accessibility, we plan to incorporate features such as adjustable text sizes, high-contrast modes, and screen reader compatibility. We welcome contributions that further promote and improve accessibility.
+
+### Volunteer Engagement
+
+Active volunteer participation is a crucial element of our platform. To stimulate engagement, we aim to build an intuitive and rewarding user experience that includes features like a points-based rewards system, gamification elements, and real-time feedback for contributions. Over time, we aim to introduce additional features, such as user badges for specific milestones, community forums for volunteers to interact, and public recognition for top contributors. We're always open to suggestions for new features that could drive engagement.
+
+### Data Quality
+
+Ensuring high-quality, diverse, and representative data is essential for any machine learning project. We will implement mechanisms like peer reviews, automatic data validation, and active moderation to guarantee the quality and diversity of our data. Over time, we will be adding advanced features like AI-assisted validation to improve data quality even further. We value input and assistance in enhancing our data quality assurance processes.
+
+### Scalability and Performance
+
+The platform should be scalable, able to support a growing number of users and contributions without any compromise to performance. A seamless user experience is the goal, regardless of our user base size or the volume of data they contribute. Over time, we will continuously tune performance and explore technologies that help us scale effectively. We encourage contributions that improve our platform's scalability and performance.
+
+### Security and Privacy
+
+Given the nature of our data collection platform, user security and privacy is a top priority. Robust security standards and clear privacy and consent policies will be the bedrock of our platform. Future enhancements may include multi-factor authentication, encryption for data at rest and in transit, and regular third-party security audits. Help in improving our security posture is always welcome.
+
+### Open Source
+
+As an open-source project, we believe in the power of community collaboration. This approach promotes transparency, allows for continuous improvement, and speeds up innovation. As we continue to evolve the platform, we encourage developers to contribute code, offer suggestions, and help us continually enhance our platform.
+
+In conclusion, these requirements represent our dedication to creating an inclusive, engaging, secure, and high-quality platform for advancing sign language recognition technology. We welcome all contributions that align with our mission and help us improve our platform.
+
 ## High-Level Architecture Overview
 
 Our platform is composed of three main components working together to facilitate sign language crowdsourcing. These components are the Subject, Detector, and Instructor.
