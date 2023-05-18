@@ -453,15 +453,19 @@ function setHandPostionsCoordinates(
     memory.dominantEndCoordinate.x === -1 ||
     sign.steps.end.dominant.options?.location.track
   ) {
-    const { coordinate, offset } = findLocationCoordinate(
-      sign.steps.end.dominant.location,
-      subject.readings,
-      sign.steps.end.dominant.options?.location,
-      memory.dominantEndCoordinateOffset
-    );
+    if (sign.steps.end.dominant.options?.location.same) {
+      memory.dominantEndCoordinate = memory.dominantCoordinate;
+    } else {
+      const { coordinate, offset } = findLocationCoordinate(
+        sign.steps.end.dominant.location,
+        subject.readings,
+        sign.steps.end.dominant.options?.location,
+        memory.dominantEndCoordinateOffset
+      );
 
-    memory.dominantEndCoordinate = coordinate;
-    memory.dominantEndCoordinateOffset = offset;
+      memory.dominantEndCoordinate = coordinate;
+      memory.dominantEndCoordinateOffset = offset;
+    }
   }
 
   if (
@@ -469,15 +473,19 @@ function setHandPostionsCoordinates(
     (memory.nonDominantEndCoordinate.x === -1 ||
       sign.steps.end.nonDominant.options?.location.track)
   ) {
-    const { coordinate, offset } = findLocationCoordinate(
-      sign.steps.end.nonDominant.location,
-      subject.readings,
-      sign.steps.end.nonDominant.options?.location,
-      memory.nonDominantEndCoordinateOffset
-    );
+    if (sign.steps.end.nonDominant.options?.location.same) {
+      memory.nonDominantEndCoordinate = memory.dominantEndCoordinate;
+    } else {
+      const { coordinate, offset } = findLocationCoordinate(
+        sign.steps.end.nonDominant.location,
+        subject.readings,
+        sign.steps.end.nonDominant.options?.location,
+        memory.nonDominantEndCoordinateOffset
+      );
 
-    memory.nonDominantEndCoordinate = coordinate;
-    memory.nonDominantEndCoordinateOffset = offset;
+      memory.nonDominantEndCoordinate = coordinate;
+      memory.nonDominantEndCoordinateOffset = offset;
+    }
   }
 }
 
