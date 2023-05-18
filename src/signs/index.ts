@@ -21,7 +21,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               radiusOffset: {
-                value: 75,
+                value: 85,
                 leftLimitValue: 0,
               },
             },
@@ -46,7 +46,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               radiusOffset: {
-                value: 75,
+                value: 85,
                 rightLimitValue: 0,
               },
             },

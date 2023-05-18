@@ -12,7 +12,7 @@ import {
 } from "../signs";
 import { SubjectData, SubjectReadings } from "./subject";
 
-export const CIRCLE_RADIUS = 30;
+export const CIRCLE_RADIUS = 40;
 
 export enum DetectorStates {
   HAND_SHAPE = "HAND_SHAPE",
@@ -66,6 +66,10 @@ export interface DetectorMemory {
   nonDominantCoordinate: Coordinate;
   dominantEndCoordinate: Coordinate;
   nonDominantEndCoordinate: Coordinate;
+  dominantCoordinateOffset: Coordinate | undefined;
+  nonDominantCoordinateOffset: Coordinate | undefined;
+  dominantEndCoordinateOffset: Coordinate | undefined;
+  nonDominantEndCoordinateOffset: Coordinate | undefined;
   dominantStartFrame: { [key: number]: number };
   dominantMovementsStartIndex: { [key: number]: number };
   dominantMovementsCurrentIndex: { [key: number]: number };
@@ -191,6 +195,10 @@ const initialLocationState = {
     memory.nonDominantCoordinate = { x: -1, y: -1, z: 0 };
     memory.dominantEndCoordinate = { x: -1, y: -1, z: 0 };
     memory.nonDominantEndCoordinate = { x: -1, y: -1, z: 0 };
+    memory.dominantCoordinateOffset = undefined;
+    memory.nonDominantCoordinateOffset = undefined;
+    memory.dominantEndCoordinateOffset = undefined;
+    memory.nonDominantEndCoordinateOffset = undefined;
   },
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     setHandPostionsCoordinates(sign, subject, memory);
@@ -411,52 +419,96 @@ function setHandPostionsCoordinates(
     return;
   }
 
-  if (memory.dominantCoordinate.x === -1) {
-    memory.dominantCoordinate = findLocationCoordinate(
+  if (
+    memory.dominantCoordinate.x === -1 ||
+    sign.steps.start.dominant.options?.location.track
+  ) {
+    const { coordinate, offset } = findLocationCoordinate(
       sign.steps.start.dominant.location,
       subject.readings,
-      sign.steps.start.dominant.options?.location
+      sign.steps.start.dominant.options?.location,
+      memory.dominantCoordinateOffset
     );
+    memory.dominantCoordinate = coordinate;
+    memory.dominantCoordinateOffset = offset;
   }
 
   if (
     sign.steps.start.nonDominant?.location &&
-    memory.nonDominantCoordinate.x === -1
+    (memory.nonDominantCoordinate.x === -1 ||
+      sign.steps.start.nonDominant.options?.location.track)
   ) {
-    memory.nonDominantCoordinate = findLocationCoordinate(
+    const { coordinate, offset } = findLocationCoordinate(
       sign.steps.start.nonDominant.location,
       subject.readings,
-      sign.steps.start.nonDominant.options?.location
+      sign.steps.start.nonDominant.options?.location,
+      memory.nonDominantCoordinateOffset
     );
+
+    memory.nonDominantCoordinate = coordinate;
+    memory.nonDominantCoordinateOffset = offset;
   }
 
-  if (memory.dominantEndCoordinate.x === -1) {
-    memory.dominantEndCoordinate = findLocationCoordinate(
+  if (
+    memory.dominantEndCoordinate.x === -1 ||
+    sign.steps.end.dominant.options?.location.track
+  ) {
+    const { coordinate, offset } = findLocationCoordinate(
       sign.steps.end.dominant.location,
       subject.readings,
-      sign.steps.end.dominant.options?.location
+      sign.steps.end.dominant.options?.location,
+      memory.dominantEndCoordinateOffset
     );
+
+    memory.dominantEndCoordinate = coordinate;
+    memory.dominantEndCoordinateOffset = offset;
   }
 
   if (
     sign.steps.end.nonDominant?.location &&
-    memory.nonDominantEndCoordinate.x === -1
+    (memory.nonDominantEndCoordinate.x === -1 ||
+      sign.steps.end.nonDominant.options?.location.track)
   ) {
-    memory.nonDominantEndCoordinate = findLocationCoordinate(
+    const { coordinate, offset } = findLocationCoordinate(
       sign.steps.end.nonDominant.location,
       subject.readings,
-      sign.steps.end.nonDominant.options?.location
+      sign.steps.end.nonDominant.options?.location,
+      memory.nonDominantEndCoordinateOffset
     );
+
+    memory.nonDominantEndCoordinate = coordinate;
+    memory.nonDominantEndCoordinateOffset = offset;
   }
 }
 
 function findLocationCoordinate(
   location: Location | Location[],
   readings: SubjectReadings,
-  options?: SignConfigurationLocationOptions
-) {
+  options: SignConfigurationLocationOptions | undefined,
+  offset: Coordinate | undefined // util memory for keep track of the offset
+): { coordinate: Coordinate; offset: Coordinate } {
   const coordinate = getLocationCoordinate(parseLocation(location), readings);
-  return randomizeCoordinate(coordinate, options);
+
+  if (offset === undefined) {
+    const randomOffset = randomizeCoordinate(options);
+    return {
+      coordinate: {
+        x: coordinate.x - randomOffset.x,
+        y: coordinate.y - randomOffset.y,
+        z: 0,
+      },
+      offset: randomOffset,
+    };
+  } else {
+    return {
+      coordinate: {
+        x: coordinate.x - offset.x,
+        y: coordinate.y - offset.y,
+        z: 0,
+      },
+      offset,
+    };
+  }
 }
 
 function parseLocation(location: Location | Location[]): Location {
@@ -476,22 +528,20 @@ function chooseArrayElement(array: any[]): any {
 }
 
 function randomizeCoordinate(
-  coordinate: Coordinate,
   options?: SignConfigurationLocationOptions
 ): Coordinate {
   if (options?.radiusOffset !== undefined) {
-    return randomizeRadiusOffset(coordinate, options.radiusOffset);
+    return randomizeRadiusOffset(options.radiusOffset);
   } else if (options?.horizontalOffset !== undefined) {
-    return randomizeHorizontalOffset(coordinate, options.horizontalOffset);
+    return randomizeHorizontalOffset(options.horizontalOffset);
   } else if (options?.verticalOffset !== undefined) {
-    return randomizeVerticalOffset(coordinate, options.verticalOffset);
+    return randomizeVerticalOffset(options.verticalOffset);
   } else {
-    return coordinate;
+    return { x: 0, y: 0, z: 0 };
   }
 }
 
 function randomizeRadiusOffset(
-  coordinate: Coordinate,
   radius:
     | number
     | {
@@ -509,7 +559,7 @@ function randomizeRadiusOffset(
   if (typeof radius === "number") {
     const x = r * Math.cos(angle);
     const y = r * Math.sin(angle);
-    return { x: coordinate.x - x, y: coordinate.y - y, z: 0 };
+    return { x, y, z: 0 };
   } else {
     const x = r * Math.cos(angle);
     const y = r * Math.sin(angle);
@@ -524,18 +574,18 @@ function randomizeRadiusOffset(
       Math.max(y, radius.downLimitValue ?? Number.MIN_SAFE_INTEGER)
     );
 
-    return { x: coordinate.x - cropedX, y: coordinate.y - cropedY, z: 0 };
+    return { x: cropedX, y: cropedY, z: 0 };
   }
 }
 
-function randomizeHorizontalOffset(coordinate: Coordinate, offset: number) {
+function randomizeHorizontalOffset(offset: number) {
   const x = Math.random() * offset - offset / 2;
-  return { x: coordinate.x + x, y: coordinate.y, z: 0 };
+  return { x, y: 0, z: 0 };
 }
 
-function randomizeVerticalOffset(coordinate: Coordinate, offset: number) {
+function randomizeVerticalOffset(offset: number) {
   const y = Math.random() * offset - offset / 2;
-  return { x: coordinate.x, y: coordinate.y + y, z: 0 };
+  return { x: 0, y, z: 0 };
 }
 
 function handCloseToLocation(
