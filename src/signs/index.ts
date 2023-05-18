@@ -14,13 +14,16 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.TORAX_LEFT,
+          location: Location.TORAX_UPPER_LEFT,
           handShape: HandShape.libras.middleAndIndexFinger,
           palmOrientation: PalmOrientation.FRONT,
           handOrientation: HandOrientation.UP,
           options: {
             location: {
-              radiusOffset: 75,
+              radiusOffset: {
+                value: 75,
+                leftLimitValue: 0,
+              },
             },
           },
         },
@@ -37,12 +40,15 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.TORAX_RIGHT,
+          location: Location.TORAX_UPPER_RIGHT,
           handShape: HandShape.libras.middleAndIndexFinger,
           palmOrientation: PalmOrientation.FRONT,
           options: {
             location: {
-              radiusOffset: 75,
+              radiusOffset: {
+                value: 75,
+                rightLimitValue: 0,
+              },
             },
           },
         },

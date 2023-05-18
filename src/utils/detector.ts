@@ -63,9 +63,9 @@ export const DETECTOR_STATES: DetectorState[] = [
 
 export interface DetectorMemory {
   dominantCoordinate: Coordinate;
-  nonDominantCoordinate?: Coordinate;
+  nonDominantCoordinate: Coordinate;
   dominantEndCoordinate: Coordinate;
-  nonDominantEndCoordinate?: Coordinate;
+  nonDominantEndCoordinate: Coordinate;
   dominantStartFrame: { [key: number]: number };
   dominantMovementsStartIndex: { [key: number]: number };
   dominantMovementsCurrentIndex: { [key: number]: number };
@@ -185,18 +185,22 @@ const palmOrientationState = {
 };
 
 const initialLocationState = {
+  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    // value -1 represent the coordinate equivalent of null
+    memory.dominantCoordinate = { x: -1, y: -1, z: 0 };
+    memory.nonDominantCoordinate = { x: -1, y: -1, z: 0 };
+    memory.dominantEndCoordinate = { x: -1, y: -1, z: 0 };
+    memory.nonDominantEndCoordinate = { x: -1, y: -1, z: 0 };
+  },
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     setHandPostionsCoordinates(sign, subject, memory);
 
-    return (
-      memory.dominantCoordinate &&
-      checkHandPosition(
-        memory.dominantCoordinate,
-        memory.nonDominantCoordinate,
-        subject.readings.dominantLandmarks,
-        subject.readings.nonDominantLandmarks,
-        subject.readings.poseLandmarks ?? []
-      )
+    return checkHandPosition(
+      memory.dominantCoordinate,
+      memory.nonDominantCoordinate,
+      subject.readings.dominantLandmarks,
+      subject.readings.nonDominantLandmarks,
+      subject.readings.poseLandmarks ?? []
     );
   },
   nextState: DetectorStates.MOVEMENT,
@@ -407,7 +411,7 @@ function setHandPostionsCoordinates(
     return;
   }
 
-  if (memory.dominantCoordinate === undefined) {
+  if (memory.dominantCoordinate.x === -1) {
     memory.dominantCoordinate = findLocationCoordinate(
       sign.steps.start.dominant.location,
       subject.readings,
@@ -415,7 +419,10 @@ function setHandPostionsCoordinates(
     );
   }
 
-  if (sign.steps.start.nonDominant?.location) {
+  if (
+    sign.steps.start.nonDominant?.location &&
+    memory.nonDominantCoordinate.x === -1
+  ) {
     memory.nonDominantCoordinate = findLocationCoordinate(
       sign.steps.start.nonDominant.location,
       subject.readings,
@@ -423,7 +430,7 @@ function setHandPostionsCoordinates(
     );
   }
 
-  if (memory.dominantEndCoordinate === undefined) {
+  if (memory.dominantEndCoordinate.x === -1) {
     memory.dominantEndCoordinate = findLocationCoordinate(
       sign.steps.end.dominant.location,
       subject.readings,
@@ -431,7 +438,10 @@ function setHandPostionsCoordinates(
     );
   }
 
-  if (sign.steps.end.nonDominant?.location) {
+  if (
+    sign.steps.end.nonDominant?.location &&
+    memory.nonDominantEndCoordinate.x === -1
+  ) {
     memory.nonDominantEndCoordinate = findLocationCoordinate(
       sign.steps.end.nonDominant.location,
       subject.readings,
@@ -494,25 +504,27 @@ function randomizeRadiusOffset(
 ): Coordinate {
   const radiusValue = typeof radius === "number" ? radius : radius.value;
   const angle = Math.random() * 2 * Math.PI;
-  const r = (Math.random() * 2 - 1) * radiusValue; // Pick a value between [-radius, +radius]
+  const r = Math.random() * radiusValue;
 
   if (typeof radius === "number") {
     const x = r * Math.cos(angle);
     const y = r * Math.sin(angle);
-    return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+    return { x: coordinate.x - x, y: coordinate.y - y, z: 0 };
   } else {
-    const radiusX = Math.min(
-      radius.rightLimitValue ?? r,
-      Math.max(r, radius.leftLimitValue ?? r)
-    );
-    const radiusY = Math.min(
-      radius.upLimitValue ?? r,
-      Math.max(r, radius.downLimitValue ?? r)
-    );
-    const x = radiusX * Math.cos(angle);
-    const y = radiusY * Math.sin(angle);
+    const x = r * Math.cos(angle);
+    const y = r * Math.sin(angle);
 
-    return { x: coordinate.x + x, y: coordinate.y + y, z: 0 };
+    const cropedX = Math.min(
+      radius.rightLimitValue ?? Number.MAX_SAFE_INTEGER,
+      Math.max(x, radius.leftLimitValue ?? Number.MIN_SAFE_INTEGER)
+    );
+
+    const cropedY = Math.min(
+      radius.upLimitValue ?? Number.MAX_SAFE_INTEGER,
+      Math.max(y, radius.downLimitValue ?? Number.MIN_SAFE_INTEGER)
+    );
+
+    return { x: coordinate.x - cropedX, y: coordinate.y - cropedY, z: 0 };
   }
 }
 
@@ -545,7 +557,7 @@ function handCloseToLocation(
 
 function checkHandPosition(
   dominantCoordinate: Coordinate,
-  nonDominantCoordinate: Coordinate | undefined,
+  nonDominantCoordinate: Coordinate,
   dominantLandmarks: Coordinate[],
   nonDominantLandmarks: Coordinate[],
   poseLandmarks: Coordinate[]
@@ -564,7 +576,7 @@ function checkHandPosition(
     );
 
     const nonDominantOkay =
-      !nonDominantCoordinate ||
+      nonDominantCoordinate.x === -1 ||
       handCloseToLocation(nonDominantLandmarks, nonDominantCoordinate);
 
     if (dominantOkay && nonDominantOkay) {
