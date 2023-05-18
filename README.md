@@ -334,3 +334,41 @@ Each field in the movement object describes a specific aspect of the hand moveme
 The options field provides additional settings for more specific or complex signs
 
 - **options.detect.circular**: This means the movement can start at any position of the array of movement objects.
+
+
+## Project Roadmap
+
+Our development process is structured in stages to allow for incremental improvements and necessary adjustments based on user feedback. Below is an outline of our project roadmap:
+
+### Alpha Release
+
+The main objective of the Alpha release is to validate whether users can independently and intuitively signal the signs registered in the system through the platform. We aim to register at least 75 signs at this stage.
+
+During the Alpha phase, we'll focus on:
+
+- User testing to understand if the system is intuitive and straightforward for the users.
+- Making improvements to decrease the learning curve and increase the number of signals per minute from volunteers.
+- Actively seeking user feedback and making necessary adjustments to enhance the user experience.
+
+### Beta Release
+
+The Beta release will occur after validating that the system is intuitive and capable of identifying various types of signs. At this stage, we aim to register at least 250 signs and launch a mobile version for Android and iOS platforms.
+
+In the Beta phase, our focus will be:
+
+- Making enhancements in alignment with the product requirements.
+- Prioritizing improvements in accessibility, a critical criterion before launching the first official version.
+- Continuing to gather user feedback to further refine the user experience.
+
+### Version 1.0
+
+Version 1.0 will be launched once we meet the requirements of having 500 signs registered and fully functional applications on both Android and iOS platforms.
+
+In this phase, we will focus on:
+
+- Growing our volunteer base and improving volunteer engagement.
+- Analyzing user behavior and feedback to identify areas for improvement and optimization.
+- Ensuring the robustness of the platform by handling a larger number of users and data.
+- Continuing to refine and enhance our platform based on user feedback and needs.
+
+Please note that this roadmap is a living document and may be subject to changes as the project evolves. Feedback, suggestions, and contributions are always welcome at each stage of the project.
