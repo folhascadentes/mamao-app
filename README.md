@@ -88,12 +88,12 @@ In order to enable uniform representation and easy processing of signs by the sy
 
 Here's a brief explanation of each field:
 
-- language: The name of the sign language in which the sign is used.
-- token: A unique identifier for the sign.
-- steps: This field represents the sequence of actions that compose the sign. It includes the following subfields:
-  - start: Details about the initial handshape, location and/or orientation for the sign.
-  - movement: Details about any movements that are part of the sign.
-  - end: Details about the final handshape, location and/or orientation for the sign.
+- **language**: The name of the sign language in which the sign is used.
+- **token**: A unique identifier for the sign.
+- **steps**: This field represents the sequence of actions that compose the sign. It includes the following subfields:
+  - **start**: Details about the initial handshape, location and/or orientation for the sign.
+  - **movement**: Details about any movements that are part of the sign.
+  - **end**: Details about the final handshape, location and/or orientation for the sign.
 
 ### `start` & `end`
 
@@ -124,11 +124,11 @@ Both dominant and nonDominant have the same structure and parameters:
 
 Here's a brief explanation of each field:
 
-- location: This field specifies where the sign starts or ends. It can be a single location or an array of locations if the hand moves between multiple locations.
-- handShape: This field represents the shape the hand makes at the start or end of the sign.
-- palmOrientation: This field indicates the direction the palm is facing at the start or end of the sign.
-- handOrieation: The handOrientation field describes the direction of the vector formed by the wrist to the base of the middle finger. This helps to capture more complex hand orientations that can't be fully described by palm orientation alone. For example, when the hand is rotated or tilted.
-- options: This field contains additional optional parameters that can be used to provide more specific details about the sign and more compelx parameters for the detection algorithm.
+- **location**: This field specifies where the sign starts or ends. It can be a single location or an array of locations if the hand moves between multiple locations.
+- **handShape**: This field represents the shape the hand makes at the start or end of the sign.
+- **palmOrientation**: This field indicates the direction the palm is facing at the start or end of the sign.
+- **handOrieation**: The handOrientation field describes the direction of the vector formed by the wrist to the base of the middle finger. This helps to capture more complex hand orientations that can't be fully described by palm orientation alone. For example, when the hand is rotated or tilted.
+- **options**: This field contains additional optional parameters that can be used to provide more specific details about the sign and more compelx parameters for the detection algorithm.
 
 Each of these fields within the dominant and nonDominant subfields can take either a single value or an array of values.
 
@@ -137,18 +137,18 @@ Each of these fields within the dominant and nonDominant subfields can take eith
 
 The options field provides additional settings for more specific or complex signs
 
-- options.location.track (boolean): When set to true, the body's position remains relative even if the person moves. This allows for signs to be performed in motion.
-- options.location.radiusOffset (number): Adds randomness to the sign's location within a circular region with radius X. This is used to bring greater diversity to the sign's execution by not strictly confining it to a single exact location.
-- options.location.verticalOffset (number): Adds randomness to the sign's location along the y-axis. This can introduce variation in the vertical position of the sign.
-- options.location.horizontalOffset (number): Adds randomness to the sign's location along the x-axis. This can introduce variation in the horizontal position of the sign.
-- options.location.same (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position at the end of the sign is the same as at the start.
-- options.location.side (boolean): This is valid only for the non-dominant hand. When set to true, it indicates that the y-axis of the non-dominant hand will be the same as the y-axis of the dominant hand.
+- **options.location.track** (boolean): When set to true, the body's position remains relative even if the person moves. This allows for signs to be performed in motion.
+- **options.location.radiusOffset** (number | { value: number; leftLimitValue?: number; rightLimitValue?: number; upLimitValue?: number; downLimitValue?: number; }): Adds randomness to the sign's location within a circular region with radius X. This is used to bring greater diversity to the sign's execution by not strictly confining it to a single exact location.
+- **options.location.verticalOffset** (number): Adds randomness to the sign's location along the y-axis. This can introduce variation in the vertical position of the sign.
+- **options.location.horizontalOffset** (number): Adds randomness to the sign's location along the x-axis. This can introduce variation in the horizontal position of the sign.
+- **options.location.same** (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position at the end of the sign is the same as at the start.
+- **options.location.side** (boolean): This is valid only for the non-dominant hand. When set to true, it indicates that the y-axis of the non-dominant hand will be the same as the y-axis of the dominant hand.
 
 ### Constants for Sign Specification
 
 When creating a sign specification, the following constants are used to indicate hand shapes, locations, and orientations.
 
-```javascript
+```typescript
 const HandShape = {
   libras: {
     A: "a",
@@ -179,73 +179,73 @@ const HandShape = {
   },
 };
 
-const Location = {
-  FOREHEAD: "forehead",
-  FOREHEAD_LEFT: "forehead_left",
-  FOREHEAD_RIGHT: "forehead_right",
-  NOSE: "nose",
-  EYE_LEFT: "eye_left",
-  EYE_LEFT_INNER: "eye_left_inner",
-  EYE_LEFT_OUTER: "eye_left_outer",
-  EYE_RIGHT: "eye_right",
-  EYE_RIGHT_INNER: "eye_right_inner",
-  EYE_RIGHT_OUTER: "eye_right_outer",
-  EAR_LEFT: "ear_left",
-  EAR_RIGHT: "ear_right",
-  CHEEK_LEFT: "cheek_left",
-  CHEEK_RIGHT: "cheek_right",
-  MOUTH: "mouth",
-  MOUTH_LEFT: "mouth_left",
-  MOUTH_RIGHT: "mouth_right",
-  CHIN: "chin",
-  SHOULDER_LEFT: "shoulder_left",
-  SHOULDER_RIGHT: "shoulder_right",
-  ELBOW_LEFT: "elbow_left",
-  ELBOW_RIGHT: "elbow_right",
-  WRIST_LEFT: "wrist_left",
-  WRIST_RIGHT: "wrist_right",
-  PALM_LEFT: "palm_left",
-  PALM_RIGHT: "palm_right",
-  THUMB_LEFT: "thumb_cmc_left",
-  THUMB_RIGHT: "thumb_cmc_right",
-  INDEX_LEFT: "index_mcp_left",
-  INDEX_RIGHT: "index_mcp_right",
-  MIDDLE_LEFT: "middle_mcp_left",
-  MIDDLE_RIGHT: "middle_mcp_right",
-  RING_LEFT: "ring_mcp_left",
-  RING_RIGHT: "ring_mcp_right",
-  PINKY_LEFT: "pinky_mcp_left",
-  PINKY_RIGHT: "pinky_mcp_right",
-  TORAX: "torax",
-  TORAX_LEFT: "torax_left",
-  TORAX_RIGHT: "torax_right",
-  TORAX_UPPER: "torax_upper",
-  TORAX_UPPER_LEFT: "torax_upper_left",
-  TORAX_UPPER_RIGHT: "torax_upper_right",
-  TORAX_LOWER: "torax_lower",
-  TORAX_LOWER_LEFT: "torax_lower_left",
-  TORAX_LOWER_RIGHT: "torax_lower_right",
-  BELLY: "belly",
-  HIP_LEFT: "hip_left",
-  HIP_RIGHT: "hip_right",
+enum Location {
+  FOREHEAD = "FOREHEAD",
+  FOREHEAD_LEFT = "FOREHEAD_LEFT",
+  FOREHEAD_RIGHT = "FOREHEAD_RIGHT",
+  NOSE = "NOSE",
+  EYE_LEFT = "EYE_LEFT",
+  EYE_LEFT_INNER = "EYE_LEFT_INNER",
+  EYE_LEFT_OUTER = "EYE_LEFT_OUTER",
+  EYE_RIGHT = "EYE_RIGHT",
+  EYE_RIGHT_INNER = "EYE_RIGHT_INNER",
+  EYE_RIGHT_OUTER = "EYE_RIGHT_OUTER",
+  EAR_LEFT = "EAR_LEFT",
+  EAR_RIGHT = "EAR_RIGHT",
+  CHEEK_LEFT = "CHEEK_LEFT",
+  CHEEK_RIGHT = "CHEEK_RIGHT",
+  MOUTH = "MOUTH",
+  MOUTH_LEFT = "MOUTH_LEFT",
+  MOUTH_RIGHT = "MOUTH_RIGHT",
+  CHIN = "CHIN",
+  SHOULDER_LEFT = "SHOULDER_LEFT",
+  SHOULDER_RIGHT = "SHOULDER_RIGHT",
+  ELBOW_LEFT = "ELBOW_LEFT",
+  ELBOW_RIGHT = "ELBOW_RIGHT",
+  WRIST_LEFT = "WRIST_LEFT",
+  WRIST_RIGHT = "WRIST_RIGHT",
+  PALM_LEFT = "PALM_LEFT",
+  PALM_RIGHT = "PALM_RIGHT",
+  THUMB_LEFT = "THUMB_CMC_LEFT",
+  THUMB_RIGHT = "THUMB_CMC_RIGHT",
+  INDEX_LEFT = "INDEX_MCP_LEFT",
+  INDEX_RIGHT = "INDEX_MCP_RIGHT",
+  MIDDLE_LEFT = "MIDDLE_MCP_LEFT",
+  MIDDLE_RIGHT = "MIDDLE_MCP_RIGHT",
+  RING_LEFT = "RING_MCP_LEFT",
+  RING_RIGHT = "RING_MCP_RIGHT",
+  PINKY_LEFT = "PINKY_MCP_LEFT",
+  PINKY_RIGHT = "PINKY_MCP_RIGHT",
+  TORAX = "TORAX",
+  TORAX_LEFT = "TORAX_LEFT",
+  TORAX_RIGHT = "TORAX_RIGHT",
+  TORAX_UPPER = "TORAX_UPPER",
+  TORAX_UPPER_LEFT = "TORAX_UPPER_LEFT",
+  TORAX_UPPER_RIGHT = "TORAX_UPPER_RIGHT",
+  TORAX_LOWER = "TORAX_LOWER",
+  TORAX_LOWER_LEFT = "TORAX_LOWER_LEFT",
+  TORAX_LOWER_RIGHT = "TORAX_LOWER_RIGHT",
+  BELLY = "BELLY",
+  HIP_LEFT = "HIP_LEFT",
+  HIP_RIGHT = "HIP_RIGHT",
 };
 
-const PalmOrientation = {
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right",
-  FRONT: "front",
-  BACK: "back",
+enum PalmOrientation {
+  UP = "UP",
+  DOWN = "DOWN",
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  FRONT = "FRONT",
+  BACK = "BACK",
 };
 
-const HandOrientation = {
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right",
-  FRONT: "front",
-  BACK: "back",
+ENUM HANDORIENTATION {
+  UP = "UP",
+  DOWN = "DOWN",
+  LEFT = "LEFT",
+  RIGHT = "RIGHT",
+  FRONT = "FRONT",
+  BACK = "BACK",
 };
 ```
 
@@ -279,10 +279,10 @@ The movement field in the sign object is used to describe the specific movements
 
 In the dominant and nonDominant subfields, you can specify various properties:
 
-- detect: This field holds an array of objects defining the required movements for the sign. Each object should match the structure of the movement object defined below. If this field holds an array of arrays, it indicates that multiple movement patterns can be used to validate the sign.
-- forbidden: This field contains an array of movements that should not be performed when executing the sign. Each object in the array should match the structure of the movement object.
-- options: This field can contain additional options for detecting the movement.
-- metadata: This field contains additional descriptive information about the movement. The description subfield provides a human-readable explanation of the movement, and the type subfield categorizes the movement into one of several predefined types: CIRCULAR, LINEAR, PARABOLICAL, ZIG_ZAG, SHAKE.
+- **detect**: This field holds an array of objects defining the required movements for the sign. Each object should match the structure of the movement object defined below. If this field holds an array of arrays, it indicates that multiple movement patterns can be used to validate the sign.
+- **forbidden**: This field contains an array of movements that should not be performed when executing the sign. Each object in the array should match the structure of the movement object.
+- **options**: This field can contain additional options for detecting the movement.
+- **metadata**: This field contains additional descriptive information about the movement. The description subfield provides a human-readable explanation of the movement, and the type subfield categorizes the movement into one of several predefined types: CIRCULAR, LINEAR, PARABOLICAL, ZIG_ZAG, SHAKE.
 
 The movement object structure is as follows:
 
@@ -303,4 +303,4 @@ Each field in the movement object describes a specific aspect of the hand moveme
 
 The options field provides additional settings for more specific or complex signs
 
-- options.detect.circular: This means the movement can start at any position of the array of movement objects.
+- **options.detect.circular**: This means the movement can start at any position of the array of movement objects.
