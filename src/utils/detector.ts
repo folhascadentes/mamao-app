@@ -184,13 +184,8 @@ const palmOrientationState = {
 };
 
 const initialLocationState = {
-  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    setHandPostionsCoordinates(sign, subject, memory);
-  },
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    if (!memory.dominantCoordinate) {
-      setHandPostionsCoordinates(sign, subject, memory);
-    }
+    setHandPostionsCoordinates(sign, subject, memory);
 
     return (
       memory.dominantCoordinate &&
@@ -316,6 +311,92 @@ const finalHandShapeState = {
   nextState: DetectorStates.HAND_SHAPE,
 };
 
+// -- Hand Shape --
+function checkHandShape(
+  dominantShape: string | undefined,
+  nonDominantShape: string | undefined,
+  detectedDominantShape: string | undefined,
+  detectedNonDominantShape: string | undefined
+): { valid: boolean } {
+  const dominantOkay =
+    !dominantShape || detectedDominantShape === dominantShape;
+  const nonDominantOkay =
+    !nonDominantShape || detectedNonDominantShape === nonDominantShape;
+
+  if (dominantOkay && nonDominantOkay) {
+    return { valid: true };
+  } else {
+    return { valid: false };
+  }
+}
+
+// -- Hand Orientation --
+function checkPalmOrientation(
+  dominantPalmOrientation: PalmOrientation | undefined,
+  nonDominantPalmOrientation: PalmOrientation | undefined,
+  subjectDominantPalmOrientation: Vector | undefined,
+  subjectNonDominantPalmOrientation: Vector | undefined
+): { valid: boolean } {
+  const dominantOkay =
+    !dominantPalmOrientation ||
+    checkOrientationUtil(
+      PalmOrientationDescriptor[dominantPalmOrientation],
+      subjectDominantPalmOrientation
+    );
+
+  const nonDominantOkay =
+    !nonDominantPalmOrientation ||
+    checkOrientationUtil(
+      PalmOrientationDescriptor[nonDominantPalmOrientation],
+      subjectNonDominantPalmOrientation
+    );
+
+  if (dominantOkay && nonDominantOkay) {
+    return { valid: true };
+  } else {
+    return { valid: false };
+  }
+}
+
+function checkHandOrientation(
+  dominantHandOrientation: HandOrientation | undefined,
+  nonDominantHandOrientation: HandOrientation | undefined,
+  subjectDominantHandOrientation: Vector | undefined,
+  subjectNonDominantHandOrientation: Vector | undefined
+): { valid: boolean } {
+  const dominantOkay =
+    !dominantHandOrientation ||
+    checkOrientationUtil(
+      HandOrientationDescriptor[dominantHandOrientation],
+      subjectDominantHandOrientation
+    );
+
+  const nonDominantOkay =
+    !nonDominantHandOrientation ||
+    checkOrientationUtil(
+      PalmOrientationDescriptor[nonDominantHandOrientation],
+      subjectNonDominantHandOrientation
+    );
+
+  if (dominantOkay && nonDominantOkay) {
+    return { valid: true };
+  } else {
+    return { valid: false };
+  }
+}
+
+function checkOrientationUtil(
+  orientation: Vector,
+  subjectOrientation?: Vector
+): boolean {
+  if (!subjectOrientation) {
+    return false;
+  }
+  const angle = angleBetweenTwoVectors(orientation, subjectOrientation);
+  return angle < 60;
+}
+
+// -- Hand Location --
 function setHandPostionsCoordinates(
   sign: Sign,
   subject: SubjectData,
@@ -325,11 +406,13 @@ function setHandPostionsCoordinates(
     return;
   }
 
-  memory.dominantCoordinate = findLocationCoordinate(
-    sign.steps.start.dominant.location,
-    subject.readings,
-    sign.steps.start.dominant.options?.location
-  );
+  if (memory.dominantCoordinate === undefined) {
+    memory.dominantCoordinate = findLocationCoordinate(
+      sign.steps.start.dominant.location,
+      subject.readings,
+      sign.steps.start.dominant.options?.location
+    );
+  }
 
   if (sign.steps.start.nonDominant?.location) {
     memory.nonDominantCoordinate = findLocationCoordinate(
@@ -339,11 +422,13 @@ function setHandPostionsCoordinates(
     );
   }
 
-  memory.dominantEndCoordinate = findLocationCoordinate(
-    sign.steps.end.dominant.location,
-    subject.readings,
-    sign.steps.end.dominant.options?.location
-  );
+  if (memory.dominantEndCoordinate === undefined) {
+    memory.dominantEndCoordinate = findLocationCoordinate(
+      sign.steps.end.dominant.location,
+      subject.readings,
+      sign.steps.end.dominant.options?.location
+    );
+  }
 
   if (sign.steps.end.nonDominant?.location) {
     memory.nonDominantEndCoordinate = findLocationCoordinate(
@@ -440,6 +525,48 @@ function handCloseToLocation(
   return distance < CIRCLE_RADIUS * 1.8;
 }
 
+function checkHandPosition(
+  dominantCoordinate: Coordinate,
+  nonDominantCoordinate: Coordinate | undefined,
+  dominantLandmarks: Coordinate[],
+  nonDominantLandmarks: Coordinate[],
+  poseLandmarks: Coordinate[]
+): {
+  valid: boolean;
+  dominantCoordinate?: Coordinate;
+  nonDominantCoordinate?: Coordinate;
+} {
+  if (
+    poseLandmarks.length &&
+    (dominantLandmarks.length || nonDominantLandmarks.length)
+  ) {
+    const dominantOkay = handCloseToLocation(
+      dominantLandmarks,
+      dominantCoordinate
+    );
+
+    const nonDominantOkay =
+      !nonDominantCoordinate ||
+      handCloseToLocation(nonDominantLandmarks, nonDominantCoordinate);
+
+    if (dominantOkay && nonDominantOkay) {
+      return { valid: true };
+    } else {
+      return {
+        valid: false,
+        dominantCoordinate,
+        nonDominantCoordinate,
+      };
+    }
+  } else {
+    return {
+      valid: false,
+    };
+  }
+}
+
+// -- Movements --
+
 /**
  
 Dado um vetor de possíveis movimentos desejado como 
@@ -524,127 +651,4 @@ function checkSameMovement(
     }
     return false;
   });
-}
-
-function checkHandShape(
-  dominantShape: string | undefined,
-  nonDominantShape: string | undefined,
-  detectedDominantShape: string | undefined,
-  detectedNonDominantShape: string | undefined
-): { valid: boolean } {
-  const dominantOkay =
-    !dominantShape || detectedDominantShape === dominantShape;
-  const nonDominantOkay =
-    !nonDominantShape || detectedNonDominantShape === nonDominantShape;
-
-  if (dominantOkay && nonDominantOkay) {
-    return { valid: true };
-  } else {
-    return { valid: false };
-  }
-}
-
-function checkPalmOrientation(
-  dominantPalmOrientation: PalmOrientation | undefined,
-  nonDominantPalmOrientation: PalmOrientation | undefined,
-  subjectDominantPalmOrientation: Vector | undefined,
-  subjectNonDominantPalmOrientation: Vector | undefined
-): { valid: boolean } {
-  const dominantOkay =
-    !dominantPalmOrientation ||
-    checkOrientationUtil(
-      PalmOrientationDescriptor[dominantPalmOrientation],
-      subjectDominantPalmOrientation
-    );
-
-  const nonDominantOkay =
-    !nonDominantPalmOrientation ||
-    checkOrientationUtil(
-      PalmOrientationDescriptor[nonDominantPalmOrientation],
-      subjectNonDominantPalmOrientation
-    );
-
-  if (dominantOkay && nonDominantOkay) {
-    return { valid: true };
-  } else {
-    return { valid: false };
-  }
-}
-
-function checkHandOrientation(
-  dominantHandOrientation: HandOrientation | undefined,
-  nonDominantHandOrientation: HandOrientation | undefined,
-  subjectDominantHandOrientation: Vector | undefined,
-  subjectNonDominantHandOrientation: Vector | undefined
-): { valid: boolean } {
-  const dominantOkay =
-    !dominantHandOrientation ||
-    checkOrientationUtil(
-      HandOrientationDescriptor[dominantHandOrientation],
-      subjectDominantHandOrientation
-    );
-
-  const nonDominantOkay =
-    !nonDominantHandOrientation ||
-    checkOrientationUtil(
-      PalmOrientationDescriptor[nonDominantHandOrientation],
-      subjectNonDominantHandOrientation
-    );
-
-  if (dominantOkay && nonDominantOkay) {
-    return { valid: true };
-  } else {
-    return { valid: false };
-  }
-}
-
-function checkOrientationUtil(
-  orientation: Vector,
-  subjectOrientation?: Vector
-): boolean {
-  if (!subjectOrientation) {
-    return false;
-  }
-  const angle = angleBetweenTwoVectors(orientation, subjectOrientation);
-  return angle < 60;
-}
-
-function checkHandPosition(
-  dominantCoordinate: Coordinate,
-  nonDominantCoordinate: Coordinate | undefined,
-  dominantLandmarks: Coordinate[],
-  nonDominantLandmarks: Coordinate[],
-  poseLandmarks: Coordinate[]
-): {
-  valid: boolean;
-  dominantCoordinate?: Coordinate;
-  nonDominantCoordinate?: Coordinate;
-} {
-  if (
-    poseLandmarks.length &&
-    (dominantLandmarks.length || nonDominantLandmarks.length)
-  ) {
-    const dominantOkay = handCloseToLocation(
-      dominantLandmarks,
-      dominantCoordinate
-    );
-
-    const nonDominantOkay =
-      !nonDominantCoordinate ||
-      handCloseToLocation(nonDominantLandmarks, nonDominantCoordinate);
-
-    if (dominantOkay && nonDominantOkay) {
-      return { valid: true };
-    } else {
-      return {
-        valid: false,
-        dominantCoordinate,
-        nonDominantCoordinate,
-      };
-    }
-  } else {
-    return {
-      valid: false,
-    };
-  }
 }
