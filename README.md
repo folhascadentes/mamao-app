@@ -10,6 +10,15 @@ Join us in our mission to bridge the gap between sign language and spoken langua
 
 You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word for papaya, a tropical fruit. However, the name choice goes beyond that. It's a playful pun on the phrase "uma mão" which means "a hand" in Portuguese, and is similar to the English phrase "give a hand". This resonates with the core purpose of our platform: facilitating sign language learning and practice, which is primarily done using hands. Through Mamão, we aim to 'give a hand' to those seeking to communicate using sign languages, and to those striving to develop new technologies to bridge the communication gap for the deaf and hard of hearing community.
 
+## Table of Contents
+
+1. [Product Requirements](#product-requirements)
+2. [High-Level Architecture Overview](#high-level-architecture-overview)
+3. [What is a Sign?](#what-is-a-sign)
+4. [Scope and Variation in Sign Languages](#scope-and-variation-in-sign-languages)
+5. [How specifying a Sign](#how-specifying-a-sign)
+6. [Project Roadmap](#project-roadmap)
+
 ## Product Requirements
 
 In developing our open-source crowdsourcing platform for training sign language recognition methods, we've identified several crucial product requirements. These requirements will guide our design and development processes, and are essential in creating a platform that is not only effective and secure, but also accessible and engaging.
@@ -258,7 +267,7 @@ enum Location {
   BELLY = "BELLY",
   HIP_LEFT = "HIP_LEFT",
   HIP_RIGHT = "HIP_RIGHT",
-};
+}
 
 enum PalmOrientation {
   UP = "UP",
@@ -267,16 +276,16 @@ enum PalmOrientation {
   RIGHT = "RIGHT",
   FRONT = "FRONT",
   BACK = "BACK",
-};
+}
 
-ENUM HANDORIENTATION {
+enum HANDORIENTATION {
   UP = "UP",
   DOWN = "DOWN",
   LEFT = "LEFT",
   RIGHT = "RIGHT",
   FRONT = "FRONT",
   BACK = "BACK",
-};
+}
 ```
 
 ### `movement`
@@ -334,7 +343,6 @@ Each field in the movement object describes a specific aspect of the hand moveme
 The options field provides additional settings for more specific or complex signs
 
 - **options.detect.circular**: This means the movement can start at any position of the array of movement objects.
-
 
 ## Project Roadmap
 
