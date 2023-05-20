@@ -18,6 +18,9 @@
     "typescript": "^5.0.4",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "typescript": "^5.0.4"
+  },
   "devDependencies": {
     "@tensorflow/tfjs-node-gpu": "^4.4.0",
     "@testing-library/jest-dom": "^5.16.5",
