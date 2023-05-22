@@ -28,20 +28,26 @@ export class Instructor {
       if (response.state === DetectorStates.INITIAL_LOCATION) {
         this.instructPosition(
           response.memory.dominantCoordinate,
-          response.memory.nonDominantCoordinate
+          response.memory.nonDominantCoordinate,
+          this.sign.steps.start.dominant.options?.location.detectionRadius,
+          this.sign.steps.start.nonDominant?.options?.location?.detectionRadius
         );
         this.angle = 0;
         this.orientation = Math.random() > 0.5 ? 1 : -1;
       } else if (response.state === DetectorStates.MOVEMENT) {
         this.instructPosition(
           response.memory.dominantEndCoordinate,
-          response.memory.nonDominantEndCoordinate
+          response.memory.nonDominantEndCoordinate,
+          this.sign.steps.end.dominant.options?.location.detectionRadius,
+          this.sign.steps.end.nonDominant?.options?.location?.detectionRadius
         );
         this.instructMovement(this.sign.steps.movement.dominant.metadata.type);
       } else if (response.state === DetectorStates.FINAL_LOCATION) {
         this.instructPosition(
           response.memory.dominantEndCoordinate,
-          response.memory.nonDominantEndCoordinate
+          response.memory.nonDominantEndCoordinate,
+          this.sign.steps.end.dominant.options?.location.detectionRadius,
+          this.sign.steps.end.nonDominant?.options?.location?.detectionRadius
         );
       }
     }
@@ -49,13 +55,15 @@ export class Instructor {
 
   private instructPosition(
     dominantLocation: Coordinate,
-    nonDominantLocation: Coordinate
+    nonDominantLocation: Coordinate,
+    dominantDetectionRadius?: number,
+    nonDominantDetectionRadius?: number
   ): void {
     if (dominantLocation.x !== -1) {
       this.drawCircle(
         dominantLocation.x,
         dominantLocation.y,
-        CIRCLE_RADIUS,
+        dominantDetectionRadius ?? CIRCLE_RADIUS,
         "rgb(229, 123, 69, 0.8)"
       );
 
@@ -66,7 +74,7 @@ export class Instructor {
       this.drawCircle(
         nonDominantLocation.x,
         nonDominantLocation.y,
-        CIRCLE_RADIUS,
+        nonDominantDetectionRadius ?? CIRCLE_RADIUS,
         "rgb(69, 104, 229, 0.8)"
       );
 

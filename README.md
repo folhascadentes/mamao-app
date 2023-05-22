@@ -178,7 +178,8 @@ Each of these fields within the dominant and nonDominant subfields can take eith
 
 The options field provides additional settings for more specific or complex signs
 
-- **options.location.handLocation** (HandLocation): This option is used to define the specific hand location required to accurately execute a sign language gesture. By tracking the location of the hand, the system can verify whether a person is correctly positioned to perform the sign. The value of this property should be an instance of the HandLocation type. 
+- **options.location.handLocation** (HandLocation): This option is used to define the specific hand location required to accurately execute a sign language gesture. By tracking the location of the hand, the system can verify whether a person is correctly positioned to perform the sign. The value of this property should be an instance of the HandLocation type.
+- **options.location.detectionRadius** (number): This option define the radius that the handLocation need to be within to be considered valid. This is used to provide some flexibility in the location of the hand. Measurements are in pixels. Default value is 40 pixels.
 - **options.location.track** (boolean): When set to true, the body's position remains relative even if the person moves. This allows for signs to be performed in motion.
 - **options.location.radiusOffset** (number | { value: number; leftLimitValue?: number; rightLimitValue?: number; upLimitValue?: number; downLimitValue?: number; }): Adds randomness to the sign's location within a circular region with radius X. This is used to bring greater diversity to the sign's execution by not strictly confining it to a single exact location.
 - **options.location.verticalOffset** (number): Adds randomness to the sign's location along the y-axis. This can introduce variation in the vertical position of the sign.
@@ -372,7 +373,7 @@ The movement object structure is as follows:
 - **wristRotate**: This boolean property indicates whether the sign language gesture requires wrist rotation. A value of true means the gesture requires rotation, while false means it does not.
 - **wristExtension**: This boolean property indicates whether the gesture requires wrist extension, which involves lifting the back of your hand. true means the gesture requires extension, false means it does not.
 - **wristFlexion**: This boolean property indicates whether the gesture requires wrist flexion, or bending your hand downward. true indicates that flexion is required, false means it is not.
-wristAbduction: This boolean property identifies whether the gesture requires wrist abduction, which involves moving your hand towards the thumb side. A true value means abduction is required, false means it is not.
+  wristAbduction: This boolean property identifies whether the gesture requires wrist abduction, which involves moving your hand towards the thumb side. A true value means abduction is required, false means it is not.
 - **wristAdduction**: This boolean property signifies whether the gesture requires wrist adduction, or moving your hand towards the little finger side. A true value indicates adduction is required, false means it is not.
 
 Each field in the movement object describes a specific aspect of the hand movement required for the sign. These fields can be used to define very precise movements, enabling accurate detection and instruction of signs.

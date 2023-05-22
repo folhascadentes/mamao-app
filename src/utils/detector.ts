@@ -1,6 +1,7 @@
 import { getLocationCoordinate } from "./locations";
 import { angleBetweenTwoVectors, getMiddlePoint } from "./geometrics";
 import {
+  HandLocation,
   HandOrientation,
   HandOrientationDescriptor,
   Location,
@@ -208,7 +209,9 @@ const initialLocationState = {
       memory.nonDominantCoordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
-      subject.readings.poseLandmarks ?? []
+      subject.readings.poseLandmarks ?? [],
+      sign.steps.start.dominant.options?.location,
+      sign.steps.start.nonDominant?.options?.location
     );
   },
   nextState: DetectorStates.MOVEMENT,
@@ -279,7 +282,9 @@ const finalLocationState = {
       memory.nonDominantEndCoordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
-      subject.readings.poseLandmarks ?? []
+      subject.readings.poseLandmarks ?? [],
+      sign.steps.end.dominant.options?.location,
+      sign.steps.end.nonDominant?.options?.location
     );
   },
   nextState: DetectorStates.FINAL_PALM_ORIENTATION,
@@ -606,19 +611,28 @@ function randomizeVerticalOffset(offset: number) {
 
 function handCloseToLocation(
   landmarks: Coordinate[],
-  position: Coordinate
+  location: Coordinate,
+  handLocation?: HandLocation,
+  detectionRadius?: number
 ): boolean {
-  if (!position || !landmarks.length) {
+  if (!location || !landmarks.length) {
     return false;
   }
 
-  const middle = getMiddlePoint(landmarks);
+  let handLocationCoordinate = { x: 0, y: 0, z: 0 };
+
+  if (handLocation === undefined) {
+    handLocationCoordinate = getMiddlePoint(landmarks);
+  } else {
+    handLocationCoordinate = landmarks[handLocation];
+  }
 
   const distance = Math.sqrt(
-    Math.pow(middle.x - position.x, 2) + Math.pow(middle.y - position.y, 2)
+    Math.pow(handLocationCoordinate.x - location.x, 2) +
+      Math.pow(handLocationCoordinate.y - location.y, 2)
   );
 
-  return distance < CIRCLE_RADIUS * 1.8;
+  return distance < (detectionRadius ?? CIRCLE_RADIUS);
 }
 
 function checkHandPosition(
@@ -626,7 +640,9 @@ function checkHandPosition(
   nonDominantCoordinate: Coordinate,
   dominantLandmarks: Coordinate[],
   nonDominantLandmarks: Coordinate[],
-  poseLandmarks: Coordinate[]
+  poseLandmarks: Coordinate[],
+  dominantOptions?: SignConfigurationLocationOptions,
+  nonDominantOptions?: SignConfigurationLocationOptions
 ): {
   valid: boolean;
   dominantCoordinate?: Coordinate;
@@ -638,12 +654,19 @@ function checkHandPosition(
   ) {
     const dominantOkay = handCloseToLocation(
       dominantLandmarks,
-      dominantCoordinate
+      dominantCoordinate,
+      dominantOptions?.handLocation,
+      dominantOptions?.detectionRadius
     );
 
     const nonDominantOkay =
       nonDominantCoordinate.x === -1 ||
-      handCloseToLocation(nonDominantLandmarks, nonDominantCoordinate);
+      handCloseToLocation(
+        nonDominantLandmarks,
+        nonDominantCoordinate,
+        nonDominantOptions?.handLocation,
+        nonDominantOptions?.detectionRadius
+      );
 
     if (dominantOkay && nonDominantOkay) {
       return { valid: true };
