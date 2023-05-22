@@ -178,6 +178,7 @@ Each of these fields within the dominant and nonDominant subfields can take eith
 
 The options field provides additional settings for more specific or complex signs
 
+- **options.location.handLocation** (HandLocation): This option is used to define the specific hand location required to accurately execute a sign language gesture. By tracking the location of the hand, the system can verify whether a person is correctly positioned to perform the sign. The value of this property should be an instance of the HandLocation type. 
 - **options.location.track** (boolean): When set to true, the body's position remains relative even if the person moves. This allows for signs to be performed in motion.
 - **options.location.radiusOffset** (number | { value: number; leftLimitValue?: number; rightLimitValue?: number; upLimitValue?: number; downLimitValue?: number; }): Adds randomness to the sign's location within a circular region with radius X. This is used to bring greater diversity to the sign's execution by not strictly confining it to a single exact location.
 - **options.location.verticalOffset** (number): Adds randomness to the sign's location along the y-axis. This can introduce variation in the vertical position of the sign.
@@ -271,6 +272,31 @@ enum Location {
   HIP_RIGHT = "HIP_RIGHT",
 }
 
+// See https://github.com/google/mediapipe/blob/master/docs/solutions/hands.md
+enum HandLocation {
+  WRIST = "WRIST",
+  THUMB_CMC = "THUMB_CMC",
+  THUMB_MCP = "THUMB_MCP",
+  THUMB_IP = "THUMB_IP",
+  THUMB_TIP = "THUMB_TIP",
+  INDEX_FINGER_MCP = "INDEX_FINGER_MCP",
+  INDEX_FINGER_PIP = "INDEX_FINGER_PIP",
+  INDEX_FINGER_DIP = "INDEX_FINGER_DIP",
+  INDEX_FINGER_TIP = "INDEX_FINGER_TIP",
+  MIDDLE_FINGER_MCP = "MIDDLE_FINGER_MCP",
+  MIDDLE_FINGER_PIP = "MIDDLE_FINGER_PIP",
+  MIDDLE_FINGER_DIP = "MIDDLE_FINGER_DIP",
+  MIDDLE_FINGER_TIP = "MIDDLE_FINGER_TIP",
+  RING_FINGER_MCP = "RING_FINGER_MCP",
+  RING_FINGER_PIP = "RING_FINGER_PIP",
+  RING_FINGER_DIP = "RING_FINGER_DIP",
+  RING_FINGER_TIP = "RING_FINGER_TIP",
+  PINKY_MCP = "PINKY_MCP",
+  PINKY_PIP = "PINKY_PIP",
+  PINKY_DIP = "PINKY_DIP",
+  PINKY_TIP = "PINKY_TIP",
+}
+
 enum PalmOrientation {
   UP = "UP",
   DOWN = "DOWN",
@@ -329,16 +355,25 @@ The movement object structure is as follows:
 
 ```json
 {
-  "x": "-1|0|1", // Movement along the X-axis (left, still, right)
-  "y": "-1|0|1", // Movement along the Y-axis (up, still, down)
-  "z": "-1|0|1", // Movement along the Z-axis (back, still, front)
-  "wristRootate": "boolean", // Whether the sign requires wrist rotation
-  "wristExtension": "boolean", // Whether the sign requires wrist extension (lifting the back of your hand)
-  "wristFlexion": "boolean", // Whether the sign requires wrist flexion (bending your hand downward)
-  "wristAbduction": "boolean", // Whether the sign requires wrist abduction (moving your hand towards the thumb side)
-  "wristAdduction": "boolean" // Whether the sign requires wrist adduction (moving your hand towards the little finger side)
+  "x": "-1|1",
+  "y": "-1|1",
+  "z": "-1|1",
+  "wristRotate": "boolean",
+  "wristExtension": "boolean",
+  "wristFlexion": "boolean",
+  "wristAbduction": "boolean",
+  "wristAdduction": "boolean"
 }
 ```
+
+- **x**: This property identifies whether the wrist moves along the X-axis. A value of -1 indicates a leftward movement, while a value of 1 indicates a rightward movement. An undefined value signifies that the wrist is still.
+- **y**: This property tracks wrist movement along the Y-axis. A value of -1 corresponds to a downward movement, while a value of 1 corresponds to an upward movement. An undefined value means the wrist is stationary.
+- **z**: This property monitors the wrist's movement along the Z-axis. A value of -1 denotes a backward movement, while a value of 1 denotes a forward movement. An undefined value denotes a lack of movement.
+- **wristRotate**: This boolean property indicates whether the sign language gesture requires wrist rotation. A value of true means the gesture requires rotation, while false means it does not.
+- **wristExtension**: This boolean property indicates whether the gesture requires wrist extension, which involves lifting the back of your hand. true means the gesture requires extension, false means it does not.
+- **wristFlexion**: This boolean property indicates whether the gesture requires wrist flexion, or bending your hand downward. true indicates that flexion is required, false means it is not.
+wristAbduction: This boolean property identifies whether the gesture requires wrist abduction, which involves moving your hand towards the thumb side. A true value means abduction is required, false means it is not.
+- **wristAdduction**: This boolean property signifies whether the gesture requires wrist adduction, or moving your hand towards the little finger side. A true value indicates adduction is required, false means it is not.
 
 Each field in the movement object describes a specific aspect of the hand movement required for the sign. These fields can be used to define very precise movements, enabling accurate detection and instruction of signs.
 
