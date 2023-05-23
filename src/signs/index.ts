@@ -1305,6 +1305,170 @@ export const signs: Sign[] = [
   //   language: "Libras",
   //   token: "Dia",
   // },
+  // {
+  //   language: "Libras",
+  //   token: "Casa"
+  // }
+  // {
+  //   language: "Libras",
+  //   token: "Estuda",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Idade",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Local",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Noite",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Tarde",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Trabalha",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Assistir",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Familia",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Ler",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Nos",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "TV",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Passear",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Ainda",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Como",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Duvida",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Faculdade",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Passado",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Vontade",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Tudo",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Aqui",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Novo",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Prazer",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Conhecer",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Mulher",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Homem",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Obrigado",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "De nada",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Onde",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Quem",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Desculpa",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Ajuda",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Comida",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Bebida",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Banheiro",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Amigo",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Escola",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Dinheiro",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Tempo",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Medico",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Telefone",
+  // },
 ];
 
 export * from "./instruction";
