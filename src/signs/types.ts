@@ -45,7 +45,7 @@ export interface SignConfigurationLocationOptions {
   verticalOffset?: number;
   horizontalOffset?: number;
   same?: boolean;
-  side?: string;
+  side?: boolean;
 }
 
 interface MovementConfiguration {
