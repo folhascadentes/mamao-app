@@ -45,6 +45,8 @@ export interface SignConfigurationLocationOptions {
   verticalOffset?: number;
   horizontalOffset?: number;
   same?: boolean;
+  sameY?: boolean;
+  sameX?: boolean;
   side?: boolean;
 }
 
@@ -69,6 +71,7 @@ export enum MovementType {
   STATIC = "STATIC",
   SHAKE_MOTION = "SHAKE_MOTION",
   WRIST_FLEXION_EXTENSION = "WRIST_FLEXION_EXTENSION",
+  WRIST_ROTATE = "WRIST_ROTATE",
 }
 
 export interface MovementAxis {
@@ -199,11 +202,13 @@ export const HandShape = {
     CLAW: "claw",
     INDEX_FINGER: "indexFinger",
     MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
+    MIDDLE_FINGER_BENDED_FINGERS_APART: "middleFingerBendedFingersApart",
     OI: "oi",
-    OPEN_HAND: "openHand",
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
+    OPEN_HAND: "openHand",
     THUMB_FINGER: "thumbFinger",
+    THUMB_TOUCH_INDEX_FINGERS_APART: "thumbTouchIndexFingersApart",
     THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",
   },
 };

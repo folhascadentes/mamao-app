@@ -185,6 +185,8 @@ The options field provides additional settings for more specific or complex sign
 - **options.location.verticalOffset** (number): Adds randomness to the sign's location along the y-axis. This can introduce variation in the vertical position of the sign.
 - **options.location.horizontalOffset** (number): Adds randomness to the sign's location along the x-axis. This can introduce variation in the horizontal position of the sign.
 - **options.location.same** (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position at the end of the sign is the same as at the start.
+- **options.location.sameY** (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position Y-axis at the end of the sign is the same as at the start.
+- **options.location.sameX** (boolean): This is valid only for the end configuration of the sign. When set to true, it indicates that the hand's position X-axis at the end of the sign is the same as at the start.
 - **options.location.side** (boolean): This is valid only for the non-dominant hand. When set to true, it indicates that the y-axis of the non-dominant hand will be the same as the y-axis of the dominant hand.
 
 ### Constants for Sign Specification

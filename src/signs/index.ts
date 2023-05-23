@@ -1084,33 +1084,226 @@ export const signs: Sign[] = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Sentimento",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Quente",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Pessoa",
-  // },
+  {
+    language: "Libras",
+    token: "Sentimento",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "Bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Quente",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.C,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 75,
+                rightLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
+          metadata: {
+            description: "Mova a mão dominante da direita para esquerda",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LEFT,
+          handShape: HandShape.libras.C,
+          palmOrientation: PalmOrientation.RIGHT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 75,
+                leftLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Ter",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "Bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Certeza",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: -1 }, { y: -1 }, { y: -1 }],
+          metadata: {
+            description: "Mova a mão para baixo",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LOWER,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              sameX: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Pessoa",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.FOREHEAD_LEFT,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 30,
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
+          metadata: {
+            description: "Mova a mão da esquerda para direita",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 30,
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Porque",
   // },
   // {
   //   language: "Libras",
-  //   token: "Ter",
-  // },
-  // {
-  //   language: "Libras",
   //   token: "Dia",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Certeza",
   // },
 ];
 
