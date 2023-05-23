@@ -945,17 +945,160 @@ export const signs: Sign[] = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Não",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 85,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
+          metadata: {
+            description:
+              "Mova a mão dominante lateralmente para dentro e para fora duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Tchau",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 85,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
+          metadata: {
+            description:
+              "Mova a mão dominante lateralmente para dentro e para fora duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Entender",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 50,
+                rightLimitValue: 0,
+              },
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ wristRotate: true }, { wristRotate: true }],
+          metadata: {
+            description: "Gire o pulso da duas vezes",
+            type: MovementType.WRIST_ROTATE,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  // {
+  //   language: "Libras",
+  //   token: "Sentimento",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Quente",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Pessoa",
+  // },
   // {
   //   language: "Libras",
   //   token: "Porque",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Não",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Tchau",
   // },
   // {
   //   language: "Libras",
