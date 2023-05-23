@@ -68,6 +68,7 @@ export enum MovementType {
   PARABOLIC_MOTION = "PARABOLIC_MOTION",
   STATIC = "STATIC",
   SHAKE_MOTION = "SHAKE_MOTION",
+  WRIST_FLEXION_EXTENSION = "WRIST_FLEXION_EXTENSION",
 }
 
 export interface MovementAxis {
@@ -202,6 +203,7 @@ export const HandShape = {
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
     THUMB_FINGER: "thumbFinger",
+    THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",
   },
 };
 
