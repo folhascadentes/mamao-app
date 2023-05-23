@@ -63,8 +63,10 @@ interface MovementConfiguration {
 }
 
 export enum MovementType {
-  LINEAR_MOTION = "LINEAR_MOTION",
   CIRCULAR_MOTION = "CIRCULAR_MOTION",
+  LINEAR_MOTION = "LINEAR_MOTION",
+  PARABOLIC_MOTION = "PARABOLIC_MOTION",
+  SHAKE_MOTION = "SHAKE_MOTION",
 }
 
 export interface MovementAxis {
@@ -191,8 +193,10 @@ export const HandShape = {
     W: "w",
     X: "x",
     Y: "y",
-    middleAndIndexFinger: "middleAndIndexFinger",
-    Oi: 'oi',
+    INDEX_FINGER: "indexFinger",
+    MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
+    OI: "oi",
+    OPEN_HAND_FINGERS_APART: "openHandFingersApart",
   },
 };
 
