@@ -154,6 +154,11 @@ export const signs: Sign[] = [
             description: "faça um movimento circular",
             type: MovementType.CIRCULAR_MOTION,
           },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
         },
       },
       end: {
@@ -318,6 +323,11 @@ export const signs: Sign[] = [
             description: "mova a mão para baixo e para cima duas vezes",
             type: MovementType.SHAKE_MOTION,
           },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
         },
       },
       end: {
@@ -335,143 +345,168 @@ export const signs: Sign[] = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Avisar",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         bodyOffsetRadius: 50,
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 0 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHandCategory: "PARABOLIC_MOTION",
-  //       dominanHandDescription:
-  //         "mova a mão até a outra bola laranja em um movimento parabólico para frente",
-  //       dominantHand: [{ z: 1 }, { y: -1, z: 1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_lower",
-  //         bodyOffsetRadius: 75,
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 1 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Me-avisar",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
-  //         bodyOffsetRadius: 50,
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 1 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHandCategory: "PARABOLIC_MOTION",
-  //       dominanHandDescription:
-  //         "mova a mão até a outra bola laranja em um movimento parabólico em sua direação",
-  //       dominantHand: [{ y: 1, z: -1 }, { z: -1 }],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
-  //         bodyOffsetRadius: 75,
-  //         handConfiguration: "y_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
-  //         pointingDirection: { x: 0, y: 1, z: 0 },
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Beleza",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
-  //         bodyOffsetRadius: 125,
-  //         handConfiguration: "thumb_finger_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //     movements: {
-  //       dominantHand: [],
-  //       nonDominantHand: [],
-  //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "thumb_finger_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
-  //       },
-  //       nonDominantHand: {},
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Avisar",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 50,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: 1 }, { y: -1, z: 1 }],
+          metadata: {
+            description:
+              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LOWER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 75,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Me-avisar",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_LOWER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 50,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: 1, z: -1 }, { z: -1 }],
+          metadata: {
+            description:
+              "mova a mão até a outra bola laranja em um movimento parabólico para trás",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 75,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Beleza",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 125,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          metadata: {
+            description: "Permanceça com a mão na posição",
+            type: MovementType.STATIC,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              same: true,
+              detectionRadius: 60,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Educado",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: ["shoulder", "elbow"],
-  //         bodyRegionTrack: true,
-  //         handConfiguration: "l_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: ["shoulder", "elbow"],
+  //         locationTrack: true,
+  //         handShape: "l_cm",
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "torax_right_lower",
-  //         handConfiguration: ["a_cm", "s_cm"],
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //       nondominant: {
+  //         location: "torax_right_lower",
+  //         handShape: ["a_cm", "s_cm"],
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
   //     },
-  //     movements: {
-  //       dominantHandCategory: "LINEAR_MOTION",
+  //     movement: {
+  //       dominantCategory: "LINEAR_MOTION",
   //       dominanHandDescription:
   //         "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
-  //       dominantHand: [],
-  //       nonDominantHand: [],
+  //       dominant: [],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "wrist",
-  //         handConfiguration: "l_cm",
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //     end: {
+  //       dominant: {
+  //         location: "wrist",
+  //         handShape: "l_cm",
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: ["a_cm", "s_cm"],
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //       nondominant: {
+  //         location: "same",
+  //         handShape: ["a_cm", "s_cm"],
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
   //     },
   //   },
@@ -479,50 +514,46 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Branco",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: ["shoulder", "elbow"],
-  //         bodyRegionTrack: true,
-  //         handConfiguration: [
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: ["shoulder", "elbow"],
+  //         locationTrack: true,
+  //         handShape: [
   //           "open_hand_cm",
   //           "open_hand_thumb_apart_cm",
   //           "open_hand_fingers_apart_cm",
   //         ],
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "torax_right_lower",
+  //       nondominant: {
+  //         location: "torax_right_lower",
   //         bodyOffsetRadius: 30,
-  //         handConfiguration: ["a_cm", "s_cm"],
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //         handShape: ["a_cm", "s_cm"],
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
   //     },
-  //     movements: {
-  //       dominantHandCategory: "LINEAR_MOTION",
+  //     movement: {
+  //       dominantCategory: "LINEAR_MOTION",
   //       dominanHandDescription:
   //         "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
-  //       dominantHand: [],
-  //       nonDominantHand: [],
+  //       dominant: [],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "wrist",
-  //         handConfiguration: [
+  //     end: {
+  //       dominant: {
+  //         location: "wrist",
+  //         handShape: [
   //           "open_hand_cm",
   //           "open_hand_thumb_apart_cm",
   //           "open_hand_fingers_apart_cm",
   //         ],
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: ["a_cm", "s_cm"],
-  //         palmDirection: PalmDirection.DOWN,
-  //         palmDirectionCategory: "DOWN",
+  //       nondominant: {
+  //         location: "same",
+  //         handShape: ["a_cm", "s_cm"],
+  //         palmOrientation: PalmOrientation.DOWN,
   //       },
   //     },
   //   },
@@ -530,109 +561,97 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Ainda",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "chin",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "chin",
   //         bodyOffsetRadius: 50,
-  //         handConfiguration: "thumb_touch_index_fingers_closed_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
+  //         handShape: "thumb_touch_index_fingers_closed_cm",
+  //         palmOrientation: PalmOrientation.LEFT,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "LINAR_MOTION",
+  //     movement: {
+  //       dominantCategory: "LINAR_MOTION",
   //       dominanHandDescription:
   //         "mova a mão até o queixo tocando ele duas vezes",
-  //       dominantHand: [{ z: -1 }, { z: 1 }, { z: -1 }],
-  //       nonDominantHand: [],
+  //       dominant: [{ z: -1 }, { z: 1 }, { z: -1 }],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "chin",
-  //         handConfiguration: "thumb_touch_index_fingers_closed_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
+  //     end: {
+  //       dominant: {
+  //         location: "chin",
+  //         handShape: "thumb_touch_index_fingers_closed_cm",
+  //         palmOrientation: PalmOrientation.LEFT,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },
   // {
   //   language: "Libras",
   //   token: "Futuro",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax_upper",
   //         bodyOffsetRadius: 30,
-  //         handConfiguration: "f_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
+  //         handShape: "f_cm",
+  //         palmOrientation: PalmOrientation.LEFT,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "PARABOLIC_MOTION",
+  //     movement: {
+  //       dominantCategory: "PARABOLIC_MOTION",
   //       dominanHandDescription:
   //         "mova a mão até a outra bola laranja em um movimento parabólico para frente",
-  //       dominantHand: [{ z: -1 }, { z: 1 }, { z: -1 }],
-  //       nonDominantHand: [],
+  //       dominant: [{ z: -1 }, { z: 1 }, { z: -1 }],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_lower",
+  //     end: {
+  //       dominant: {
+  //         location: "torax_lower",
   //         bodyOffsetRadius: 90,
-  //         handConfiguration: "f_cm",
-  //         palmDirection: PalmDirection.OPPOSITE,
-  //         palmDirectionCategory: "OPPOSITE",
+  //         handShape: "f_cm",
+  //         palmOrientation: PalmOrientation.LEFT,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },
   // {
   //   language: "Libras",
   //   token: "Hoje",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax",
   //         bodyOffsetVertical: 50,
-  //         handConfiguration: "open_hand_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //         handShape: "open_hand_cm",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "side",
-  //         handConfiguration: "open_hand_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //       nondominant: {
+  //         location: "side",
+  //         handShape: "open_hand_cm",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
   //     },
-  //     movements: {
-  //       dominantHandCategory: "ZIG_ZAG_MOTION",
-  //       nonDominantHandCategory: "ZIG_ZAG_MOTION",
+  //     movement: {
+  //       dominantCategory: "ZIG_ZAG_MOTION",
+  //       nondominantCategory: "ZIG_ZAG_MOTION",
   //       dominanHandDescription:
   //         "Mova a mão lateralmente para dentro e para fora duas vezes",
   //       nonDominanHandDescription:
   //         "Mova a mão lateralmente para dentro e para fora duas vezes",
-  //       dominantHand: [{ x: -1 }, { x: 1 }, { x: -1 }],
-  //       nonDominantHand: [{ x: 1 }, { x: -1 }, { x: 1 }],
+  //       dominant: [{ x: -1 }, { x: 1 }, { x: -1 }],
+  //       nondominant: [{ x: 1 }, { x: -1 }, { x: 1 }],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "open_hand_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "open_hand_cm",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
-  //       nonDominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "open_hand_cm",
-  //         palmDirection: PalmDirection.UP,
-  //         palmDirectionCategory: "UP",
+  //       nondominant: {
+  //         location: "same",
+  //         handShape: "open_hand_cm",
+  //         palmOrientation: PalmOrientation.UP,
   //       },
   //     },
   //   },
@@ -644,31 +663,27 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Sim",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_left",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax_left",
   //         bodyOffsetRadius: 50,
-  //         handConfiguration: "s_cm",
-  //         palmDirection: PalmDirection.FRONT,
-  //         palmDirectionCategory: "FRONT",
+  //         handShape: "s_cm",
+  //         palmOrientation: PalmOrientation.FRONT,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "WRIST_MOTION",
+  //     movement: {
+  //       dominantCategory: "WRIST_MOTION",
   //       dominanHandDescription: "",
-  //       dominantHand: [],
-  //       nonDominantHand: [],
+  //       dominant: [],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "s_cm",
-  //         palmDirection: PalmDirection.FRONT,
-  //         palmDirectionCategory: "FRONT",
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "s_cm",
+  //         palmOrientation: PalmOrientation.FRONT,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },
@@ -683,22 +698,20 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Gostar",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax",
   //         bodyOffsetRadius: 100,
-  //         handConfiguration: "open_hand_thumb_apart_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "CIRCULAR_MOTION",
+  //     movement: {
+  //       dominantCategory: "CIRCULAR_MOTION",
   //       dominanHandDescription:
   //         "faça um movimento circular com a mão colada ao seu corpo",
-  //       dominantHand: [
+  //       dominant: [
   //         [
   //           { y: 1, x: 1 },
   //           { y: -1, x: 1 },
@@ -712,49 +725,43 @@ export const signs: Sign[] = [
   //           { y: 1, x: 1 },
   //         ],
   //       ],
-  //       dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
-  //       nonDominantHand: [],
+  //       dominantPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "open_hand_thumb_apart_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },
   // {
   //   language: "Libras",
   //   token: "Meu",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax",
   //         bodyOffsetRadius: 30,
-  //         handConfiguration: "open_hand_thumb_apart_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "LINEAR_MOTION",
+  //     movement: {
+  //       dominantCategory: "LINEAR_MOTION",
   //       dominanHandDescription:
   //         "mova em sua direção e após isso volte a posição inicial",
-  //       dominantHand: [{ z: -1 }, { z: 1 }],
-  //       nonDominantHand: [],
+  //       dominant: [{ z: -1 }, { z: 1 }],
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "open_hand_thumb_apart_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },
@@ -769,32 +776,28 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Rapido",
-  //   signSteps: {
-  //     startPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "torax_upper",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax_upper",
   //         bodyOffsetRadius: 75,
-  //         handConfiguration: "claw_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //         handShape: "claw_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
-  //     movements: {
-  //       dominantHandCategory: "ZIG_ZAG_MOTION",
+  //     movement: {
+  //       dominantCategory: "ZIG_ZAG_MOTION",
   //       dominanHandDescription: "mova a mão para baixo e para cima duas vezes",
-  //       dominantHand: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
-  //       dominantHandPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
-  //       nonDominantHand: [],
+  //       dominant: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+  //       dominantPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
+  //       nondominant: [],
   //     },
-  //     endPosition: {
-  //       dominantHand: {
-  //         bodyRegion: "same",
-  //         handConfiguration: "claw_cm",
-  //         palmDirection: PalmDirection.BACK,
-  //         palmDirectionCategory: "BACK",
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "claw_cm",
+  //         palmOrientation: PalmOrientation.BACK,
   //       },
-  //       nonDominantHand: {},
   //     },
   //   },
   // },

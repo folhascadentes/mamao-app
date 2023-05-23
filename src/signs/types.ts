@@ -66,6 +66,7 @@ export enum MovementType {
   CIRCULAR_MOTION = "CIRCULAR_MOTION",
   LINEAR_MOTION = "LINEAR_MOTION",
   PARABOLIC_MOTION = "PARABOLIC_MOTION",
+  STATIC = "STATIC",
   SHAKE_MOTION = "SHAKE_MOTION",
 }
 
@@ -197,6 +198,7 @@ export const HandShape = {
     MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
     OI: "oi",
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
+    THUMB_FINGER: "thumbFinger",
   },
 };
 
