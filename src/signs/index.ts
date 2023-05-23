@@ -801,76 +801,112 @@ export const signs: Sign[] = [
   //     },
   //   },
   // },
-  // {
-  //   language: "Libras",
-  //   token: "Gostar",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: "torax",
-  //         bodyOffsetRadius: 100,
-  //         handShape: "open_hand_thumb_apart_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "CIRCULAR_MOTION",
-  //       dominanHandDescription:
-  //         "faça um movimento circular com a mão colada ao seu corpo",
-  //       dominant: [
-  //         [
-  //           { y: 1, x: 1 },
-  //           { y: -1, x: 1 },
-  //           { y: -1, x: -1 },
-  //           { y: 1, x: -1 },
-  //         ],
-  //         [
-  //           { y: 1, x: -1 },
-  //           { y: -1, x: -1 },
-  //           { y: -1, x: 1 },
-  //           { y: 1, x: 1 },
-  //         ],
-  //       ],
-  //       dominantPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "same",
-  //         handShape: "open_hand_thumb_apart_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Rapido",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: "torax_upper",
-  //         bodyOffsetRadius: 75,
-  //         handShape: "claw_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "ZIG_ZAG_MOTION",
-  //       dominanHandDescription: "mova a mão para baixo e para cima duas vezes",
-  //       dominant: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
-  //       dominantPolicy: "CIRCULAR", // Posso começar o movimento de qualquer ponto do array
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "same",
-  //         handShape: "claw_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Gostar",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { y: 1, x: 1 },
+              { y: -1, x: 1 },
+              { y: -1, x: -1 },
+              { y: 1, x: -1 },
+            ],
+            [
+              { y: 1, x: -1 },
+              { y: -1, x: -1 },
+              { y: -1, x: 1 },
+              { y: 1, x: 1 },
+            ],
+          ],
+          metadata: {
+            description: "Faça um movimento circular com a mão dominante",
+            type: MovementType.CIRCULAR_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Rapido",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+          metadata: {
+            description:
+              "Mova a mão dominante para cima e para baixo duas vezes",
+            type: MovementType.SHAKE_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Porque",

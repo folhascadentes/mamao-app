@@ -196,6 +196,7 @@ export const HandShape = {
     X: "x",
     Y: "y",
     Z: "z",
+    CLAW: "claw",
     INDEX_FINGER: "indexFinger",
     MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
     OI: "oi",

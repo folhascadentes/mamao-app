@@ -226,7 +226,8 @@ const HandShape = {
     OPEN_HAND: "openHand",
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
-    THUMB_FINGER: "thumbFinger",    
+    THUMB_FINGER: "thumbFinger",
+    THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",    
   },
 };
 
