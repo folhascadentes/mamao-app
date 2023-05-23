@@ -197,7 +197,9 @@ export const HandShape = {
     INDEX_FINGER: "indexFinger",
     MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
     OI: "oi",
+    OPEN_HAND: "openHand",
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
+    OPEN_HAND_THUMB_APART: "openHandThumbApart",
     THUMB_FINGER: "thumbFinger",
   },
 };

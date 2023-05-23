@@ -1,3 +1,4 @@
+import { HandLocation } from "./types";
 import {
   HandOrientation,
   HandShape,
@@ -473,91 +474,126 @@ export const signs: Sign[] = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Educado",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: ["shoulder", "elbow"],
-  //         locationTrack: true,
-  //         handShape: "l_cm",
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //       nondominant: {
-  //         location: "torax_right_lower",
-  //         handShape: ["a_cm", "s_cm"],
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "LINEAR_MOTION",
-  //       dominanHandDescription:
-  //         "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
-  //       dominant: [],
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "wrist",
-  //         handShape: "l_cm",
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //       nondominant: {
-  //         location: "same",
-  //         handShape: ["a_cm", "s_cm"],
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Branco",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: ["shoulder", "elbow"],
-  //         locationTrack: true,
-  //         handShape: [
-  //           "open_hand_cm",
-  //           "open_hand_thumb_apart_cm",
-  //           "open_hand_fingers_apart_cm",
-  //         ],
-  //         palmOrientation: PalmOrientation.UP,
-  //       },
-  //       nondominant: {
-  //         location: "torax_right_lower",
-  //         bodyOffsetRadius: 30,
-  //         handShape: ["a_cm", "s_cm"],
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "LINEAR_MOTION",
-  //       dominanHandDescription:
-  //         "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
-  //       dominant: [],
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "wrist",
-  //         handShape: [
-  //           "open_hand_cm",
-  //           "open_hand_thumb_apart_cm",
-  //           "open_hand_fingers_apart_cm",
-  //         ],
-  //         palmOrientation: PalmOrientation.UP,
-  //       },
-  //       nondominant: {
-  //         location: "same",
-  //         handShape: ["a_cm", "s_cm"],
-  //         palmOrientation: PalmOrientation.DOWN,
-  //       },
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Educado",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.ELBOW_LEFT,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.DOWN,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+                downLimitValue: 0,
+              },
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.A, // HandShape.libras.S
+          palmOrientation: PalmOrientation.DOWN,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 85,
+              handLocation: HandLocation.WRIST,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          metadata: {
+            description:
+              "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.WRIST_LEFT,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.DOWN,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 60,
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Branco",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.SHOULDER_LEFT, // Location.ELBOW_LEFT
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+                downLimitValue: 0,
+              },
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.A, // HandShape.libras.S
+          palmOrientation: PalmOrientation.DOWN,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 85,
+              handLocation: HandLocation.WRIST,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          metadata: {
+            description:
+              "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.WRIST_LEFT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 60,
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Ainda",
@@ -617,6 +653,61 @@ export const signs: Sign[] = [
   // },
   // {
   //   language: "Libras",
+  //   token: "Meu",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax",
+  //         bodyOffsetRadius: 30,
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
+  //       },
+  //     },
+  //     movement: {
+  //       dominantCategory: "LINEAR_MOTION",
+  //       dominanHandDescription:
+  //         "mova em sua direção e após isso volte a posição inicial",
+  //       dominant: [{ z: -1 }, { z: 1 }],
+  //       nondominant: [],
+  //     },
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "open_hand_thumb_apart_cm",
+  //         palmOrientation: PalmOrientation.BACK,
+  //       },
+  //     },
+  //   },
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Sim",
+  //   steps: {
+  //     start: {
+  //       dominant: {
+  //         location: "torax_left",
+  //         bodyOffsetRadius: 50,
+  //         handShape: "s_cm",
+  //         palmOrientation: PalmOrientation.FRONT,
+  //       },
+  //     },
+  //     movement: {
+  //       dominantCategory: "WRIST_MOTION",
+  //       dominanHandDescription: "",
+  //       dominant: [],
+  //       nondominant: [],
+  //     },
+  //     end: {
+  //       dominant: {
+  //         location: "same",
+  //         handShape: "s_cm",
+  //         palmOrientation: PalmOrientation.FRONT,
+  //       },
+  //     },
+  //   },
+  // },
+  // {
+  //   language: "Libras",
   //   token: "Hoje",
   //   steps: {
   //     start: {
@@ -655,45 +746,6 @@ export const signs: Sign[] = [
   //       },
   //     },
   //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Porque",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Sim",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: "torax_left",
-  //         bodyOffsetRadius: 50,
-  //         handShape: "s_cm",
-  //         palmOrientation: PalmOrientation.FRONT,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "WRIST_MOTION",
-  //       dominanHandDescription: "",
-  //       dominant: [],
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "same",
-  //         handShape: "s_cm",
-  //         palmOrientation: PalmOrientation.FRONT,
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Não",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Tchau",
   // },
   // {
   //   language: "Libras",
@@ -739,42 +791,6 @@ export const signs: Sign[] = [
   // },
   // {
   //   language: "Libras",
-  //   token: "Meu",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: "torax",
-  //         bodyOffsetRadius: 30,
-  //         handShape: "open_hand_thumb_apart_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //     movement: {
-  //       dominantCategory: "LINEAR_MOTION",
-  //       dominanHandDescription:
-  //         "mova em sua direção e após isso volte a posição inicial",
-  //       dominant: [{ z: -1 }, { z: 1 }],
-  //       nondominant: [],
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: "same",
-  //         handShape: "open_hand_thumb_apart_cm",
-  //         palmOrientation: PalmOrientation.BACK,
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Ter",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Dia",
-  // },
-  // {
-  //   language: "Libras",
   //   token: "Rapido",
   //   steps: {
   //     start: {
@@ -800,6 +816,26 @@ export const signs: Sign[] = [
   //       },
   //     },
   //   },
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Porque",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Não",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Tchau",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Ter",
+  // },
+  // {
+  //   language: "Libras",
+  //   token: "Dia",
   // },
   // {
   //   language: "Libras",
