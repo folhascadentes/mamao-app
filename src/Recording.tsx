@@ -133,6 +133,8 @@ function Recording({
     } else if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
       const memory = detector.getMemory();
 
+      // Check if end of movement until final location and final hand shape and orientation
+      // is less than 7 frames
       if (memory.endSignFrame - memory.endMovementFrame < 7) {
         success();
         setSignCounter((prevCounter) => prevCounter + 1);

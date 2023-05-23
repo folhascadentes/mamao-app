@@ -49,7 +49,7 @@ export interface SignConfigurationLocationOptions {
 }
 
 interface MovementConfiguration {
-  detect?: Movement[] | [Movement[]];
+  detect?: Movement[] | Movement[][];
   forbidden?: Movement[];
   options?: {
     detect: {
@@ -192,6 +192,7 @@ export const HandShape = {
     X: "x",
     Y: "y",
     middleAndIndexFinger: "middleAndIndexFinger",
+    Oi: 'oi',
   },
 };
 
