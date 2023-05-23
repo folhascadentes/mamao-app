@@ -20,6 +20,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.UP,
           options: {
             location: {
+              detectionRadius: 60,
               radiusOffset: {
                 value: 85,
                 leftLimitValue: 0,
@@ -30,8 +31,12 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
-          forbidden: [{ x: -1 }],
+          forbidden: [
+            { x: -1 },
+            { x: -1, y: 1 },
+            { x: -1, y: -1 },
+            { wristRotate: true },
+          ],
           metadata: {
             description: "mova a mão até a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
@@ -45,6 +50,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.FRONT,
           options: {
             location: {
+              detectionRadius: 60,
               radiusOffset: {
                 value: 85,
                 rightLimitValue: 0,

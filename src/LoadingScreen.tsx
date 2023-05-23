@@ -71,7 +71,7 @@ function LoadingScreen(): JSX.Element {
             title="I Love You"
             src={IloveyouImage}
             alt="I love you sign"
-            className="w-72"
+            className="w-40"
           />
         </div>
         <div className="text-4xl">Configurando sistema de captura</div>

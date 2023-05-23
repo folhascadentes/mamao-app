@@ -127,7 +127,10 @@ function Recording({
 
     instructor?.instruct(subjectData, response);
 
-    if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
+    if (response.invalid === true) {
+      detector.setState(DetectorStates.HAND_SHAPE);
+      failure();
+    } else if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
       const memory = detector.getMemory();
 
       if (memory.endSignFrame - memory.endMovementFrame < 7) {

@@ -95,7 +95,7 @@ interface State {
     sign: Sign,
     subject: SubjectData,
     memory: any
-  ) => { valid: boolean; [key: string]: any };
+  ) => { valid: boolean; invalid?: boolean; [key: string]: any };
   nextState: DetectorStates;
 }
 
@@ -124,6 +124,14 @@ export class Detector {
     this.sign = sign;
     this.currentState = DetectorStates.HAND_SHAPE;
     this.memory = {};
+  }
+
+  public setState(state: DetectorStates) {
+    this.currentState = state;
+    if (this.states[this.currentState].onInit !== undefined) {
+      // @ts-ignore
+      this.states[this.currentState].onInit(this.sign, subject, this.memory);
+    }
   }
 
   public getMemory() {
@@ -230,6 +238,9 @@ const movementState = {
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     const dominantMoves = sign.steps.movement.dominant.detect;
     const nonDominantMoves = sign.steps.movement.nonDominant?.detect;
+    const dominantForbiddenMoves = sign.steps.movement.dominant.forbidden;
+    const nonDominantForbiddenMoves =
+      sign.steps.movement.nonDominant?.forbidden;
 
     const dominantOkay =
       dominantMoves === undefined ||
@@ -259,7 +270,22 @@ const movementState = {
         subject.frame
       );
 
+    const dominantInvalid =
+      dominantForbiddenMoves &&
+      checkForbiddenMovement(
+        subject.hand.dominant.movement,
+        dominantForbiddenMoves
+      );
+
+    const nonDominantInvalid =
+      nonDominantForbiddenMoves &&
+      checkForbiddenMovement(
+        subject.hand.nonDominant.movement,
+        nonDominantForbiddenMoves
+      );
+
     const valid = dominantOkay && nonDominantOkay;
+    const invalid = dominantInvalid || nonDominantInvalid;
 
     if (valid) {
       memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame));
@@ -267,17 +293,15 @@ const movementState = {
 
     return {
       valid,
+      invalid,
     };
   },
   nextState: DetectorStates.FINAL_LOCATION,
 };
 
 const finalLocationState = {
-  onInit: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    memory.endMovementFrame = subject.frame;
-  },
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
-    return checkHandPosition(
+    const response = checkHandPosition(
       memory.dominantEndCoordinate,
       memory.nonDominantEndCoordinate,
       subject.readings.dominantLandmarks,
@@ -286,6 +310,12 @@ const finalLocationState = {
       sign.steps.end.dominant.options?.location,
       sign.steps.end.nonDominant?.options?.location
     );
+
+    if (response.valid) {
+      memory.endMovementFrame = subject.frame;
+    }
+
+    return response;
   },
   nextState: DetectorStates.FINAL_PALM_ORIENTATION,
 };
@@ -754,6 +784,15 @@ function checkMovement(
   }
 
   return false;
+}
+
+function checkForbiddenMovement(
+  subjetMovement: Movement,
+  forbiddenMovements: Movement[]
+): boolean {
+  return forbiddenMovements.some((forbiddenMovement) =>
+    checkSameMovement(subjetMovement, forbiddenMovement)
+  );
 }
 
 function checkSameMovement(

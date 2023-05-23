@@ -49,7 +49,7 @@ export interface SignConfigurationLocationOptions {
 }
 
 interface MovementConfiguration {
-  detect: Movement[] | [Movement[]];
+  detect?: Movement[] | [Movement[]];
   forbidden?: Movement[];
   options?: {
     detect: {
