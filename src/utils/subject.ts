@@ -381,13 +381,18 @@ export class Subject {
   private parseSubjectHandMovement(
     beforeHandLandmarks: Coordinate[],
     afterHandLandmarks: Coordinate[]
-  ): MovementAxis {
+  ): Movement {
     const THRESHOLD = 5;
-    const movement: MovementAxis = {
-      x: undefined,
-      y: undefined,
-      z: undefined,
-    };
+    const movement: Movement = {};
+
+    const angle = this.parseWristRotationAngle(
+      afterHandLandmarks,
+      beforeHandLandmarks
+    );
+
+    if (angle > 100) {
+      movement.wristRotate = true;
+    }
 
     if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
       movement.x = -1;
@@ -408,6 +413,20 @@ export class Subject {
     }
 
     return movement;
+  }
+
+  private parseWristRotationAngle(
+    afterHandLandmarks: Coordinate[],
+    beforeHandLandmarks: Coordinate[]
+  ): number {
+    const afterVector = normalizeVector(
+      pointDifference(afterHandLandmarks[5], afterHandLandmarks[17])
+    );
+    const beforeVector = normalizeVector(
+      pointDifference(beforeHandLandmarks[5], beforeHandLandmarks[17])
+    );
+    const angle = angleBetweenTwoVectors(afterVector, beforeVector);
+    return angle;
   }
 
   private parseSubjectHandMovimentFrontOrBack(
