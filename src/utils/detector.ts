@@ -230,7 +230,6 @@ const initialLocationState = {
       memory.nonDominantCoordinate as Coordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
-      subject.readings.poseLandmarks ?? [],
       sign.steps.start.dominant.options?.location,
       sign.steps.start.nonDominant?.options?.location
     );
@@ -283,14 +282,34 @@ const movementState = {
         subject.frame
       );
 
+    const dominantOutsideLocation =
+      !memory.dominantCoordinate ||
+      !handCloseToLocation(
+        subject.readings.dominantLandmarks,
+        memory.dominantCoordinate,
+        sign.steps.start.dominant.options?.location?.handLocation,
+        sign.steps.start.dominant.options?.location?.detectionRadius
+      );
+
     const dominantInvalid =
+      dominantOutsideLocation &&
       dominantForbiddenMoves &&
       checkForbiddenMovement(
         subject.hand.dominant.movement,
         dominantForbiddenMoves
       );
 
+    const nonDominantOutsideLocation =
+      !memory.nonDominantCoordinate ||
+      !handCloseToLocation(
+        subject.readings.nonDominantLandmarks,
+        memory.nonDominantCoordinate,
+        sign.steps.start.nonDominant?.options?.location?.handLocation,
+        sign.steps.start.nonDominant?.options?.location?.detectionRadius
+      );
+
     const nonDominantInvalid =
+      nonDominantOutsideLocation &&
       nonDominantForbiddenMoves &&
       checkForbiddenMovement(
         subject.hand.nonDominant.movement,
@@ -319,7 +338,6 @@ const finalLocationState = {
       memory.nonDominantEndCoordinate as Coordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
-      subject.readings.poseLandmarks ?? [],
       sign.steps.end.dominant.options?.location,
       sign.steps.end.nonDominant?.options?.location
     );
@@ -717,7 +735,6 @@ function checkHandPosition(
   nonDominantCoordinate: Coordinate,
   dominantLandmarks: Coordinate[],
   nonDominantLandmarks: Coordinate[],
-  poseLandmarks: Coordinate[],
   dominantOptions?: SignConfigurationLocationOptions,
   nonDominantOptions?: SignConfigurationLocationOptions
 ): {
@@ -725,10 +742,7 @@ function checkHandPosition(
   dominantCoordinate?: Coordinate;
   nonDominantCoordinate?: Coordinate;
 } {
-  if (
-    poseLandmarks.length &&
-    (dominantLandmarks.length || nonDominantLandmarks.length)
-  ) {
+  if (dominantLandmarks.length || nonDominantLandmarks.length) {
     const dominantOkay = handCloseToLocation(
       dominantLandmarks,
       dominantCoordinate,

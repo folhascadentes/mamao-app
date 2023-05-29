@@ -93,12 +93,11 @@ function Recording({
 
     const subjectData = subject.parse(results);
     const response = detector.run(subjectData);
+    instructor?.instruct(subjectData, response);
 
     if (debuger) {
       drawHandDebugMode(movementBuffer, subjectData);
     }
-
-    instructor?.instruct(subjectData, response);
 
     if (response.invalid === true) {
       detector.setState(DetectorStates.HAND_SHAPE);
