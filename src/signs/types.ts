@@ -208,7 +208,7 @@ export const HandShape = {
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
     OPEN_HAND: "openHand",
     THUMB_FINGER: "thumbFinger",
-    THUMB_TOUCH_INDEX_FINGERS_APART: "thumbTouchIndexFingersApart",
+    THUMB_TOUCH_INDEX_FINGERS_OPEN: "thumbTouchIndexFingersOpen",
     THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",
   },
 };

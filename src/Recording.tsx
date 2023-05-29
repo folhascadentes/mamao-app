@@ -315,6 +315,15 @@ function Recording({
           true,
           value.hand.dominant.palm.z > 0
         );
+
+        if (value.readings.nonDominantLandmarks.length) {
+          drawHand(
+            ctx,
+            value.readings.nonDominantLandmarks,
+            false,
+            value.hand.dominant.palm.z > 0
+          );
+        }
       }
     }
 

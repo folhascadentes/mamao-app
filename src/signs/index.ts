@@ -32,6 +32,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
+          detect: [{ x: 1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },
@@ -86,6 +87,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
+          detect: [{ x: 1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },
@@ -201,7 +203,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.TORAX,
+          location: Location.TORAX_UPPER,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.UP,
           options: {
@@ -476,6 +478,53 @@ export const signs: Sign[] = [
   },
   {
     language: "Libras",
+    token: "Entender",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 35,
+              radiusOffset: {
+                value: 50,
+                leftLimitValue: -10,
+                rightLimitValue: 10,
+              },
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ wristRotate: true }, { wristRotate: true }],
+          metadata: {
+            description: "gire o pulso da duas vezes",
+            type: MovementType.WRIST_ROTATE,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 35,
+              same: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Educado",
     steps: {
       start: {
@@ -510,6 +559,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
+          detect: [{ x: 1 }],
           metadata: {
             description:
               "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
@@ -570,6 +620,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
+          detect: [{ x: 1 }],
           metadata: {
             description:
               "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
@@ -1041,51 +1092,6 @@ export const signs: Sign[] = [
   },
   {
     language: "Libras",
-    token: "Entender",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.FOREHEAD_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: {
-                value: 50,
-                rightLimitValue: 0,
-              },
-              handLocation: HandLocation.INDEX_FINGER_TIP,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ wristRotate: true }, { wristRotate: true }],
-          metadata: {
-            description: "Gire o pulso da duas vezes",
-            type: MovementType.WRIST_ROTATE,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.FOREHEAD_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Sentimento",
     steps: {
       start: {
@@ -1220,7 +1226,7 @@ export const signs: Sign[] = [
       start: {
         dominant: {
           location: Location.TORAX_UPPER,
-          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_APART,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_OPEN,
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {
@@ -1242,7 +1248,7 @@ export const signs: Sign[] = [
       end: {
         dominant: {
           location: Location.TORAX_LOWER,
-          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_APART,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_OPEN,
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {

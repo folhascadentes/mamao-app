@@ -263,12 +263,15 @@ export class Subject {
     const mapper = [
       "a",
       "c",
+      "claws",
       "d",
+      "f",
       "handCupping",
       "i",
       "indexFinger",
       "l",
       "middleAndIndexFinger",
+      "middleFingerBendedFingersApart",
       "o",
       "oi",
       "openHand",
@@ -276,6 +279,8 @@ export class Subject {
       "openHandThumbApart",
       "s",
       "thumbFinger",
+      "thumbTouchIndexFingersClosed",
+      "thumbTouchIndexFingersOpen",
       "y",
     ];
 
