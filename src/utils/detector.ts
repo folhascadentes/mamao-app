@@ -63,23 +63,23 @@ export const DETECTOR_STATES: DetectorState[] = [
 ];
 
 export interface DetectorMemory {
-  dominantCoordinate: Coordinate;
-  nonDominantCoordinate: Coordinate;
-  dominantEndCoordinate: Coordinate;
-  nonDominantEndCoordinate: Coordinate;
-  dominantCoordinateOffset: Coordinate | undefined;
-  nonDominantCoordinateOffset: Coordinate | undefined;
-  dominantEndCoordinateOffset: Coordinate | undefined;
-  nonDominantEndCoordinateOffset: Coordinate | undefined;
-  dominantStartFrame: { [key: number]: number };
-  dominantMovementsStartIndex: { [key: number]: number };
-  dominantMovementsCurrentIndex: { [key: number]: number };
-  nonDominantStartFrame: { [key: number]: number };
-  nonDominantMovementsStartIndex: { [key: number]: number };
-  nonDominantMovementsCurrentIndex: { [key: number]: number };
-  startFrame: number | undefined;
-  endMovementFrame: number | undefined;
-  endSignFrame: number | undefined;
+  dominantCoordinate?: Coordinate;
+  nonDominantCoordinate?: Coordinate;
+  dominantEndCoordinate?: Coordinate;
+  nonDominantEndCoordinate?: Coordinate;
+  dominantCoordinateOffset?: Coordinate;
+  nonDominantCoordinateOffset?: Coordinate;
+  dominantEndCoordinateOffset?: Coordinate;
+  nonDominantEndCoordinateOffset?: Coordinate;
+  dominantStartFrame?: { [key: number]: number };
+  dominantMovementsStartIndex?: { [key: number]: number };
+  dominantMovementsCurrentIndex?: { [key: number]: number };
+  nonDominantStartFrame?: { [key: number]: number };
+  nonDominantMovementsStartIndex?: { [key: number]: number };
+  nonDominantMovementsCurrentIndex?: { [key: number]: number };
+  startFrame?: number;
+  endMovementFrame?: number;
+  endSignFrame?: number;
 }
 
 export interface DetectorData {
@@ -94,7 +94,7 @@ interface State {
   onRun: (
     sign: Sign,
     subject: SubjectData,
-    memory: any
+    memory: DetectorMemory
   ) => { valid: boolean; invalid?: boolean; [key: string]: any };
   nextState: DetectorStates;
 }
@@ -102,7 +102,7 @@ interface State {
 export class Detector {
   private sign: Sign;
   private currentState: DetectorStates;
-  private memory: any;
+  private memory: DetectorMemory;
   private states: { [K in DetectorStates]: State };
 
   constructor(sign: Sign) {
@@ -120,13 +120,13 @@ export class Detector {
     };
   }
 
-  public setSign(sign: Sign) {
+  public setSign(sign: Sign): void {
     this.sign = sign;
     this.currentState = DetectorStates.HAND_SHAPE;
     this.memory = {};
   }
 
-  public setState(state: DetectorStates) {
+  public setState(state: DetectorStates): void {
     this.currentState = state;
     if (this.states[this.currentState].onInit !== undefined) {
       // @ts-ignore
@@ -134,8 +134,21 @@ export class Detector {
     }
   }
 
-  public getMemory() {
-    return this.memory;
+  public isValid() {
+    // Check if end of movement until final location and final hand shape and orientation
+    // is less than 7 frames
+    return (
+      this.memory.endSignFrame &&
+      this.memory.endMovementFrame &&
+      this.memory.endSignFrame - this.memory.endMovementFrame < 7
+    );
+  }
+
+  public getMovementIndex(): { start: number; end: number } {
+    return {
+      start: this.memory.startFrame ?? 0,
+      end: this.memory.endMovementFrame ?? 0,
+    };
   }
 
   public run(subject: SubjectData): DetectorData {
@@ -213,8 +226,8 @@ const initialLocationState = {
     setHandPostionsCoordinates(sign, subject, memory);
 
     return checkHandPosition(
-      memory.dominantCoordinate,
-      memory.nonDominantCoordinate,
+      memory.dominantCoordinate as Coordinate,
+      memory.nonDominantCoordinate as Coordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
       subject.readings.poseLandmarks ?? [],
@@ -249,9 +262,9 @@ const movementState = {
         Array.isArray(dominantMoves[0])
           ? (dominantMoves as [Movement[]])
           : [dominantMoves as Movement[]],
-        memory.dominantMovementsStartIndex,
-        memory.dominantMovementsCurrentIndex,
-        memory.dominantStartFrame,
+        memory.dominantMovementsStartIndex as { [key: number]: number },
+        memory.dominantMovementsCurrentIndex as { [key: number]: number },
+        memory.dominantStartFrame as { [key: number]: number },
         !!sign.steps.movement.dominant.options?.detect.circular,
         subject.frame
       );
@@ -263,9 +276,9 @@ const movementState = {
         Array.isArray(nonDominantMoves[0])
           ? (nonDominantMoves as [Movement[]])
           : [nonDominantMoves as Movement[]],
-        memory.nonDominantMovementsStartIndex,
-        memory.nonDominantMovementsCurrentIndex,
-        memory.nonDominantStartFrame,
+        memory.nonDominantMovementsStartIndex as { [key: number]: number },
+        memory.nonDominantMovementsCurrentIndex as { [key: number]: number },
+        memory.nonDominantStartFrame as { [key: number]: number },
         !!sign.steps.movement.nonDominant?.options?.detect.circular,
         subject.frame
       );
@@ -287,7 +300,7 @@ const movementState = {
     const valid = dominantOkay && nonDominantOkay;
     const invalid = dominantInvalid || nonDominantInvalid;
 
-    if (valid) {
+    if (valid && memory.dominantStartFrame) {
       memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame));
     }
 
@@ -302,8 +315,8 @@ const movementState = {
 const finalLocationState = {
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
     const response = checkHandPosition(
-      memory.dominantEndCoordinate,
-      memory.nonDominantEndCoordinate,
+      memory.dominantEndCoordinate as Coordinate,
+      memory.nonDominantEndCoordinate as Coordinate,
       subject.readings.dominantLandmarks,
       subject.readings.nonDominantLandmarks,
       subject.readings.poseLandmarks ?? [],
@@ -455,7 +468,7 @@ function setHandPostionsCoordinates(
   }
 
   if (
-    memory.dominantCoordinate.x === -1 ||
+    memory.dominantCoordinate?.x === -1 ||
     sign.steps.start.dominant.options?.location.track
   ) {
     const { coordinate, offset } = findLocationCoordinate(
@@ -470,7 +483,7 @@ function setHandPostionsCoordinates(
 
   if (
     sign.steps.start.nonDominant?.location &&
-    (memory.nonDominantCoordinate.x === -1 ||
+    (memory.nonDominantCoordinate?.x === -1 ||
       sign.steps.start.nonDominant.options?.location.track)
   ) {
     const { coordinate, offset } = findLocationCoordinate(
@@ -483,13 +496,16 @@ function setHandPostionsCoordinates(
     memory.nonDominantCoordinate = coordinate;
     memory.nonDominantCoordinateOffset = offset;
 
-    if (sign.steps.start.nonDominant.options?.location.side) {
+    if (
+      sign.steps.start.nonDominant.options?.location.side &&
+      memory.dominantCoordinate
+    ) {
       memory.nonDominantCoordinate.y = memory.dominantCoordinate.y;
     }
   }
 
   if (
-    memory.dominantEndCoordinate.x === -1 ||
+    memory.dominantEndCoordinate?.x === -1 ||
     sign.steps.end.dominant.options?.location.track
   ) {
     if (sign.steps.end.dominant.options?.location.same) {
@@ -505,11 +521,17 @@ function setHandPostionsCoordinates(
       memory.dominantEndCoordinate = coordinate;
       memory.dominantEndCoordinateOffset = offset;
 
-      if (sign.steps.end.dominant.options?.location.sameX) {
+      if (
+        sign.steps.end.dominant.options?.location.sameX &&
+        memory.dominantCoordinate
+      ) {
         memory.dominantEndCoordinate.x = memory.dominantCoordinate.x;
       }
 
-      if (sign.steps.end.dominant.options?.location.sameY) {
+      if (
+        sign.steps.end.dominant.options?.location.sameY &&
+        memory.dominantCoordinate
+      ) {
         memory.dominantEndCoordinate.y = memory.dominantCoordinate.y;
       }
     }
@@ -517,7 +539,7 @@ function setHandPostionsCoordinates(
 
   if (
     sign.steps.end.nonDominant?.location &&
-    (memory.nonDominantEndCoordinate.x === -1 ||
+    (memory.nonDominantEndCoordinate?.x === -1 ||
       sign.steps.end.nonDominant.options?.location.track)
   ) {
     if (sign.steps.end.nonDominant.options?.location.same) {
@@ -533,13 +555,24 @@ function setHandPostionsCoordinates(
       memory.nonDominantEndCoordinate = coordinate;
       memory.nonDominantEndCoordinateOffset = offset;
 
-      if (sign.steps.end.dominant.options?.location.sameX) {
+      if (
+        sign.steps.end.dominant.options?.location.sameX &&
+        memory.dominantCoordinate &&
+        memory.dominantEndCoordinate
+      ) {
         memory.dominantEndCoordinate.x = memory.dominantCoordinate.x;
       }
 
-      if (sign.steps.end.dominant.options?.location.sameY) {
+      if (
+        sign.steps.end.dominant.options?.location.sameY &&
+        memory.dominantCoordinate &&
+        memory.dominantEndCoordinate
+      ) {
         memory.dominantEndCoordinate.y = memory.dominantCoordinate.y;
-      } else if (sign.steps.end.nonDominant.options?.location.side) {
+      } else if (
+        sign.steps.end.nonDominant.options?.location.side &&
+        memory.dominantEndCoordinate
+      ) {
         memory.nonDominantEndCoordinate.y = memory.dominantEndCoordinate.y;
       }
     }

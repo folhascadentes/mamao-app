@@ -87,8 +87,15 @@ export class Subject {
     return subject;
   }
 
-  public getBuffer(): SubjectData[] {
-    return this.buffer;
+  public getBuffer(start?: number, end?: number): SubjectData[] {
+    const startIndex = start
+      ? this.buffer.findIndex((value) => value.frame === start)
+      : 0;
+    const endIndex = end
+      ? this.buffer.findIndex((value) => value.frame === end)
+      : this.buffer.length - 1;
+
+    return this.buffer.slice(startIndex, endIndex + 1);
   }
 
   private initializeSujectObject(results: Results): SubjectData {

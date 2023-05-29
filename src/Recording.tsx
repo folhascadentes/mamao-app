@@ -15,6 +15,7 @@ import {
   DetectorStates,
   DetectorState,
   DETECTOR_STATES,
+  DetectorData,
 } from "./utils/detector";
 import { Instructor, drawHand } from "./utils/instructor";
 import {
@@ -94,35 +95,7 @@ function Recording({
     const response = detector.run(subjectData);
 
     if (debuger) {
-      const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
-
-      drawHandDebugMode(movementBuffer);
-
-      if (
-        subjectData.readings.dominantLandmarks.length &&
-        subjectData.hand.dominant.palm?.z
-      ) {
-        const landmarks = subjectData.readings.dominantLandmarks;
-        drawHand(
-          ctx as CanvasRenderingContext2D,
-          landmarks,
-          true,
-          subjectData.hand.dominant.palm.z > 0
-        );
-      }
-
-      if (
-        subjectData.readings.nonDominantLandmarks.length &&
-        subjectData.hand.nonDominant.palm?.z
-      ) {
-        const landmarks = subjectData.readings.nonDominantLandmarks;
-        drawHand(
-          ctx as CanvasRenderingContext2D,
-          landmarks,
-          false,
-          subjectData.hand.nonDominant.palm.z > 0
-        );
-      }
+      drawHandDebugMode(movementBuffer, subjectData);
     }
 
     instructor?.instruct(subjectData, response);
@@ -134,41 +107,16 @@ function Recording({
       response.state === DetectorStates.FINAL_HAND_SHAPE &&
       response.valid
     ) {
-      const memory = detector.getMemory();
-
-      // Check if end of movement until final location and final hand shape and orientation
-      // is less than 7 frames
-      if (memory.endSignFrame - memory.endMovementFrame < 7) {
+      if (detector.isValid()) {
         success();
         setSignCounter((prevCounter) => prevCounter + 1);
-        const buffer = subject?.getBuffer() as SubjectData[];
-        const startIndex = buffer.findIndex(
-          (value) => value.frame === memory.startFrame
-        );
-        const endIndex = buffer.findIndex(
-          (value) => value.frame === memory.endSignFrame
-        );
-
-        movementBuffer = buffer.slice(startIndex, endIndex + 1);
+        const { start, end } = detector.getMovementIndex();
+        movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
       } else {
         failure();
       }
     } else {
-      const todo: DetectorState[] = [];
-      const done: DetectorState[] = [];
-      let isCheckingTodoActions = false;
-      DETECTOR_STATES.forEach((step) => {
-        if (response.state === step.state) {
-          isCheckingTodoActions = true;
-        }
-        if (isCheckingTodoActions) {
-          todo.push(step);
-        } else {
-          done.push(step);
-        }
-      });
-      setDoneActions(done);
-      setTodoActions(todo);
+      setActionsInstructionsState(response);
     }
   };
 
@@ -334,7 +282,28 @@ function Recording({
     </div>
   );
 
-  function drawHandDebugMode(buffer: SubjectData[]): void {
+  function setActionsInstructionsState(response: DetectorData) {
+    const todo: DetectorState[] = [];
+    const done: DetectorState[] = [];
+    let isCheckingTodoActions = false;
+    DETECTOR_STATES.forEach((step) => {
+      if (response.state === step.state) {
+        isCheckingTodoActions = true;
+      }
+      if (isCheckingTodoActions) {
+        todo.push(step);
+      } else {
+        done.push(step);
+      }
+    });
+    setDoneActions(done);
+    setTodoActions(todo);
+  }
+
+  function drawHandDebugMode(
+    buffer: SubjectData[],
+    subjectData: SubjectData
+  ): void {
     if (buffer.length) {
       const ctx = canvasRef.current?.getContext("2d");
 
@@ -348,6 +317,34 @@ function Recording({
           value.hand.dominant.palm.z > 0
         );
       }
+    }
+
+    const ctx = (canvasRef.current as HTMLCanvasElement).getContext("2d");
+
+    if (
+      subjectData.readings.dominantLandmarks.length &&
+      subjectData.hand.dominant.palm?.z
+    ) {
+      const landmarks = subjectData.readings.dominantLandmarks;
+      drawHand(
+        ctx as CanvasRenderingContext2D,
+        landmarks,
+        true,
+        subjectData.hand.dominant.palm.z > 0
+      );
+    }
+
+    if (
+      subjectData.readings.nonDominantLandmarks.length &&
+      subjectData.hand.nonDominant.palm?.z
+    ) {
+      const landmarks = subjectData.readings.nonDominantLandmarks;
+      drawHand(
+        ctx as CanvasRenderingContext2D,
+        landmarks,
+        false,
+        subjectData.hand.nonDominant.palm.z > 0
+      );
     }
   }
 

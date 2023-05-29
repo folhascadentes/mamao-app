@@ -54,12 +54,12 @@ export class Instructor {
   }
 
   private instructPosition(
-    dominantLocation: Coordinate,
-    nonDominantLocation: Coordinate,
+    dominantLocation?: Coordinate,
+    nonDominantLocation?: Coordinate,
     dominantDetectionRadius?: number,
     nonDominantDetectionRadius?: number
   ): void {
-    if (dominantLocation.x !== -1) {
+    if (dominantLocation && dominantLocation.x !== -1) {
       this.drawCircle(
         dominantLocation.x,
         dominantLocation.y,
@@ -70,7 +70,7 @@ export class Instructor {
       this.dominantLocation = dominantLocation;
     }
 
-    if (nonDominantLocation.x !== -1) {
+    if (nonDominantLocation && nonDominantLocation.x !== -1) {
       this.drawCircle(
         nonDominantLocation.x,
         nonDominantLocation.y,
