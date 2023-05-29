@@ -130,7 +130,10 @@ function Recording({
     if (response.invalid === true) {
       detector.setState(DetectorStates.HAND_SHAPE);
       failure();
-    } else if (response.state === DetectorStates.FINAL_HAND_SHAPE && response.valid) {
+    } else if (
+      response.state === DetectorStates.FINAL_HAND_SHAPE &&
+      response.valid
+    ) {
       const memory = detector.getMemory();
 
       // Check if end of movement until final location and final hand shape and orientation
@@ -385,12 +388,14 @@ function Recording({
 
   function success(): void {
     canvasRef.current?.classList.remove("canvas-success");
+    canvasRef.current?.classList.remove("canvas-failure");
     setTimeout(() => {
       canvasRef.current?.classList.add("canvas-success");
     }, 0);
   }
 
   function failure(): void {
+    canvasRef.current?.classList.remove("canvas-success");
     canvasRef.current?.classList.remove("canvas-failure");
     setTimeout(() => {
       canvasRef.current?.classList.add("canvas-failure");
