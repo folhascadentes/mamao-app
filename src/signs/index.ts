@@ -1297,18 +1297,140 @@ export const signs: Sign[] = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Porque",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: 1 }, { y: -1 }],
+          metadata: {
+            description:
+              "Bata no dedo indicador da mão não dominante com a mão dominante duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.INDEX_LEFT,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 25,
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_DIP,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Dia",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.D,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 45,
+              radiusOffset: 30,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            { x: 1, z: 1 },
+            { x: 1, z: 1 },
+          ],
+          metadata: {
+            description: "Mova a mão em um moviemento diagonal para direita",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.D,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              radiusOffset: {
+                value: 100,
+                leftLimitValue: 50,
+                rightLimitValue: 100,
+                downLimitValue: -50,
+                upLimitValue: 50,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
-  //   token: "Porque",
+  //   token: "Casa",
+  //   steps: {
+  //     start: {
+  //       dominant: {},
+  //       nonDominant: {},
+  //     },
+  //     movement: {
+  //       dominant: {},
+  //       nonDominant: {},
+  //     },
+  //     end: {
+  //       dominant: {},
+  //       nonDominant: {},
+  //     },
+  //   },
   // },
-  // {
-  //   language: "Libras",
-  //   token: "Dia",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Casa"
-  // }
   // {
   //   language: "Libras",
   //   token: "Estuda",
@@ -1356,10 +1478,6 @@ export const signs: Sign[] = [
   // {
   //   language: "Libras",
   //   token: "Passear",
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Ainda",
   // },
   // {
   //   language: "Libras",
