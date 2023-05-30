@@ -320,7 +320,7 @@ const movementState = {
     const invalid = dominantInvalid || nonDominantInvalid;
 
     if (valid && memory.dominantStartFrame) {
-      memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame)) - 5;
+      memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame)) - 2;
     }
 
     return {
