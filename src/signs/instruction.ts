@@ -13,6 +13,16 @@ export const HandshapeImages: {
       path: "/handshapes/a_side.png",
     },
   ],
+  c: [
+    {
+      label: "Visão frontal",
+      path: "/handshapes/c_front.png",
+    },
+    {
+      label: "Visão lateral",
+      path: "/handshapes/c_side.png",
+    },
+  ],
   d: [
     {
       label: "Visão frontal",
@@ -73,14 +83,14 @@ export const HandshapeImages: {
       path: "/handshapes/y_side.png",
     },
   ],
-  claw: [
+  claws: [
     {
       label: "Visão frontal",
-      path: "/handshapes/claw_front.png",
+      path: "/handshapes/claws_front.png",
     },
     {
       label: "Visão lateral",
-      path: "/handshapes/claw_side.png",
+      path: "/handshapes/claws_side.png",
     },
   ],
   indexFinger: [
