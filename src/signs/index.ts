@@ -11,6 +11,267 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
+    token: "Porque",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 50,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 50,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: 1 }, { y: -1 }],
+          metadata: {
+            description:
+              "Bata no dedo indicador da mão não dominante com a mão dominante duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.INDEX_LEFT,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 25,
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_DIP,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Hoje",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+                upLimitValue: 0,
+                rightLimitValue: 0,
+              },
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX_LOWER_LEFT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+                upLimitValue: 0,
+                leftLimitValue: 0,
+              },
+              side: true,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: -1 }, { x: 1 }, { x: -1 }],
+          metadata: {
+            description:
+              "Mova a mão lateralmente para dentro e para fora duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+        nonDominant: {
+          detect: [{ x: 1 }, { x: -1 }, { x: 1 }],
+          metadata: {
+            description:
+              "Mova a mão lateralmente para dentro e para fora duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX_LOWER_LEFT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Branco",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.ELBOW_LEFT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+                downLimitValue: 0,
+              },
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+        nonDominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.DOWN,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 85,
+              handLocation: HandLocation.WRIST,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: 1 }],
+          metadata: {
+            description:
+              "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.WRIST_LEFT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 60,
+              track: true,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Dia",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.D,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 30,
+              radiusOffset: 30,
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            { x: 1, z: 1 },
+            { x: 1, z: 1 },
+          ],
+          metadata: {
+            description: "Mova a mão em um moviemento diagonal para direita",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.D,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 45,
+              radiusOffset: {
+                value: 200,
+                leftLimitValue: 100,
+                rightLimitValue: 200,
+                downLimitValue: -35,
+                upLimitValue: 35,
+              },
+              handLocation: HandLocation.INDEX_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Sim",
     steps: {
       start: {
@@ -638,67 +899,6 @@ export const signs: Sign[] = [
   },
   {
     language: "Libras",
-    token: "Branco",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.ELBOW_LEFT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: {
-                value: 60,
-                downLimitValue: 0,
-              },
-              track: true,
-              handLocation: HandLocation.INDEX_FINGER_TIP,
-            },
-          },
-        },
-        nonDominant: {
-          location: Location.TORAX_LOWER_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.DOWN,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 85,
-              handLocation: HandLocation.WRIST,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ x: 1 }],
-          metadata: {
-            description:
-              "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.WRIST_LEFT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 60,
-              track: true,
-              handLocation: HandLocation.INDEX_FINGER_TIP,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Ainda",
     steps: {
       start: {
@@ -750,7 +950,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 60,
+              radiusOffset: 45,
             },
           },
         },
@@ -812,85 +1012,6 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Hoje",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: {
-                value: 60,
-                rightLimitValue: 0,
-              },
-            },
-          },
-        },
-        nonDominant: {
-          location: Location.TORAX_LEFT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: {
-                value: 60,
-                leftLimitValue: 0,
-              },
-              side: true,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ x: -1 }, { x: 1 }, { x: -1 }],
-          metadata: {
-            description:
-              "Mova a mão lateralmente para dentro e para fora duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-        nonDominant: {
-          detect: [{ x: 1 }, { x: -1 }, { x: 1 }],
-          metadata: {
-            description:
-              "Mova a mão lateralmente para dentro e para fora duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-        nonDominant: {
-          location: Location.TORAX_LEFT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -1183,6 +1304,7 @@ export const signs: Sign[] = [
                 value: 75,
                 leftLimitValue: 0,
               },
+              sameY: true,
             },
           },
         },
@@ -1308,122 +1430,6 @@ export const signs: Sign[] = [
               detectionRadius: 40,
               radiusOffset: 30,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Porque",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_UPPER,
-          handShape: HandShape.libras.INDEX_FINGER,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-        nonDominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ y: -1 }, { y: 1 }, { y: -1 }],
-          metadata: {
-            description:
-              "Bata no dedo indicador da mão não dominante com a mão dominante duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.INDEX_LEFT,
-          handShape: HandShape.libras.INDEX_FINGER,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 25,
-              track: true,
-              handLocation: HandLocation.INDEX_FINGER_DIP,
-            },
-          },
-        },
-        nonDominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Dia",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.FOREHEAD_RIGHT,
-          handShape: HandShape.libras.D,
-          palmOrientation: PalmOrientation.LEFT,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 45,
-              radiusOffset: 30,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [
-            { x: 1, z: 1 },
-            { x: 1, z: 1 },
-          ],
-          metadata: {
-            description: "Mova a mão em um moviemento diagonal para direita",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.FOREHEAD_RIGHT,
-          handShape: HandShape.libras.D,
-          palmOrientation: PalmOrientation.LEFT,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              radiusOffset: {
-                value: 100,
-                leftLimitValue: 50,
-                rightLimitValue: 100,
-                downLimitValue: -50,
-                upLimitValue: 50,
-              },
             },
           },
         },
