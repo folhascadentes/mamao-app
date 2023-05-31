@@ -14,7 +14,7 @@ function createMLPModel(inputSize, numClasses) {
   model.add(tf.layers.dense({ units: 64, activation: "relu" }));
 
   // Adicionar a terceira camada oculta
-  model.add(tf.layers.dense({ units: 32, activation: "relu" }));
+  model.add(tf.layers.dense({ units: 48, activation: "relu" }));
 
   // Adicionar a camada de saída
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
@@ -110,8 +110,8 @@ const outputTrainTensor = tf.tensor2d(outputTrain);
 const inputValidationTensor = tf.tensor2d(inputValidation);
 const outputValidationTensor = tf.tensor2d(outputValidation);
 
-const epochs = 400;
-const batchSize = 128;
+const epochs = 450;
+const batchSize = 64;
 
 (async function () {
   await model.fit(inputTrainTensor, outputTrainTensor, {
