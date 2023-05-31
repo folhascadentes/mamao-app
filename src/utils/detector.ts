@@ -320,7 +320,8 @@ const movementState = {
     const invalid = dominantInvalid || nonDominantInvalid;
 
     if (valid && memory.dominantStartFrame) {
-      memory.startFrame = Math.min(...Object.values(memory.dominantStartFrame)) - 2;
+      memory.startFrame =
+        Math.min(...Object.values(memory.dominantStartFrame)) - 2;
     }
 
     return {
@@ -561,7 +562,7 @@ function setHandPostionsCoordinates(
       sign.steps.end.nonDominant.options?.location.track)
   ) {
     if (sign.steps.end.nonDominant.options?.location.same) {
-      memory.nonDominantEndCoordinate = memory.dominantEndCoordinate;
+      memory.nonDominantEndCoordinate = memory.nonDominantCoordinate;
     } else {
       const { coordinate, offset } = findLocationCoordinate(
         sign.steps.end.nonDominant.location,
