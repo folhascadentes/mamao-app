@@ -3,6 +3,7 @@ import { POSE_LANDMARKS } from "@mediapipe/pose";
 import { Results } from "./mediapipe";
 import {
   angleBetweenTwoVectors,
+  directionBetweenTwoVectors,
   findPerpendicularVector,
   getAngleWithXAxis,
   getPerpendicularVector,
@@ -366,11 +367,20 @@ export class Subject {
         before?.readings.dominantLandmarks.length &&
         after?.readings.dominantLandmarks.length
       ) {
+        const wristExtensionOrFlexion = this.parseWristFlexionOrExtension(
+          after.readings.dominantLandmarks,
+          before.readings.dominantLandmarks,
+          after.readings.poseLandmarks,
+          before.readings.poseLandmarks,
+          true
+        );
+
         subject.hand.dominant.movement = {
           ...this.parseSubjectHandMovement(
             before.readings.dominantLandmarks,
             after.readings.dominantLandmarks
           ),
+          ...wristExtensionOrFlexion,
           ...frontOrBackMoviment.dominant,
         };
       }
@@ -379,11 +389,20 @@ export class Subject {
         before?.readings.nonDominantLandmarks.length &&
         after?.readings.nonDominantLandmarks.length
       ) {
+        const wristExtensionOrFlexion = this.parseWristFlexionOrExtension(
+          after.readings.nonDominantLandmarks,
+          before.readings.nonDominantLandmarks,
+          after.readings.poseLandmarks,
+          before.readings.poseLandmarks,
+          false
+        );
+
         subject.hand.nonDominant.movement = {
           ...this.parseSubjectHandMovement(
             before.readings.nonDominantLandmarks,
             after.readings.nonDominantLandmarks
           ),
+          ...wristExtensionOrFlexion,
           ...frontOrBackMoviment.nonDominant,
         };
       }
@@ -425,6 +444,40 @@ export class Subject {
     }
 
     return movement;
+  }
+
+  private parseWristFlexionOrExtension(
+    afterHandLandmarks: Coordinate[],
+    beforeHandLandmarks: Coordinate[],
+    afterPoseLanmarks: Coordinate[],
+    beforePoseLanmarks: Coordinate[],
+    isDominant: boolean
+  ): { wristFlexion: boolean } | { wristExtension: boolean } | {} {
+    const ANGLE_THRESHOLD = 50;
+    const MOVEMENT_THRESHOLD = 50;
+
+    const mov = isDominant
+      ? pointDifference(beforePoseLanmarks[16], afterPoseLanmarks[16])
+      : pointDifference(beforePoseLanmarks[15], afterPoseLanmarks[15]);
+
+    const v1 = this.parseSubjectHandPointing(beforeHandLandmarks);
+    const v2 = this.parseSubjectHandPointing(afterHandLandmarks);
+
+    const angle = angleBetweenTwoVectors(v1, v2);
+    const direction = directionBetweenTwoVectors(v2, v1);
+
+    if (
+      angle > ANGLE_THRESHOLD &&
+      Math.abs(mov.x) + Math.abs(mov.y) < MOVEMENT_THRESHOLD
+    ) {
+      if (direction.z < 0) {
+        return { wristFlexion: true };
+      } else {
+        return { wristExtension: true };
+      }
+    } else {
+      return {};
+    }
   }
 
   private parseWristRotationAngle(
@@ -480,7 +533,8 @@ export class Subject {
     afterElbow: Coordinate,
     afterWrist: Coordinate
   ): Pick<MovementAxis, "z"> {
-    const THRESHOLD = 2.5;
+    // A challenge to find the right threshold if because the Z value is not very precise for pose landmarks
+    const THRESHOLD = 3.75;
 
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
     const beforeV2 = pointDifference(beforeElbow, beforeWrist);

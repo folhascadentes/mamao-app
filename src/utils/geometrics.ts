@@ -80,6 +80,16 @@ export function angleBetweenTwoVectors(v1: Vector, v2: Vector) {
   return (Math.acos(dotProductValue / magnitudeValue) * 180) / Math.PI;
 }
 
+export function directionBetweenTwoVectors(v1: Vector, v2: Vector): Vector {
+  const v = pointDifference(v1, v2);
+  const magnitudeValue = magnitude(v);
+  return {
+    x: v.x / magnitudeValue,
+    y: v.y / magnitudeValue,
+    z: v.z / magnitudeValue,
+  };
+}
+
 function dotProduct(v1: Coordinate, v2: Coordinate) {
   return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }

@@ -84,8 +84,8 @@ export interface Movement extends MovementAxis {
   wristRotate?: boolean;
   wristExtension?: boolean;
   wristFlexion?: boolean;
-  wristAbduction?: boolean;
-  wristAdduction?: boolean;
+  wristAbduction?: boolean; // TODO
+  wristAdduction?: boolean; // TODO
 }
 
 export enum Location {
