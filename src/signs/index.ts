@@ -11,6 +11,53 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
+    token: "Sim",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 60,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            { wristFlexion: true },
+            { wristExtension: true },
+            { wristFlexion: true },
+            { wristExtension: true },
+          ],
+          metadata: {
+            description:
+              "flexione e extenda o pulso da mão dominante duas vezes",
+            type: MovementType.WRIST_FLEXION_EXTENSION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Nome",
     steps: {
       start: {
@@ -23,7 +70,7 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: {
-                value: 85,
+                value: 95,
                 leftLimitValue: 0,
               },
             },
@@ -55,9 +102,10 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: {
-                value: 85,
+                value: 95,
                 rightLimitValue: 0,
               },
+              sameY: true,
             },
           },
         },
@@ -78,7 +126,7 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: {
-                value: 85,
+                value: 95,
                 leftLimitValue: 0,
               },
             },
@@ -110,9 +158,10 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: {
-                value: 85,
+                value: 95,
                 rightLimitValue: 0,
               },
+              sameY: true,
             },
           },
         },
@@ -208,8 +257,11 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.UP,
           options: {
             location: {
-              detectionRadius: 60,
-              radiusOffset: 65,
+              detectionRadius: 70,
+              radiusOffset: {
+                value: 85,
+                upLimitValue: 0,
+              },
             },
           },
         },
@@ -227,7 +279,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.DOWN,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 50,
               radiusOffset: 30,
             },
           },
@@ -270,7 +322,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.BACK,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 50,
               radiusOffset: 30,
             },
           },
@@ -308,7 +360,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.TORAX_UPPER,
+          location: Location.TORAX,
           handShape: HandShape.libras.A,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -335,7 +387,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.TORAX_UPPER,
+          location: Location.TORAX,
           handShape: HandShape.libras.A,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -361,7 +413,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 50,
+              radiusOffset: 45,
             },
           },
         },
@@ -385,7 +437,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 75,
+              radiusOffset: 80,
             },
           },
         },
@@ -405,7 +457,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 50,
+              radiusOffset: 45,
             },
           },
         },
@@ -429,7 +481,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 75,
+              radiusOffset: 80,
             },
           },
         },
@@ -546,7 +598,7 @@ export const signs: Sign[] = [
         },
         nonDominant: {
           location: Location.TORAX_LOWER_RIGHT,
-          handShape: HandShape.libras.A, // HandShape.libras.S
+          handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.DOWN,
           options: {
             location: {
@@ -590,7 +642,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.SHOULDER_LEFT, // Location.ELBOW_LEFT
+          location: Location.ELBOW_LEFT,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           options: {
@@ -607,7 +659,7 @@ export const signs: Sign[] = [
         },
         nonDominant: {
           location: Location.TORAX_LOWER_RIGHT,
-          handShape: HandShape.libras.A, // HandShape.libras.S
+          handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.DOWN,
           options: {
             location: {
@@ -656,7 +708,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 40,
               radiusOffset: 60,
             },
           },
@@ -678,7 +730,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 40,
               radiusOffset: 15,
             },
           },
@@ -760,47 +812,6 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Sim",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.FRONT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 60,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ wristFlexion: true }, { wristExtension: true }],
-          metadata: {
-            description: "Flexione e extenda o pulso da mão dominante",
-            type: MovementType.WRIST_FLEXION_EXTENSION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.FRONT,
           options: {
             location: {
               detectionRadius: 60,
@@ -1164,7 +1175,7 @@ export const signs: Sign[] = [
         dominant: {
           location: Location.TORAX_LEFT,
           handShape: HandShape.libras.C,
-          palmOrientation: PalmOrientation.RIGHT,
+          palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
