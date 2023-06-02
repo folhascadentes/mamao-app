@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import IloveyouImage from "./assets/iloveyou.png";
+// import IloveyouImage from "./assets/iloveyou.png";
 
 interface DownloadProgress {
   contentLength: number;
@@ -66,14 +66,6 @@ function LoadingScreen(): JSX.Element {
   return (
     <div id="loading-screen" className="text-white px-4">
       <div className="flex flex-col space-y-10 items-center justify-center">
-        <div>
-          <img
-            title="I Love You"
-            src={IloveyouImage}
-            alt="I love you sign"
-            className="w-40"
-          />
-        </div>
         <div className="text-4xl">Configurando sistema de captura</div>
         {!progressData?.url && <div className="spinner"></div>}
         {progressData?.url && (

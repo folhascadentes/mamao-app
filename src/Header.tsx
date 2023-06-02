@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import papayaLogo from "./assets/papaya.png";
+import papaya3d from "./assets/papaya3d.png";
 
 function Header(): JSX.Element {
   const [fontSize, setFontSize] = useState<number>(100);
@@ -18,7 +18,7 @@ function Header(): JSX.Element {
       <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
         <div className="w-44"></div>
         <div className="container mx-auto px-4 py-4 flex justify-center items-center">
-          <img src={papayaLogo} alt="Papaya Logo" style={{ height: "80px" }} />
+          <img src={papaya3d} alt="Papaya Logo" style={{ height: "80px" }} />
         </div>
         <button
           title="Ação de aumentar tamanho do texto [+]"
