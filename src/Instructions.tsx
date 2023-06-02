@@ -38,11 +38,7 @@ function Instructions({
   });
 
   function nextState() {
-    if (state === 5) {
-      startRecording();
-    } else {
-      setState((value) => value + 1);
-    }
+    setState((value) => value + 1);
   }
 
   function previousState() {
@@ -248,9 +244,26 @@ function Instructions({
                 Anterior [a]
               </Button>
             )}
-            <Button className="bg-indigo-600" mr={3} mb={6} onClick={nextState}>
-              Próximo [p]
-            </Button>
+            {state < 5 && (
+              <Button
+                className="bg-indigo-600"
+                mr={3}
+                mb={6}
+                onClick={nextState}
+              >
+                Próximo [p]
+              </Button>
+            )}
+            {state === 5 && (
+              <Button
+                className="bg-indigo-600"
+                mr={3}
+                mb={6}
+                onClick={startRecording}
+              >
+                Começar [c]
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
