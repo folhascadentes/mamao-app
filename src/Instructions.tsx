@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { css } from "@emotion/react";
 import React from "react";
+import { useRef, useState } from "react";
 import handshapeOne from "./assets/handshapeOne.png";
 import handshapeTwo from "./assets/handshapeTwo.png";
 import handshapeThree from "./assets/handshapeThree.png";
@@ -22,9 +23,10 @@ function Instructions({
 }: {
   startRecording: () => void;
 }): JSX.Element {
+  const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [state, setState] = React.useState(0);
-  const finalRef = React.useRef(null);
+  const [state, setState] = useState(0);
+  const finalRef = useRef(null);
   const title = [
     "Língua de sinal",
     "Configuração da mão",
@@ -43,6 +45,12 @@ function Instructions({
 
   function previousState() {
     setState((value) => value - 1);
+  }
+
+  function start() {
+    if (showTutorial) {
+      onOpen();
+    }
   }
 
   return (
@@ -80,7 +88,7 @@ function Instructions({
         <div className="text-center">
           <button
             type="button"
-            onClick={onOpen}
+            onClick={start}
             className="bg-indigo-600 text-white py-6 px-8 text-2xl rounded-xl mb-10"
           >
             Começar <span className="text-base">[C]</span>
