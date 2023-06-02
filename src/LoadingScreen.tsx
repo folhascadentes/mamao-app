@@ -66,7 +66,7 @@ function LoadingScreen(): JSX.Element {
   return (
     <div id="loading-screen" className="text-white px-4">
       <div className="flex flex-col space-y-10 items-center justify-center">
-        <div className="text-4xl">Configurando sistema de captura</div>
+        <div className="text-3xl font-thin">Configurando sistema de captura</div>
         {!progressData?.url && <div className="spinner"></div>}
         {progressData?.url && (
           <div className="flex-col space-y-8">
