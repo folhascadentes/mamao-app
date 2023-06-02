@@ -240,9 +240,9 @@ function Instructions({
                     ideias
                   </b>
                   .<br></br>
-                  <br></br> Lembre-se disso quando estiver aprendendo e usando
-                  Libras - você está aprendendo uma nova maneira de expressar e
-                  comunicar suas ideias e sentimentos!
+                  <br></br> Lembre-se disso quando estiver sinalizando, siga as
+                  instruções presentes no canto esquerdo da tela. Juntos podemos
+                  fazer o mundo mais inclusivo!
                 </div>
               )}
             </div>
