@@ -54,6 +54,12 @@ function Instructions({
     }
   }
 
+  function begin() {
+    startRecording();
+    localStorage.setItem("tutorialViewed", "true");
+    onClose();
+  }
+
   return (
     <div className="p-6 flex justify-center md:text-lg font-normal">
       <div style={{ width: "720px" }}>
@@ -264,12 +270,7 @@ function Instructions({
               </Button>
             )}
             {state === 5 && (
-              <Button
-                className="bg-indigo-600"
-                mr={3}
-                mb={6}
-                onClick={startRecording}
-              >
+              <Button className="bg-indigo-600" mr={3} mb={6} onClick={begin}>
                 Começar [c]
               </Button>
             )}

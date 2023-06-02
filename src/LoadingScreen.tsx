@@ -59,8 +59,6 @@ function LoadingScreen(): JSX.Element {
   }
 
   useEffect(() => {
-    localStorage.setItem("tutorialViewed", "true");
-
     patchXMLHttpRequest();
     // eslint-disable-next-line
   }, []);
