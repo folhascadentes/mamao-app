@@ -42,7 +42,6 @@ function Instructions({
   function nextState() {
     setState((value) => value + 1);
   }
-
   function previousState() {
     setState((value) => value - 1);
   }
@@ -50,6 +49,8 @@ function Instructions({
   function start() {
     if (showTutorial) {
       onOpen();
+    } else {
+      startRecording();
     }
   }
 
