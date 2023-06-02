@@ -11,12 +11,14 @@ import {
 import { css } from "@emotion/react";
 import React from "react";
 import { useRef, useState } from "react";
+import signLanguage from "./assets/signLanguage.png";
 import handshapeOne from "./assets/handshapeOne.png";
 import handshapeTwo from "./assets/handshapeTwo.png";
 import handshapeThree from "./assets/handshapeThree.png";
 import movement from "./assets/movement.png";
 import orientation from "./assets/orientation.png";
 import location from "./assets/location.png";
+import wrapping from "./assets/wrapping.png";
 
 function Instructions({
   startRecording,
@@ -114,56 +116,46 @@ function Instructions({
         <ModalContent css={gradientBg} borderRadius="1rem">
           <ModalHeader>
             <div className="pt-6 pb-8">
+              {state === 0 && (
+                <div className="flex justify-center">
+                  <img src={signLanguage} alt="" style={{ height: "200px" }} />
+                </div>
+              )}
               {state === 1 && (
                 <div className="flex justify-center space-x-12 px-6">
-                  <img
-                    src={handshapeOne}
-                    alt="Handshape One"
-                    style={{ height: "125px" }}
-                  />
-                  <img
-                    src={handshapeTwo}
-                    alt="Handshape Two"
-                    style={{ height: "125px" }}
-                  />
+                  <img src={handshapeOne} alt="" style={{ height: "125px" }} />
+                  <img src={handshapeTwo} alt="" style={{ height: "125px" }} />
                   <img
                     src={handshapeThree}
-                    alt="Handshape Three"
+                    alt=""
                     style={{ height: "125px" }}
                   />
                 </div>
               )}
               {state === 2 && (
                 <div className="flex justify-center">
-                  <img
-                    src={movement}
-                    alt="Movement"
-                    style={{ height: "200px" }}
-                  />
+                  <img src={movement} alt="" style={{ height: "200px" }} />
                 </div>
               )}
               {state === 3 && (
                 <div className="flex justify-center">
-                  <img
-                    src={location}
-                    alt="Location"
-                    style={{ height: "200px" }}
-                  />
+                  <img src={location} alt="" style={{ height: "200px" }} />
                 </div>
               )}
               {state === 4 && (
                 <div className="flex justify-center">
-                  <img
-                    src={orientation}
-                    alt="Orientation"
-                    style={{ height: "200px" }}
-                  />
+                  <img src={orientation} alt="" style={{ height: "200px" }} />
+                </div>
+              )}
+              {state === 5 && (
+                <div className="flex justify-center">
+                  <img src={wrapping} alt="" style={{ height: "200px" }} />
                 </div>
               )}
             </div>
-            <span className="flex text-3xl font-normal justify-center">
+            <h1 className="flex text-3xl font-normal justify-center">
               {title[state]}
-            </span>
+            </h1>
           </ModalHeader>
           <ModalBody className="mx-6">
             <div className="md:text-lg font-normal mt-4 mb-6">
@@ -255,22 +247,17 @@ function Instructions({
           </ModalBody>
           <ModalFooter>
             {state > 0 && (
-              <Button mr={6} mb={6} onClick={previousState}>
+              <Button size="lg" mr={6} mb={6} onClick={previousState}>
                 Anterior [a]
               </Button>
             )}
             {state < 5 && (
-              <Button
-                className="bg-indigo-600"
-                mr={3}
-                mb={6}
-                onClick={nextState}
-              >
+              <Button size="lg" mr={3} mb={6} onClick={nextState}>
                 Próximo [p]
               </Button>
             )}
             {state === 5 && (
-              <Button className="bg-indigo-600" mr={3} mb={6} onClick={begin}>
+              <Button size="lg" mr={3} mb={6} onClick={begin}>
                 Começar [c]
               </Button>
             )}
