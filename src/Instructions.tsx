@@ -2,6 +2,7 @@ import {
   Button,
   Modal,
   ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
@@ -38,7 +39,7 @@ function Instructions({
     "Juntando tudo!",
   ];
   const gradientBg = css({
-    background: `linear-gradient(to top, white, white, #FFF5E8)`,
+    background: `linear-gradient(to top, white, white, #ffecd4)`,
   });
 
   function nextState() {
@@ -63,9 +64,9 @@ function Instructions({
   }
 
   return (
-    <div className="p-6 flex justify-center md:text-lg font-normal">
+    <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
       <div style={{ width: "720px" }}>
-        <h1 className="text-3xl md:text-4xl text-center mb-6 md:mb-10">
+        <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
           Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
           !
         </h1>
@@ -98,7 +99,7 @@ function Instructions({
           <button
             type="button"
             onClick={start}
-            className="bg-indigo-600 text-white py-6 px-8 text-2xl rounded-xl mb-10"
+            className="bg-indigo-600 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
           >
             Começar <span className="text-base">[C]</span>
           </button>
@@ -118,7 +119,13 @@ function Instructions({
             <div className="pt-6 pb-8">
               {state === 0 && (
                 <div className="flex justify-center">
-                  <img src={signLanguage} alt="" style={{ height: "200px" }} />
+                  <img
+                    src={signLanguage}
+                    alt=""
+                    style={{
+                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                    }}
+                  />
                 </div>
               )}
               {state === 1 && (
@@ -134,31 +141,56 @@ function Instructions({
               )}
               {state === 2 && (
                 <div className="flex justify-center">
-                  <img src={movement} alt="" style={{ height: "200px" }} />
+                  <img
+                    src={movement}
+                    alt=""
+                    style={{
+                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                    }}
+                  />
                 </div>
               )}
               {state === 3 && (
                 <div className="flex justify-center">
-                  <img src={location} alt="" style={{ height: "200px" }} />
+                  <img
+                    src={location}
+                    alt=""
+                    style={{
+                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                    }}
+                  />
                 </div>
               )}
               {state === 4 && (
                 <div className="flex justify-center">
-                  <img src={orientation} alt="" style={{ height: "200px" }} />
+                  <img
+                    src={orientation}
+                    alt=""
+                    style={{
+                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                    }}
+                  />
                 </div>
               )}
               {state === 5 && (
                 <div className="flex justify-center">
-                  <img src={wrapping} alt="" style={{ height: "200px" }} />
+                  <img
+                    src={wrapping}
+                    alt=""
+                    style={{
+                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                    }}
+                  />
                 </div>
               )}
             </div>
-            <h1 className="flex text-3xl font-normal justify-center">
+            <h1 className="flex text-2xl xl:text-3xl font-normal justify-center">
               {title[state]}
             </h1>
           </ModalHeader>
+          <ModalCloseButton></ModalCloseButton>
           <ModalBody className="mx-6">
-            <div className="md:text-lg font-normal mt-4 mb-6">
+            <div className=" xl:text-lg font-normal xl:mt-4 xl:mb-6">
               {state === 0 && (
                 <div>
                   Libras é uma linguagem completa e complexa, tão rica e variada
@@ -247,18 +279,39 @@ function Instructions({
           </ModalBody>
           <ModalFooter>
             {state > 0 && (
-              <Button size="lg" mr={6} mb={6} onClick={previousState}>
-                Anterior [a]
+              <Button
+                colorScheme="gray"
+                bg="gray.200"
+                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                mr={6}
+                mb={6}
+                onClick={previousState}
+              >
+                Anterior [A]
               </Button>
             )}
             {state < 5 && (
-              <Button size="lg" mr={3} mb={6} onClick={nextState}>
-                Próximo [p]
+              <Button
+                colorScheme="gray"
+                bg="gray.200"
+                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                mr={3}
+                mb={6}
+                onClick={nextState}
+              >
+                Próximo [D]
               </Button>
             )}
             {state === 5 && (
-              <Button size="lg" mr={3} mb={6} onClick={begin}>
-                Começar [c]
+              <Button
+                colorScheme="gray"
+                bg="gray.200"
+                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                mr={3}
+                mb={6}
+                onClick={begin}
+              >
+                Começar [C]
               </Button>
             )}
           </ModalFooter>
