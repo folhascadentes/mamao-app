@@ -8,6 +8,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { css } from "@emotion/react";
 import React from "react";
 import handshapeOne from "./assets/handshapeOne.png";
 import handshapeTwo from "./assets/handshapeTwo.png";
@@ -32,6 +33,9 @@ function Instructions({
     "Orientação da mão",
     "Juntando tudo!",
   ];
+  const gradientBg = css({
+    background: `linear-gradient(to top, white, white, #FFF5E8)`,
+  });
 
   function nextState() {
     if (state === 5) {
@@ -96,14 +100,62 @@ function Instructions({
         size="xl"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
-        <ModalContent>
+        <ModalContent css={gradientBg} borderRadius="1rem">
           <ModalHeader>
-            <span className="flex my-6 text-3xl font-normal justify-center">
+            <div className="pt-6 pb-8">
+              {state === 1 && (
+                <div className="flex justify-center space-x-12 px-6">
+                  <img
+                    src={handshapeOne}
+                    alt="Handshape One"
+                    style={{ height: "125px" }}
+                  />
+                  <img
+                    src={handshapeTwo}
+                    alt="Handshape Two"
+                    style={{ height: "125px" }}
+                  />
+                  <img
+                    src={handshapeThree}
+                    alt="Handshape Three"
+                    style={{ height: "125px" }}
+                  />
+                </div>
+              )}
+              {state === 2 && (
+                <div className="flex justify-center">
+                  <img
+                    src={movement}
+                    alt="Movement"
+                    style={{ height: "200px" }}
+                  />
+                </div>
+              )}
+              {state === 3 && (
+                <div className="flex justify-center">
+                  <img
+                    src={location}
+                    alt="Location"
+                    style={{ height: "200px" }}
+                  />
+                </div>
+              )}
+              {state === 4 && (
+                <div className="flex justify-center">
+                  <img
+                    src={orientation}
+                    alt="Orientation"
+                    style={{ height: "200px" }}
+                  />
+                </div>
+              )}
+            </div>
+            <span className="flex text-3xl font-normal justify-center">
               {title[state]}
             </span>
           </ModalHeader>
           <ModalBody className="mx-6">
-            <div className="md:text-lg font-normal mb-6">
+            <div className="md:text-lg font-normal mt-4 mb-6">
               {state === 0 && (
                 <div>
                   Libras é uma linguagem completa e complexa, tão rica e variada
@@ -124,97 +176,65 @@ function Instructions({
               )}
               {state === 1 && (
                 <div>
-                  <div className="flex justify-center space-x-12 px-6">
-                    <img
-                      src={handshapeOne}
-                      alt="Handshape One"
-                      style={{ height: "125px" }}
-                    />
-                    <img
-                      src={handshapeTwo}
-                      alt="Handshape Two"
-                      style={{ height: "125px" }}
-                    />
-                    <img
-                      src={handshapeThree}
-                      alt="Handshape Three"
-                      style={{ height: "125px" }}
-                    />
-                  </div>
-                  <div className="my-6">
-                    A configuração da mão é a posição específica em que sua mão
-                    está para formar um sinal. Pode ser uma mão aberta, um punho
-                    fechado, um dedo apontado ou uma de muitas outras formas
-                    possíveis. <b>Cada configuração tem um significado diferente e
-                    pode ser comparada a diferentes letras ou palavras</b>.
-                  </div>
+                  A configuração da mão é a posição específica em que sua mão
+                  está para formar um sinal. Pode ser uma mão aberta, um punho
+                  fechado, um dedo apontado ou uma de muitas outras formas
+                  possíveis.{" "}
+                  <b>
+                    Cada configuração tem um significado diferente e pode ser
+                    comparada a diferentes letras ou palavras
+                  </b>
+                  .
                 </div>
               )}
               {state === 2 && (
                 <div>
-                  <div className="flex justify-center space-x-12 -mt-6">
-                    <img
-                      src={movement}
-                      alt="Movement"
-                      style={{ height: "200px" }}
-                    />
-                  </div>
-                  <div className="my-6">
-                    O movimento é a ação realizada pela mão para transmitir o
-                    sinal. As mãos podem se mover para cima, para baixo, para a
-                    esquerda, para a direita, ou até mesmo fazer um movimento
-                    circular.<br></br>
-                    <br></br>Alguns sinais envolvem um movimento pequeno e
-                    sutil, enquanto outros envolvem um movimento grande e
-                    dinâmico. <b>A especificidade do movimento é crucial para o
-                    significado do sinal</b>.
-                  </div>
+                  O movimento é a ação realizada pela mão para transmitir o
+                  sinal. As mãos podem se mover para cima, para baixo, para a
+                  esquerda, para a direita, ou até mesmo fazer um movimento
+                  circular.<br></br>
+                  <br></br>Alguns sinais envolvem um movimento pequeno e sutil,
+                  enquanto outros envolvem um movimento grande e dinâmico.{" "}
+                  <b>
+                    A especificidade do movimento é crucial para o significado
+                    do sinal
+                  </b>
+                  .
                 </div>
               )}
               {state === 3 && (
                 <div>
-                  <div className="flex justify-center space-x-12 -mt-4">
-                    <img
-                      src={location}
-                      alt="Location"
-                      style={{ height: "200px" }}
-                    />
-                  </div>
-                  <div className="my-6">
-                    A localização se refere ao lugar no corpo ou no espaço onde
-                    o sinal é feito. Alguns sinais são feitos perto do rosto,
-                    outros perto do peito, e outros em várias partes do espaço
-                    ao redor do corpo. <b>A localização de um sinal pode mudar seu
-                    significado</b>.
-                  </div>
+                  A localização se refere ao lugar no corpo ou no espaço onde o
+                  sinal é feito. Alguns sinais são feitos perto do rosto, outros
+                  perto do peito, e outros em várias partes do espaço ao redor
+                  do corpo.{" "}
+                  <b>A localização de um sinal pode mudar seu significado</b>.
                 </div>
               )}
               {state === 4 && (
                 <div>
-                  <div className="flex justify-center space-x-12 -mt-6">
-                    <img
-                      src={orientation}
-                      alt="Orientation"
-                      style={{ height: "200px" }}
-                    />
-                  </div>
-                  <div className="my-6">
-                    A orientação da mão é a direção em que a palma ou o dorso da
-                    sua mão está voltada durante um sinal. Em alguns sinais, a
-                    palma da mão pode estar voltada para você, enquanto em
-                    outros, pode estar voltada para fora, para cima ou para
-                    baixo. <b>A orientação da mão também é um componente crucial
-                    para o significado do sinal</b>.
-                  </div>
+                  A orientação da mão é a direção em que a palma ou o dorso da
+                  sua mão está voltada durante um sinal. Em alguns sinais, a
+                  palma da mão pode estar voltada para você, enquanto em outros,
+                  pode estar voltada para fora, para cima ou para baixo.{" "}
+                  <b>
+                    A orientação da mão também é um componente crucial para o
+                    significado do sinal
+                  </b>
+                  .
                 </div>
               )}
               {state === 5 && (
                 <div>
                   Quando a configuração da mão, o movimento, a localização e a
                   orientação da mão se combinam, eles criam um sinal único em
-                  Libras. <b>Assim como palavras formam frases em uma linguagem
-                  falada, os sinais em Libras se combinam para expressar
-                  pensamentos e ideias</b>.<br></br>
+                  Libras.{" "}
+                  <b>
+                    Assim como palavras formam frases em uma linguagem falada,
+                    os sinais em Libras se combinam para expressar pensamentos e
+                    ideias
+                  </b>
+                  .<br></br>
                   <br></br> Lembre-se disso quando estiver aprendendo e usando
                   Libras - você está aprendendo uma nova maneira de expressar e
                   comunicar suas ideias e sentimentos!
@@ -223,16 +243,13 @@ function Instructions({
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button
-              className="bg-indigo-600"
-              mr={6}
-              mb={6}
-              onClick={previousState}
-            >
-              Anterior
-            </Button>
+            {state > 0 && (
+              <Button mr={6} mb={6} onClick={previousState}>
+                Anterior [a]
+              </Button>
+            )}
             <Button className="bg-indigo-600" mr={3} mb={6} onClick={nextState}>
-              Próximo
+              Próximo [p]
             </Button>
           </ModalFooter>
         </ModalContent>
