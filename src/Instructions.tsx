@@ -39,7 +39,7 @@ function Instructions({
     "Juntando tudo!",
   ];
   const gradientBg = css({
-    background: `linear-gradient(to top, white, white, #ffecd4)`,
+    background: 'linear-gradient(to top, #dff5ed, white, white, #ffecd4)',
   });
 
   function nextState() {
@@ -280,8 +280,6 @@ function Instructions({
           <ModalFooter>
             {state > 0 && (
               <Button
-                colorScheme="gray"
-                bg="gray.200"
                 size={window.innerHeight <= 1000 ? "md" : "lg"}
                 mr={6}
                 mb={6}
@@ -292,8 +290,6 @@ function Instructions({
             )}
             {state < 5 && (
               <Button
-                colorScheme="gray"
-                bg="gray.200"
                 size={window.innerHeight <= 1000 ? "md" : "lg"}
                 mr={3}
                 mb={6}
@@ -304,8 +300,6 @@ function Instructions({
             )}
             {state === 5 && (
               <Button
-                colorScheme="gray"
-                bg="gray.200"
                 size={window.innerHeight <= 1000 ? "md" : "lg"}
                 mr={3}
                 mb={6}
