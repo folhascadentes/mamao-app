@@ -123,7 +123,7 @@ function Instructions({
                     src={signLanguage}
                     alt=""
                     style={{
-                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                      height: window.innerHeight <= 800 ? "150px" : "200px",
                     }}
                   />
                 </div>
@@ -145,7 +145,7 @@ function Instructions({
                     src={movement}
                     alt=""
                     style={{
-                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                      height: window.innerHeight <= 800 ? "150px" : "200px",
                     }}
                   />
                 </div>
@@ -156,7 +156,7 @@ function Instructions({
                     src={location}
                     alt=""
                     style={{
-                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                      height: window.innerHeight <= 800 ? "150px" : "200px",
                     }}
                   />
                 </div>
@@ -167,7 +167,7 @@ function Instructions({
                     src={orientation}
                     alt=""
                     style={{
-                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                      height: window.innerHeight <= 800 ? "150px" : "200px",
                     }}
                   />
                 </div>
@@ -178,7 +178,7 @@ function Instructions({
                     src={wrapping}
                     alt=""
                     style={{
-                      height: window.innerHeight <= 1000 ? "150px" : "200px",
+                      height: window.innerHeight <= 800 ? "150px" : "200px",
                     }}
                   />
                 </div>
@@ -280,7 +280,9 @@ function Instructions({
           <ModalFooter>
             {state > 0 && (
               <Button
-                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                size={window.innerHeight <= 800 ? "md" : "lg"}
+                colorScheme="black"
+                color="black"
                 mr={6}
                 mb={6}
                 onClick={previousState}
@@ -290,7 +292,10 @@ function Instructions({
             )}
             {state < 5 && (
               <Button
-                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                size={window.innerHeight <= 800 ? "md" : "lg"}
+                colorScheme="blue"
+                bg="rgb(79 70 229)"
+                rounded="xl"
                 mr={3}
                 mb={6}
                 onClick={nextState}
@@ -300,7 +305,10 @@ function Instructions({
             )}
             {state === 5 && (
               <Button
-                size={window.innerHeight <= 1000 ? "md" : "lg"}
+                size={window.innerHeight <= 800 ? "md" : "lg"}
+                colorScheme="blue"
+                bg="rgb(79 70 229)"
+                rounded="xl"
                 mr={3}
                 mb={6}
                 onClick={begin}
