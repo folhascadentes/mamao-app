@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import IloveyouImage from "./assets/iloveyou.png";
+import loading from "./assets/loading.png";
 
 interface DownloadProgress {
   contentLength: number;
@@ -64,9 +64,14 @@ function LoadingScreen(): JSX.Element {
   }, []);
 
   return (
-    <div id="loading-screen" className="text-white px-4">
+    <div id="loading-screen" className="px-4">
       <div className="flex flex-col space-y-10 items-center justify-center">
-        <div className="text-3xl font-thin">Configurando sistema de captura</div>
+        <div>
+          <img src={loading} style={{ height: "250px" }}></img>
+        </div>
+        <div className="text-4xl font-light">
+          Configurando sistema de captura
+        </div>
         {!progressData?.url && <div className="spinner"></div>}
         {progressData?.url && (
           <div className="flex-col space-y-8">
