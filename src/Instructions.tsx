@@ -39,7 +39,7 @@ function Instructions({
     "Juntando tudo!",
   ];
   const gradientBg = css({
-    background: 'linear-gradient(to top, #dff5ed, white, white, #ffecd4)',
+    background: "linear-gradient(to top, #dff5ed, white, white, #ffecd4)",
   });
 
   function nextState() {
@@ -99,7 +99,7 @@ function Instructions({
           <button
             type="button"
             onClick={start}
-            className="bg-indigo-600 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
           >
             Começar <span className="text-base">[C]</span>
           </button>
@@ -279,42 +279,31 @@ function Instructions({
           </ModalBody>
           <ModalFooter>
             {state > 0 && (
-              <Button
-                size={window.innerHeight <= 800 ? "md" : "lg"}
-                colorScheme="black"
-                color="black"
-                mr={6}
-                mb={6}
+              <button
+                type="button"
+                className="bg-transparent hover:bg-neutral-200 py-3.5 px-6 text-lg rounded-xl mr-6 mb-6"
                 onClick={previousState}
               >
                 Anterior [A]
-              </Button>
+              </button>
             )}
             {state < 5 && (
-              <Button
-                size={window.innerHeight <= 800 ? "md" : "lg"}
-                colorScheme="blue"
-                bg="rgb(79 70 229)"
-                rounded="xl"
-                mr={3}
-                mb={6}
+              <button
+                type="button"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={nextState}
               >
                 Próximo [D]
-              </Button>
+              </button>
             )}
             {state === 5 && (
-              <Button
-                size={window.innerHeight <= 800 ? "md" : "lg"}
-                colorScheme="blue"
-                bg="rgb(79 70 229)"
-                rounded="xl"
-                mr={3}
-                mb={6}
+              <button
+                type="button"
+                className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
                 Começar [C]
-              </Button>
+              </button>
             )}
           </ModalFooter>
         </ModalContent>
