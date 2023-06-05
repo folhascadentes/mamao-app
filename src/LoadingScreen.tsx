@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import loading from "./assets/loading.png";
+import loading from "./assets/loading.jpeg";
 
 interface DownloadProgress {
   contentLength: number;
@@ -67,7 +67,7 @@ function LoadingScreen(): JSX.Element {
     <div id="loading-screen" className="px-4">
       <div className="flex flex-col space-y-10 items-center justify-center">
         <div>
-          <img src={loading} style={{ height: "250px" }}></img>
+          <img src={loading} alt="" style={{ height: "250px" }}></img>
         </div>
         <div className="text-4xl font-light">
           Configurando sistema de captura

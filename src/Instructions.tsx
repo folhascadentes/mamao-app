@@ -1,5 +1,4 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,14 +11,14 @@ import {
 import { css } from "@emotion/react";
 import React from "react";
 import { useRef, useState } from "react";
-import signLanguage from "./assets/signLanguage.png";
-import handshapeOne from "./assets/handshapeOne.png";
-import handshapeTwo from "./assets/handshapeTwo.png";
-import handshapeThree from "./assets/handshapeThree.png";
-import movement from "./assets/movement.png";
-import orientation from "./assets/orientation.png";
-import location from "./assets/location.png";
-import wrapping from "./assets/wrapping.png";
+import signLanguage from "./assets/signLanguage.jpeg";
+import handshapeOne from "./assets/handshapeOne.jpeg";
+import handshapeTwo from "./assets/handshapeTwo.jpeg";
+import handshapeThree from "./assets/handshapeThree.jpeg";
+import movement from "./assets/movement.jpeg";
+import orientation from "./assets/orientation.jpeg";
+import location from "./assets/location.jpeg";
+import wrapping from "./assets/wrapping.jpeg";
 
 function Instructions({
   startRecording,
