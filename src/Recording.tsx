@@ -79,8 +79,6 @@ function Recording({
 
       if (checkSubjectFramming(poseLandmarks)) {
         setSubjectFraming(() => true);
-      } else {
-        setSubjectFraming(() => false);
       }
     } else {
       poseLandmarks = [];
@@ -211,7 +209,7 @@ function Recording({
               Instruções
             </h1>
             <div className="flex flex-col space-y-2">
-              <div className="flex flex-col">
+              <div className="flex flex-col mb-2">
                 <div className="flex space-x-3 items-center text-lg">
                   {subjectFraming ? (
                     <MdDone className="text-green-500 font-bold " size={24} />
@@ -224,7 +222,7 @@ function Recording({
                   <div>Enquadre o seu corpo corretamente</div>
                 </div>
                 {!subjectFraming && (
-                  <div className="ml-8 mt-3.5 mb-2">
+                  <div className="ml-8 mt-3.5">
                     1. Afaste seu corpo da câmera e deixe visível desde a cabeça
                     até o início do quadril
                   </div>
@@ -441,7 +439,7 @@ function Recording({
   }
 
   function checkSubjectFramming(poseLandmarks: { y: number }[]): boolean {
-    const threshold = -75;
+    const threshold = -125;
     const leftHipVisible = 720 - poseLandmarks[23].y > threshold;
     return leftHipVisible;
   }
