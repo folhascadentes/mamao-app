@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import * as tensorflow from "@tensorflow/tfjs";
 import { Camera } from "@mediapipe/camera_utils";
 import {
-  // PalmOrientation,
   HandshapeImages,
   MovementType,
   PalmOrientationDescription,
@@ -49,6 +48,7 @@ function Recording({
   const instructorRef = useRef<Instructor>();
   const signIndex = useRef<number>(1);
 
+  const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
   const [sign, setSign] = useState<Sign>(signs[0]);
   const [signCounter, setSignCounter] = useState<number>(0);
   const [todoActions, setTodoActions] = useState<DetectorState[]>([]);
@@ -68,6 +68,7 @@ function Recording({
 
     if (results.poseLandmarks) {
       const canvas = canvasRef.current as HTMLCanvasElement;
+
       poseLandmarks = results.poseLandmarks.map((landmark: Coordinate) => {
         return {
           x: landmark.x * canvas.width,
@@ -75,6 +76,12 @@ function Recording({
           z: landmark.z,
         };
       });
+
+      if (checkSubjectFramming(poseLandmarks)) {
+        setSubjectFraming(() => true);
+      } else {
+        setSubjectFraming(() => false);
+      }
     } else {
       poseLandmarks = [];
     }
@@ -204,6 +211,25 @@ function Recording({
               Instruções
             </h1>
             <div className="flex flex-col space-y-2">
+              <div className="flex flex-col">
+                <div className="flex space-x-3 items-center text-lg">
+                  {subjectFraming ? (
+                    <MdDone className="text-green-500 font-bold " size={24} />
+                  ) : (
+                    <MdOutlinePending
+                      className="text-yellow-500 font-bold"
+                      size={24}
+                    />
+                  )}
+                  <div>Enquadre o seu corpo corretamente</div>
+                </div>
+                {!subjectFraming && (
+                  <div className="ml-8 mt-3.5 mb-2">
+                    1. Afaste seu corpo da câmera e deixe visível desde a cabeça
+                    até o início do quadril
+                  </div>
+                )}
+              </div>
               {todoActions.map((step, index) => (
                 <div key={step.state} className="flex flex-col">
                   <div className="flex space-x-3 items-center text-lg">
@@ -412,6 +438,12 @@ function Recording({
     setTimeout(() => {
       document.querySelector("#canvas-overlay")?.classList.add("overlay");
     }, 0);
+  }
+
+  function checkSubjectFramming(poseLandmarks: { y: number }[]): boolean {
+    const threshold = -75;
+    const leftHipVisible = 720 - poseLandmarks[23].y > threshold;
+    return leftHipVisible;
   }
 }
 
