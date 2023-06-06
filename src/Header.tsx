@@ -17,14 +17,26 @@ function Header({
   setTextColor: React.Dispatch<React.SetStateAction<string>>;
   setButtonHoverColorWeight: React.Dispatch<React.SetStateAction<string>>;
 }): JSX.Element {
-  const [fontSize, setFontSize] = useState<number>(100);
+  const [fontSize, setFontSize] = useState<number>(
+    localStorage.getItem("fontSize")
+      ? Number(localStorage.getItem("fontSize"))
+      : 100
+  );
 
   function handleIncreaseFontSize(): void {
-    setFontSize((size) => size + 10);
+    setFontSize((fontSize) => {
+      const value = fontSize + 10;
+      localStorage.setItem("fontSize", value.toString());
+      return value;
+    });
   }
 
   function handleDecreaseFontSize(): void {
-    setFontSize((size) => size - 10);
+    setFontSize((fontSize) => {
+      const value = fontSize - 10;
+      localStorage.setItem("fontSize", value.toString());
+      return value;
+    });
   }
 
   function handleHightConstast(): void {
@@ -48,7 +60,7 @@ function Header({
 
   return (
     <>
-      <style>{`body {font-size: ${fontSize}%; color: ${textColor}; background-color: ${backgroundColor}; }`}</style>
+      <style>{`html { font-size: ${fontSize}%; } body {color: ${textColor}; background-color: ${backgroundColor}; }`}</style>
       <header className="w-full">
         <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
           <div className="w-80"></div>
