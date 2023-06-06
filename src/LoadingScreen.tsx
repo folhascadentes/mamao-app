@@ -8,7 +8,11 @@ interface DownloadProgress {
   url: string;
 }
 
-function LoadingScreen(): JSX.Element {
+function LoadingScreen({
+  backgroundColor,
+}: {
+  backgroundColor: string;
+}): JSX.Element {
   const TOTAL_FILES_DOWNLOAD: number = 2;
   const [progressData, setProgressData] = useState<DownloadProgress>();
   const [counter, setCounter] = useState<number>(0);
@@ -64,7 +68,7 @@ function LoadingScreen(): JSX.Element {
   }, []);
 
   return (
-    <div id="loading-screen" className="px-4">
+    <div id="loading-screen" style={{ backgroundColor }} className="px-4">
       <div className="flex flex-col space-y-10 items-center justify-center">
         <div>
           <img src={loading} alt="" style={{ height: "250px" }}></img>

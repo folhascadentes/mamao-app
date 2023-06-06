@@ -13,6 +13,22 @@ enum ScreenState {
 }
 
 export default function App(): JSX.Element {
+  const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState<string>(
+    localStorage.getItem("buttonHoverColorWeight")
+      ? (localStorage.getItem("buttonHoverColorWeight") as string)
+      : "200"
+  );
+  const [textColor, setTextColor] = useState<string>(
+    localStorage.getItem("textColor")
+      ? (localStorage.getItem("textColor") as string)
+      : "#fffff"
+  );
+  const [backgroundColor, setBackgroundColor] = useState<string>(
+    localStorage.getItem("backgroundColor")
+      ? (localStorage.getItem("backgroundColor") as string)
+      : "#f5f5f5"
+  );
+
   const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
@@ -56,12 +72,22 @@ export default function App(): JSX.Element {
   }
 
   return (
-    <div>
-      {loading && <LoadingScreen />}
-      <div id="application" className="mb-10">
-        <Header />
+    <>
+      {loading && <LoadingScreen backgroundColor={backgroundColor} />}
+      <div id="application">
+        <Header
+          textColor={textColor}
+          backgroundColor={backgroundColor}
+          buttonHoverColorWeight={buttonHoverColorWeight}
+          setTextColor={setTextColor}
+          setBackgroundColor={setBackgroundColor}
+          setButtonHoverColorWeight={setButtonHoverColorWeight}
+        />
         {screen === ScreenState.INSTRUCTIONS && (
-          <Instructions startRecording={startRecording} />
+          <Instructions
+            startRecording={startRecording}
+            buttonHoverColorWeight={buttonHoverColorWeight}
+          />
         )}
         {screen === ScreenState.RECORDING && (
           <Recording
@@ -70,8 +96,8 @@ export default function App(): JSX.Element {
             cameraSettings={cameraSettings as MediaTrackSettings}
           />
         )}
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }

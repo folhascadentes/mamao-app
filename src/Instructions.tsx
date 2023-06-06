@@ -22,8 +22,10 @@ import wrapping from "./assets/wrapping.jpeg";
 
 function Instructions({
   startRecording,
+  buttonHoverColorWeight,
 }: {
   startRecording: () => void;
+  buttonHoverColorWeight: string;
 }): JSX.Element {
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -38,7 +40,7 @@ function Instructions({
     "Juntando tudo!",
   ];
   const gradientBg = css({
-    background: "linear-gradient(to top, #dff5ed, white, white, #ffecd4)",
+    background: "linear-gradient(to top, #262525, black, black, #332f2f)", // "linear-gradient(to top, #dff5ed, white, white, #ffecd4)",
   });
 
   function nextState() {
@@ -112,7 +114,7 @@ function Instructions({
         isCentered
         size="xl"
       >
-        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
         <ModalContent css={gradientBg} borderRadius="1rem">
           <ModalHeader>
             <div className="pt-6 pb-8">
@@ -280,7 +282,7 @@ function Instructions({
             {state > 0 && (
               <button
                 type="button"
-                className="bg-transparent hover:bg-neutral-200 py-3.5 px-6 text-lg rounded-xl mr-6 mb-6"
+                className={`bg-transparent hover:bg-neutral-${buttonHoverColorWeight} py-3.5 px-6 text-lg rounded-xl mr-6 mb-6`}
                 onClick={previousState}
               >
                 Anterior [A]
