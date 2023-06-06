@@ -43,6 +43,7 @@ def image_to_draw(input_filename):
 
     # replace the original color with the new color
     img_rgba[mask] = [108, 69, 27, 0]
+    img_rgba[mask] = [250, 250, 250, 0]
 
     # convert the color back to BGR
     img_bgr = cv2.cvtColor(img_rgba, cv2.COLOR_RGBA2BGR)
@@ -51,7 +52,7 @@ def image_to_draw(input_filename):
 
 
 if __name__ == '__main__':
-    image_name = 'oi_side'
+    image_name = 'd_front'
 
     image_to_draw(image_name)
     white_to_transparent('{}.png'.format(image_name),
