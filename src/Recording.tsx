@@ -30,10 +30,12 @@ function Recording({
   setLoading,
   handShapeModel,
   cameraSettings,
+  backgroundColor,
 }: {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handShapeModel: tensorflow.LayersModel;
   cameraSettings: MediaTrackSettings;
+  backgroundColor: "#f5f5f5" | "#000000";
 }) {
   const debuger: boolean = !!localStorage.getItem("debug");
   const SIGN_N_TIMES: number = 3;
@@ -239,7 +241,10 @@ function Recording({
                   </div>
                   {index === 0 &&
                     (step.state === DetectorStates.HAND_SHAPE ? (
-                      <HandShapeInstructions sign={sign} />
+                      <HandShapeInstructions
+                        sign={sign}
+                        backgroundColor={backgroundColor}
+                      />
                     ) : step.state === DetectorStates.PALM_ORIENTATION ? (
                       <PalmOrientationInstructions sign={sign} />
                     ) : step.state === DetectorStates.INITIAL_LOCATION ? (
@@ -251,7 +256,10 @@ function Recording({
                     ) : step.state === DetectorStates.FINAL_PALM_ORIENTATION ? (
                       <FinalPalmOrientationInstructions sign={sign} />
                     ) : step.state === DetectorStates.FINAL_HAND_SHAPE ? (
-                      <FinalHandShapeInstructions sign={sign} />
+                      <FinalHandShapeInstructions
+                        sign={sign}
+                        backgroundColor={backgroundColor}
+                      />
                     ) : (
                       ""
                     ))}
@@ -447,7 +455,13 @@ function Recording({
 
 export default Recording;
 
-function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
+function HandShapeInstructions({
+  sign,
+  backgroundColor,
+}: {
+  sign: Sign;
+  backgroundColor: "#f5f5f5" | "#000000";
+}): JSX.Element {
   const dominantHandShape = sign.steps.start.dominant.handShape;
   const nonDominantHandShape = sign.steps.start.nonDominant?.handShape;
 
@@ -467,7 +481,15 @@ function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
                     key={`handshape_do_${index}`}
                     className="flex flex-col text-center space-y-4"
                   >
-                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <img
+                      alt={image.alt}
+                      className="h-60"
+                      src={image.path}
+                      style={{
+                        filter:
+                          backgroundColor === "#000000" ? "invert(100%)" : "",
+                      }}
+                    />
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );
@@ -489,7 +511,15 @@ function HandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
                     key={`handshape_ndo_${index}`}
                     className="flex flex-col text-center space-y-4"
                   >
-                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <img
+                      alt={image.alt}
+                      className="h-60"
+                      src={image.path}
+                      style={{
+                        filter:
+                          backgroundColor === "#000000" ? "invert(100%)" : "",
+                      }}
+                    />
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );
@@ -594,7 +624,13 @@ function FinalPalmOrientationInstructions({
   );
 }
 
-function FinalHandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
+function FinalHandShapeInstructions({
+  sign,
+  backgroundColor,
+}: {
+  sign: Sign;
+  backgroundColor: "#f5f5f5" | "#000000";
+}): JSX.Element {
   const dominantHandShape = sign.steps.end.dominant.handShape;
   const nonDominantHandShape = sign.steps.end?.nonDominant?.handShape;
 
@@ -614,7 +650,15 @@ function FinalHandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
                     key={`handshape_do_${index}`}
                     className="flex flex-col text-center space-y-4"
                   >
-                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <img
+                      alt={image.alt}
+                      className="h-60"
+                      src={image.path}
+                      style={{
+                        filter:
+                          backgroundColor === "#000000" ? "invert(100%)" : "",
+                      }}
+                    />
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );
@@ -636,7 +680,15 @@ function FinalHandShapeInstructions({ sign }: { sign: Sign }): JSX.Element {
                     key={`handshape_ndo_${index}`}
                     className="flex flex-col text-center space-y-4"
                   >
-                    <img alt={image.alt} className="h-60" src={image.path} />
+                    <img
+                      alt={image.alt}
+                      className="h-60"
+                      src={image.path}
+                      style={{
+                        filter:
+                          backgroundColor === "#000000" ? "invert(100%)" : "",
+                      }}
+                    />
                     <span className="text-sm font-bold">{image.label}</span>
                   </div>
                 );

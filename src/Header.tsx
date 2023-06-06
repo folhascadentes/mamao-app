@@ -10,12 +10,16 @@ function Header({
   setTextColor,
   setButtonHoverColorWeight,
 }: {
-  textColor: string;
-  backgroundColor: string;
-  buttonHoverColorWeight: string;
-  setBackgroundColor: React.Dispatch<React.SetStateAction<string>>;
-  setTextColor: React.Dispatch<React.SetStateAction<string>>;
-  setButtonHoverColorWeight: React.Dispatch<React.SetStateAction<string>>;
+  textColor: "#000000" | "#ffffff";
+  backgroundColor: "#f5f5f5" | "#000000";
+  buttonHoverColorWeight: "200" | "800";
+  setTextColor: React.Dispatch<React.SetStateAction<"#000000" | "#ffffff">>;
+  setBackgroundColor: React.Dispatch<
+    React.SetStateAction<"#f5f5f5" | "#000000">
+  >;
+  setButtonHoverColorWeight: React.Dispatch<
+    React.SetStateAction<"200" | "800">
+  >;
 }): JSX.Element {
   const [fontSize, setFontSize] = useState<number>(
     localStorage.getItem("fontSize")

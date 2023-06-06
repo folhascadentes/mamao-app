@@ -13,19 +13,22 @@ enum ScreenState {
 }
 
 export default function App(): JSX.Element {
-  const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState<string>(
+  const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState<
+    "200" | "800"
+  >(
     localStorage.getItem("buttonHoverColorWeight")
-      ? (localStorage.getItem("buttonHoverColorWeight") as string)
+      ? (localStorage.getItem("buttonHoverColorWeight") as any)
       : "200"
   );
-  const [textColor, setTextColor] = useState<string>(
+
+  const [textColor, setTextColor] = useState<"#000000" | "#ffffff">(
     localStorage.getItem("textColor")
-      ? (localStorage.getItem("textColor") as string)
+      ? (localStorage.getItem("textColor") as any)
       : "#fffff"
   );
-  const [backgroundColor, setBackgroundColor] = useState<string>(
+  const [backgroundColor, setBackgroundColor] = useState<"#f5f5f5" | "#000000">(
     localStorage.getItem("backgroundColor")
-      ? (localStorage.getItem("backgroundColor") as string)
+      ? (localStorage.getItem("backgroundColor") as any)
       : "#f5f5f5"
   );
 
@@ -94,6 +97,7 @@ export default function App(): JSX.Element {
             setLoading={setLoading}
             handShapeModel={handShapeModel as tensorflow.LayersModel}
             cameraSettings={cameraSettings as MediaTrackSettings}
+            backgroundColor={backgroundColor}
           />
         )}
         <Footer />
