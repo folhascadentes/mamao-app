@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useRef } from "react";
+import privacy from "./assets/privacy.png";
 
 function Footer({
   backgroundColor,
@@ -44,6 +45,15 @@ function Footer({
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
         <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
           <ModalHeader>
+            <div className="flex justify-center">
+              <img
+                src={privacy}
+                alt=""
+                style={{
+                  height: window.innerHeight <= 800 ? "100px" : "150px",
+                }}
+              />
+            </div>
             <div className="pt-6 flex justify-center">
               <h1>Termos de Privacidade</h1>
             </div>
