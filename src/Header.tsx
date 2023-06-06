@@ -29,7 +29,7 @@ function Header({
 
   function handleIncreaseFontSize(): void {
     setFontSize((fontSize) => {
-      const value = fontSize + 10;
+      const value = fontSize + 5;
       localStorage.setItem("fontSize", value.toString());
       return value;
     });
@@ -37,7 +37,7 @@ function Header({
 
   function handleDecreaseFontSize(): void {
     setFontSize((fontSize) => {
-      const value = fontSize - 10;
+      const value = fontSize - 5;
       localStorage.setItem("fontSize", value.toString());
       return value;
     });
