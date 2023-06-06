@@ -10,7 +10,11 @@ import {
 import React from "react";
 import { useRef } from "react";
 
-function Footer(): JSX.Element {
+function Footer({
+  backgroundColor,
+}: {
+  backgroundColor: "#f5f5f5" | "#000000";
+}): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
@@ -38,7 +42,7 @@ function Footer(): JSX.Element {
         size="xl"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
-        <ModalContent borderRadius="1rem">
+        <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
           <ModalHeader>
             <div className="pt-6 flex justify-center">
               <h1>Termos de Privacidade</h1>
@@ -46,7 +50,7 @@ function Footer(): JSX.Element {
           </ModalHeader>
           <ModalCloseButton></ModalCloseButton>
           <ModalBody
-            className="flex-col space-y-2 mx-6 mb-6 text-sm"
+            className="flex-col space-y-2 mx-6 mb-10 text-sm"
             style={{
               overflowY: "auto",
               maxHeight: "500px",

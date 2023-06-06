@@ -100,7 +100,7 @@ export default function App(): JSX.Element {
             backgroundColor={backgroundColor}
           />
         )}
-        <Footer />
+        <Footer backgroundColor={backgroundColor} />
       </div>
     </>
   );
