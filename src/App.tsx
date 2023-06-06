@@ -1,3 +1,12 @@
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import * as tensorflow from "@tensorflow/tfjs";
 import "./App.css";
@@ -6,6 +15,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Instructions from "./Instructions";
 import Recording from "./Recording";
+import camera from "./assets/camera.png";
 
 enum ScreenState {
   INSTRUCTIONS = "instructions",
@@ -13,6 +23,9 @@ enum ScreenState {
 }
 
 export default function App(): JSX.Element {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const finalRef = React.useRef(null);
+
   const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState<
     "200" | "800"
   >(
@@ -69,8 +82,8 @@ export default function App(): JSX.Element {
         setScreen(ScreenState.RECORDING);
         setLoading(true);
       })
-      .catch((error) => {
-        console.error("Error accessing camera:", error);
+      .catch(() => {
+        onOpen();
       });
   }
 
@@ -102,6 +115,40 @@ export default function App(): JSX.Element {
         )}
         <Footer backgroundColor={backgroundColor} />
       </div>
+
+      <Modal
+        finalFocusRef={finalRef}
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        size="md"
+      >
+        <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
+        <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
+          <ModalHeader>
+            <div className="flex justify-center">
+              <img
+                src={camera}
+                alt=""
+                style={{
+                  height: window.innerHeight <= 800 ? "150px" : "200px",
+                }}
+              />
+            </div>
+            <div className="pt-6 flex justify-center">
+              <h1>Configuração necessária</h1>
+            </div>
+          </ModalHeader>
+          <ModalCloseButton></ModalCloseButton>
+          <ModalBody className="flex-col space-y-2 mx-6 mb-10">
+            <div className="mb-4">
+              Câmera não detectada. Por favor, habilite e configure sua câmera
+              para continuar
+            </div>
+            <b>Configurações do Navegador &gt; Privacidade &gt; Câmera</b>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
