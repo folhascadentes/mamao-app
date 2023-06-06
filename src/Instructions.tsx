@@ -8,7 +8,6 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import { css } from "@emotion/react";
 import React from "react";
 import { useRef, useState } from "react";
 import signLanguage from "./assets/signLanguage.jpeg";
@@ -39,9 +38,6 @@ function Instructions({
     "Orientação da mão",
     "Juntando tudo!",
   ];
-  const gradientBg = css({
-    background: "linear-gradient(to top, #262525, black, black, #332f2f)", // "linear-gradient(to top, #dff5ed, white, white, #ffecd4)",
-  });
 
   function nextState() {
     setState((value) => value + 1);
@@ -115,7 +111,15 @@ function Instructions({
         size="xl"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
-        <ModalContent css={gradientBg} borderRadius="1rem">
+        <ModalContent
+          css={{
+            background:
+              buttonHoverColorWeight === "200"
+                ? "linear-gradient(to top, #dff5ed, white, white, #ffecd4)"
+                : "linear-gradient(to top, #171717, black, black, #332f2f)",
+          }}
+          borderRadius="1rem"
+        >
           <ModalHeader>
             <div className="pt-6 pb-8">
               {state === 0 && (
