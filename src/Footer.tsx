@@ -24,7 +24,7 @@ function Footer({
         <div className="flex justify-center space-x-4 text-indigo-600 ">
           <a href="https://www.mamao.dev.br">Sobre [S]</a> <span>•</span>
           <a href="/#">Ajuda [H]</a> <span>•</span>
-          <a onClick={onOpen} className="cursor-pointer">
+          <a href="/#" onClick={onOpen} className="cursor-pointer">
             Privacidade [P]
           </a>{" "}
           <span>•</span>
