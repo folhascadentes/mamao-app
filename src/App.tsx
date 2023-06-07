@@ -126,12 +126,12 @@ export default function App(): JSX.Element {
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
         <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
           <ModalHeader>
-            <div className="flex justify-center">
+            <div className="flex justify-center pt-6">
               <img
                 src={camera}
                 alt=""
                 style={{
-                  height: window.innerHeight <= 800 ? "150px" : "200px",
+                  height: window.innerHeight <= 800 ? "125px" : "155px",
                 }}
               />
             </div>

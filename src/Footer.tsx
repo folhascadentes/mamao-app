@@ -45,12 +45,12 @@ function Footer({
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
         <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
           <ModalHeader>
-            <div className="flex justify-center">
+            <div className="flex justify-center pt-6">
               <img
                 src={privacy}
                 alt=""
                 style={{
-                  height: window.innerHeight <= 800 ? "100px" : "150px",
+                  height: window.innerHeight <= 800 ? "100px" : "125px",
                 }}
               />
             </div>
@@ -63,7 +63,7 @@ function Footer({
             className="flex-col space-y-2 mx-6 mb-10 text-sm"
             style={{
               overflowY: "auto",
-              maxHeight: "500px",
+              maxHeight: "425px",
               scrollbarWidth: "thin",
               scrollbarColor: "rgba(155, 155, 155, 0.7) transparent",
             }}
