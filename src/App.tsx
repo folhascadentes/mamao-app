@@ -8,6 +8,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
+import { GlobalHotKeys } from "react-hotkeys";
 import * as tensorflow from "@tensorflow/tfjs";
 import "./App.css";
 import LoadingScreen from "./LoadingScreen";
@@ -44,6 +45,9 @@ export default function App(): JSX.Element {
       ? (localStorage.getItem("backgroundColor") as any)
       : "#f5f5f5"
   );
+
+  const [hotkeyKeyMap, setHotkeyKeyMap] = useState({});
+  const [hotkeyHandlers, setHotkeyHandlers] = useState({});
 
   const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
   const [loading, setLoading] = useState<boolean>(false);
@@ -87,8 +91,18 @@ export default function App(): JSX.Element {
       });
   }
 
+  function setHotKeys(keyMap: any, handlers: any) {
+    setHotkeyKeyMap((k) => ({ ...k, ...keyMap }));
+    setHotkeyHandlers((h) => ({ ...h, ...handlers }));
+  }
+
   return (
     <>
+      <GlobalHotKeys
+        keyMap={hotkeyKeyMap}
+        handlers={hotkeyHandlers}
+        allowChanges={true}
+      />
       {loading && <LoadingScreen backgroundColor={backgroundColor} />}
       <div id="application">
         <Header
@@ -98,11 +112,13 @@ export default function App(): JSX.Element {
           setTextColor={setTextColor}
           setBackgroundColor={setBackgroundColor}
           setButtonHoverColorWeight={setButtonHoverColorWeight}
+          setHotKeys={setHotKeys}
         />
         {screen === ScreenState.INSTRUCTIONS && (
           <Instructions
             startRecording={startRecording}
             buttonHoverColorWeight={buttonHoverColorWeight}
+            setHotKeys={setHotKeys}
           />
         )}
         {screen === ScreenState.RECORDING && (
@@ -113,7 +129,7 @@ export default function App(): JSX.Element {
             backgroundColor={backgroundColor}
           />
         )}
-        <Footer backgroundColor={backgroundColor} />
+        <Footer backgroundColor={backgroundColor} setHotKeys={setHotKeys} />
       </div>
 
       <Modal

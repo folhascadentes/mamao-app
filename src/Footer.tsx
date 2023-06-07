@@ -7,36 +7,43 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef } from "react";
-import { GlobalHotKeys } from "react-hotkeys";
 import privacy from "./assets/privacy.png";
 
 function Footer({
   backgroundColor,
+  setHotKeys,
 }: {
   backgroundColor: "#f5f5f5" | "#000000";
+  setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
-  const keyMap = {
-    OPEN_PRIVACY: "p",
-    OPEN_HELP: "h",
-    OPEN_ABOUT: "s",
-    OPEN_FEEDBACK: "f",
-  };
-
-  const handlers = {
-    OPEN_PRIVACY: () => onOpen(),
-    OPEN_HELP: () => console.log("help"),
-    OPEN_ABOUT: () => window.open("https://www.mamao.dev.br"),
-    OPEN_FEEDBACK: () => console.log("feedback"),
-  };
+  useEffect(() => {
+    setHotKeys(
+      {
+        OPEN_PRIVACY: "p",
+        OPEN_HELP: "h",
+        OPEN_ABOUT: "s",
+        OPEN_FEEDBACK: "f",
+      },
+      {
+        OPEN_PRIVACY: () => onOpen(),
+        OPEN_HELP: () => console.log("help"),
+        OPEN_ABOUT: () => window.open("https://www.mamao.dev.br"),
+        OPEN_FEEDBACK: () => console.log("feedback"),
+      }
+    );
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
-    <footer className="fixed bottom-0 mx-auto w-full text-center py-4 px-6">
-      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
+    <footer
+      className="fixed bottom-0 mx-auto w-full text-center py-4 px-6"
+      style={{ backgroundColor }}
+    >
       <div className="flex flex-wrap">
         <div className="flex justify-center space-x-4 text-indigo-600 ">
           <a href="https://www.mamao.dev.br">Sobre [S]</a> <span>•</span>

@@ -8,9 +8,8 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRef, useState } from "react";
-import { GlobalHotKeys } from "react-hotkeys";
 import signLanguage from "./assets/signLanguage.jpeg";
 import handshapeOne from "./assets/handshapeOne.jpeg";
 import handshapeTwo from "./assets/handshapeTwo.jpeg";
@@ -23,9 +22,11 @@ import wrapping from "./assets/wrapping.jpeg";
 function Instructions({
   startRecording,
   buttonHoverColorWeight,
+  setHotKeys,
 }: {
   startRecording: () => void;
   buttonHoverColorWeight: "200" | "800";
+  setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -48,9 +49,7 @@ function Instructions({
   }
 
   function start() {
-    if (isOpen) {
-      begin();
-    } else if (showTutorial) {
+    if (showTutorial) {
       onOpen();
     } else {
       startRecording();
@@ -63,21 +62,21 @@ function Instructions({
     onClose();
   }
 
-  const keyMap = {
-    NEXT: "d",
-    PREVIOUS: "a",
-    START: "i",
-  };
-
-  const handlers = {
-    NEXT: () => nextState(),
-    PREVIOUS: () => previousState(),
-    START: () => start(),
-  };
+  useEffect(() => {
+    setHotKeys(
+      { NEXT: "d", PREVIOUS: "a", START: "i", begin: "b" },
+      {
+        NEXT: () => nextState(),
+        PREVIOUS: () => previousState(),
+        START: () => start(),
+        begin: () => begin(),
+      }
+    );
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
-      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
       <div style={{ width: "720px" }}>
         <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
           Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
@@ -323,7 +322,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
-                Começar [I]
+                Começar [B]
               </button>
             )}
           </ModalFooter>

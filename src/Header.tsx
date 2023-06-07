@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { GlobalHotKeys } from "react-hotkeys";
+import React, { useEffect, useState } from "react";
 import { MdContrast } from "react-icons/md";
 import papaya3d from "./assets/papaya3d.jpeg";
 
@@ -10,6 +9,7 @@ function Header({
   setBackgroundColor,
   setTextColor,
   setButtonHoverColorWeight,
+  setHotKeys,
 }: {
   textColor: "#000000" | "#ffffff";
   backgroundColor: "#f5f5f5" | "#000000";
@@ -21,6 +21,7 @@ function Header({
   setButtonHoverColorWeight: React.Dispatch<
     React.SetStateAction<"200" | "800">
   >;
+  setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
   const [fontSize, setFontSize] = useState<number>(
     localStorage.getItem("fontSize")
@@ -63,23 +64,26 @@ function Header({
     });
   }
 
-  const keyMap = {
-    INCREASE_FONT_SIZE: "+",
-    DECREASE_FONT_SIZE: "-",
-    HIGH_CONTRAST: "c",
-  };
-
-  const handlers = {
-    INCREASE_FONT_SIZE: () => handleIncreaseFontSize(),
-    DECREASE_FONT_SIZE: () => handleDecreaseFontSize(),
-    HIGH_CONTRAST: () => handleHightConstast(),
-  };
+  useEffect(() => {
+    setHotKeys(
+      {
+        INCREASE_FONT_SIZE: "+",
+        DECREASE_FONT_SIZE: "-",
+        HIGH_CONTRAST: "c",
+      },
+      {
+        INCREASE_FONT_SIZE: () => handleIncreaseFontSize(),
+        DECREASE_FONT_SIZE: () => handleDecreaseFontSize(),
+        HIGH_CONTRAST: () => handleHightConstast(),
+      }
+    );
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <>
       <style>{`html { font-size: ${fontSize}%; } body {color: ${textColor}; background-color: ${backgroundColor}; }`}</style>
       <header className="w-full">
-        <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
         <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
           <div className="w-80"></div>
           <div className="container mx-auto px-4 py-4 flex justify-center items-center">
