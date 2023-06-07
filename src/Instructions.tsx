@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useRef, useState } from "react";
+import { GlobalHotKeys } from "react-hotkeys";
 import signLanguage from "./assets/signLanguage.jpeg";
 import handshapeOne from "./assets/handshapeOne.jpeg";
 import handshapeTwo from "./assets/handshapeTwo.jpeg";
@@ -24,7 +25,7 @@ function Instructions({
   buttonHoverColorWeight,
 }: {
   startRecording: () => void;
-  buttonHoverColorWeight: string;
+  buttonHoverColorWeight: "200" | "800";
 }): JSX.Element {
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,14 +41,16 @@ function Instructions({
   ];
 
   function nextState() {
-    setState((value) => value + 1);
+    setState((value) => (value < 5 ? value + 1 : 5));
   }
   function previousState() {
-    setState((value) => value - 1);
+    setState((value) => (value > 0 ? value - 1 : 0));
   }
 
   function start() {
-    if (showTutorial) {
+    if (isOpen) {
+      begin();
+    } else if (showTutorial) {
       onOpen();
     } else {
       startRecording();
@@ -60,8 +63,21 @@ function Instructions({
     onClose();
   }
 
+  const keyMap = {
+    NEXT: "d",
+    PREVIOUS: "a",
+    START: "i",
+  };
+
+  const handlers = {
+    NEXT: () => nextState(),
+    PREVIOUS: () => previousState(),
+    START: () => start(),
+  };
+
   return (
     <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
+      <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
       <div style={{ width: "720px" }}>
         <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
           Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
@@ -98,7 +114,7 @@ function Instructions({
             onClick={start}
             className="bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
           >
-            Começar <span className="text-base">[C]</span>
+            Começar <span className="text-base">[I]</span>
           </button>
         </div>
       </div>
@@ -307,7 +323,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
-                Começar [C]
+                Começar [I]
               </button>
             )}
           </ModalFooter>

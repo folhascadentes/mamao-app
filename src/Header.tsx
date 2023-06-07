@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { GlobalHotKeys } from "react-hotkeys";
 import { MdContrast } from "react-icons/md";
 import papaya3d from "./assets/papaya3d.jpeg";
 
@@ -62,10 +63,23 @@ function Header({
     });
   }
 
+  const keyMap = {
+    INCREASE_FONT_SIZE: "+",
+    DECREASE_FONT_SIZE: "-",
+    HIGH_CONTRAST: "c",
+  };
+
+  const handlers = {
+    INCREASE_FONT_SIZE: () => handleIncreaseFontSize(),
+    DECREASE_FONT_SIZE: () => handleDecreaseFontSize(),
+    HIGH_CONTRAST: () => handleHightConstast(),
+  };
+
   return (
     <>
       <style>{`html { font-size: ${fontSize}%; } body {color: ${textColor}; background-color: ${backgroundColor}; }`}</style>
       <header className="w-full">
+        <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
         <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
           <div className="w-80"></div>
           <div className="container mx-auto px-4 py-4 flex justify-center items-center">
