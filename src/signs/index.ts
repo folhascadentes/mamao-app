@@ -32,7 +32,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: 1 }, { x: 1 }],
           metadata: {
-            description: "Mova a mão em um moviemento diagonal para direita",
+            description: "mova a mão em um moviemento diagonal para direita",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -559,7 +559,7 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           metadata: {
-            description: "Permanceça com a mão na posição",
+            description: "permanceça com a mão na posição",
             type: MovementType.STATIC,
           },
         },
@@ -665,7 +665,7 @@ export const signs: Sign[] = [
           detect: [{ x: 1 }],
           metadata: {
             description:
-              "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+              "mova a mão dominante colada ao braço até o pulso da mão não dominante",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -708,7 +708,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ z: -1 }, { z: 1 }, { z: -1 }],
           metadata: {
-            description: "Mova a mão até o queixo tocando ele duas vezes",
+            description: "mova a mão até o queixo tocando ele duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -846,7 +846,7 @@ export const signs: Sign[] = [
             ],
           ],
           metadata: {
-            description: "Faça um movimento circular com a mão dominante",
+            description: "faça um movimento circular com a mão dominante",
             type: MovementType.CIRCULAR_MOTION,
           },
           options: {
@@ -893,7 +893,7 @@ export const signs: Sign[] = [
           detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
           metadata: {
             description:
-              "Mova a mão dominante para cima e para baixo duas vezes",
+              "mova a mão dominante para cima e para baixo duas vezes",
             type: MovementType.SHAKE_MOTION,
           },
           options: {
@@ -940,7 +940,7 @@ export const signs: Sign[] = [
           detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
           metadata: {
             description:
-              "Mova a mão dominante lateralmente para dentro e para fora duas vezes",
+              "mova a mão dominante lateralmente para dentro e para fora duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
           options: {
@@ -987,7 +987,7 @@ export const signs: Sign[] = [
           detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
           metadata: {
             description:
-              "Mova a mão dominante lateralmente para dentro e para fora duas vezes",
+              "mova a mão dominante lateralmente para dentro e para fora duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
           options: {
@@ -1033,7 +1033,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
           metadata: {
-            description: "Bata no peito duas vezes",
+            description: "bata no peito duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -1077,7 +1077,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
           metadata: {
-            description: "Mova a mão dominante da direita para esquerda",
+            description: "mova a mão dominante da direita para esquerda",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -1122,7 +1122,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
           metadata: {
-            description: "Bata no peito duas vezes",
+            description: "bata no peito duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -1163,7 +1163,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ y: -1 }, { y: -1 }, { y: -1 }, { y: -1 }],
           metadata: {
-            description: "Mova a mão para baixo",
+            description: "mova a mão para baixo",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -1205,7 +1205,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
           metadata: {
-            description: "Mova a mão da esquerda para direita",
+            description: "mova a mão da esquerda para direita",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -1411,7 +1411,7 @@ export const signs: Sign[] = [
   //         detect: [{ x: 1 }],
   //         metadata: {
   //           description:
-  //             "Mova a mão dominante colada ao braço até o pulso da mão não dominante",
+  //             "mova a mão dominante colada ao braço até o pulso da mão não dominante",
   //           type: MovementType.LINEAR_MOTION,
   //         },
   //       },
@@ -1563,10 +1563,48 @@ export const signs: Sign[] = [
   //   language: "Libras",
   //   token: "Tudo",
   // },
-  // { *
-  //   language: "Libras",
-  //   token: "Aqui",
-  // },
+  {
+    language: "Libras",
+    token: "Aqui",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 50,
+              radiusOffset: 30,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+          metadata: {
+            description:
+              "mova a mão dominante para baixo e para cima duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.INDEX_FINGER,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Novo",
