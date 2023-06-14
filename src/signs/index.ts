@@ -1701,10 +1701,47 @@ export const signs: Sign[] = [
   //   language: "Libras",
   //   token: "Banheiro",
   // },
-  // {
-  //   language: "Libras",
-  //   token: "Amigo",
-  // },
+  {
+    language: "Libras",
+    token: "Amigo",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.RIGHT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.RIGHT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
   // {
   //   language: "Libras",
   //   token: "Escola",
