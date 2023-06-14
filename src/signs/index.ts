@@ -1721,10 +1721,46 @@ export const signs: Sign[] = [
   //   language: "Libras",
   //   token: "Medico",
   // },
-  // { *
-  //   language: "Libras",
-  //   token: "Telefone",
-  // },
+  {
+    language: "Libras",
+    token: "Telefone",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 125,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          metadata: {
+            description: "mova a mão dominante até a região da bochecha",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.CHEEK_RIGHT,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 30,
+            },
+          },
+        },
+      },
+    },
+  },
 ];
 
 export * from "./instruction";
