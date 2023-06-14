@@ -1467,10 +1467,50 @@ export const signs: Sign[] = [
   //   language: "Libras",
   //   token: "Noite",
   // },
-  // { *
-  //   language: "Libras",
-  //   token: "Tarde",
-  // },
+  {
+    language: "Libras",
+    token: "Tarde",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 45,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: 1 }, { y: -1, z: 1 }],
+          metadata: {
+            description:
+              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 80,
+            },
+          },
+        },
+      },
+    },
+  },
   // { *
   //   language: "Libras",
   //   token: "Trabalhar",
