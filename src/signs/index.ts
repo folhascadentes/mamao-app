@@ -1511,6 +1511,101 @@ export const signs: Sign[] = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Saúde",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_LEFT,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 95,
+                leftLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: 1 }],
+          forbidden: [
+            { x: -1 },
+            { x: -1, y: 1 },
+            { x: -1, y: -1 },
+            { wristRotate: true },
+          ],
+          metadata: {
+            description: "mova a mão até a outra bola laranja",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 95,
+                rightLimitValue: 0,
+              },
+              sameY: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Favorito",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 60,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }],
+          metadata: {
+            description: "mova a mão até o queixo tocando ele duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.CHIN,
+          handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 15,
+            },
+          },
+        },
+      },
+    },
+  },
   // { *
   //   language: "Libras",
   //   token: "Trabalhar",
