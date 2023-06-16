@@ -113,7 +113,7 @@ function Footer({
               Acessibilidade Computacional ("AIAC") coleta, usa, compartilha e
               protege as informações pessoais que você nos fornece através do
               nosso aplicativo, onde coletamos vídeos de usuários para um banco
-              de dados público de linguagem de sinais. Por favor, leia estes
+              de dados público de língua de sinais. Por favor, leia estes
               Termos de Privacidade cuidadosamente. Ao utilizar o nosso
               aplicativo, você concorda com a coleta, o uso e a divulgação de
               suas informações pessoais (conforme definido neste documento) de
@@ -138,7 +138,7 @@ function Footer({
                 <li>Para fornecer, manter e melhorar nossa aplicação web. </li>
                 <li>
                   Para desenvolver e aprimorar nosso banco de dados público de
-                  linguagem de sinais.
+                  língua de sinais.
                 </li>
                 <li>Para responder às suas perguntas e solicitações. </li>
                 <li>

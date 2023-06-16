@@ -213,8 +213,8 @@ function Instructions({
             <div className=" xl:text-lg font-normal xl:mt-4 xl:mb-6">
               {state === 0 && (
                 <div>
-                  Libras é uma linguagem completa e complexa, tão rica e variada
-                  quanto qualquer linguagem falada. A principal diferença é que
+                  Libras é uma língua completa e complexa, tão rica e variada
+                  quanto qualquer língua falada. A principal diferença é que
                   em vez de usar sons e palavras, usamos nossas mãos, expressões
                   faciais e corpos para comunicar.
                   <br></br>
@@ -285,7 +285,7 @@ function Instructions({
                   orientação da mão se combinam, eles criam um sinal único em
                   Libras.{" "}
                   <b>
-                    Assim como palavras formam frases em uma linguagem falada,
+                    Assim como palavras formam frases em uma língua falada,
                     os sinais em Libras se combinam para expressar pensamentos e
                     ideias
                   </b>
