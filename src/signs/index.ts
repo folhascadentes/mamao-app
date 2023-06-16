@@ -174,8 +174,8 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 50,
-              radiusOffset: 30,
+              detectionRadius: 60,
+              radiusOffset: 100,
             },
           },
         },
@@ -289,49 +289,6 @@ export const signs: Sign[] = [
               track: true,
               detectionRadius: 60,
               radiusOffset: 30,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Amigo",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
-          palmOrientation: PalmOrientation.RIGHT,
-          options: {
-            location: {
-              track: true,
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
-          metadata: {
-            description: "bata no peito duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
-          palmOrientation: PalmOrientation.RIGHT,
-          options: {
-            location: {
-              track: true,
-              detectionRadius: 60,
-              same: true,
             },
           },
         },
@@ -1549,6 +1506,49 @@ export const signs: Sign[] = [
               detectionRadius: 40,
               radiusOffset: 30,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Amigo",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.RIGHT,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.RIGHT,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              same: true,
             },
           },
         },
