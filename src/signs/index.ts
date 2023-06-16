@@ -24,7 +24,7 @@ export const signs: Sign[] = [
               detectionRadius: 60,
               track: true,
               radiusOffset: {
-                value: 45,
+                value: 100,
                 downLimitValue: 0,
               },
             },
@@ -52,7 +52,7 @@ export const signs: Sign[] = [
               detectionRadius: 60,
               track: true,
               radiusOffset: {
-                value: 45,
+                value: 100,
                 downLimitValue: 0,
               },
             },
@@ -73,6 +73,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
+              track: true,
               radiusOffset: {
                 value: 95,
                 leftLimitValue: 0,
@@ -104,6 +105,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
+              track: true,
               radiusOffset: {
                 value: 95,
                 rightLimitValue: 0,
@@ -126,6 +128,8 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
+              track: true,
               detectionRadius: 40,
               radiusOffset: 60,
             },
@@ -148,6 +152,8 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
+              track: true,
               detectionRadius: 40,
               radiusOffset: 15,
             },
@@ -167,6 +173,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {
+              track: true,
               detectionRadius: 50,
               radiusOffset: 30,
             },
@@ -190,6 +197,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.BACK,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               same: true,
             },
@@ -210,6 +218,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.UP,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               radiusOffset: 25,
             },
@@ -234,8 +243,52 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.FRONT,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               radiusOffset: 80,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Telefone",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              radiusOffset: 125,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: 1 }],
+          metadata: {
+            description: "mova a mão dominante até a região da bochecha",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.CHEEK_RIGHT,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              radiusOffset: 30,
             },
           },
         },
@@ -253,6 +306,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.RIGHT,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               radiusOffset: 100,
             },
@@ -275,48 +329,9 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.RIGHT,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Telefone",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_UPPER,
-          handShape: HandShape.libras.Y,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 125,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          metadata: {
-            description: "mova a mão dominante até a região da bochecha",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.CHEEK_RIGHT,
-          handShape: HandShape.libras.Y,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 30,
             },
           },
         },
