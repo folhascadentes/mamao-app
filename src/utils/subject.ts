@@ -99,6 +99,23 @@ export class Subject {
     return this.buffer.slice(startIndex, endIndex + 1);
   }
 
+  public getBufferIndexes(
+    start?: number,
+    end?: number
+  ): { startIndex: number; endIndex: number } {
+    const startIndex = start
+      ? this.buffer.findIndex((value) => value.frame === start)
+      : 0;
+    const endIndex = end
+      ? this.buffer.findIndex((value) => value.frame === end)
+      : this.buffer.length - 1;
+
+    return {
+      startIndex,
+      endIndex,
+    };
+  }
+
   private initializeSujectObject(results: Results): SubjectData {
     const {
       dominantLandmarks,
