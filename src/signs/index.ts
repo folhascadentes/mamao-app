@@ -11,58 +11,6 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
-    token: "Tarde",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_UPPER_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.FRONT,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              track: true,
-              radiusOffset: {
-                value: 100,
-                downLimitValue: 0,
-              },
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: 1 }, { y: -1, z: 1 }],
-          metadata: {
-            description:
-              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
-            type: MovementType.PARABOLIC_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX_LOWER_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND,
-          palmOrientation: PalmOrientation.DOWN,
-          handOrientation: HandOrientation.FRONT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              track: true,
-              radiusOffset: {
-                value: 100,
-                downLimitValue: 0,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Saúde",
     steps: {
       start: {
@@ -111,6 +59,58 @@ export const signs: Sign[] = [
                 rightLimitValue: 0,
               },
               sameY: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Tarde",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              track: true,
+              radiusOffset: {
+                value: 100,
+                downLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: -1 }],
+          metadata: {
+            description:
+              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_LOWER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              track: true,
+              radiusOffset: {
+                value: 100,
+                downLimitValue: 0,
+              },
             },
           },
         },

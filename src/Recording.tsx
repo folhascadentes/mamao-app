@@ -117,14 +117,18 @@ function Recording({
         success();
         setSignCounter((prevCounter) => prevCounter + 1);
         const { start, end } = detector.getMovementIndex();
+
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
-        const { startIndex, endIndex } = subject?.getBufferIndexes(start, end);
-
-        const frames = imageBuffer
-          .slice(startIndex, endIndex + 1)
-          .map((data) => imageDataToBase64(data));
-        console.log(frames);
+        if (navigator.serviceWorker.controller) {
+          const { startIndex, endIndex } = subject?.getBufferIndexes(
+            start,
+            end
+          );
+          const frames = imageBuffer.slice(startIndex, endIndex + 1);
+          const message = { frames };
+          navigator.serviceWorker.controller.postMessage(message);
+        }
       } else {
         failure();
       }
@@ -427,21 +431,6 @@ function Recording({
           imageBuffer.shift();
         }
       }
-    }
-  }
-
-  function imageDataToBase64(imgData: ImageData) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    if (ctx) {
-      canvas.width = imgData.width;
-      canvas.height = imgData.height;
-
-      ctx.putImageData(imgData, 0, 0);
-      const base64Image = canvas.toDataURL("image/jpeg");
-
-      return base64Image;
     }
   }
 
