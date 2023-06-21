@@ -125,7 +125,7 @@ function Recording({
             start,
             end
           );
-          const frames = imageBuffer.slice(startIndex, endIndex + 1);
+          const frames = imageBuffer.slice(startIndex, endIndex + 10);
           const message = { frames };
           navigator.serviceWorker.controller.postMessage(message);
         }
