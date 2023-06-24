@@ -121,7 +121,19 @@ function Recording({
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
-        uploadVideo(subject, start, end, imageBuffer, userId);
+        if (navigator.serviceWorker.controller) {
+          const { startIndex, endIndex } = subject?.getBufferIndexes(
+            start,
+            end
+          );
+          const frames = imageBuffer.slice(startIndex, endIndex + 10);
+          const message = {
+            url: process.env.REACT_APP_BACK_END_API,
+            userId,
+            frames,
+          };
+          navigator.serviceWorker.controller.postMessage(message);
+        }
       } else {
         failure();
       }
@@ -454,25 +466,6 @@ function Recording({
     const threshold = -125;
     const leftHipVisible = 720 - poseLandmarks[23].y > threshold;
     return leftHipVisible;
-  }
-
-  function uploadVideo(
-    subject: Subject,
-    start: number,
-    end: number,
-    imageBuffer: ImageData[],
-    userId: string
-  ) {
-    if (navigator.serviceWorker.controller) {
-      const { startIndex, endIndex } = subject?.getBufferIndexes(start, end);
-      const frames = imageBuffer.slice(startIndex, endIndex + 10);
-      const message = {
-        url: process.env.REACT_APP_BACK_END_API,
-        userId,
-        frames,
-      };
-      navigator.serviceWorker.controller.postMessage(message);
-    }
   }
 
   function generateUUID(): string {
