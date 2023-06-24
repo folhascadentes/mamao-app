@@ -1,21 +1,20 @@
 self.addEventListener("message", async (event) => {
   const { data } = event;
 
-  // Process the incoming data
   try {
     const images = [];
     for (let image of data.frames) {
       const base64 = await imageDataToJPEGBase64(image);
       images.push(base64);
     }
-    console.log(images);
 
-    await sendPostRequest("http://localhost:4000", { data: images });
+    await sendPostRequest(`${data.url}/upload`, {
+      dir: userId,
+      data: images,
+    });
   } catch (e) {
     console.log(e);
   }
-
-  // Send the result back to the main thread
 });
 
 async function imageDataToJPEGBase64(imageData) {

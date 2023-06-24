@@ -38,6 +38,7 @@ function Recording({
   backgroundColor: "#f5f5f5" | "#000000";
 }) {
   const debuger: boolean = !!localStorage.getItem("debug");
+  const userId: string = generateUUID();
   const SIGN_N_TIMES: number = 3;
   const DURATION: number = 5; // in seconds
   const FPS: number = cameraSettings.frameRate ?? 24;
@@ -120,15 +121,7 @@ function Recording({
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
-        if (navigator.serviceWorker.controller) {
-          const { startIndex, endIndex } = subject?.getBufferIndexes(
-            start,
-            end
-          );
-          const frames = imageBuffer.slice(startIndex, endIndex + 10);
-          const message = { frames };
-          navigator.serviceWorker.controller.postMessage(message);
-        }
+        uploadVideo(subject, start, end, imageBuffer, userId);
       } else {
         failure();
       }
@@ -461,6 +454,47 @@ function Recording({
     const threshold = -125;
     const leftHipVisible = 720 - poseLandmarks[23].y > threshold;
     return leftHipVisible;
+  }
+
+  function uploadVideo(
+    subject: Subject,
+    start: number,
+    end: number,
+    imageBuffer: ImageData[],
+    userId: string
+  ) {
+    if (navigator.serviceWorker.controller) {
+      const { startIndex, endIndex } = subject?.getBufferIndexes(start, end);
+      const frames = imageBuffer.slice(startIndex, endIndex + 10);
+      const message = {
+        url: process.env.REACT_APP_BACK_END_API,
+        userId,
+        frames,
+      };
+      navigator.serviceWorker.controller.postMessage(message);
+    }
+  }
+
+  function generateUUID(): string {
+    // Temporary logic, until authentication is implemented
+    const userId = localStorage.getItem("userId");
+
+    if (userId) {
+      return userId;
+    } else {
+      const userId = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+        /[xy]/g,
+        function (c) {
+          var r = (Math.random() * 16) | 0,
+            v = c === "x" ? r : (r & 0x3) | 0x8;
+          return v.toString(16);
+        }
+      );
+
+      localStorage.setItem("userId", userId);
+
+      return userId;
+    }
   }
 }
 
