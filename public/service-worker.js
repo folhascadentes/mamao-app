@@ -9,8 +9,11 @@ self.addEventListener("message", async (event) => {
     }
 
     await sendPostRequest(`${data.url}/upload`, {
-      dir: data.userId,
-      data: images,
+      frames: images,
+      landmarks: data.landmarks,
+      language: data.language,
+      token: data.token,
+      userId: data.userId,
     });
   } catch (e) {
     console.log(e);

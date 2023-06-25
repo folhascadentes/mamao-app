@@ -128,9 +128,12 @@ function Recording({
           );
           const frames = imageBuffer.slice(startIndex, endIndex + 10);
           const message = {
+            frames,
+            landmarks: movementBuffer.map((buffer) => buffer.readings),
+            language: sign.language,
+            token: sign.token,
             url: process.env.REACT_APP_BACK_END_API,
             userId,
-            frames,
           };
           navigator.serviceWorker.controller.postMessage(message);
         }
