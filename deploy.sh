@@ -1,8 +1,10 @@
 #!/bin/bash
 
+source .env
+
 # define as variáveis com as informações da sua aplicação
-S3_BUCKET_NAME="mamao-app-tashiro"
-CLOUDFRONT_DISTRIBUTION_ID="E1VR611MGCR6I3"
+S3_BUCKET_NAME=$S3_BUCKET_NAME
+CLOUDFRONT_DISTRIBUTION_ID=$CLOUDFRONT_DISTRIBUTION_ID
 
 # faz o build da aplicação
 npm run build

@@ -444,7 +444,13 @@ This command will start a local development server and open up a browser window.
 
 ### Deployment
 
-We currently have a deploy.sh script for deploying the application to an AWS environment. Please note that this script is currently hardcoded to a specific AWS account and we aim to make it more flexible in future updates.
+We currently have a deploy.sh script for deploying the application to an AWS environment. Create a .env file with the following variables
+
+```bash
+S3_BUCKET_NAME=NAME_OF_BUCKET_THAT_WILL_DEPLOY
+CLOUDFRONT_DISTRIBUTION_ID=ID_OF_CLOUD_DISTRIBUTION
+```
+
 
 ### Environment Variables
 
