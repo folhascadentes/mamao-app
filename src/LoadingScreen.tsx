@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import loading from "./assets/loading.jpeg";
+import { StyleContext } from "./reducers/style.reducer";
 
 interface DownloadProgress {
   contentLength: number;
@@ -8,11 +9,9 @@ interface DownloadProgress {
   url: string;
 }
 
-function LoadingScreen({
-  backgroundColor,
-}: {
-  backgroundColor: string;
-}): JSX.Element {
+function LoadingScreen(): JSX.Element {
+  const { state } = useContext(StyleContext);
+
   const TOTAL_FILES_DOWNLOAD: number = 2;
   const [progressData, setProgressData] = useState<DownloadProgress>();
   const [counter, setCounter] = useState<number>(0);
@@ -68,7 +67,11 @@ function LoadingScreen({
   }, []);
 
   return (
-    <div id="loading-screen" style={{ backgroundColor }} className="px-4">
+    <div
+      id="loading-screen"
+      style={{ backgroundColor: state.backgroundColor }}
+      className="px-4"
+    >
       <div className="flex flex-col space-y-10 items-center justify-center">
         <div>
           <img src={loading} alt="" style={{ height: "250px" }}></img>

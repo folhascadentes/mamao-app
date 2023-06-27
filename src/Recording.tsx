@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useContext } from "react";
 import * as tensorflow from "@tensorflow/tfjs";
 import { Camera } from "@mediapipe/camera_utils";
 import {
@@ -25,18 +25,19 @@ import {
   Results,
 } from "./utils/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
+import { StyleContext } from "./reducers/style.reducer";
 
 function Recording({
   setLoading,
   handShapeModel,
   cameraSettings,
-  backgroundColor,
 }: {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handShapeModel: tensorflow.LayersModel;
   cameraSettings: MediaTrackSettings;
-  backgroundColor: "#f5f5f5" | "#000000";
 }) {
+  const { state } = useContext(StyleContext);
+
   const debuger: boolean = !!localStorage.getItem("debug");
   const userId: string = generateUUID();
   const SIGN_N_TIMES: number = 3;
@@ -262,7 +263,7 @@ function Recording({
                     (step.state === DetectorStates.HAND_SHAPE ? (
                       <HandShapeInstructions
                         sign={sign}
-                        backgroundColor={backgroundColor}
+                        backgroundColor={state.backgroundColor}
                       />
                     ) : step.state === DetectorStates.PALM_ORIENTATION ? (
                       <PalmOrientationInstructions sign={sign} />
@@ -277,7 +278,7 @@ function Recording({
                     ) : step.state === DetectorStates.FINAL_HAND_SHAPE ? (
                       <FinalHandShapeInstructions
                         sign={sign}
-                        backgroundColor={backgroundColor}
+                        backgroundColor={state.backgroundColor}
                       />
                     ) : (
                       ""

@@ -6,20 +6,21 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import camera from "../assets/camera.png";
+import { StyleContext } from "../reducers/style.reducer";
 
 function EnableCameraModal({
-  backgroundColor,
   isOpen,
   onOpen,
   onClose,
 }: {
-  backgroundColor: "#f5f5f5" | "#000000";
   isOpen: boolean;
   onOpen: () => void;
   onClose: () => void;
 }): JSX.Element {
+  const { state } = useContext(StyleContext);
+
   const finalRef = useRef(null);
 
   return (
@@ -31,7 +32,10 @@ function EnableCameraModal({
       size="md"
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
-      <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
+      <ModalContent
+        borderRadius="1rem"
+        css={{ backgroundColor: state.backgroundColor }}
+      >
         <ModalHeader>
           <div className="flex justify-center pt-6">
             <img

@@ -8,7 +8,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useRef, useState } from "react";
 import signLanguage from "./assets/signLanguage.jpeg";
 import handshapeOne from "./assets/handshapeOne.jpeg";
@@ -18,16 +18,17 @@ import movement from "./assets/movement.jpeg";
 import orientation from "./assets/orientation.jpeg";
 import location from "./assets/location.jpeg";
 import wrapping from "./assets/wrapping.jpeg";
+import { StyleContext } from "./reducers/style.reducer";
 
 function Instructions({
   startRecording,
-  buttonHoverColorWeight,
   setHotKeys,
 }: {
   startRecording: () => void;
-  buttonHoverColorWeight: "200" | "800";
   setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
+  const styleContext = useContext(StyleContext);
+
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [state, setState] = useState(0);
@@ -129,8 +130,8 @@ function Instructions({
         <ModalContent
           css={{
             background:
-              buttonHoverColorWeight === "200"
-                ? "linear-gradient(to top, #dff5ed, white, white, #ffecd4)"
+              styleContext.state.buttonHoverColorWeight === "200"
+                ? "linear-gradient(to top, white, white, #ffecd4)"
                 : "linear-gradient(to top, #171717, black, black, #332f2f)",
           }}
           borderRadius="1rem"
@@ -214,8 +215,8 @@ function Instructions({
               {state === 0 && (
                 <div>
                   Libras é uma língua completa e complexa, tão rica e variada
-                  quanto qualquer língua falada. A principal diferença é que
-                  em vez de usar sons e palavras, usamos nossas mãos, expressões
+                  quanto qualquer língua falada. A principal diferença é que em
+                  vez de usar sons e palavras, usamos nossas mãos, expressões
                   faciais e corpos para comunicar.
                   <br></br>
                   <br></br>
@@ -285,8 +286,8 @@ function Instructions({
                   orientação da mão se combinam, eles criam um sinal único em
                   Libras.{" "}
                   <b>
-                    Assim como palavras formam frases em uma língua falada,
-                    os sinais em Libras se combinam para expressar pensamentos e
+                    Assim como palavras formam frases em uma língua falada, os
+                    sinais em Libras se combinam para expressar pensamentos e
                     ideias
                   </b>
                   .<br></br>
@@ -301,7 +302,7 @@ function Instructions({
             {state > 0 && (
               <button
                 type="button"
-                className={`bg-transparent hover:bg-neutral-${buttonHoverColorWeight} py-3.5 px-6 text-lg rounded-xl mr-6 mb-6`}
+                className={`bg-transparent hover:bg-neutral-${styleContext.state.buttonHoverColorWeight} py-3.5 px-6 text-lg rounded-xl mr-6 mb-6`}
                 onClick={previousState}
               >
                 Anterior [A]

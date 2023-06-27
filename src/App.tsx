@@ -1,6 +1,4 @@
-import {
-  useDisclosure,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { GlobalHotKeys } from "react-hotkeys";
 import * as tensorflow from "@tensorflow/tfjs";
@@ -11,6 +9,7 @@ import Footer from "./Footer";
 import Instructions from "./Instructions";
 import Recording from "./Recording";
 import EnableCameraModal from "./modals/enable-camera.modal";
+import { StyleProvider } from "./reducers/style.reducer";
 
 enum ScreenState {
   INSTRUCTIONS = "instructions",
@@ -19,25 +18,6 @@ enum ScreenState {
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState<
-    "200" | "800"
-  >(
-    localStorage.getItem("buttonHoverColorWeight")
-      ? (localStorage.getItem("buttonHoverColorWeight") as any)
-      : "200"
-  );
-
-  const [textColor, setTextColor] = useState<"#000000" | "#ffffff">(
-    localStorage.getItem("textColor")
-      ? (localStorage.getItem("textColor") as any)
-      : "#fffff"
-  );
-  const [backgroundColor, setBackgroundColor] = useState<"#f5f5f5" | "#000000">(
-    localStorage.getItem("backgroundColor")
-      ? (localStorage.getItem("backgroundColor") as any)
-      : "#f5f5f5"
-  );
 
   const [hotkeyKeyMap, setHotkeyKeyMap] = useState({});
   const [hotkeyHandlers, setHotkeyHandlers] = useState({});
@@ -91,46 +71,34 @@ export default function App(): JSX.Element {
 
   return (
     <>
-      <GlobalHotKeys
-        keyMap={hotkeyKeyMap}
-        handlers={hotkeyHandlers}
-        allowChanges={true}
-      />
-      {loading && <LoadingScreen backgroundColor={backgroundColor} />}
-      <div id="application">
-        <Header
-          textColor={textColor}
-          backgroundColor={backgroundColor}
-          buttonHoverColorWeight={buttonHoverColorWeight}
-          setTextColor={setTextColor}
-          setBackgroundColor={setBackgroundColor}
-          setButtonHoverColorWeight={setButtonHoverColorWeight}
-          setHotKeys={setHotKeys}
+      <StyleProvider>
+        <GlobalHotKeys
+          keyMap={hotkeyKeyMap}
+          handlers={hotkeyHandlers}
+          allowChanges={true}
         />
-        {screen === ScreenState.INSTRUCTIONS && (
-          <Instructions
-            startRecording={startRecording}
-            buttonHoverColorWeight={buttonHoverColorWeight}
-            setHotKeys={setHotKeys}
-          />
-        )}
-        {screen === ScreenState.RECORDING && (
-          <Recording
-            setLoading={setLoading}
-            handShapeModel={handShapeModel as tensorflow.LayersModel}
-            cameraSettings={cameraSettings as MediaTrackSettings}
-            backgroundColor={backgroundColor}
-          />
-        )}
-        <Footer backgroundColor={backgroundColor} setHotKeys={setHotKeys} />
-      </div>
 
-      <EnableCameraModal
-        backgroundColor={backgroundColor}
-        isOpen={isOpen}
-        onOpen={onOpen}
-        onClose={onClose}
-      />
+        {loading && <LoadingScreen />}
+        <div id="application">
+          <Header setHotKeys={setHotKeys} />
+          {screen === ScreenState.INSTRUCTIONS && (
+            <Instructions
+              startRecording={startRecording}
+              setHotKeys={setHotKeys}
+            />
+          )}
+          {screen === ScreenState.RECORDING && (
+            <Recording
+              setLoading={setLoading}
+              handShapeModel={handShapeModel as tensorflow.LayersModel}
+              cameraSettings={cameraSettings as MediaTrackSettings}
+            />
+          )}
+          <Footer setHotKeys={setHotKeys} />
+        </div>
+
+        <EnableCameraModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      </StyleProvider>
     </>
   );
 }

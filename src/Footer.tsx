@@ -7,17 +7,18 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useRef } from "react";
 import privacy from "./assets/privacy.png";
+import { StyleContext } from "./reducers/style.reducer";
 
 function Footer({
-  backgroundColor,
   setHotKeys,
 }: {
-  backgroundColor: "#f5f5f5" | "#000000";
   setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
+  const { state } = useContext(StyleContext);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
@@ -42,17 +43,14 @@ function Footer({
   return (
     <footer
       className="fixed bottom-0 mx-auto w-full text-center py-4 px-6"
-      style={{ backgroundColor }}
+      style={{ backgroundColor: state.backgroundColor }}
     >
       <div className="flex flex-wrap">
         <div className="flex justify-center space-x-4 text-indigo-600 ">
           <a href="https://www.mamao.dev.br">Sobre [S]</a> <span>•</span>
-          {/* <a href="/#">Ajuda [H]</a> <span>•</span> */}
           <a href="/#" onClick={onOpen} className="cursor-pointer">
             Privacidade [P]
           </a>{" "}
-          <span>•</span>
-          {/* <a href="/#">Feedback [F]</a> */}
         </div>
         <div className="flex-grow"></div>
         <div className="text-sm">Versão alfa-0.0</div>
@@ -66,7 +64,10 @@ function Footer({
         size="xl"
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
-        <ModalContent borderRadius="1rem" css={{ backgroundColor }}>
+        <ModalContent
+          borderRadius="1rem"
+          css={{ backgroundColor: state.backgroundColor }}
+        >
           <ModalHeader>
             <div className="flex justify-center pt-6">
               <img
@@ -113,11 +114,11 @@ function Footer({
               Acessibilidade Computacional ("AIAC") coleta, usa, compartilha e
               protege as informações pessoais que você nos fornece através do
               nosso aplicativo, onde coletamos vídeos de usuários para um banco
-              de dados público de língua de sinais. Por favor, leia estes
-              Termos de Privacidade cuidadosamente. Ao utilizar o nosso
-              aplicativo, você concorda com a coleta, o uso e a divulgação de
-              suas informações pessoais (conforme definido neste documento) de
-              acordo com estes Termos de Privacidade.
+              de dados público de língua de sinais. Por favor, leia estes Termos
+              de Privacidade cuidadosamente. Ao utilizar o nosso aplicativo,
+              você concorda com a coleta, o uso e a divulgação de suas
+              informações pessoais (conforme definido neste documento) de acordo
+              com estes Termos de Privacidade.
             </section>
             <h2>
               <b>1. Informações que Coletamos</b>
