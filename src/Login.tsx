@@ -109,7 +109,7 @@ export function Login(): JSX.Element {
           </button>
         </div>
       </div>
-      <div className="flex justify-center pt-16 z-50">
+      <div className="flex justify-center z-50">
         <img src={world} style={{ height: "360px" }} alt="" />
       </div>
     </div>
