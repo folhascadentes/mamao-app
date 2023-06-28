@@ -49,7 +49,7 @@ export function Login(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-wrap justify-center space-x-24 mt-24">
+    <div className="flex flex-wrap justify-center space-x-24 mt-36">
       <div
         className="flex flex-col justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
@@ -109,7 +109,7 @@ export function Login(): JSX.Element {
           </button>
         </div>
       </div>
-      <div className="flex justify-center z-50">
+      <div className="flex justify-center -m-24 z-50">
         <img src={world} style={{ height: "360px" }} alt="" />
       </div>
     </div>
