@@ -1,5 +1,11 @@
 import { useDisclosure } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import { GlobalHotKeys } from "react-hotkeys";
 import * as tensorflow from "@tensorflow/tfjs";
 import "./App.css";
@@ -9,12 +15,13 @@ import Footer from "./Footer";
 import Instructions from "./Instructions";
 import Recording from "./Recording";
 import EnableCameraModal from "./modals/enable-camera.modal";
+import Login from "./Login";
 import { StyleProvider } from "./reducers/style.reducer";
-
-enum ScreenState {
-  INSTRUCTIONS = "instructions",
-  RECORDING = "recording",
-}
+import {
+  AuthProvider,
+  DefaultRouteContext,
+  PrivateWrapper,
+} from "./reducers/auth.reducer";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +29,6 @@ export default function App(): JSX.Element {
   const [hotkeyKeyMap, setHotkeyKeyMap] = useState({});
   const [hotkeyHandlers, setHotkeyHandlers] = useState({});
 
-  const [screen, setScreen] = useState<ScreenState>(ScreenState.INSTRUCTIONS);
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
   const [handShapeModel, setHandShapeModel] =
@@ -56,7 +62,6 @@ export default function App(): JSX.Element {
         const settings = track.getSettings();
 
         setCameraSettings(settings);
-        setScreen(ScreenState.RECORDING);
         setLoading(true);
       })
       .catch(() => {
@@ -70,35 +75,62 @@ export default function App(): JSX.Element {
   }
 
   return (
-    <>
-      <StyleProvider>
-        <GlobalHotKeys
-          keyMap={hotkeyKeyMap}
-          handlers={hotkeyHandlers}
-          allowChanges={true}
-        />
-
-        {loading && <LoadingScreen />}
-        <div id="application">
-          <Header setHotKeys={setHotKeys} />
-          {screen === ScreenState.INSTRUCTIONS && (
-            <Instructions
-              startRecording={startRecording}
-              setHotKeys={setHotKeys}
-            />
-          )}
-          {screen === ScreenState.RECORDING && (
-            <Recording
-              setLoading={setLoading}
-              handShapeModel={handShapeModel as tensorflow.LayersModel}
-              cameraSettings={cameraSettings as MediaTrackSettings}
-            />
-          )}
-          <Footer setHotKeys={setHotKeys} />
-        </div>
-
-        <EnableCameraModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
-      </StyleProvider>
-    </>
+    <AuthProvider>
+      <Router>
+        <StyleProvider>
+          <GlobalHotKeys
+            keyMap={hotkeyKeyMap}
+            handlers={hotkeyHandlers}
+            allowChanges={true}
+          />
+          {loading && <LoadingScreen />}
+          <div id="application">
+            <Header setHotKeys={setHotKeys} />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route
+                path="/instructions"
+                element={
+                  <PrivateWrapper>
+                    {
+                      <Instructions
+                        startRecording={startRecording}
+                        setHotKeys={setHotKeys}
+                      />
+                    }
+                  </PrivateWrapper>
+                }
+              />
+              <Route
+                path="/recording"
+                element={
+                  <PrivateWrapper>
+                    {
+                      <Recording
+                        setLoading={setLoading}
+                        handShapeModel={
+                          handShapeModel as tensorflow.LayersModel
+                        }
+                        cameraSettings={cameraSettings as MediaTrackSettings}
+                      />
+                    }
+                  </PrivateWrapper>
+                }
+              />
+              <Route
+                path="*"
+                element={<Navigate to={useContext(DefaultRouteContext)} />}
+              />
+            </Routes>
+            <Footer setHotKeys={setHotKeys} />
+          </div>
+          <EnableCameraModal
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+          />
+        </StyleProvider>
+      </Router>
+    </AuthProvider>
   );
 }
