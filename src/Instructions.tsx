@@ -80,7 +80,7 @@ function Instructions({
     <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
       <div style={{ width: "720px" }}>
         <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
-          Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
+          Olá, <span className="text-orange-400 md:font-light">Voluntário</span>
           !
         </h1>
         <p className="text-left mb-2">
