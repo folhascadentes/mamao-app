@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Input, Spinner } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
 import world from "./assets/world.png";
 
 export function Login(): JSX.Element {
@@ -11,7 +11,16 @@ export function Login(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/instructions");
+    }
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
     setError("");
 
     try {
@@ -49,40 +58,47 @@ export function Login(): JSX.Element {
           Bem vindo!{" "}
           <span className="text-orange-400 md:font-light">Voluntário</span>
         </h1>
-        <label>E-mail</label>
-        <Input
-          placeholder="e-mail"
-          type={"email"}
-          size="lg"
-          focusBorderColor="orange.200"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label>Senha</label>
-        <Input
-          placeholder="senha"
-          type={"password"}
-          size="lg"
-          focusBorderColor="orange.200"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p className="text-red-500">{error}</p>}
-        <button
-          className="text-right cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
-          onClick={() => navigate("/recover-password")}
-        >
-          Recuperar senha [R]
-        </button>
-        <button
-          type="button"
-          className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
-          onClick={handleLogin}
-          disabled={loading}
-        >
-          {loading ? <Spinner /> : "Entrar"}{" "}
-          <span className="text-base">[E]</span>
-        </button>
+        <div>
+          <form className="flex flex-col space-y-4" onSubmit={handleLogin}>
+            <FormControl id="email">
+              <FormLabel>E-mail</FormLabel>
+              <Input
+                placeholder="e-mail"
+                type={"email"}
+                size="lg"
+                focusBorderColor="orange.200"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Senha</FormLabel>
+              <Input
+                placeholder="senha"
+                type={"password"}
+                size="lg"
+                focusBorderColor="orange.200"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+            {error && <p className="text-red-500">{error}</p>}
+            <button
+              className="text-left hover:text-indigo-600 text-indigo-500 font-bold"
+              onClick={() => navigate("/recover-password")}
+            >
+              Recuperar senha [R]
+            </button>
+            <button
+              type="submit"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
+              disabled={loading}
+            >
+              {loading ? <Spinner /> : "Entrar"}{" "}
+              <span className="text-base">[E]</span>
+            </button>
+          </form>
+        </div>
         <div className="text-center pt-4">
           Não possui cadastro?{" "}
           <button
