@@ -12,6 +12,8 @@ export function Login(): JSX.Element {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    setError("");
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_END_API}/sign-in`,
@@ -20,13 +22,17 @@ export function Login(): JSX.Element {
           password,
         }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
+        localStorage.setItem(
+          "token",
+          response.data.AuthenticationResult.AccessToken
+        );
         navigate("/instructions");
       }
     } catch (error: any) {
       setError(
         error.response?.data?.message ||
-          "Não possível realizar o login, tente novamente"
+          "Usuário ou senha incorretos, tente novamente."
       );
     } finally {
       setLoading(false);
