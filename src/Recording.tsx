@@ -8,22 +8,22 @@ import {
   Sign,
   signs,
 } from "./signs";
-import { Subject, SubjectData } from "./utils/subject";
+import { Subject, SubjectData } from "./core/subject";
 import {
   Detector,
   DetectorStates,
   DetectorState,
   DETECTOR_STATES,
   DetectorData,
-} from "./utils/detector";
-import { Instructor, drawHand } from "./utils/instructor";
+} from "./core/detector";
+import { Instructor, drawHand } from "./core/instructor";
 import {
   HandResults,
   initalizeHandsDetector,
   initializePoseDetector,
   PoseResults,
   Results,
-} from "./utils/mediapipe";
+} from "./core/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
 
