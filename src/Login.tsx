@@ -16,6 +16,7 @@ export function Login(): JSX.Element {
     if (token) {
       navigate("/instructions");
     }
+    /* eslint-disable-next-line */
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -85,7 +86,7 @@ export function Login(): JSX.Element {
             {error && <p className="text-red-500">{error}</p>}
             <button
               className="text-left hover:text-indigo-600 text-indigo-500 font-bold"
-              onClick={() => navigate("/recover-password")}
+              onClick={() => navigate("/forget-password")}
             >
               Recuperar senha [R]
             </button>
@@ -103,7 +104,7 @@ export function Login(): JSX.Element {
           Não possui cadastro?{" "}
           <button
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/sign-up")}
           >
             Realizar cadastro [U]
           </button>

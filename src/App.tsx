@@ -16,6 +16,7 @@ import Instructions from "./Instructions";
 import Recording from "./Recording";
 import EnableCameraModal from "./modals/enable-camera.modal";
 import Login from "./Login";
+import SignUp from "./SignUp";
 import { StyleProvider } from "./reducers/style.reducer";
 import {
   AuthProvider,
@@ -88,6 +89,7 @@ export default function App(): JSX.Element {
             <Header setHotKeys={setHotKeys} />
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/sign-up" element={<SignUp />} />
               <Route
                 path="/instructions"
                 element={
