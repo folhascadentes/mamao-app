@@ -1,13 +1,15 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Input } from "@chakra-ui/react";
+import { Input, Spinner } from "@chakra-ui/react";
 import world from "./assets/world.png";
 
 export function Login(): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // from react-router-dom v6
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -21,8 +23,13 @@ export function Login(): JSX.Element {
       if (response.status === 200) {
         navigate("/instructions");
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      setError(
+        error.response?.data?.message ||
+          "Não possível realizar o login, tente novamente"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,27 +61,30 @@ export function Login(): JSX.Element {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a
-          className="text-right cursor-pointer text-indigo-500 font-bold"
+        {error && <p className="text-red-500">{error}</p>}
+        <button
+          className="text-right cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
           onClick={() => navigate("/recover-password")}
         >
           Recuperar senha [R]
-        </a>
+        </button>
         <button
           type="button"
           className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
           onClick={handleLogin}
+          disabled={loading}
         >
-          Entrar <span className="text-base">[E]</span>
+          {loading ? <Spinner /> : "Entrar"}{" "}
+          <span className="text-base">[E]</span>
         </button>
         <div className="text-center pt-4">
           Não possui cadastro?{" "}
-          <a
-            className="cursor-pointer text-indigo-500 font-bold"
+          <button
+            className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/register")}
           >
             Realizar cadastro [U]
-          </a>
+          </button>
         </div>
       </div>
       <div className="flex justify-center pt-16 z-50">
