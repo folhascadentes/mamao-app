@@ -86,7 +86,7 @@ function Header({
       <style>{`html { font-size: ${fontSize}%; } body {color: ${state.textColor}; background-color: ${state.backgroundColor}; }`}</style>
       <header className="w-full">
         <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
-          <div className="w-80"></div>
+          <div className="md:w-80"></div>
           <div className="container mx-auto px-4 py-4 flex justify-center items-center">
             <img src={papaya3d} alt="" style={{ height: "80px" }} />
           </div>
