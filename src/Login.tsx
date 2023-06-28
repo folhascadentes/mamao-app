@@ -1,8 +1,31 @@
+import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { Input } from "@chakra-ui/react";
 import world from "./assets/world.png";
-import React from "react";
 
 export function Login(): JSX.Element {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate(); // from react-router-dom v6
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACK_END_API}/sign-in`,
+        {
+          email,
+          password,
+        }
+      );
+      if (response.status === 200) {
+        navigate("/instructions");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-24">
       <div
@@ -19,6 +42,8 @@ export function Login(): JSX.Element {
           type={"email"}
           size="lg"
           focusBorderColor="orange.200"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <label>Senha</label>
         <Input
@@ -26,19 +51,28 @@ export function Login(): JSX.Element {
           type={"password"}
           size="lg"
           focusBorderColor="orange.200"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <a className="text-right cursor-pointer text-indigo-500 font-bold">
+        <a
+          className="text-right cursor-pointer text-indigo-500 font-bold"
+          onClick={() => navigate("/recover-password")}
+        >
           Recuperar senha [R]
         </a>
         <button
           type="button"
           className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
+          onClick={handleLogin}
         >
           Entrar <span className="text-base">[E]</span>
         </button>
-        <div className="text-gray-800 text-center pt-4">
+        <div className="text-center pt-4">
           Não possui cadastro?{" "}
-          <a className="cursor-pointer text-indigo-500 font-bold">
+          <a
+            className="cursor-pointer text-indigo-500 font-bold"
+            onClick={() => navigate("/register")}
+          >
             Realizar cadastro [U]
           </a>
         </div>
