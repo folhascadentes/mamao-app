@@ -4,14 +4,14 @@ import React from "react";
 
 export function Login(): JSX.Element {
   return (
-    <div className="flex flex-wrap justify-center space-x-16 mt-24">
+    <div className="flex flex-wrap justify-center space-x-24 mt-24">
       <div
         className="flex flex-col justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
       >
         <h1 className="text-4xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
-          <span className="text-orange-500 md:font-light">Voluntário</span>
+          <span className="text-orange-400 md:font-light">Voluntário</span>
         </h1>
         <label>E-mail</label>
         <Input
@@ -44,7 +44,7 @@ export function Login(): JSX.Element {
         </div>
       </div>
       <div className="flex justify-center pt-16 z-50">
-        <img src={world} style={{ height: "350px" }} alt="" />
+        <img src={world} style={{ height: "360px" }} alt="" />
       </div>
     </div>
   );
