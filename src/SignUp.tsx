@@ -9,6 +9,7 @@ import {
   Spinner,
   Select,
 } from "@chakra-ui/react";
+import moon from "./assets/moon.png";
 
 export function SignUp(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -58,7 +59,7 @@ export function SignUp(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-wrap justify-center space-x-24 mb-24">
+    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
       <div
         className="flex flex-col justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
@@ -107,11 +108,10 @@ export function SignUp(): JSX.Element {
               Estamos coletando as informações a seguir para garantir a criação
               de um conjunto de dados diversificado para o reconhecimento de
               linguagem de sinais, garantindo que o tradutor não exclua ninguém.
-              Elas são opcionais para presenvar sua privacidade, porém são de
-              grande ajuda se aceitar preencher, se quiser saber mais acesse
-              acesse{" "}
+              Elas são opcionais caso deseje, porém são de grande ajuda se
+              aceitar preencher, se quiser saber mais acesse acesse{" "}
               <a
-                className="text-indigo-600"
+                className="hover:text-indigo-600 text-indigo-500 font-bold"
                 href="/database-diversity-importance"
               >
                 porque a diversidade de dados é importante
@@ -153,11 +153,11 @@ export function SignUp(): JSX.Element {
                 value={ethnicity}
                 onChange={(e) => setEthnicity(e.target.value)}
               >
-                <option value="male">Pardo</option>
-                <option value="female">Branco</option>
-                <option value="other">Negro</option>
-                <option value="other">Indígena</option>
-                <option value="other">Amarelo</option>
+                <option value="pardo">Pardo</option>
+                <option value="branco">Branco</option>
+                <option value="negro">Negro</option>
+                <option value="indigena">Indígena</option>
+                <option value="amarelo">Amarelo</option>
               </Select>
             </FormControl>
             <FormControl id="weight">
@@ -188,8 +188,11 @@ export function SignUp(): JSX.Element {
             </FormControl>
             <FormControl id="deficiency">
               <FormLabel>
-                Deficiência <span className="text-sm">(Essa informação pode ser utilizada para
-                personalizar o uso da plataforma para suas necessidades)</span>
+                Deficiência{" "}
+                <span className="text-sm">
+                  (Essa informação pode ser utilizada para personalizar o uso da
+                  plataforma para suas necessidades)
+                </span>
               </FormLabel>
               <Select
                 placeholder="Selecione a deficiência"
@@ -198,16 +201,20 @@ export function SignUp(): JSX.Element {
                 value={deficiency}
                 onChange={(e) => setDeficiency(e.target.value)}
               >
+                <option value="none">Nenhuma</option>
                 <option value="blind">Cego</option>
                 <option value="deaf">Surdo</option>
                 <option value="cognition">Cognição</option>
                 <option value="paralyzed">
                   Paralisado parcial ou total dos membros
                 </option>
-                <option value="none">Nenhuma</option>
               </Select>
             </FormControl>
             {error && <p className="text-red-500">{error}</p>}
+            <p className="text-sm font-bold">
+              Ao realizar o cadastro e usar a plataforma você aceita nosso termo
+              de privacidade acessível no rodapé ou pelo atalho [P].
+            </p>
             <button
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
@@ -227,6 +234,9 @@ export function SignUp(): JSX.Element {
             Entrar [U]
           </button>
         </div>
+      </div>
+      <div className="flex justify-center mt-16">
+        <img src={moon} style={{ height: "460px" }} alt="" />
       </div>
     </div>
   );
