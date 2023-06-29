@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
+import pluto from "./assets/pluto.png";
 
 function ForgetPassword(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -77,6 +78,9 @@ function ForgetPassword(): JSX.Element {
             Entrar [E]
           </button>
         </div>
+      </div>
+      <div>
+        <img src={pluto} style={{ height: "460px" }} alt="" />
       </div>
     </div>
   );
