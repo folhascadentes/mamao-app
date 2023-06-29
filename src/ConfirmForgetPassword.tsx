@@ -37,11 +37,11 @@ function ConfirmForgetPassword(): JSX.Element {
         {
           email,
           code,
-          password,
+          newPassword: password,
         }
       );
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         navigate("/login");
       }
     } catch (error: any) {

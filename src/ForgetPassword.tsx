@@ -23,8 +23,8 @@ function ForgetPassword(): JSX.Element {
         }
       );
 
-      if (response.status === 200) {
-        navigate("/confirm-forget-password");
+      if (response.status === 201) {
+        navigate("/confirm-forget-password?email=" + email);
       }
     } catch (error: any) {
       setError(
