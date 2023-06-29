@@ -104,7 +104,7 @@ export function SignUp(): JSX.Element {
               />
             </FormControl>
             <div>
-              <MdInfoOutline size={24} className="inline mr-2" />
+              <MdInfoOutline size={24} className="mb-2" />
               Estamos coletando as informações a seguir para garantir a criação
               de um conjunto de dados diversificado para o reconhecimento de
               linguagem de sinais, garantindo que o tradutor não exclua ninguém.
