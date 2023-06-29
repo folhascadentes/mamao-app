@@ -6,7 +6,7 @@ import {
   useContext,
   createContext,
 } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -49,12 +49,23 @@ interface PrivateWrapperProps {
 
 export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
   let authContext = useContext(AuthContext);
+  const navigate = useNavigate();
 
   if (!authContext) {
     throw new Error("PrivateWrapper must be used within an AuthProvider");
   }
 
-  const { isAuthenticated } = authContext;
+  const { isAuthenticated, setIsAuthenticated } = authContext;
 
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      setIsAuthenticated(true);
+    } else if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated]);
+
+  return isAuthenticated ? children : null;
 };

@@ -95,8 +95,7 @@ export function SignIn(): JSX.Element {
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
               disabled={loading}
             >
-              {loading ? <Spinner /> : "Entrar"}{" "}
-              <span className="text-base">[E]</span>
+              {loading ? <Spinner /> : "Entrar [E]"}
             </button>
           </form>
         </div>
