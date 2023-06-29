@@ -73,6 +73,7 @@ export function SignUp(): JSX.Element {
             <FormControl id="email">
               <FormLabel>E-mail *</FormLabel>
               <Input
+                autoFocus
                 placeholder="e-mail"
                 type={"email"}
                 size="lg"

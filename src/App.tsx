@@ -15,7 +15,7 @@ import Footer from "./Footer";
 import Instructions from "./Instructions";
 import Recording from "./Recording";
 import EnableCameraModal from "./modals/enable-camera.modal";
-import Login from "./Login";
+import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import { StyleProvider } from "./reducers/style.reducer";
 import {
@@ -24,6 +24,8 @@ import {
   PrivateWrapper,
 } from "./reducers/auth.reducer";
 import ConfirmSignUp from "./ConfirmSignUp";
+import ForgetPassword from "./ForgetPassword";
+import ConfirmForgetPassword from "./ConfirmForgetPassword";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,9 +91,14 @@ export default function App(): JSX.Element {
           <div id="application">
             <Header setHotKeys={setHotKeys} />
             <Routes>
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<SignIn />} />
               <Route path="/sign-up" element={<SignUp />} />
               <Route path="/confirm-sign-up" element={<ConfirmSignUp />} />
+              <Route path="/forget-password" element={<ForgetPassword />} />
+              <Route
+                path="/confirm-forget-password"
+                element={<ConfirmForgetPassword />}
+              />
               <Route
                 path="/instructions"
                 element={

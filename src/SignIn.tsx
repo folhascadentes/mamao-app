@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
 import world from "./assets/world.png";
 
-export function Login(): JSX.Element {
+export function SignIn(): JSX.Element {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -117,4 +117,4 @@ export function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default SignIn;
