@@ -222,7 +222,7 @@ export function SignUp(): JSX.Element {
               disabled={loading}
             >
               {loading ? <Spinner /> : "Registrar"}{" "}
-              <span className="text-base">[E]</span>
+              <span className="text-base">[U]</span>
             </button>
           </form>
         </div>
@@ -232,7 +232,7 @@ export function SignUp(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/login")}
           >
-            Entrar [U]
+            Entrar [E]
           </button>
         </div>
       </div>

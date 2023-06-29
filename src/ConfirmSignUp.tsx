@@ -89,7 +89,7 @@ function ConfirmSignUp(): JSX.Element {
             className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
             disabled={loading}
           >
-            {loading ? <Spinner /> : "Confirmar Registro"}
+            {loading ? <Spinner /> : "Confirmar Registro [U]"}
           </button>
         </form>
       </div>

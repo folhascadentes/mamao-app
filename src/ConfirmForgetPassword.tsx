@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
+import jupyter from "./assets/jupyter.png";
 
 function ConfirmForgetPassword(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -120,6 +121,9 @@ function ConfirmForgetPassword(): JSX.Element {
             {loading ? <Spinner /> : "Confirmar Recuperação [R]"}
           </button>
         </form>
+      </div>
+      <div>
+        <img src={jupyter} style={{ height: "460px" }} alt="" />
       </div>
     </div>
   );
