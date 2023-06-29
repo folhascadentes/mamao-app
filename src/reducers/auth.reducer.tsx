@@ -65,6 +65,7 @@ export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
     } else if (!isAuthenticated) {
       navigate("/login");
     }
+  /* eslint-disable-next-line */
   }, [isAuthenticated]);
 
   return isAuthenticated ? children : null;

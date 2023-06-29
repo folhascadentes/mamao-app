@@ -84,12 +84,13 @@ export function SignIn(): JSX.Element {
               />
             </FormControl>
             {error && <p className="text-red-500">{error}</p>}
-            <button
-              className="text-left hover:text-indigo-600 text-indigo-500 font-bold"
+            {/* eslint-disable-next-line */}
+            <a
+              className="cursor-pointer text-left hover:text-indigo-600 text-indigo-500 font-bold"
               onClick={() => navigate("/forget-password")}
             >
               Recuperar senha [R]
-            </button>
+            </a>
             <button
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
@@ -100,13 +101,13 @@ export function SignIn(): JSX.Element {
           </form>
         </div>
         <div className="text-center pt-4">
-          Não possui cadastro?{" "}
-          <button
+          Não possui cadastro? {/* eslint-disable-next-line */}
+          <a
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/sign-up")}
           >
             Realizar cadastro [U]
-          </button>
+          </a>
         </div>
       </div>
       <div className="flex justify-center -m-20 z-50">
