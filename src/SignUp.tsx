@@ -36,17 +36,17 @@ export function SignUp(): JSX.Element {
         {
           email,
           password,
-          age,
-          gender,
+          age: age ? Number(age) : undefined,
+          // gender,
           ethnicity,
           deficiency,
-          weight,
-          height,
+          weight: weight ? Number(weight) : undefined,
+          height: height ? Number(height) : undefined,
         }
       );
 
       if (response.status === 201) {
-        navigate("/login");
+        navigate("/confirm-sign-up?email=" + email);
       }
     } catch (error: any) {
       setError(
@@ -221,8 +221,7 @@ export function SignUp(): JSX.Element {
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
               disabled={loading}
             >
-              {loading ? <Spinner /> : "Registrar"}{" "}
-              <span className="text-base">[U]</span>
+              {loading ? <Spinner /> : "Registrar [U]"}
             </button>
           </form>
         </div>
