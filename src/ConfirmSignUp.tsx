@@ -69,6 +69,7 @@ function ConfirmSignUp(): JSX.Element {
           <FormControl id="code">
             <FormLabel>Código de Confirmação *</FormLabel>
             <Input
+              autoFocus
               placeholder="Código de confirmação"
               type={"text"}
               size="lg"
