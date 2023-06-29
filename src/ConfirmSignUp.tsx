@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
+import sun from "./assets/sun.png";
 
 function ConfirmSignUp(): JSX.Element {
   const [email, setEmail] = useState("");
@@ -47,13 +48,13 @@ function ConfirmSignUp(): JSX.Element {
   };
 
   return (
-    <div className="flex flex-wrap justify-center mt-8 xl:mt-16 mb-24">
+    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
       <div
         className="flex flex-col justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
       >
         <h1 className="text-4xl md:text-6xl font-black mb-2">
-          Confirmar cadastro!{" "}
+          Confirme seu cadastro{" "}
         </h1>
         <form className="flex flex-col space-y-4" onSubmit={handleConfirm}>
           <FormControl id="email">
@@ -91,6 +92,9 @@ function ConfirmSignUp(): JSX.Element {
             {loading ? <Spinner /> : "Confirmar Registro"}
           </button>
         </form>
+      </div>
+      <div>
+        <img src={sun} style={{ height: "460px" }} alt="" />
       </div>
     </div>
   );
