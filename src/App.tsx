@@ -23,6 +23,7 @@ import {
   DefaultRouteContext,
   PrivateWrapper,
 } from "./reducers/auth.reducer";
+import ConfirmSignUp from "./ConfirmSignUp";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -90,6 +91,7 @@ export default function App(): JSX.Element {
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/confirm-sign-up" element={<ConfirmSignUp />} />
               <Route
                 path="/instructions"
                 element={
