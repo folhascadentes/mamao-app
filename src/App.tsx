@@ -2,9 +2,9 @@ import { useDisclosure } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import {
   BrowserRouter as Router,
+  Navigate,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import * as tensorflow from "@tensorflow/tfjs";
 import "./App.css";

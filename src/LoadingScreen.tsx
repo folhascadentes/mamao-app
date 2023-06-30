@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import loading from "./assets/loading.jpeg";
 import { StyleContext } from "./reducers/style.reducer";
 
@@ -11,6 +12,7 @@ interface DownloadProgress {
 
 function LoadingScreen(): JSX.Element {
   const { state } = useContext(StyleContext);
+  const navigate = useNavigate();
 
   const TOTAL_FILES_DOWNLOAD: number = 2;
   const [progressData, setProgressData] = useState<DownloadProgress>();
@@ -62,6 +64,7 @@ function LoadingScreen(): JSX.Element {
   }
 
   useEffect(() => {
+    navigate("/recording");
     patchXMLHttpRequest();
     // eslint-disable-next-line
   }, []);
