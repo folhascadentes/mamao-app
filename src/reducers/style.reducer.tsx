@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from "react";
 
 interface StyleState {
+  fontSize: number;
   buttonHoverColorWeight: "200" | "800";
   textColor: "#000000" | "#ffffff";
   backgroundColor: "#f5f5f5" | "#000000";
@@ -12,6 +13,9 @@ interface StyleContextProps {
 }
 
 const initialState: StyleState = {
+  fontSize: localStorage.getItem("fontSize")
+    ? Number(localStorage.getItem("fontSize"))
+    : 100,
   buttonHoverColorWeight: localStorage.getItem("buttonHoverColorWeight")
     ? (localStorage.getItem("buttonHoverColorWeight") as any)
     : "200",
@@ -35,12 +39,6 @@ const styleReducer = (
   switch (action.type) {
     case "SET_STYLE":
       return { ...state, ...action.payload };
-    case "SET_BUTTON_HOVER_COLOR_WEIGHT":
-      return { ...state, buttonHoverColorWeight: action.payload };
-    case "SET_TEXT_COLOR":
-      return { ...state, textColor: action.payload };
-    case "SET_BACKGROUND_COLOR":
-      return { ...state, backgroundColor: action.payload };
     default:
       return state;
   }
