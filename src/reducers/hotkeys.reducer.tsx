@@ -37,7 +37,7 @@ interface HotkeyState {
 
 interface HotkeyAction {
   type: string;
-  payload?: { [k in Keys]?: () => void };
+  payload?: { [k in Keys]?: (e?: React.FormEvent) => void };
   delete?: Keys[];
 }
 

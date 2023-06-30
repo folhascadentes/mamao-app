@@ -1,10 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
 import jupyter from "./assets/jupyter.png";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 function ConfirmForgetPassword(): JSX.Element {
+  const hotkeyContext = useContext(HotkeyContext);
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
@@ -22,8 +24,8 @@ function ConfirmForgetPassword(): JSX.Element {
     }
   }, [location]);
 
-  const handleConfirm = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleConfirm = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError("");
 
@@ -46,13 +48,30 @@ function ConfirmForgetPassword(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.message?.join?.("\n") ||
           "Houve um problema ao tentar confirmar a recuperação da sua senha, tente novamente."
       );
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        R: (e) => handleConfirm(e),
+      },
+    });
+
+    return () => {
+      hotkeyContext.dispatch({
+        type: "UNSET_HOTKEY",
+        delete: ["R"],
+      });
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">

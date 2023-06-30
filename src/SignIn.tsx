@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
 import world from "./assets/world.png";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 export function SignIn(): JSX.Element {
+  const hotkeyContext = useContext(HotkeyContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,8 +21,7 @@ export function SignIn(): JSX.Element {
     /* eslint-disable-next-line */
   }, []);
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async () => {
     setLoading(true);
     setError("");
 
@@ -41,13 +42,38 @@ export function SignIn(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.message?.join?.("\n") ||
           "Usuário ou senha incorretos, tente novamente."
       );
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        E: () => handleLogin(),
+        U: (e) => {
+          e?.preventDefault();
+          navigate("/sign-up");
+        },
+        R: (e) => {
+          e?.preventDefault();
+          navigate("/forget-password");
+        },
+      },
+    });
+
+    return () => {
+      hotkeyContext.dispatch({
+        type: "UNSET_HOTKEY",
+        delete: ["E", "U", "R"],
+      });
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-36">

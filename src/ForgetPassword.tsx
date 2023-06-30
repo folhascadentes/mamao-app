@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
 import pluto from "./assets/pluto.png";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 function ForgetPassword(): JSX.Element {
+  const hotkeyContext = useContext(HotkeyContext);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleForgetPassword = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleForgetPassword = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError("");
 
@@ -28,13 +30,31 @@ function ForgetPassword(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.message?.join?.("\n") ||
           "Não foi possível recuperar sua senha, verifique o e-mail indicado e tente novamente."
       );
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        E: () => navigate("/sign-in"),
+        R: (e) => handleForgetPassword(e),
+      },
+    });
+
+    return () => {
+      hotkeyContext.dispatch({
+        type: "UNSET_HOTKEY",
+        delete: ["E", "R"],
+      });
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">

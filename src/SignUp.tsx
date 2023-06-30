@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdInfoOutline } from "react-icons/md";
@@ -10,8 +10,10 @@ import {
   Select,
 } from "@chakra-ui/react";
 import moon from "./assets/moon.png";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 export function SignUp(): JSX.Element {
+  const hotkeyContext = useContext(HotkeyContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -25,8 +27,8 @@ export function SignUp(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignUp = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError("");
 
@@ -50,13 +52,31 @@ export function SignUp(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message ||
+        error.response?.data?.message?.join?.("\n") ||
           "Houve um problema ao tentar se registrar, tente novamente."
       );
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        U: (e) => handleSignUp(e),
+        E: () => navigate("/sign-in"),
+      },
+    });
+
+    return () => {
+      hotkeyContext.dispatch({
+        type: "UNSET_HOTKEY",
+        delete: ["U", "E"],
+      });
+    };
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, []);
 
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
