@@ -85,7 +85,7 @@ function Instructions({
         </h1>
         <p className="text-left mb-2">
           Agradecemos por se tornar um voluntário e nos dar{" "}
-          <span className="text-orange-600 font-bold">uma mão</span>. Antes de
+          <span className="text-orange-400 font-bold">uma mão</span>. Antes de
           começar, leia e siga as instruções abaixo:
         </p>
         <ol className="list-decimal text-left ml-4 mt-4 mb-10">

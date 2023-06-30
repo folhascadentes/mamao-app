@@ -10,11 +10,14 @@ import { useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
 
 export const DefaultRouteContext = createContext<string>("/login");
-const AuthContext = createContext<AuthContextType | null>(null);
+export const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+  setIsAuthenticated: undefined,
+});
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -48,7 +51,7 @@ interface PrivateWrapperProps {
 }
 
 export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
-  let authContext = useContext(AuthContext);
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
   if (!authContext) {
@@ -61,11 +64,11 @@ export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
     const token = localStorage.getItem("token");
 
     if (token) {
-      setIsAuthenticated(true);
+      setIsAuthenticated && setIsAuthenticated(true);
     } else if (!isAuthenticated) {
       navigate("/login");
     }
-  /* eslint-disable-next-line */
+    /* eslint-disable-next-line */
   }, [isAuthenticated]);
 
   return isAuthenticated ? children : null;

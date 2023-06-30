@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { MdContrast } from "react-icons/md";
 import papaya3d from "./assets/papaya3d.jpeg";
 import { StyleContext } from "./reducers/style.reducer";
+import { AuthContext } from "./reducers/auth.reducer";
 
 function Header({
   setHotKeys,
 }: {
   setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
+  const { isAuthenticated } = useContext(AuthContext);
   const { state, dispatch } = useContext(StyleContext);
   const [backgroundColor, setBackgroundColor] = useState(state.backgroundColor);
   const [textColor, setTextColor] = useState(state.textColor);
@@ -26,11 +28,13 @@ function Header({
         INCREASE_FONT_SIZE: "+",
         DECREASE_FONT_SIZE: "-",
         HIGH_CONTRAST: "c",
+        LOUGOUT: "l",
       },
       {
         INCREASE_FONT_SIZE: () => handleIncreaseFontSize(),
         DECREASE_FONT_SIZE: () => handleDecreaseFontSize(),
         HIGH_CONTRAST: () => handleHightConstast(),
+        LOUGOUT: () => handleLogout(),
       }
     );
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -72,6 +76,11 @@ function Header({
       localStorage.setItem("buttonHoverColorWeight", newButtonHoverColorWeight);
       return newButtonHoverColorWeight;
     });
+  }
+
+  function handleLogout(): void {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   }
 
   useEffect(() => {
@@ -120,6 +129,17 @@ function Header({
           >
             A-
           </button>
+          {isAuthenticated && (
+            <button
+              title="Ação de sair da conta"
+              aria-describedby="Ação de sair da conta"
+              className="w-24"
+              style={{ fontSize: "16px" }}
+              onClick={handleLogout}
+            >
+              Sair [L]
+            </button>
+          )}
         </div>
       </header>
     </>

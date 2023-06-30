@@ -47,10 +47,11 @@ function Footer({
     >
       <div className="flex flex-wrap">
         <div className="flex justify-center space-x-4 text-indigo-600 ">
-          <a href="https://www.mamao.dev.br" target="_blank">
+          <a href="https://www.mamao.dev.br" rel="noreferrer" target="_blank">
             Sobre [S]
           </a>{" "}
           <span>•</span>
+          {/* eslint-disable-next-line */}
           <a href="#" onClick={onOpen} className="cursor-pointer">
             Privacidade [P]
           </a>{" "}
