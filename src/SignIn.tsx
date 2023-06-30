@@ -82,7 +82,7 @@ export function SignIn(): JSX.Element {
         className="flex flex-col mx-6 md:mx-0 justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "612px" }}
       >
-        <h1 className="text-4xl md:text-6xl font-black mb-2">
+        <h1 className="text-3xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
           <span className="text-orange-400 md:font-light">Voluntário</span>
         </h1>
@@ -116,14 +116,20 @@ export function SignIn(): JSX.Element {
               className="cursor-pointer text-left hover:text-indigo-600 text-indigo-500 font-bold"
               onClick={() => navigate("/forget-password")}
             >
-              Recuperar senha [R]
+              Recuperar senha <span className="hidden md:inline">[R]</span>
             </a>
             <button
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
               disabled={loading}
             >
-              {loading ? <Spinner /> : "Entrar [E]"}
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  Entrar <span className="hidden md:inline">[E]</span>
+                </>
+              )}
             </button>
           </form>
         </div>
@@ -133,7 +139,7 @@ export function SignIn(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/sign-up")}
           >
-            Realizar cadastro [U]
+            Realizar cadastro <span className="hidden md:inline">[U]</span>
           </a>
         </div>
       </div>
