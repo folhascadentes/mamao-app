@@ -1,7 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FormControl, FormLabel, Input, Spinner } from "@chakra-ui/react";
+import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
+import { Input } from "./components";
 import sun from "./assets/sun.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 

@@ -2,13 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdInfoOutline } from "react-icons/md";
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  Spinner,
-  Select,
-} from "@chakra-ui/react";
+import { FormControl, FormLabel, Spinner, Select } from "@chakra-ui/react";
+import { Input } from "./components";
 import moon from "./assets/moon.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
@@ -66,13 +61,14 @@ export function SignUp(): JSX.Element {
       payload: {
         U: (e) => handleSignUp(e),
         E: () => navigate("/sign-in"),
+        I: () => navigate("/database-diversity-importance"),
       },
     });
 
     return () => {
       hotkeyContext.dispatch({
         type: "UNSET_HOTKEY",
-        delete: ["U", "E"],
+        delete: ["U", "E", "I"],
       });
     };
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -135,7 +131,7 @@ export function SignUp(): JSX.Element {
                 className="hover:text-indigo-600 text-indigo-500 font-bold"
                 href="/database-diversity-importance"
               >
-                porque a diversidade de dados é importante
+                porque a diversidade de dados é importante [I]
               </a>
               .
             </div>

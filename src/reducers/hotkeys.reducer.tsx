@@ -31,7 +31,7 @@ type Keys =
   | "-";
 
 interface HotkeyState {
-  hotkeyKeyMap: { [k in Keys]?: string };
+  hotkeyKeyMap: { [k in Keys]?: string | string[] };
   hotkeyHandlers: { [k in Keys]?: () => void };
 }
 
@@ -62,14 +62,17 @@ const hotkeyReducer = (
 ): HotkeyState => {
   switch (action.type) {
     case "SET_HOTKEY":
-      const hotkeyKeyMap: { [k in Keys]?: string } = {};
+      const hotkeyKeyMap: { [k in Keys]?: string | string[] } = {};
 
       Object.keys(action.payload ?? {}).forEach((key) => {
         hotkeyKeyMap[key as Keys] = key.toLocaleLowerCase();
       });
 
       return {
-        hotkeyKeyMap: { ...state.hotkeyKeyMap, ...hotkeyKeyMap },
+        hotkeyKeyMap: {
+          ...state.hotkeyKeyMap,
+          ...hotkeyKeyMap,
+        },
         hotkeyHandlers: {
           ...state.hotkeyHandlers,
           ...action.payload,

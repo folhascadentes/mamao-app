@@ -5,7 +5,7 @@ import {
 } from "@chakra-ui/react";
 
 interface InputProps extends ChakraInputProps {
-  // If you want to add extra props you can add them here
+  readOnly?: boolean;
 }
 
 export const Input: React.FC<InputProps> = (props) => {
@@ -15,5 +15,11 @@ export const Input: React.FC<InputProps> = (props) => {
     }
   };
 
-  return <ChakraInput {...props} onKeyDown={handleKeyDown} />;
+  return (
+    <ChakraInput
+      {...props}
+      readOnly={props.readOnly}
+      onKeyDown={props.readOnly ? undefined : handleKeyDown}
+    />
+  );
 };
