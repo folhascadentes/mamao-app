@@ -26,6 +26,7 @@ import ConfirmSignUp from "./ConfirmSignUp";
 import ForgetPassword from "./ForgetPassword";
 import ConfirmForgetPassword from "./ConfirmForgetPassword";
 import { HotkeyProvider } from "./reducers/hotkeys.reducer";
+import DatabaseDiversityImportance from "./DatabaseDiversityImportance";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -86,6 +87,10 @@ export default function App(): JSX.Element {
                   path="/confirm-forget-password"
                   element={<ConfirmForgetPassword />}
                 />
+                <Route
+                  path="/database-diversity-importance"
+                  element={<DatabaseDiversityImportance />}
+                ></Route>
                 <Route
                   path="/instructions"
                   element={
