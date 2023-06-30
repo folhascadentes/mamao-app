@@ -3,7 +3,7 @@ import diversity from "./assets/diversity.png";
 
 function DatabaseDiversityImportance(): JSX.Element {
   return (
-    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
+    <div className="flex flex-wrap justify-center space-x-8 xl:space-x-24 mt-8 xl:mt-16 mb-24">
       <div
         className="flex flex-col space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "720px" }}
