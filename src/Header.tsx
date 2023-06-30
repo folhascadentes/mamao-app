@@ -14,9 +14,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import AccessibilityMenu from "./AccessibilityMenu";
+import TermsPrivacyUseModal from "./modals/terms-privacy-use.modal";
 
 function Header(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const termsDisclousure = useDisclosure();
   const styleContext = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
 
@@ -60,18 +62,45 @@ function Header(): JSX.Element {
         {window.innerWidth < 768 && (
           <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
             <DrawerContent
-              className="p-6"
+              className="p-8"
               style={{
                 backgroundColor: styleContext.state.backgroundColor,
               }}
             >
               <DrawerBody>
                 <Flex justifyContent="flex-end">
-                  <DrawerCloseButton />
+                  <DrawerCloseButton size="lg" />
                 </Flex>
+                <div className="flex flex-col font-bold justify-center text-center space-y-6">
+                  <a
+                    href="https://www.mamao.dev.br"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Sobre
+                  </a>
+                  {/* eslint-disable-next-line */}
+                  <a
+                    href="#"
+                    onClick={termsDisclousure.onOpen}
+                    className="cursor-pointer"
+                  >
+                    Termos de privacidade e uso
+                  </a>
+                </div>
+                <div className="font-bold pt-6">Opções de acessibilidade</div>
                 <AccessibilityMenu />
+                <div className="text-sm text-center absolute bottom-0 ml-10 mb-6">
+                  Versão alfa-0.0
+                </div>
               </DrawerBody>
             </DrawerContent>
+
+            <TermsPrivacyUseModal
+              isMobile={true}
+              isOpen={termsDisclousure.isOpen}
+              onClose={termsDisclousure.onClose}
+            />
           </Drawer>
         )}
       </header>

@@ -35,14 +35,14 @@ function Footer(): JSX.Element {
             {/* eslint-disable-next-line */}
             <a href="#" onClick={onOpen} className="cursor-pointer">
               Privacidade e Uso [P]
-            </a>{" "}
+            </a>
           </div>
           <div className="flex-grow"></div>
           <div className="text-sm">Versão alfa-0.0</div>
         </div>
       )}
 
-      <TermsPrivacyUseModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+      <TermsPrivacyUseModal isOpen={isOpen} onClose={onClose} />
     </footer>
   );
 }

@@ -11,12 +11,12 @@ import privacy from "../assets/privacy.png";
 import { StyleContext } from "../reducers/style.reducer";
 
 function TermsPrivacyUseModal({
+  isMobile = false,
   isOpen,
-  onOpen,
   onClose,
 }: {
+  isMobile?: boolean;
   isOpen: boolean;
-  onOpen: () => void;
   onClose: () => void;
 }): JSX.Element {
   const { state } = useContext(StyleContext);
@@ -29,11 +29,11 @@ function TermsPrivacyUseModal({
       isOpen={isOpen}
       onClose={onClose}
       isCentered
-      size="xl"
+      size={isMobile ? "full" : "xl"}
     >
       <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
       <ModalContent
-        borderRadius="1rem"
+        borderRadius={isMobile ? "0rem" : "1rem"}
         css={{ backgroundColor: state.backgroundColor }}
       >
         <ModalHeader>
@@ -50,18 +50,18 @@ function TermsPrivacyUseModal({
             <h1>Termos de Privacidade e Uso</h1>
           </div>
         </ModalHeader>
-        <ModalCloseButton></ModalCloseButton>
+        <ModalCloseButton size={"lg"}></ModalCloseButton>
         <ModalBody
           className="flex-col space-y-2 mx-6 mb-10 text-sm"
           style={{
             overflowY: "auto",
-            maxHeight: "425px",
+            maxHeight: isMobile ? "540px" : "425px",
             scrollbarWidth: "thin",
             scrollbarColor: "rgba(155, 155, 155, 0.7) transparent",
           }}
           css={{
             "&::-webkit-scrollbar": {
-              width: "6px",
+              width: "8px",
             },
             "&::-webkit-scrollbar-track": {
               backgroundColor: "transparent",
