@@ -11,32 +11,23 @@ import React, { useContext, useEffect } from "react";
 import { useRef } from "react";
 import privacy from "./assets/privacy.png";
 import { StyleContext } from "./reducers/style.reducer";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
-function Footer({
-  setHotKeys,
-}: {
-  setHotKeys: (keyMap: any, handlers: any) => void;
-}): JSX.Element {
+function Footer(): JSX.Element {
   const { state } = useContext(StyleContext);
+  const hotkeyContext = useContext(HotkeyContext);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef(null);
 
   useEffect(() => {
-    setHotKeys(
-      {
-        OPEN_PRIVACY: "p",
-        OPEN_HELP: "h",
-        OPEN_ABOUT: "s",
-        OPEN_FEEDBACK: "f",
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        P: () => onOpen(),
+        S: () => window.open("https://www.mamao.dev.br"),
       },
-      {
-        OPEN_PRIVACY: () => onOpen(),
-        OPEN_HELP: () => console.log("help"),
-        OPEN_ABOUT: () => window.open("https://www.mamao.dev.br"),
-        OPEN_FEEDBACK: () => console.log("feedback"),
-      }
-    );
+    });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 

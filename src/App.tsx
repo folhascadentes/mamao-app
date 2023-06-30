@@ -6,7 +6,6 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
-import { GlobalHotKeys } from "react-hotkeys";
 import * as tensorflow from "@tensorflow/tfjs";
 import "./App.css";
 import LoadingScreen from "./LoadingScreen";
@@ -26,13 +25,10 @@ import {
 import ConfirmSignUp from "./ConfirmSignUp";
 import ForgetPassword from "./ForgetPassword";
 import ConfirmForgetPassword from "./ConfirmForgetPassword";
+import { HotkeyProvider } from "./reducers/hotkeys.reducer";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [hotkeyKeyMap, setHotkeyKeyMap] = useState({});
-  const [hotkeyHandlers, setHotkeyHandlers] = useState({});
-
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
   const [handShapeModel, setHandShapeModel] =
@@ -73,73 +69,60 @@ export default function App(): JSX.Element {
       });
   }
 
-  function setHotKeys(keyMap: any, handlers: any) {
-    setHotkeyKeyMap((k) => ({ ...k, ...keyMap }));
-    setHotkeyHandlers((h) => ({ ...h, ...handlers }));
-  }
-
   return (
     <AuthProvider>
       <Router>
         <StyleProvider>
-          <GlobalHotKeys
-            keyMap={hotkeyKeyMap}
-            handlers={hotkeyHandlers}
-            allowChanges={true}
-          />
-          {loading && <LoadingScreen />}
-          <div id="application">
-            <Header setHotKeys={setHotKeys} />
-            <Routes>
-              <Route path="/login" element={<SignIn />} />
-              <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/confirm-sign-up" element={<ConfirmSignUp />} />
-              <Route path="/forget-password" element={<ForgetPassword />} />
-              <Route
-                path="/confirm-forget-password"
-                element={<ConfirmForgetPassword />}
-              />
-              <Route
-                path="/instructions"
-                element={
-                  <PrivateWrapper>
-                    {
-                      <Instructions
-                        startRecording={startRecording}
-                        setHotKeys={setHotKeys}
-                      />
-                    }
-                  </PrivateWrapper>
-                }
-              />
-              <Route
-                path="/recording"
-                element={
-                  <PrivateWrapper>
-                    {
-                      <Recording
-                        setLoading={setLoading}
-                        handShapeModel={
-                          handShapeModel as tensorflow.LayersModel
-                        }
-                        cameraSettings={cameraSettings as MediaTrackSettings}
-                      />
-                    }
-                  </PrivateWrapper>
-                }
-              />
-              <Route
-                path="*"
-                element={<Navigate to={useContext(DefaultRouteContext)} />}
-              />
-            </Routes>
-            <Footer setHotKeys={setHotKeys} />
-          </div>
-          <EnableCameraModal
-            isOpen={isOpen}
-            onOpen={onOpen}
-            onClose={onClose}
-          />
+          <HotkeyProvider>
+            {loading && <LoadingScreen />}
+            <div id="application">
+              <Header />
+              <Routes>
+                <Route path="/login" element={<SignIn />} />
+                <Route path="/sign-up" element={<SignUp />} />
+                <Route path="/confirm-sign-up" element={<ConfirmSignUp />} />
+                <Route path="/forget-password" element={<ForgetPassword />} />
+                <Route
+                  path="/confirm-forget-password"
+                  element={<ConfirmForgetPassword />}
+                />
+                <Route
+                  path="/instructions"
+                  element={
+                    <PrivateWrapper>
+                      {<Instructions startRecording={startRecording} />}
+                    </PrivateWrapper>
+                  }
+                />
+                <Route
+                  path="/recording"
+                  element={
+                    <PrivateWrapper>
+                      {
+                        <Recording
+                          setLoading={setLoading}
+                          handShapeModel={
+                            handShapeModel as tensorflow.LayersModel
+                          }
+                          cameraSettings={cameraSettings as MediaTrackSettings}
+                        />
+                      }
+                    </PrivateWrapper>
+                  }
+                />
+                <Route
+                  path="*"
+                  element={<Navigate to={useContext(DefaultRouteContext)} />}
+                />
+              </Routes>
+              <Footer />
+            </div>
+            <EnableCameraModal
+              isOpen={isOpen}
+              onOpen={onOpen}
+              onClose={onClose}
+            />
+          </HotkeyProvider>
         </StyleProvider>
       </Router>
     </AuthProvider>

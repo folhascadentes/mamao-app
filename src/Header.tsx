@@ -3,14 +3,13 @@ import { MdContrast } from "react-icons/md";
 import papaya3d from "./assets/papaya3d.jpeg";
 import { StyleContext } from "./reducers/style.reducer";
 import { AuthContext } from "./reducers/auth.reducer";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
+import { GlobalHotKeys } from "react-hotkeys";
 
-function Header({
-  setHotKeys,
-}: {
-  setHotKeys: (keyMap: any, handlers: any) => void;
-}): JSX.Element {
+function Header(): JSX.Element {
   const { isAuthenticated } = useContext(AuthContext);
   const { state, dispatch } = useContext(StyleContext);
+  const hotkeyContext = useContext(HotkeyContext);
   const [backgroundColor, setBackgroundColor] = useState(state.backgroundColor);
   const [textColor, setTextColor] = useState(state.textColor);
   const [buttonHoverColorWeight, setButtonHoverColorWeight] = useState(
@@ -23,20 +22,15 @@ function Header({
   );
 
   useEffect(() => {
-    setHotKeys(
-      {
-        INCREASE_FONT_SIZE: "+",
-        DECREASE_FONT_SIZE: "-",
-        HIGH_CONTRAST: "c",
-        LOUGOUT: "l",
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        "+": () => handleIncreaseFontSize(),
+        "-": () => handleDecreaseFontSize(),
+        C: () => handleHightConstast(),
+        L: () => handleLogout(),
       },
-      {
-        INCREASE_FONT_SIZE: () => handleIncreaseFontSize(),
-        DECREASE_FONT_SIZE: () => handleDecreaseFontSize(),
-        HIGH_CONTRAST: () => handleHightConstast(),
-        LOUGOUT: () => handleLogout(),
-      }
-    );
+    });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 
@@ -93,6 +87,11 @@ function Header({
   return (
     <>
       <style>{`html { font-size: ${fontSize}%; } body {color: ${state.textColor}; background-color: ${state.backgroundColor}; }`}</style>
+      <GlobalHotKeys
+        keyMap={hotkeyContext.state.hotkeyKeyMap}
+        handlers={hotkeyContext.state.hotkeyHandlers}
+        allowChanges={true}
+      />
       <header className="w-full">
         <div className="container mx-auto px-4 py-4 flex space-x-4 justify-between items-center">
           <div className="md:w-80"></div>

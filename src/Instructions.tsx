@@ -19,15 +19,15 @@ import orientation from "./assets/orientation.jpeg";
 import location from "./assets/location.jpeg";
 import wrapping from "./assets/wrapping.jpeg";
 import { StyleContext } from "./reducers/style.reducer";
+import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 function Instructions({
   startRecording,
-  setHotKeys,
 }: {
   startRecording: () => void;
-  setHotKeys: (keyMap: any, handlers: any) => void;
 }): JSX.Element {
   const styleContext = useContext(StyleContext);
+  const hotkeyContext = useContext(HotkeyContext);
 
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -64,15 +64,22 @@ function Instructions({
   }
 
   useEffect(() => {
-    setHotKeys(
-      { NEXT: "d", PREVIOUS: "a", START: "i", begin: "b" },
-      {
-        NEXT: () => nextState(),
-        PREVIOUS: () => previousState(),
-        START: () => start(),
-        begin: () => begin(),
-      }
-    );
+    hotkeyContext.dispatch({
+      type: "SET_HOTKEY",
+      payload: {
+        D: () => nextState(),
+        A: () => previousState(),
+        I: () => start(),
+        B: () => begin(),
+      },
+    });
+
+    return () => {
+      hotkeyContext.dispatch({
+        type: "UNSET_HOTKEY",
+        delete: ["D", "A", "I", "B"],
+      });
+    };
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 

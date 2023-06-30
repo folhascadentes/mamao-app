@@ -28,7 +28,10 @@ const StyleContext = createContext<StyleContextProps>({
   dispatch: () => null,
 });
 
-const styleReducer = (state: any, action: any) => {
+const styleReducer = (
+  state: StyleState,
+  action: { type: string; payload: any }
+) => {
   switch (action.type) {
     case "SET_STYLE":
       return { ...state, ...action.payload };
