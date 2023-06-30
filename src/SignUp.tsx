@@ -232,9 +232,9 @@ export function SignUp(): JSX.Element {
               </Select>
             </FormControl>
             {error && <p className="text-red-500">{error}</p>}
-            <p className="text-sm font-bold">
+            <p className="font-bold">
               Ao realizar o cadastro e usar a plataforma você aceita nosso termo
-              de privacidade acessível no rodapé ou pelo atalho [P].
+              de privacidade e uso, acessível no rodapé ou pelo atalho [P].
             </p>
             <button
               type="submit"
