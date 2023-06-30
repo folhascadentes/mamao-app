@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import * as tensorflow from "@tensorflow/tfjs";
 import { Camera } from "@mediapipe/camera_utils";
 import {
@@ -36,6 +37,14 @@ function Recording({
   handShapeModel: tensorflow.LayersModel;
   cameraSettings: MediaTrackSettings;
 }) {
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!cameraSettings) {
+      navigate("/instructions");
+    }
+    /* eslint-disable-next-line */
+  }, []);
+
   const { state } = useContext(StyleContext);
 
   const debuger: boolean = !!localStorage.getItem("debug");

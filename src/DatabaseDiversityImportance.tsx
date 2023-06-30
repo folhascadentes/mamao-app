@@ -67,7 +67,7 @@ function DatabaseDiversityImportance(): JSX.Element {
           um tradutor que pode ajudar todas as pessoas.
         </p>
         <h2 className="text-xl md:text-2xl font-black mb-2">
-          Uso de Suas Informações
+          Uso de suas informações
         </h2>
         <p>
           Usaremos as informações que você compartilhar conosco para mapear e
@@ -128,7 +128,7 @@ function DatabaseDiversityImportance(): JSX.Element {
         </p>
       </div>
       <div>
-        <img src={diversity} style={{ height: "460px" }} alt="" />
+        <img src={diversity} style={{ height: "567px" }} alt="" />
       </div>
     </div>
   );
