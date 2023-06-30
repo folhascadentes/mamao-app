@@ -77,10 +77,10 @@ export function SignIn(): JSX.Element {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-center space-x-24 mt-36">
+    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16">
       <div
         className="flex flex-col justify-center space-y-4"
-        style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
+        style={{ width: window.innerWidth <= 500 ? "auto" : "612px" }}
       >
         <h1 className="text-4xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
@@ -137,8 +137,8 @@ export function SignIn(): JSX.Element {
           </a>
         </div>
       </div>
-      <div className="flex justify-center -m-20 z-50">
-        <img src={world} style={{ height: "380px" }} alt="" />
+      <div className="flex justify-center -m-16 z-50">
+        <img src={world} style={{ height: "397px" }} alt="" />
       </div>
     </div>
   );
