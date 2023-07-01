@@ -26,6 +26,10 @@ function Header(): JSX.Element {
 
   function handleRedirectHome() {
     navigate("/");
+
+    if (isOpen) {
+      onClose();
+    }
   }
 
   return (
@@ -51,11 +55,14 @@ function Header(): JSX.Element {
           <div
             style={{ minWidth: window.innerWidth >= 768 ? "239.92px" : "40px" }}
           ></div>
-          <div
-            className="container flex justify-center cursor-pointer"
-            onClick={handleRedirectHome}
-          >
-            <img src={papaya3d} alt="" style={{ height: "80px" }} />
+          <div className="container flex justify-center">
+            <img
+              className="cursor-pointer"
+              onClick={handleRedirectHome}
+              src={papaya3d}
+              alt=""
+              style={{ height: "80px" }}
+            />
           </div>
           {window.innerWidth < 768 && (
             <IconButton
@@ -81,6 +88,13 @@ function Header(): JSX.Element {
                   <DrawerCloseButton size="lg" />
                 </Flex>
                 <div className="flex flex-col font-bold justify-center text-center space-y-6">
+                  <a
+                    href="#"
+                    onClick={handleRedirectHome}
+                    className="cursor-pointer"
+                  >
+                    Início
+                  </a>
                   <a
                     href="https://www.mamao.dev.br"
                     rel="noreferrer"

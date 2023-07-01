@@ -131,7 +131,8 @@ export function SignUp(): JSX.Element {
                 className="hover:text-indigo-600 text-indigo-500 font-bold"
                 href="/database-diversity-importance"
               >
-                porque a diversidade de dados é importante [I]
+                porque a diversidade de dados é importante{" "}
+                <span className="hidden md:inline">[I]</span>
               </a>
               .
             </div>
