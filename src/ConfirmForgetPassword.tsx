@@ -77,10 +77,10 @@ function ConfirmForgetPassword(): JSX.Element {
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
       <div
-        className="flex flex-col justify-center space-y-4"
+        className="flex flex-col mx-6 md:mx-0 justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
       >
-        <h1 className="text-4xl md:text-6xl font-black mb-2">
+        <h1 className="text-3xl md:text-6xl font-black mb-2">
           Confirme a recuperação de senha
         </h1>
         <form className="flex flex-col space-y-4" onSubmit={handleConfirm}>
@@ -138,11 +138,17 @@ function ConfirmForgetPassword(): JSX.Element {
             className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
             disabled={loading}
           >
-            {loading ? <Spinner /> : "Confirmar Recuperação [R]"}
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                Confirmar <span className="hidden md:inline">[R]</span>
+              </>
+            )}
           </button>
         </form>
       </div>
-      <div>
+      <div className="hidden md:flex">
         <img src={jupyter} style={{ height: "460px" }} alt="" />
       </div>
     </div>
