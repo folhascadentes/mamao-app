@@ -3,6 +3,7 @@ import { MdContrast } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
 import { AuthContext } from "./reducers/auth.reducer";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
+import { SL } from "./components";
 
 function AccessibilityMenu(): JSX.Element {
   const { isAuthenticated } = useContext(AuthContext);
@@ -93,7 +94,7 @@ function AccessibilityMenu(): JSX.Element {
   }, []);
 
   return (
-    <div className="flex space-x-4">
+    <div className="flex space-x-2 md:space-x-4">
       <button
         title="Autocontraste [c]"
         aria-describedby="Autocontraste"
@@ -124,7 +125,7 @@ function AccessibilityMenu(): JSX.Element {
       >
         A-
       </button>
-      {isAuthenticated && (
+      {isAuthenticated && window.innerWidth >= 768 && (
         <button
           title="Ação de sair da conta"
           aria-describedby="Ação de sair da conta"
@@ -132,7 +133,7 @@ function AccessibilityMenu(): JSX.Element {
           style={{ fontSize: "16px" }}
           onClick={handleLogout}
         >
-          Sair [L]
+          Sair <SL>L</SL>
         </button>
       )}
     </div>

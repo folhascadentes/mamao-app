@@ -16,10 +16,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import AccessibilityMenu from "./AccessibilityMenu";
 import TermsPrivacyUseModal from "./modals/terms-privacy-use.modal";
+import { AuthContext } from "./reducers/auth.reducer";
 
 function Header(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const termsDisclousure = useDisclosure();
+  const { isAuthenticated } = useContext(AuthContext);
   const styleContext = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
   const navigate = useNavigate();
@@ -30,6 +32,11 @@ function Header(): JSX.Element {
     if (isOpen) {
       onClose();
     }
+  }
+
+  function handleLogout(): void {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
   }
 
   return (
@@ -89,11 +96,7 @@ function Header(): JSX.Element {
                 </Flex>
                 <div className="flex flex-col font-bold justify-center text-center space-y-6">
                   {/* eslint-disable-next-line */}
-                  <a
-                    href="#"
-                    onClick={handleRedirectHome}
-                    className="cursor-pointer"
-                  >
+                  <a href="#" onClick={handleRedirectHome}>
                     Início
                   </a>
                   <a
@@ -104,18 +107,21 @@ function Header(): JSX.Element {
                     Sobre
                   </a>
                   {/* eslint-disable-next-line */}
-                  <a
-                    href="#"
-                    onClick={termsDisclousure.onOpen}
-                    className="cursor-pointer"
-                  >
+                  <a href="#" onClick={termsDisclousure.onOpen}>
                     Termos de privacidade e uso
                   </a>
                 </div>
                 <div className="font-bold pt-6">Opções de acessibilidade</div>
                 <AccessibilityMenu />
-                <div className="text-sm text-center absolute bottom-0 ml-10 mb-6">
-                  Versão alfa-0.0
+                <div className="text-center absolute bottom-0 ml-10 mb-6">
+                  <div className="flex flex-col justify-center text-center space-y-6">
+                    {isAuthenticated && (
+                      <a className="font-bold" href="#" onClick={handleLogout}>
+                        Sair
+                      </a>
+                    )}
+                    <div className="text-xs">Versão alfa-0.0</div>
+                  </div>
                 </div>
               </DrawerBody>
             </DrawerContent>
