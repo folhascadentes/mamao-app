@@ -5,7 +5,7 @@ function DatabaseDiversityImportance(): JSX.Element {
   return (
     <div className="flex flex-wrap justify-center space-x-8 xl:space-x-16 mt-8 xl:mt-16 mb-24">
       <div
-        className="flex flex-col space-y-4"
+        className="flex flex-col mx-6 md:mx-0 space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "560px" }}
       >
         <h1 className="text-3xl md:text-4xl font-black mb-2">
@@ -127,7 +127,7 @@ function DatabaseDiversityImportance(): JSX.Element {
           proteger sua privacidade enquanto fazemos isso.
         </p>
       </div>
-      <div>
+      <div className="hidden md:flex">
         <img src={diversity} style={{ height: "567px" }} alt="" />
       </div>
     </div>
