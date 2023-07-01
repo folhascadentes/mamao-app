@@ -116,6 +116,7 @@ function Header(): JSX.Element {
                 <div className="text-center absolute bottom-0 ml-10 mb-6">
                   <div className="flex flex-col justify-center text-center space-y-6">
                     {isAuthenticated && (
+                      // eslint-disable-next-line
                       <a className="font-bold" href="#" onClick={handleLogout}>
                         Sair
                       </a>
