@@ -27,6 +27,7 @@ import ForgetPassword from "./ForgetPassword";
 import ConfirmForgetPassword from "./ConfirmForgetPassword";
 import { HotkeyProvider } from "./reducers/hotkeys.reducer";
 import DatabaseDiversityImportance from "./DatabaseDiversityImportance";
+import WhoIsAIAC from "./WhoIsAIAC";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -90,6 +91,10 @@ export default function App(): JSX.Element {
                 <Route
                   path="/database-diversity-importance"
                   element={<DatabaseDiversityImportance />}
+                ></Route>
+                <Route
+                  path="/who-is-aiac"
+                  element={<WhoIsAIAC />}
                 ></Route>
                 <Route
                   path="/instructions"

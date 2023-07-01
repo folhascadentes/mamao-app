@@ -15,6 +15,7 @@ function Footer(): JSX.Element {
       payload: {
         P: () => onOpen(),
         S: () => window.open("https://www.mamao.dev.br"),
+        W: () => window.open("https://app.mamao.dev.br/who-is-aiac"),
       },
     });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -29,7 +30,11 @@ function Footer(): JSX.Element {
         <div className="flex flex-wrap">
           <div className="flex justify-center space-x-4 text-indigo-600 ">
             <a href="https://www.mamao.dev.br" rel="noreferrer" target="_blank">
-              Sobre [S]
+              Sobre o projeto [S]
+            </a>{" "}
+            <span>•</span>
+            <a href="https://app.mamao.dev.br/who-is-aiac" rel="noreferrer" target="_blank">
+              Sobre nós [W]
             </a>{" "}
             <span>•</span>
             {/* eslint-disable-next-line */}
@@ -38,7 +43,7 @@ function Footer(): JSX.Element {
             </a>
           </div>
           <div className="flex-grow"></div>
-          <div className="text-sm">Versão alfa-0.0</div>
+          <div className="text-sm">Versão beta-0.0.0</div>
         </div>
       )}
 

@@ -104,7 +104,14 @@ function Header(): JSX.Element {
                     rel="noreferrer"
                     target="_blank"
                   >
-                    Sobre
+                    Sobre o projeto
+                  </a>
+                  <a
+                    href="https://app.mamao.dev.br/who-is-aiac"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    Sobre nós
                   </a>
                   {/* eslint-disable-next-line */}
                   <a href="#" onClick={termsDisclousure.onOpen}>
@@ -121,7 +128,7 @@ function Header(): JSX.Element {
                         Sair
                       </a>
                     )}
-                    <div className="text-xs">Versão alfa-0.0</div>
+                    <div className="text-xs">Versão beta-0.0.0</div>
                   </div>
                 </div>
               </DrawerBody>
