@@ -27,6 +27,7 @@ function Instructions({
 }: {
   startRecording: () => void;
 }): JSX.Element {
+  const isMobile = window.innerWidth <= 768;
   const styleContext = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
 
@@ -132,7 +133,7 @@ function Instructions({
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        size="xl"
+        size={isMobile ? "full" : "xl"}
       >
         <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(6px)" />
         <ModalContent
@@ -142,7 +143,7 @@ function Instructions({
                 ? "linear-gradient(to top, white, white, #ffecd4)"
                 : "linear-gradient(to top, #171717, black, black, #332f2f)",
           }}
-          borderRadius="1rem"
+          borderRadius={isMobile ? "0rem" : "1rem"}
         >
           <ModalHeader>
             <div className="pt-6 pb-8">
@@ -217,7 +218,7 @@ function Instructions({
               {title[state]}
             </h1>
           </ModalHeader>
-          <ModalCloseButton></ModalCloseButton>
+          <ModalCloseButton size={"lg"}></ModalCloseButton>
           <ModalBody className="mx-6">
             <div className=" xl:text-lg font-normal xl:mt-4 xl:mb-6">
               {state === 0 && (
