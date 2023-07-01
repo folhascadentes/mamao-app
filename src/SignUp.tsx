@@ -77,10 +77,10 @@ export function SignUp(): JSX.Element {
   return (
     <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
       <div
-        className="flex flex-col justify-center space-y-4"
+        className="flex flex-col mx-6 md:mx-0 justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "512px" }}
       >
-        <h1 className="text-4xl md:text-6xl font-black mb-2">
+        <h1 className="text-3xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
           <span className="text-orange-400 md:font-light">Novo Voluntário</span>
         </h1>
@@ -230,14 +230,24 @@ export function SignUp(): JSX.Element {
             {error && <p className="text-red-500">{error}</p>}
             <p className="font-bold">
               Ao realizar o cadastro e usar a plataforma você aceita nosso termo
-              de privacidade e uso, acessível no rodapé ou pelo atalho [P].
+              de privacidade e uso,{" "}
+              {window.innerWidth > 768
+                ? "acessível no rodapé ou pelo atalho [P]"
+                : "acessível no menu no canto superior direito da tela"}
+              .
             </p>
             <button
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
               disabled={loading}
             >
-              {loading ? <Spinner /> : "Registrar [U]"}
+              {loading ? (
+                <Spinner />
+              ) : (
+                <>
+                  Registrar <span className="hidden md:inline">[U]</span>
+                </>
+              )}
             </button>
           </form>
         </div>
@@ -247,11 +257,11 @@ export function SignUp(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/login")}
           >
-            Entrar [E]
+            Entrar <span className="hidden md:inline">[E]</span>
           </button>
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+      <div className="hidden md:flex justify-center mt-16">
         <img src={moon} style={{ height: "460px" }} alt="" />
       </div>
     </div>
