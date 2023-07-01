@@ -8,13 +8,18 @@ self.addEventListener("message", async (event) => {
       images.push(base64);
     }
 
-    await sendPostRequest(`${data.url}/upload`, {
-      frames: images,
-      landmarks: data.landmarks,
-      language: data.language,
-      token: data.token,
-      userId: data.userId,
-    });
+    await sendPostRequest(
+      `${data.url}/upload`,
+      {
+        frames: images,
+        landmarks: data.landmarks,
+        language: data.language,
+        token: data.token,
+      },
+      {
+        authorization: data.accessToken,
+      }
+    );
   } catch (e) {
     console.log(e);
   }
@@ -44,12 +49,13 @@ function convertToBase64(canvas) {
   });
 }
 
-function sendPostRequest(url, data) {
+function sendPostRequest(url, data, headers) {
   return new Promise((resolve, reject) => {
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...headers,
       },
       body: JSON.stringify(data),
     })
