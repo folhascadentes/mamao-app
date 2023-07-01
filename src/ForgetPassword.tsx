@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
-import { Input } from "./components";
+import { Input, SL } from "./components";
 import pluto from "./assets/pluto.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
@@ -91,7 +91,7 @@ function ForgetPassword(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Recuperar <span className="hidden md:inline">[R]</span>
+                Recuperar <SL>R</SL>
               </>
             )}
           </button>
@@ -102,7 +102,7 @@ function ForgetPassword(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/sign-in")}
           >
-            Entrar <span className="hidden md:inline">[E]</span>
+            Entrar <SL>R</SL>
           </button>
         </div>
       </div>

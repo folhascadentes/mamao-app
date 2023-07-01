@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
-import { Input } from "./components";
+import { Input, SL } from "./components";
 import sun from "./assets/sun.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
@@ -113,7 +113,7 @@ function ConfirmSignUp(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Confirmar <span className="hidden md:inline">[U]</span>
+                Confirmar <SL>U</SL>
               </>
             )}
           </button>

@@ -5,6 +5,7 @@ import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input } from "./components";
 import jupyter from "./assets/jupyter.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
+import { SL } from "./components";
 
 function ConfirmForgetPassword(): JSX.Element {
   const hotkeyContext = useContext(HotkeyContext);
@@ -142,7 +143,7 @@ function ConfirmForgetPassword(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Confirmar <span className="hidden md:inline">[R]</span>
+                Confirmar <SL>R</SL>
               </>
             )}
           </button>

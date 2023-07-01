@@ -88,6 +88,7 @@ function Header(): JSX.Element {
                   <DrawerCloseButton size="lg" />
                 </Flex>
                 <div className="flex flex-col font-bold justify-center text-center space-y-6">
+                  {/* eslint-disable-next-line */}
                   <a
                     href="#"
                     onClick={handleRedirectHome}

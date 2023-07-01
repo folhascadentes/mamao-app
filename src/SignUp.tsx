@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdInfoOutline } from "react-icons/md";
 import { FormControl, FormLabel, Spinner, Select } from "@chakra-ui/react";
-import { Input } from "./components";
+import { Input, SL } from "./components";
 import moon from "./assets/moon.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
@@ -131,8 +131,7 @@ export function SignUp(): JSX.Element {
                 className="hover:text-indigo-600 text-indigo-500 font-bold"
                 href="/database-diversity-importance"
               >
-                porque a diversidade de dados é importante{" "}
-                <span className="hidden md:inline">[I]</span>
+                porque a diversidade de dados é importante <SL>I</SL>
               </a>
               .
             </div>
@@ -246,7 +245,7 @@ export function SignUp(): JSX.Element {
                 <Spinner />
               ) : (
                 <>
-                  Registrar <span className="hidden md:inline">[U]</span>
+                  Registrar <SL>U</SL>
                 </>
               )}
             </button>
@@ -258,7 +257,7 @@ export function SignUp(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/login")}
           >
-            Entrar <span className="hidden md:inline">[E]</span>
+            Entrar <SL>E</SL>
           </button>
         </div>
       </div>

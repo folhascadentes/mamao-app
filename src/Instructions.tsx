@@ -20,6 +20,7 @@ import location from "./assets/location.jpeg";
 import wrapping from "./assets/wrapping.jpeg";
 import { StyleContext } from "./reducers/style.reducer";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
+import { SL } from "./components";
 
 function Instructions({
   startRecording,
@@ -121,7 +122,7 @@ function Instructions({
             onClick={start}
             className="bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
           >
-            Começar <span className="text-base">[I]</span>
+            Começar <SL>I</SL>
           </button>
         </div>
       </div>
@@ -312,7 +313,7 @@ function Instructions({
                 className={`bg-transparent hover:bg-neutral-${styleContext.state.buttonHoverColorWeight} py-3.5 px-6 text-lg rounded-xl mr-6 mb-6`}
                 onClick={previousState}
               >
-                Anterior [A]
+                Anterior <SL>A</SL>
               </button>
             )}
             {state < 5 && (
@@ -321,7 +322,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={nextState}
               >
-                Próximo [D]
+                Próximo <SL>D</SL>
               </button>
             )}
             {state === 5 && (
@@ -330,7 +331,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
-                Começar [B]
+                Começar <SL>B</SL>
               </button>
             )}
           </ModalFooter>

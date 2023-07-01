@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
-import { Input } from "./components";
+import { Input, SL } from "./components";
 import world from "./assets/world.png";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
@@ -116,7 +116,7 @@ export function SignIn(): JSX.Element {
               className="cursor-pointer text-left hover:text-indigo-600 text-indigo-500 font-bold"
               onClick={() => navigate("/forget-password")}
             >
-              Recuperar senha <span className="hidden md:inline">[R]</span>
+              Recuperar senha <SL>R</SL>
             </a>
             <button
               type="submit"
@@ -127,7 +127,7 @@ export function SignIn(): JSX.Element {
                 <Spinner />
               ) : (
                 <>
-                  Entrar <span className="hidden md:inline">[E]</span>
+                  Entrar <SL>E</SL>
                 </>
               )}
             </button>
@@ -139,7 +139,7 @@ export function SignIn(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/sign-up")}
           >
-            Realizar cadastro <span className="hidden md:inline">[U]</span>
+            Realizar cadastro <SL>U</SL>
           </a>
         </div>
       </div>
