@@ -121,10 +121,16 @@ function Instructions({
           <button
             type="button"
             onClick={start}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
+            className="hidden md:inline bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
+            disabled={isMobile}
           >
             Começar <SL>I</SL>
           </button>
+          <div className="flex md:hidden font-bold">
+            Atualmente não é possível começar a aplicação para dispositivos
+            móveis. Caso queira contribuir na coleta de vídeos, acesse a
+            aplicação em um computador ou notebook.
+          </div>
         </div>
       </div>
 
