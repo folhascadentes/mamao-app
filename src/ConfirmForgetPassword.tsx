@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input } from "./components";
-import jupyter from "./assets/jupyter.png";
+import jupyter from "./assets/jupyter.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 import { SL } from "./components";
 

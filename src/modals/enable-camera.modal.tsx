@@ -7,7 +7,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useContext, useRef } from "react";
-import camera from "../assets/camera.png";
+import camera from "../assets/camera.webp";
 import { StyleContext } from "../reducers/style.reducer";
 
 function EnableCameraModal({

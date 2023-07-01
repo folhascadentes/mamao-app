@@ -1,5 +1,5 @@
 import React from "react";
-import diversity from "./assets/diversity.png";
+import diversity from "./assets/diversity.webp";
 
 function DatabaseDiversityImportance(): JSX.Element {
   return (

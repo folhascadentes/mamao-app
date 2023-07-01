@@ -7,7 +7,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useContext, useRef } from "react";
-import privacy from "../assets/privacy.png";
+import privacy from "../assets/privacy.webp";
 import { StyleContext } from "../reducers/style.reducer";
 
 function TermsPrivacyUseModal({

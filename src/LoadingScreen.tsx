@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import loading from "./assets/loading.jpeg";
+import loading from "./assets/loading.webp";
 import { StyleContext } from "./reducers/style.reducer";
 
 interface DownloadProgress {

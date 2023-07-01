@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input, SL } from "./components";
-import pluto from "./assets/pluto.png";
+import pluto from "./assets/pluto.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 function ForgetPassword(): JSX.Element {

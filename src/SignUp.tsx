@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { MdInfoOutline } from "react-icons/md";
 import { FormControl, FormLabel, Spinner, Select } from "@chakra-ui/react";
 import { Input, SL } from "./components";
-import moon from "./assets/moon.png";
+import moon from "./assets/moon.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 export function SignUp(): JSX.Element {

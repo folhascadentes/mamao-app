@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input, SL } from "./components";
-import world from "./assets/world.png";
+import world from "./assets/world.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 export function SignIn(): JSX.Element {
@@ -13,14 +13,6 @@ export function SignIn(): JSX.Element {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/instructions");
-    }
-    /* eslint-disable-next-line */
-  }, []);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -34,12 +26,15 @@ export function SignIn(): JSX.Element {
           password,
         }
       );
+      console.log(response);
       if (response.status === 201) {
         localStorage.setItem(
           "token",
           response.data.AuthenticationResult.AccessToken
         );
-        navigate("/instructions");
+        // setTimeout(() => {
+        //   navigate("/instructions");
+        // }, 0);
       }
     } catch (error: any) {
       setError(

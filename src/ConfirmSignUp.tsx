@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input, SL } from "./components";
-import sun from "./assets/sun.png";
+import sun from "./assets/sun.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 
 function ConfirmSignUp(): JSX.Element {
