@@ -13,6 +13,7 @@ import {
   IconButton,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import AccessibilityMenu from "./AccessibilityMenu";
 import TermsPrivacyUseModal from "./modals/terms-privacy-use.modal";
 
@@ -21,6 +22,11 @@ function Header(): JSX.Element {
   const termsDisclousure = useDisclosure();
   const styleContext = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
+  const navigate = useNavigate();
+
+  function handleRedirectHome() {
+    navigate("/");
+  }
 
   return (
     <>
@@ -45,7 +51,10 @@ function Header(): JSX.Element {
           <div
             style={{ minWidth: window.innerWidth >= 768 ? "239.92px" : "40px" }}
           ></div>
-          <div className="container flex justify-center">
+          <div
+            className="container flex justify-center cursor-pointer"
+            onClick={handleRedirectHome}
+          >
             <img src={papaya3d} alt="" style={{ height: "80px" }} />
           </div>
           {window.innerWidth < 768 && (
