@@ -99,7 +99,7 @@ function ForgetPassword(): JSX.Element {
             className="cursor-pointer hover:text-indigo-600 text-indigo-500 font-bold"
             onClick={() => navigate("/sign-in")}
           >
-            Entrar <SL>R</SL>
+            Entrar <SL>E</SL>
           </button>
         </div>
       </div>
