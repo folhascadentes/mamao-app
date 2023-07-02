@@ -58,7 +58,7 @@ function Header(): JSX.Element {
         allowChanges={true}
       />
       <header>
-        <div className="px-8 md:px-24 py-8 flex items-center">
+        <div className="px-8 md:px-24 py-6 flex items-center">
           <div
             style={{
               minWidth:
@@ -75,7 +75,7 @@ function Header(): JSX.Element {
               onClick={handleRedirectHome}
               src={papaya3d}
               alt=""
-              style={{ height: "80px" }}
+              style={{ height: "65px" }}
             />
           </div>
           {window.innerWidth < 768 && (

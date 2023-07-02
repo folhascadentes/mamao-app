@@ -40,7 +40,7 @@ function Recording({
   const navigate = useNavigate();
   const { state } = useContext(StyleContext);
   const debuger: boolean = !!localStorage.getItem("debug");
-  const SIGN_N_TIMES: number = 3;
+  const SIGN_N_TIMES: number = 10;
   const DURATION: number = 5; // in seconds
   const FPS: number = cameraSettings?.frameRate ?? 24;
   const BUFFER_SIZE: number = DURATION * FPS;
@@ -218,25 +218,25 @@ function Recording({
         width="720"
         height="720"
       ></video>
-      <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-16 justify-center">
-        <div className="flex flex-col space-y-4" style={{ width: "600px" }}>
+      <div className="flex flex-col md:flex-row md:space-x-8 justify-center font-sm">
+        <div className="flex flex-col space-y-4" style={{ width: "650px" }}>
           <div>
             <h1 className="text-3xl text-left mb-4">
               Sinal ({signCounter} de {SIGN_N_TIMES})
             </h1>
-            <div className="text-lg">
+            <div>
               Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
               <b>{sign.language}</b> {SIGN_N_TIMES} vezes. Siga as instruções
               abaixo
             </div>
           </div>
           <div>
-            <h1 className="text-xl md:text-3xl text-left mb-4 md:mb-6">
+            <h1 className="text-3xl text-left mb-4">
               Instruções
             </h1>
-            <div className="flex flex-col space-y-2">
+            <div className="flex flex-col space-y-1">
               <div className="flex flex-col mb-2">
-                <div className="flex space-x-3 items-center text-lg">
+                <div className="flex space-x-3 items-center">
                   {subjectFraming ? (
                     <MdDone className="text-green-500 font-bold " size={24} />
                   ) : (
@@ -248,7 +248,7 @@ function Recording({
                   <div>Enquadre o seu corpo corretamente</div>
                 </div>
                 {!subjectFraming && (
-                  <div className="ml-8 mt-3.5">
+                  <div className="ml-8 mt-3">
                     1. Afaste seu corpo da câmera e deixe visível desde a cabeça
                     até o início do quadril
                   </div>
@@ -256,7 +256,7 @@ function Recording({
               </div>
               {todoActions.map((step, index) => (
                 <div key={step.state} className="flex flex-col">
-                  <div className="flex space-x-3 items-center text-lg">
+                  <div className="flex space-x-3 items-center">
                     <MdOutlinePending
                       className="text-yellow-500 font-bold"
                       size={24}
@@ -294,7 +294,7 @@ function Recording({
               {doneActions.map((step) => (
                 <div
                   key={step.state}
-                  className="flex space-x-3 items-center text-lg"
+                  className="flex space-x-3 items-center"
                 >
                   <MdDone className="text-green-500 font-bold" size={24} />
                   <span>{step.description}</span>
@@ -507,7 +507,7 @@ function HandShapeInstructions({
                   >
                     <img
                       alt={image.alt}
-                      className="h-60"
+                      className="h-44"
                       src={image.path}
                       style={{
                         filter:
