@@ -54,7 +54,7 @@ function TermsPrivacyUseModal({
         <ModalBody
           className="flex-col space-y-2 mx-6 mb-10 text-sm"
           style={{
-            overflowY: "auto",
+            overflowY: "scroll",
             maxHeight: isMobile ? "540px" : "425px",
             scrollbarWidth: "thin",
             scrollbarColor: "rgba(155, 155, 155, 0.7) transparent",
