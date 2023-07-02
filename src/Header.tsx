@@ -110,7 +110,7 @@ function Header(): JSX.Element {
                     Sobre nós
                   </a>
                   <a
-                    href="/database-diversity-importance"
+                    href="/terms-privacy-and-use"
                     rel="noreferrer"
                     target="_blank"
                   >
