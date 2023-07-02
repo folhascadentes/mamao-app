@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { HotkeyContext } from "../reducers/hotkeys.reducer";
+import { SL } from "../components";
 
 function TermsContent(): JSX.Element {
   const hotkeyContext = useContext(HotkeyContext);
@@ -70,7 +71,7 @@ function TermsContent(): JSX.Element {
               href="/database-diversity-importance"
             >
               Por que precisamos de diferentes tipos de dados para fazer um bom
-              tradutor de Língua de Sinais [D]
+              tradutor de Língua de Sinais <SL>D</SL>
             </a>
           </li>
           <li>
