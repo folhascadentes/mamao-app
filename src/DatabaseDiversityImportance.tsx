@@ -1,16 +1,16 @@
 import React from "react";
-import diversity from "./assets/diversity.webp";
+import diversityHands from "./assets/diversityHands.webp";
 
 function DatabaseDiversityImportance(): JSX.Element {
   return (
     <div className="flex flex-wrap justify-center space-x-8 xl:space-x-16 mt-8 xl:mt-16 mb-24">
       <div
         className="flex flex-col mx-6 md:mx-0 space-y-4"
-        style={{ width: window.innerWidth <= 500 ? "auto" : "560px" }}
+        style={{ width: window.innerWidth <= 500 ? "auto" : "600px" }}
       >
-        <h1 className="text-3xl md:text-4xl font-black mb-2">
-          Por que precisamos de diferentes tipos de dados para fazer um bom
-          tradutor de <span className="text-orange-400">Língua de Sinais</span>
+        <h1 className="text-3xl md:text-5xl text-lime-500 font-black mb-2">
+          Por que precisamos de diferentes tipos de dados para fazer um bom{" "}
+          <span className="text-orange-500">tradutor de Língua de Sinais</span>
         </h1>
         <p>
           Estamos criando coletivamente uma ferramenta para traduzir a língua de
@@ -128,7 +128,7 @@ function DatabaseDiversityImportance(): JSX.Element {
         </p>
       </div>
       <div className="hidden md:flex">
-        <img src={diversity} style={{ height: "567px" }} alt="" />
+        <img src={diversityHands} style={{ height: "567px" }} alt="" />
       </div>
     </div>
   );

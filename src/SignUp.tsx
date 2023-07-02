@@ -68,14 +68,14 @@ export function SignUp(): JSX.Element {
       payload: {
         U: (e) => handleSignUp(e),
         E: () => navigate("/sign-in"),
-        I: () => navigate("/database-diversity-importance"),
+        D: () => navigate("/database-diversity-importance"),
       },
     });
 
     return () => {
       hotkeyContext.dispatch({
         type: "UNSET_HOTKEY",
-        delete: ["U", "E", "I"],
+        delete: ["U", "E", "D"],
       });
     };
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -144,7 +144,7 @@ export function SignUp(): JSX.Element {
                 rel="noreferrer"
                 target="_blank"
               >
-                porque a diversidade de dados é importante <SL>I</SL>
+                porque a diversidade de dados é importante <SL>D</SL>
               </a>
               .
             </div>
