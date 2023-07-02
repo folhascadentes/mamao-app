@@ -14,7 +14,9 @@ export function SignIn(): JSX.Element {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e?: React.FormEvent) => {
+    e?.preventDefault();
+
     setLoading(true);
     setError("");
 
@@ -26,21 +28,15 @@ export function SignIn(): JSX.Element {
           password,
         }
       );
-      console.log(response);
       if (response.status === 201) {
         localStorage.setItem(
           "token",
           response.data.AuthenticationResult.AccessToken
         );
-        // setTimeout(() => {
-        //   navigate("/instructions");
-        // }, 0);
+        navigate("/instructions");
       }
     } catch (error: any) {
-      setError(
-        error.response?.data?.message?.join?.("\n") ||
-          "Usuário ou senha incorretos, tente novamente."
-      );
+      setError("Nome de usuário ou senha incorreto");
     } finally {
       setLoading(false);
     }
@@ -50,7 +46,7 @@ export function SignIn(): JSX.Element {
     hotkeyContext.dispatch({
       type: "SET_HOTKEY",
       payload: {
-        E: () => handleLogin(),
+        E: (e) => handleLogin(e),
         U: (e) => {
           e?.preventDefault();
           navigate("/sign-up");
