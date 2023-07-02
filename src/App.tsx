@@ -122,10 +122,7 @@ export default function App(): JSX.Element {
                     </PrivateWrapper>
                   }
                 />
-                <Route
-                  path="*"
-                  element={<Navigate to={useContext(DefaultRouteContext)} />}
-                />
+                <Route path="*" element={<DefaultRoute />} />
               </Routes>
               <Footer />
             </div>
@@ -140,3 +137,9 @@ export default function App(): JSX.Element {
     </AuthProvider>
   );
 }
+
+const DefaultRoute = () => {
+  const defaultRoute = useContext(DefaultRouteContext);
+
+  return <Navigate to={defaultRoute} />;
+};

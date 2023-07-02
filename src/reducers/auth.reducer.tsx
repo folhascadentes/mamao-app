@@ -13,7 +13,9 @@ interface AuthContextType {
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>> | undefined;
 }
 
-export const DefaultRouteContext = createContext<string>("/login");
+export const DefaultRouteContext = createContext<string>(
+  !!localStorage.getItem("token") ? "/instructions" : "/login"
+);
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   setIsAuthenticated: undefined,
