@@ -106,15 +106,14 @@ function Header(): JSX.Element {
                   >
                     Sobre o projeto
                   </a>
+                  <a href="/who-is-aiac" rel="noreferrer" target="_blank">
+                    Sobre nós
+                  </a>
                   <a
-                    href="https://app.mamao.dev.br/who-is-aiac"
+                    href="/database-diversity-importance"
                     rel="noreferrer"
                     target="_blank"
                   >
-                    Sobre nós
-                  </a>
-                  {/* eslint-disable-next-line */}
-                  <a href="#" onClick={termsDisclousure.onOpen}>
                     Termos de privacidade e uso
                   </a>
                 </div>
