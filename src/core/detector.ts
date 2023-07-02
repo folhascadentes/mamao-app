@@ -126,6 +126,10 @@ export class Detector {
     this.memory = {};
   }
 
+  public getSign(): Sign {
+    return this.sign;
+  }
+
   public setState(state: DetectorStates): void {
     this.currentState = state;
     if (this.states[this.currentState].onInit !== undefined) {

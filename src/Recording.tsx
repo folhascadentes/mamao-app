@@ -131,8 +131,8 @@ function Recording({
           const message = {
             frames,
             landmarks: movementBuffer.map((buffer) => buffer.readings),
-            language: sign.language,
-            token: sign.token,
+            language: detector.getSign().language,
+            token: detector.getSign().token,
             url: process.env.REACT_APP_BACK_END_API,
             accessToken: localStorage.getItem("token"),
           };
