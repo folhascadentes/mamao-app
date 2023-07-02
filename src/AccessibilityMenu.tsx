@@ -130,7 +130,7 @@ function AccessibilityMenu(): JSX.Element {
           title="Ação de sair da conta"
           aria-describedby="Ação de sair da conta"
           className="w-24"
-          style={{ fontSize: "16px" }}
+          style={{ fontSize: "20px" }}
           onClick={handleLogout}
         >
           Sair <SL>L</SL>
