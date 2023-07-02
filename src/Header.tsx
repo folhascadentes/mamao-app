@@ -60,7 +60,14 @@ function Header(): JSX.Element {
       <header>
         <div className="px-8 md:px-24 py-8 flex items-center">
           <div
-            style={{ minWidth: window.innerWidth >= 768 ? "239.92px" : "40px" }}
+            style={{
+              minWidth:
+                window.innerWidth >= 768
+                  ? isAuthenticated
+                    ? "351.92px"
+                    : "239.92"
+                  : "40px",
+            }}
           ></div>
           <div className="container flex justify-center">
             <img
