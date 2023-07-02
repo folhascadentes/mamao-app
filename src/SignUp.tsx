@@ -28,6 +28,11 @@ export function SignUp(): JSX.Element {
     setError("");
 
     try {
+      if (password !== confirmPassword) {
+        setError("As senhas não correspondem.");
+        return;
+      }
+
       const response = await axios.post(
         `${process.env.REACT_APP_BACK_END_API}/sign-up`,
         {
@@ -47,8 +52,7 @@ export function SignUp(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message?.join?.("\n") ||
-          "Houve um problema ao tentar se registrar, tente novamente."
+        "Verfique se o e-mail já está cadastrado ou se as senhas são iguais e atendem os requisitos mínimos."
       );
     } finally {
       setLoading(false);
@@ -120,6 +124,10 @@ export function SignUp(): JSX.Element {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </FormControl>
+            <p className="text-sm font-bold">
+              A senha deve conter pelo menos: 8 caracteres, 1 número, 1
+              caractere especial, 1 letra maiúscula e 1 letra minúscula.
+            </p>
             <div>
               <MdInfoOutline size={24} className="mb-2" />
               Estamos coletando as informações a seguir para garantir a criação
@@ -240,8 +248,8 @@ export function SignUp(): JSX.Element {
             </p>
             <button
               type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
-              disabled={loading}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl disabled:opacity-80  "
+              disabled={loading || !email || !password || !confirmPassword}
             >
               {loading ? (
                 <Spinner />
