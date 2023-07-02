@@ -5,6 +5,7 @@ import { FormControl, FormLabel, Spinner } from "@chakra-ui/react";
 import { Input, SL } from "./components";
 import sun from "./assets/sun.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
+import { MdInfoOutline } from "react-icons/md";
 
 function ConfirmSignUp(): JSX.Element {
   const hotkeyContext = useContext(HotkeyContext);
@@ -102,6 +103,14 @@ function ConfirmSignUp(): JSX.Element {
             Foi enviado um código de confirmação no e-mail cadastrado. Caso não
             recebeu aguarde um momento e verifique a caixa de Spam.
           </p>
+          <div className="text-sm font-bold">
+            <MdInfoOutline size={24} className="mb-2" />
+            Olá, agradecemos o seu interesse em participar do nosso projeto.
+            Atualmente estamos em fase beta fechado de testes, caso queria
+            continuar a verificação do seu cadastro será feita manualmente,
+            entre em contato no e-mail renantashiro@hotmail.com para solicitar o
+            seu acesso.
+          </div>
           <button
             type="submit"
             className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl disabled:opacity-80"
