@@ -130,6 +130,8 @@ export function SignUp(): JSX.Element {
               <a
                 className="hover:text-indigo-600 text-indigo-500 font-bold"
                 href="/database-diversity-importance"
+                rel="noreferrer"
+                target="_blank"
               >
                 porque a diversidade de dados é importante <SL>I</SL>
               </a>
