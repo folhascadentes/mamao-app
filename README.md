@@ -1,5 +1,9 @@
 # 🤟 Mamão ![Beta](https://img.shields.io/badge/-Beta-blue)
 
+<p align="center">
+  <img src="docs/images/hands.png" alt="Cover Image" width="300"/>
+</p>
+
 Welcome to Mamão, an innovative open-source platform designed to crowdsource the collection of sign language data. Our goal is to create a comprehensive, diverse, and high-quality dataset for training Artificial Intelligence (AI) methods. This dataset will be used to build robust sign language recognizers and, consequently, effective sign language translators.
 
 Mamão is a community-driven project. We believe in the power of open data and open source to drive innovation and inclusivity. The data collected through Mamão is openly available to researchers, developers, and anyone interested in advancing sign language recognition and translation technology.
@@ -12,14 +16,14 @@ You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word
 
 ## 📚 Table of Contents
 
-1. [📝 Product Requirements](#product-requirements)
-2. [🏗️ High-Level Architecture Overview](#high-level-architecture-overview)
-3. [✋ What is a Sign?](#what-is-a-sign)
-4. [🌍 Scope and Variation in Sign Languages](#scope-and-variation-in-sign-languages)
-5. [🔍 How specifying a Sign](#how-specifying-a-sign)
-6. [🗺️ Project Roadmap](#project-roadmap)
-7. [🚀 Getting Started](#getting-started)
-8. [📊 Data Collection and Training](#data-collection-and-training)
+1. [📝 Product Requirements](#📝-product-requirements)
+2. [🏗️ High-Level Architecture Overview](#🏗️-high-level-architecture-overview)
+3. [✋ What is a Sign?](#✋-what-is-a-sign)
+4. [🌍 Scope and Variation in Sign Languages](#🌍-scope-and-variation-in-sign-languages)
+5. [🔍 How specifying a Sign](#🔍-how-specifying-a-sign)
+6. [🗺️ Project Roadmap](#🗺️-project-roadmap)
+7. [🚀 Getting Started](#🚀-getting-started)
+8. [📊 Data Collection and Training](#📊-data-collection-and-training)
 
 ## 📝 Product Requirements
 
