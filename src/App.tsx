@@ -21,6 +21,7 @@ import {
   AuthProvider,
   DefaultRouteContext,
   PrivateWrapper,
+  PublicWrapper,
 } from "./reducers/auth.reducer";
 import ConfirmSignUp from "./ConfirmSignUp";
 import ForgetPassword from "./ForgetPassword";
@@ -81,13 +82,49 @@ export default function App(): JSX.Element {
             <div id="application">
               <Header />
               <Routes>
-                <Route path="/login" element={<SignIn />} />
-                <Route path="/sign-up" element={<SignUp />} />
-                <Route path="/confirm-sign-up" element={<ConfirmSignUp />} />
-                <Route path="/forget-password" element={<ForgetPassword />} />
+                <Route
+                  path="/login"
+                  element={<PublicWrapper>{<SignIn />}</PublicWrapper>}
+                />
+                <Route
+                  path="/login"
+                  element={
+                    <PublicWrapper>
+                      <SignIn />
+                    </PublicWrapper>
+                  }
+                />
+                <Route
+                  path="/sign-up"
+                  element={
+                    <PublicWrapper>
+                      <SignUp />
+                    </PublicWrapper>
+                  }
+                />
+                <Route
+                  path="/confirm-sign-up"
+                  element={
+                    <PublicWrapper>
+                      <ConfirmSignUp />
+                    </PublicWrapper>
+                  }
+                />
+                <Route
+                  path="/forget-password"
+                  element={
+                    <PublicWrapper>
+                      <ForgetPassword />
+                    </PublicWrapper>
+                  }
+                />
                 <Route
                   path="/confirm-forget-password"
-                  element={<ConfirmForgetPassword />}
+                  element={
+                    <PublicWrapper>
+                      <ConfirmForgetPassword />
+                    </PublicWrapper>
+                  }
                 />
                 <Route
                   path="/database-diversity-importance"

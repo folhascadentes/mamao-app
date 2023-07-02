@@ -6,7 +6,7 @@ import {
   useContext,
   createContext,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -74,4 +74,24 @@ export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
   }, [isAuthenticated]);
 
   return isAuthenticated ? children : null;
+};
+
+export const PublicWrapper: FC<PrivateWrapperProps> = ({ children }) => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const location = useLocation();
+
+  const publicPaths = [
+    "/",
+    "/login",
+    "/sign-up",
+    "/confirm-sign-up",
+    "/forget-password",
+    "/confirm-forget-password",
+  ];
+
+  if (isAuthenticated && publicPaths.includes(location.pathname)) {
+    return <Navigate to="/instructions" />;
+  }
+
+  return <>{children}</>;
 };
