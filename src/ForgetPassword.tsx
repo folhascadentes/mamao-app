@@ -30,10 +30,7 @@ function ForgetPassword(): JSX.Element {
         navigate("/confirm-forget-password?email=" + email);
       }
     } catch (error: any) {
-      setError(
-        error.response?.data?.message?.join?.("\n") ||
-          "Não foi possível recuperar sua senha, verifique o e-mail indicado e tente novamente."
-      );
+      setError("Verifique o e-mail indicado e tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -84,8 +81,8 @@ function ForgetPassword(): JSX.Element {
           {error && <p className="text-red-500">{error}</p>}
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
-            disabled={loading}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl disabled:opacity-80"
+            disabled={loading || !email}
           >
             {loading ? (
               <Spinner />
