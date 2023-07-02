@@ -71,17 +71,17 @@ function WhoIsAIAC(): JSX.Element {
           </p>
         </div>
         <div className="hidden md:flex md:flex-col space-y-6">
-          <img src={handsTwo} style={{ height: "625px" }} alt="" />
-          <img src={handsOne} style={{ height: "625px" }} alt="" />
+          <img src={handsTwo} style={{ height: "560px" }} alt="" />
+          <img src={handsOne} style={{ height: "560px" }} alt="" />
         </div>
         <div></div>
       </div>
       <div className="flex flex-wrap justify-center space-x-8 xl:space-x-16 mb-24">
         <div className="hidden md:flex md:flex-col space-y-6 pt-12">
-          <img src={handsFour} style={{ height: "625px" }} alt="" />
+          <img src={handsFour} style={{ height: "560px" }} alt="" />
         </div>
         <div className="hidden md:flex md:flex-col space-y-6 pt-12">
-          <img src={handsThree} style={{ height: "625px" }} alt="" />
+          <img src={handsThree} style={{ height: "560px" }} alt="" />
         </div>
       </div>
     </>
