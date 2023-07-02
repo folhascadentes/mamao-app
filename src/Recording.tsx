@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import * as tensorflow from "@tensorflow/tfjs";
+import { useNavigate } from "react-router-dom";
 import { Camera } from "@mediapipe/camera_utils";
 import {
   HandshapeImages,
@@ -38,19 +38,11 @@ function Recording({
   cameraSettings: MediaTrackSettings;
 }) {
   const navigate = useNavigate();
-  useEffect(() => {
-    if (!cameraSettings) {
-      navigate("/instructions");
-    }
-    /* eslint-disable-next-line */
-  }, []);
-
   const { state } = useContext(StyleContext);
-
   const debuger: boolean = !!localStorage.getItem("debug");
   const SIGN_N_TIMES: number = 3;
   const DURATION: number = 5; // in seconds
-  const FPS: number = cameraSettings.frameRate ?? 24;
+  const FPS: number = cameraSettings?.frameRate ?? 24;
   const BUFFER_SIZE: number = DURATION * FPS;
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -155,6 +147,10 @@ function Recording({
   };
 
   useEffect(() => {
+    if (!handShapeModel) {
+      navigate("/instructions");
+    }
+
     const subject = new Subject(
       canvasRef.current as HTMLCanvasElement,
       BUFFER_SIZE,
