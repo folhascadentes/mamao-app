@@ -10,18 +10,18 @@ Join us in our mission to bridge the gap between sign language and spoken langua
 
 You may be wondering about our name, Mamão. In Portuguese, "mamão" is the word for papaya, a tropical fruit. However, the name choice goes beyond that. It's a playful pun on the phrase "uma mão" which means "a hand" in Portuguese, and is similar to the English phrase "give a hand". This resonates with the core purpose of our platform: facilitating sign language learning and practice, which is primarily done using hands. Through Mamão, we aim to 'give a hand' to those seeking to communicate using sign languages, and to those striving to develop new technologies to bridge the communication gap for the deaf and hard of hearing community.
 
-## Table of Contents
+## 📚 Table of Contents
 
-1. [Product Requirements](#product-requirements)
-2. [High-Level Architecture Overview](#high-level-architecture-overview)
-3. [What is a Sign?](#what-is-a-sign)
-4. [Scope and Variation in Sign Languages](#scope-and-variation-in-sign-languages)
-5. [How specifying a Sign](#how-specifying-a-sign)
-6. [Project Roadmap](#project-roadmap)
-7. [Getting Started](#getting-started)
-8. [Data Collection and Training](#data-collection-and-training)
+1. [📝 Product Requirements](#product-requirements)
+2. [🏗️ High-Level Architecture Overview](#high-level-architecture-overview)
+3. [✋ What is a Sign?](#what-is-a-sign)
+4. [🌍 Scope and Variation in Sign Languages](#scope-and-variation-in-sign-languages)
+5. [🔍 How specifying a Sign](#how-specifying-a-sign)
+6. [🗺️ Project Roadmap](#project-roadmap)
+7. [🚀 Getting Started](#getting-started)
+8. [📊 Data Collection and Training](#data-collection-and-training)
 
-## Product Requirements
+## 📝 Product Requirements
 
 In developing our open-source crowdsourcing platform for training sign language recognition methods, we've identified several crucial product requirements. These requirements will guide our design and development processes, and are essential in creating a platform that is not only effective and secure, but also accessible and engaging.
 
@@ -51,7 +51,7 @@ As an open-source project, we believe in the power of community collaboration. T
 
 In conclusion, these requirements represent our dedication to creating an inclusive, engaging, secure, and high-quality platform for advancing sign language recognition technology. We welcome all contributions that align with our mission and help us improve our platform.
 
-## High-Level Architecture Overview
+## 🏗️ High-Level Architecture Overview
 
 Our platform is composed of three main components working together to facilitate sign language crowdsourcing. These components are the Subject, Detector, and Instructor.
 
@@ -69,7 +69,7 @@ The Instructor component is designed to guide and assist users in learning and p
 
 By combining these three components, our platform offers a comprehensive solution for sign language practice and learning. The Subject, Detector, and Instructor work together to provide a supportive, informative, and interactive experience for users.
 
-## What is a Sign?
+## ✋ What is a Sign?
 
 In this section, we outline the key characteristics of a sign. For those who may not be familiar, a sign in sign language is a visual-gestural unit of meaning. Just as spoken languages use sounds combined in different ways to form words, sign languages use gestures (signs), made primarily with the hands, but also involving facial expressions and body movements. Each sign is made up of a number of components that define its meaning and usage.
 
@@ -101,7 +101,7 @@ Rhythm describes the speed and flow of the sign. Much like spoken language, rhyt
 
 This specification provides an overview of the characteristics of a sign. For each sign in this open source database, we provide a detailed description that includes these elements. This crowdsourced effort aims to build a comprehensive database of signs to aid in the development of translation and recognition systems. Contributions from everyone, regardless of sign language proficiency, are welcome and appreciated.
 
-## Scope and Variation in Sign Languages
+## 🌍 Scope and Variation in Sign Languages
 
 It's important to note that in the initial phase of this project, we are focusing primarily on the manual features of signs - that is, the elements that involve handshapes, locations, movements, and palm orientations. Non-manual markers, such as facial expressions and body movements, while incredibly important in sign language communication, are not being considered at this point in time. We acknowledge the significant role these non-manual markers play in sign languages and plan to incorporate them in future iterations of this project.
 
@@ -111,7 +111,7 @@ Similarly, each sign language may have unique handshapes and other characteristi
 
 This project aims to embrace this diversity and provide a platform where signs from different languages can be shared and learned.
 
-## How specifying a Sign
+## 🔍 How specifying a Sign
 
 In order to enable uniform representation and easy processing of signs by the system, we're using a standard JSON format to specify the characteristics of a sign. A sign can be represented as a JSON object with the following fields:
 
@@ -393,7 +393,7 @@ The options field provides additional settings for more specific or complex sign
 
 - **options.detect.circular**: This means the movement can start at any position of the array of movement objects.
 
-## Project Roadmap
+## 🗺️ Project Roadmap
 
 Our development process is structured in stages to allow for incremental improvements and necessary adjustments based on user feedback. Below is an outline of our project roadmap:
 
@@ -430,7 +430,7 @@ In this phase, we will focus on:
 
 Please note that this roadmap is a living document and may be subject to changes as the project evolves. Feedback, suggestions, and contributions are always welcome at each stage of the project.
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Running the Application Locally
 
@@ -464,7 +464,7 @@ REACT_APP_BACK_END_API=YOUR_BACKEND_API_URL
 
 ### Backend
 
-The backend for this application is modeled around AWS services. You can find the backend code at <a href="https://github.com/folhascadentes/mamao-app" target="_new">this link</a>.
+The backend for this application is modeled around AWS services. You can find the backend code at <a href="https://github.com/folhascadentes/mamao-backend" target="_new">this link</a>.
 
 ### Development Version
 
@@ -472,7 +472,7 @@ You can access the current development version of the application at app.mamao.d
 
 Please note that this is a work in progress and we appreciate your understanding as we continue to improve and optimize the application. We welcome any feedback and contributions to help make our application better!
 
-## Data Collection and Training
+## 📊 Data Collection and Training
 
 The following sections pertain to the techniques and methods used within the platform to collect sign data and train the underlying models. These methods are used for the collection and representation of sign data, contributing to the training and functionality of the platform. They do not directly relate to the final product, which is the database of sign language gestures.
 
