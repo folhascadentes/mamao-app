@@ -122,7 +122,7 @@ function Recording({
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
-        if (navigator.serviceWorker.controller) {
+        if (!debuger && navigator.serviceWorker.controller) {
           const { startIndex, endIndex } = subject?.getBufferIndexes(
             start,
             end
@@ -231,9 +231,7 @@ function Recording({
             </div>
           </div>
           <div>
-            <h1 className="text-3xl text-left mb-4">
-              Instruções
-            </h1>
+            <h1 className="text-3xl text-left mb-4">Instruções</h1>
             <div className="flex flex-col space-y-1">
               <div className="flex flex-col mb-2">
                 <div className="flex space-x-3 items-center">
@@ -292,10 +290,7 @@ function Recording({
             </div>
             <div className="flex flex-col space-y-2 mt-10">
               {doneActions.map((step) => (
-                <div
-                  key={step.state}
-                  className="flex space-x-3 items-center"
-                >
+                <div key={step.state} className="flex space-x-3 items-center">
                   <MdDone className="text-green-500 font-bold" size={24} />
                   <span>{step.description}</span>
                 </div>
