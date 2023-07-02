@@ -33,7 +33,8 @@ function ConfirmForgetPassword(): JSX.Element {
 
     try {
       if (password !== confirmPassword) {
-        throw new Error("As senhas não correspondem.");
+        setError("As senhas não correspondem.");
+        return;
       }
 
       const response = await axios.post(
@@ -50,8 +51,7 @@ function ConfirmForgetPassword(): JSX.Element {
       }
     } catch (error: any) {
       setError(
-        error.response?.data?.message?.join?.("\n") ||
-          "Houve um problema ao tentar confirmar a recuperação da sua senha, tente novamente."
+        "Verficar o código de confirmação e se a senha atende os requisitos mínimos."
       );
     } finally {
       setLoading(false);
@@ -93,6 +93,7 @@ function ConfirmForgetPassword(): JSX.Element {
               focusBorderColor="orange.200"
               value={email}
               readOnly
+              bg="gray.200"
             />
           </FormControl>
           <FormControl id="code">
@@ -107,6 +108,7 @@ function ConfirmForgetPassword(): JSX.Element {
               onChange={(e) => setCode(e.target.value)}
             />
           </FormControl>
+
           <FormControl id="password">
             <FormLabel>Nova Senha *</FormLabel>
             <Input
@@ -129,6 +131,10 @@ function ConfirmForgetPassword(): JSX.Element {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </FormControl>
+          <p className="text-sm font-bold">
+            A senha deve conter pelo menos: 8 caracteres, 1 número, 1 caractere
+            especial, 1 letra maiúscula e 1 letra minúscula.
+          </p>
           {error && <p className="text-red-500">{error}</p>}
           <p className="text-sm font-bold">
             Foi enviado um código de confirmação no e-mail cadastrado. Caso não
@@ -136,8 +142,8 @@ function ConfirmForgetPassword(): JSX.Element {
           </p>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
-            disabled={loading}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl disabled:opacity-80"
+            disabled={loading || !code || !password || !confirmPassword}
           >
             {loading ? (
               <Spinner />
