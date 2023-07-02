@@ -41,10 +41,7 @@ function ConfirmSignUp(): JSX.Element {
         navigate("/login");
       }
     } catch (error: any) {
-      setError(
-        error.response?.data?.message?.join?.("\n") ||
-          "Houve um problema ao tentar confirmar seu registro, tente novamente."
-      );
+      setError("Verifique se o código de confirmação está correto.");
     } finally {
       setLoading(false);
     }
@@ -85,6 +82,7 @@ function ConfirmSignUp(): JSX.Element {
               focusBorderColor="orange.200"
               value={email}
               readOnly
+              bg="gray.200"
             />
           </FormControl>
           <FormControl id="code">
@@ -106,8 +104,8 @@ function ConfirmSignUp(): JSX.Element {
           </p>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl"
-            disabled={loading}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white text-lg w-full py-3.5 rounded-xl disabled:opacity-80"
+            disabled={loading || !code}
           >
             {loading ? (
               <Spinner />
