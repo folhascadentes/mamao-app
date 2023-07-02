@@ -51,6 +51,9 @@ export function SignUp(): JSX.Element {
         navigate("/confirm-sign-up?email=" + email);
       }
     } catch (error: any) {
+      // Beta testing phase
+      navigate("/confirm-sign-up?email=" + email);
+      // end beta code
       setError(
         "Verfique se o e-mail já está cadastrado ou se as senhas são iguais e atendem os requisitos mínimos."
       );
