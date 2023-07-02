@@ -1,4 +1,4 @@
-# Mamão
+# 🤟 Mamão ![Beta](https://img.shields.io/badge/-Beta-blue)
 
 Welcome to Mamão, an innovative open-source platform designed to crowdsource the collection of sign language data. Our goal is to create a comprehensive, diverse, and high-quality dataset for training Artificial Intelligence (AI) methods. This dataset will be used to build robust sign language recognizers and, consequently, effective sign language translators.
 
@@ -229,7 +229,7 @@ const HandShape = {
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
     THUMB_FINGER: "thumbFinger",
-    THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",    
+    THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",
   },
 };
 
@@ -397,15 +397,15 @@ The options field provides additional settings for more specific or complex sign
 
 Our development process is structured in stages to allow for incremental improvements and necessary adjustments based on user feedback. Below is an outline of our project roadmap:
 
-### Alpha Release
+### ~~Alpha Release~~
 
-The main objective of the Alpha release is to validate whether users can independently and intuitively signal the signs registered in the system through the platform. We aim to register at least 75 signs at this stage.
+~~The main objective of the Alpha release is to validate whether users can independently and intuitively signal the signs registered in the system through the platform. We aim to register at least 75 signs at this stage.~~
 
-During the Alpha phase, we'll focus on:
+~~During the Alpha phase, we'll focus on:~~
 
-- User testing to understand if the system is intuitive and straightforward for the users.
-- Making improvements to decrease the learning curve and increase the number of signals per minute from volunteers.
-- Actively seeking user feedback and making necessary adjustments to enhance the user experience.
+- ~~User testing to understand if the system is intuitive and straightforward for the users.~~
+- ~~Making improvements to decrease the learning curve and increase the number of signals per minute from volunteers.~~
+- ~~Actively seeking user feedback and making necessary adjustments to enhance the user experience.~~
 
 ### Beta Release
 
@@ -452,10 +452,19 @@ S3_BUCKET_NAME=NAME_OF_BUCKET_THAT_WILL_DEPLOY
 CLOUDFRONT_DISTRIBUTION_ID=ID_OF_CLOUD_DISTRIBUTION
 ```
 
-
 ### Environment Variables
 
 Please be aware that some environment variables are currently hardcoded in the code. This is something we recognize as a limitation and we aim to refactor this to use a .env file or a similar mechanism to handle environment-specific variables.
+
+You will need to update the .env.development or .env.production file to include the following variable:
+
+```bash
+REACT_APP_BACK_END_API=YOUR_BACKEND_API_URL
+```
+
+### Backend
+
+The backend for this application is modeled around AWS services. You can find the backend code at <a href="https://github.com/folhascadentes/mamao-app" target="_new">this link</a>.
 
 ### Development Version
 
