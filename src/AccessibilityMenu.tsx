@@ -94,7 +94,7 @@ function AccessibilityMenu(): JSX.Element {
   }, []);
 
   return (
-    <div className="flex space-x-2 md:space-x-4">
+    <div className="flex space-x-2 md:space-x-4 items-center">
       <button
         title="Autocontraste [c]"
         aria-describedby="Autocontraste"
@@ -102,9 +102,11 @@ function AccessibilityMenu(): JSX.Element {
         onClick={handleHightConstast}
         style={{ fontSize: "24px" }}
       >
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 items-center">
           <MdContrast size={32} />{" "}
-          <span className="text-sm hidden md:inline">[C]</span>
+          <span className="text-sm ">
+            <SL>C</SL>
+          </span>
         </div>
       </button>
       <button
@@ -129,11 +131,14 @@ function AccessibilityMenu(): JSX.Element {
         <button
           title="Ação de sair da conta"
           aria-describedby="Ação de sair da conta"
-          className="w-24"
+          className="w-16"
           style={{ fontSize: "16px" }}
           onClick={handleLogout}
         >
-          Sair <SL>L</SL>
+          Sair{" "}
+          <span className="text-sm">
+            <SL>L</SL>
+          </span>
         </button>
       )}
     </div>
