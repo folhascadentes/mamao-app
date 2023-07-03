@@ -52,11 +52,21 @@ function Recording({
   const subjectRef = useRef<Subject>();
   const detectorRef = useRef<Detector>();
   const instructorRef = useRef<Instructor>();
-  const signIndex = useRef<number>(1);
-
+  const signIndex = useRef<number>(
+    (signs.findIndex(
+      (sign) => sign.token === localStorage.getItem("signToken")
+    ) ?? 0) + 1
+  );
   const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
-  const [sign, setSign] = useState<Sign>(signs[0]);
-  const [signCounter, setSignCounter] = useState<number>(0);
+  const [sign, setSign] = useState<Sign>(
+    signs.find((sign) => sign.token === localStorage.getItem("signToken")) ??
+      signs[0]
+  );
+  const [signCounter, setSignCounter] = useState<number>(
+    localStorage.getItem("signCounter")
+      ? Number(localStorage.getItem("signCounter"))
+      : 0
+  );
   const [todoActions, setTodoActions] = useState<DetectorState[]>([]);
   const [doneActions, setDoneActions] = useState<DetectorState[]>([]);
 
@@ -227,6 +237,9 @@ function Recording({
       signIndex.current += 1;
     }
     // eslint-disable-next-line
+
+    localStorage.setItem("signToken", detector?.getSign()?.token ?? "");
+    localStorage.setItem("signCounter", signCounter.toString());
   }, [signCounter]);
 
   return (
