@@ -12,7 +12,7 @@ function WhoIsAIAC(): JSX.Element {
           className="flex flex-col mx-6 md:mx-0 space-y-4"
           style={{ width: window.innerWidth <= 500 ? "auto" : "600px" }}
         >
-          <h1 className="text-6xl md:text-8xl font-black text-lime-500">
+          <h1 className="text-7xl md:text-8xl font-black text-lime-500 mb-4">
             Folhas Cadentes
           </h1>
           <h2 className="text-3xl md:text-4xl font-black text-orange-500 mb-2">
@@ -71,17 +71,17 @@ function WhoIsAIAC(): JSX.Element {
           </p>
         </div>
         <div className="hidden md:flex md:flex-col space-y-6">
-          <img src={handsTwo} style={{ height: "560px" }} alt="" />
-          <img src={handsOne} style={{ height: "560px" }} alt="" />
+          <img src={handsTwo} style={{ height: "600px" }} alt="" />
+          <img src={handsOne} style={{ height: "600px" }} alt="" />
         </div>
         <div></div>
       </div>
       <div className="flex flex-wrap justify-center space-x-8 xl:space-x-16 mb-24">
         <div className="hidden md:flex md:flex-col space-y-6 pt-12">
-          <img src={handsFour} style={{ height: "560px" }} alt="" />
+          <img src={handsFour} style={{ height: "600px" }} alt="" />
         </div>
         <div className="hidden md:flex md:flex-col space-y-6 pt-12">
-          <img src={handsThree} style={{ height: "560px" }} alt="" />
+          <img src={handsThree} style={{ height: "600px" }} alt="" />
         </div>
       </div>
     </>

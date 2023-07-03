@@ -551,7 +551,7 @@ export class Subject {
     afterWrist: Coordinate
   ): Pick<MovementAxis, "z"> {
     // A challenge to find the right threshold if because the Z value is not very precise for pose landmarks
-    const THRESHOLD = 3.75;
+    const THRESHOLD = 2.55;
 
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
     const beforeV2 = pointDifference(beforeElbow, beforeWrist);
@@ -562,9 +562,9 @@ export class Subject {
     const afterAngle = angleBetweenTwoVectors(afterV1, afterV2);
     const beforeAngle = angleBetweenTwoVectors(beforeV1, beforeV2);
 
-    if (afterAngle - beforeAngle > THRESHOLD) {
+    if (afterAngle - beforeAngle >= THRESHOLD) {
       return { z: 1 };
-    } else if (afterAngle - beforeAngle < -THRESHOLD) {
+    } else if (afterAngle - beforeAngle <= -THRESHOLD) {
       return { z: -1 };
     } else {
       return { z: undefined };

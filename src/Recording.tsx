@@ -29,6 +29,7 @@ import { MdOutlinePending, MdDone } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
 
 const MAX_VIDEO_LENGTH = 24;
+const MIN_VIDEO_LENGTH = 4;
 
 function Recording({
   setLoading,
@@ -132,7 +133,7 @@ function Recording({
         const { start, end } = detector.getMovementIndex();
         const totalFrames = end - start;
 
-        if (totalFrames > MAX_VIDEO_LENGTH) {
+        if (totalFrames > MAX_VIDEO_LENGTH || totalFrames < MIN_VIDEO_LENGTH) {
           failure();
           return;
         }

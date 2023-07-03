@@ -75,7 +75,7 @@ function Header(): JSX.Element {
               onClick={handleRedirectHome}
               src={papaya3d}
               alt=""
-              style={{ height: "65px" }}
+              style={{ height: "70px" }}
             />
           </div>
           {window.innerWidth < 768 && (
