@@ -149,6 +149,7 @@ function Recording({
   useEffect(() => {
     if (!handShapeModel) {
       navigate("/instructions");
+      return;
     }
 
     const subject = new Subject(
