@@ -696,7 +696,11 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ wristRotate: true }, { wristRotate: true }],
+          detect: [
+            { wristRotate: true },
+            { wristRotate: true },
+            { wristRotate: true },
+          ],
           metadata: {
             description: "gire o pulso da duas vezes",
             type: MovementType.WRIST_ROTATE,
@@ -1247,11 +1251,11 @@ export const signs: Sign[] = [
         dominant: {
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.INDEX_FINGER,
-          palmOrientation: PalmOrientation.BACK,
+          palmOrientation: PalmOrientation.DOWN_BACK,
           options: {
             location: {
               track: true,
-              detectionRadius: 60,
+              detectionRadius: 80,
               radiusOffset: 100,
             },
           },
@@ -1271,11 +1275,11 @@ export const signs: Sign[] = [
         dominant: {
           location: Location.TORAX,
           handShape: HandShape.libras.INDEX_FINGER,
-          palmOrientation: PalmOrientation.BACK,
+          palmOrientation: PalmOrientation.DOWN_BACK,
           options: {
             location: {
               track: true,
-              detectionRadius: 60,
+              detectionRadius: 80,
               same: true,
             },
           },
