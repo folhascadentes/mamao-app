@@ -52,10 +52,11 @@ function Recording({
   const subjectRef = useRef<Subject>();
   const detectorRef = useRef<Detector>();
   const instructorRef = useRef<Instructor>();
+  const signIndexLocalStorage = signs.findIndex(
+    (sign) => sign.token === localStorage.getItem("signToken")
+  );
   const signIndex = useRef<number>(
-    (signs.findIndex(
-      (sign) => sign.token === localStorage.getItem("signToken")
-    ) ?? 0) + 1
+    signIndexLocalStorage === -1 ? 1 : signIndexLocalStorage + 1
   );
   const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
   const [sign, setSign] = useState<Sign>(
