@@ -432,7 +432,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 45,
+              radiusOffset: 65,
             },
           },
         },
@@ -756,47 +756,6 @@ export const signs: Sign[] = [
   },
   {
     language: "Libras",
-    token: "Sentimento",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.CLAW,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
-          metadata: {
-            description: "bata no peito duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.CLAW,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Quente",
     steps: {
       start: {
@@ -837,47 +796,6 @@ export const signs: Sign[] = [
                 leftLimitValue: 0,
               },
               sameY: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Ter",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.L,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
-          metadata: {
-            description: "bata no peito duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.L,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
             },
           },
         },
@@ -970,89 +888,6 @@ export const signs: Sign[] = [
   },
   {
     language: "Libras",
-    token: "Meu",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 100,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: -1 }, { z: 1 }],
-          metadata: {
-            description:
-              "mova em sua direção e após isso volte a posição inicial",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX,
-          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          palmOrientation: PalmOrientation.BACK,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Ainda",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.CHIN,
-          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 40,
-              radiusOffset: 60,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ z: -1 }, { z: 1 }, { z: -1 }],
-          metadata: {
-            description: "mova a mão até o queixo tocando ele duas vezes",
-            type: MovementType.LINEAR_MOTION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.CHIN,
-          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
-          palmOrientation: PalmOrientation.LEFT,
-          options: {
-            location: {
-              detectionRadius: 40,
-              radiusOffset: 15,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Sim",
     steps: {
       start: {
@@ -1098,7 +933,6 @@ export const signs: Sign[] = [
       },
     },
   },
-
   {
     language: "Libras",
     token: "Obrigado",
@@ -1160,8 +994,9 @@ export const signs: Sign[] = [
               detectionRadius: 60,
               track: true,
               radiusOffset: {
-                value: 100,
-                downLimitValue: 0,
+                value: 150,
+                leftLimitValue: 50,
+                downLimitValue: 50,
               },
             },
           },
@@ -1191,6 +1026,171 @@ export const signs: Sign[] = [
                 value: 100,
                 downLimitValue: 0,
               },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Meu",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }],
+          metadata: {
+            description:
+              "mova em sua direção e após isso volte a posição inicial",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Sentimento",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.CLAW,
+          palmOrientation: PalmOrientation.BACK,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Ter",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }, { z: 1 }],
+          metadata: {
+            description: "bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.L,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Ainda",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.CHIN,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 60,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }],
+          metadata: {
+            description: "mova a mão até o queixo tocando ele duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.CHIN,
+          handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 40,
+              radiusOffset: 15,
             },
           },
         },
