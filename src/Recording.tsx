@@ -28,6 +28,8 @@ import {
 import { MdOutlinePending, MdDone } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
 
+const MAX_VIDEO_LENGTH = 24;
+
 function Recording({
   setLoading,
   handShapeModel,
@@ -116,18 +118,28 @@ function Recording({
       response.valid
     ) {
       if (detector.isValid()) {
+        const { start, end } = detector.getMovementIndex();
+        const totalFrames = end - start;
+
+        if (totalFrames > MAX_VIDEO_LENGTH) {
+          failure();
+          return;
+        }
+
         success();
         setSignCounter((prevCounter) => prevCounter + 1);
-        const { start, end } = detector.getMovementIndex();
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
-        if (!debuger && navigator.serviceWorker.controller) {
+        if (
+          process.env.REACT_APP_ENV !== "development" &&
+          navigator.serviceWorker.controller
+        ) {
           const { startIndex, endIndex } = subject?.getBufferIndexes(
             start,
             end
           );
-          const frames = imageBuffer.slice(startIndex, endIndex + 10);
+          const frames = imageBuffer.slice(startIndex, endIndex + 1);
           const message = {
             frames,
             landmarks: movementBuffer.map((buffer) => buffer.readings),
