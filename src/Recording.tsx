@@ -27,6 +27,7 @@ import {
 } from "./core/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
+import jwt_decode from "jwt-decode";
 
 const MAX_VIDEO_LENGTH = 24;
 const MIN_VIDEO_LENGTH = 4;
@@ -147,6 +148,8 @@ function Recording({
           process.env.REACT_APP_ENV !== "development" &&
           navigator.serviceWorker.controller
         ) {
+          checkTokenAndLogout();
+
           const { startIndex, endIndex } = subject?.getBufferIndexes(
             start,
             end
@@ -503,6 +506,27 @@ function Recording({
     const threshold = -125;
     const leftHipVisible = 720 - poseLandmarks[23].y > threshold;
     return leftHipVisible;
+  }
+
+  function checkTokenAndLogout() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const decoded: any = jwt_decode(token);
+
+      const current_time = Date.now().valueOf() / 1000;
+
+      if (decoded.exp < current_time) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+    } catch (err) {
+      console.log("Error decoding token:", err);
+    }
   }
 }
 
