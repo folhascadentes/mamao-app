@@ -192,6 +192,12 @@ function Recording({
     });
 
     camera.start();
+
+    return () => {
+      camera.stop();
+      hands.close();
+      pose.close();
+    };
     // eslint-disable-next-line
   }, []);
 
