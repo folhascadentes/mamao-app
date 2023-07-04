@@ -247,17 +247,21 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 60,
-              radiusOffset: 125,
+              detectionRadius: 50,
+              radiusOffset: {
+                value: 125,
+                downLimitValue: 50,
+              },
+              handLocation: HandLocation.INDEX_FINGER_TIP,
             },
           },
         },
       },
       movement: {
         dominant: {
-          detect: [{ y: 1 }],
+          detect: [{ y: 1 }, { y: 1 }, { y: 1 }],
           metadata: {
-            description: "mova a mão dominante até a região da bochecha",
+            description: "mova a mão até a região da bochecha",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -270,8 +274,11 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 60,
-              radiusOffset: 30,
+              detectionRadius: 35,
+              radiusOffset: {
+                value: 40,
+                leftLimitValue: 0,
+              },
             },
           },
         },
