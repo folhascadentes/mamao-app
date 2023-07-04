@@ -183,6 +183,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER_LEFT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -191,13 +192,14 @@ export const signs: Sign[] = [
                 value: 95,
                 leftLimitValue: 0,
               },
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
           },
         },
       },
       movement: {
         dominant: {
-          detect: [{ x: 1 }],
+          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },
@@ -205,7 +207,8 @@ export const signs: Sign[] = [
             { wristRotate: true },
           ],
           metadata: {
-            description: "mova a mão até a outra bola laranja",
+            description:
+              "faça o movimento com dedo colad ao corpo, em seguida saido para frente e voltando para o corpo até a outra bola laranja  ",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -215,15 +218,17 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER_RIGHT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 45,
               track: true,
               radiusOffset: {
                 value: 95,
                 rightLimitValue: 0,
               },
               sameY: true,
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
           },
         },
