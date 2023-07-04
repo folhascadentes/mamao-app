@@ -846,7 +846,7 @@ export const signs: Sign[] = [
           detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
           metadata: {
             description:
-              "mova a mão dominante para cima e para baixo duas vezes",
+              "mova a mão para cima e para baixo duas vezes",
             type: MovementType.SHAKE_MOTION,
           },
           options: {
@@ -895,7 +895,7 @@ export const signs: Sign[] = [
           detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
           metadata: {
             description:
-              "mova a mão dominante lateralmente para dentro e para fora duas vezes",
+              "mova a mão lateralmente para dentro e para fora duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
           options: {
@@ -943,7 +943,7 @@ export const signs: Sign[] = [
           detect: [{ x: -1 }, { x: 1 }, { x: -1 }, { x: 1 }],
           metadata: {
             description:
-              "mova a mão dominante lateralmente para dentro e para fora duas vezes",
+              "mova a mão lateralmente para dentro e para fora duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
           options: {
@@ -993,7 +993,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
           metadata: {
-            description: "mova a mão dominante da direita para esquerda",
+            description: "mova a mão da direita para esquerda",
             type: MovementType.LINEAR_MOTION,
           },
         },
