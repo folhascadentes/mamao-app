@@ -264,6 +264,7 @@ export enum HandOrientation {
   LEFT = "LEFT",
   RIGHT = "RIGHT",
   UP = "UP",
+  UP_LEFT = "UP_LEFT",
 }
 
 export const HandOrientationDescriptor: {
@@ -275,4 +276,5 @@ export const HandOrientationDescriptor: {
   [HandOrientation.LEFT]: { x: -1, y: 0, z: 0 },
   [HandOrientation.RIGHT]: { x: 1, y: 0, z: 0 },
   [HandOrientation.UP]: { x: 0, y: 1, z: 0 },
+  [HandOrientation.UP_LEFT]: { x: -1, y: 1, z: 0 },
 };

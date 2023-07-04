@@ -252,7 +252,7 @@ export const signs: Sign[] = [
                 value: 125,
                 downLimitValue: 50,
               },
-              handLocation: HandLocation.INDEX_FINGER_TIP,
+              handLocation: HandLocation.MIDDLE_FINGER_MCP,
             },
           },
         },
@@ -261,7 +261,8 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ y: 1 }, { y: 1 }, { y: 1 }],
           metadata: {
-            description: "mova a mão até a região da bochecha",
+            description:
+              "mova a mão até a região da bochecha em direção a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -274,11 +275,12 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 35,
+              detectionRadius: 40,
               radiusOffset: {
                 value: 40,
                 leftLimitValue: 0,
               },
+              handLocation: HandLocation.MIDDLE_FINGER_MCP,
             },
           },
         },
@@ -299,7 +301,10 @@ export const signs: Sign[] = [
             location: {
               track: true,
               detectionRadius: 30,
-              radiusOffset: 30,
+              radiusOffset: {
+                value: 30,
+                leftLimitValue: 10,
+              },
               handLocation: HandLocation.INDEX_FINGER_TIP,
             },
           },
@@ -309,7 +314,8 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: 1 }, { x: 1 }],
           metadata: {
-            description: "mova a mão em um moviemento diagonal para direita",
+            description:
+              "faça o movimento em diagonal para direita até a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -361,7 +367,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ x: 1 }],
+          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },
@@ -369,7 +375,8 @@ export const signs: Sign[] = [
             { wristRotate: true },
           ],
           metadata: {
-            description: "mova a mão até a outra bola laranja",
+            description:
+              "faça o movimento com a mão em direção a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -417,7 +424,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ x: 1 }],
+          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },
@@ -425,7 +432,8 @@ export const signs: Sign[] = [
             { wristRotate: true },
           ],
           metadata: {
-            description: "mova a mão até a outra bola laranja",
+            description:
+              "faça o movimento com a mão em direção a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -520,6 +528,7 @@ export const signs: Sign[] = [
           location: Location.CHIN,
           handShape: HandShape.libras.O,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.UP,
         },
       },
       movement: {
@@ -527,7 +536,7 @@ export const signs: Sign[] = [
           detect: [{ y: -1, z: 1 }, { y: -1 }],
           metadata: {
             description:
-              "mova a mão até a outra bola laranja em um movimento parabólico e abrindo a mão",
+              "vá abrindo a mão e movendo ela para frente descendo em direção a outra bola laranja",
             type: MovementType.PARABOLIC_MOTION,
           },
         },
@@ -537,13 +546,17 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.UP,
+          handOrientation: HandOrientation.FRONT,
           options: {
             location: {
               detectionRadius: 70,
               radiusOffset: {
-                value: 85,
+                value: 100,
                 upLimitValue: 0,
+                leftLimitValue: -80,
+                rightLimitValue: 80,
               },
+              handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
           },
         },
@@ -559,10 +572,11 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.A,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 75,
+              radiusOffset: 65,
             },
           },
         },
@@ -586,6 +600,7 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.A,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               same: true,
@@ -619,7 +634,7 @@ export const signs: Sign[] = [
           detect: [{ z: 1 }, { y: -1, z: 1 }],
           metadata: {
             description:
-              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+              "mova a mão para frente e para baixo em direção a outra bola laranja",
             type: MovementType.PARABOLIC_MOTION,
           },
         },
@@ -633,7 +648,13 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 80,
+              radiusOffset: {
+                value: 100,
+                upLimitValue: 0,
+                leftLimitValue: -80,
+                rightLimitValue: 80,
+              },
+              handLocation: HandLocation.MIDDLE_FINGER_MCP,
             },
           },
         },
@@ -663,7 +684,7 @@ export const signs: Sign[] = [
           detect: [{ y: 1, z: -1 }, { z: -1 }],
           metadata: {
             description:
-              "mova a mão até a outra bola laranja em um movimento parabólico para trás",
+              "mova mão para cima e para sua direção até a outra bola laranja",
             type: MovementType.PARABOLIC_MOTION,
           },
         },
@@ -677,7 +698,13 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 80,
+              radiusOffset: {
+                value: 100,
+                upLimitValue: 0,
+                leftLimitValue: -80,
+                rightLimitValue: 80,
+              },
+              handLocation: HandLocation.MIDDLE_FINGER_MCP,
             },
           },
         },
@@ -744,6 +771,7 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -784,6 +812,7 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -803,6 +832,7 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.CLAW,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -831,6 +861,7 @@ export const signs: Sign[] = [
           location: Location.TORAX,
           handShape: HandShape.libras.CLAW,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -850,6 +881,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.INDEX_FINGER,
           palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -897,6 +929,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -944,6 +977,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.C,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP_LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -969,6 +1003,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_LEFT,
           handShape: HandShape.libras.C,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP_LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -992,6 +1027,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER,
           handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_OPEN,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -1014,6 +1050,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_LOWER,
           handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_OPEN,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 60,
@@ -1033,6 +1070,7 @@ export const signs: Sign[] = [
           location: Location.FOREHEAD_LEFT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 40,
@@ -1056,6 +1094,7 @@ export const signs: Sign[] = [
           location: Location.FOREHEAD_RIGHT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
           options: {
             location: {
               detectionRadius: 40,
@@ -1076,6 +1115,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -1090,11 +1130,10 @@ export const signs: Sign[] = [
             { wristFlexion: true },
             { wristExtension: true },
             { wristFlexion: true },
-            { wristExtension: true },
           ],
           metadata: {
             description:
-              "flexione e extenda o pulso da mão dominante duas vezes",
+              "com o pulso mova a mão para frente e para atrás duas vezes",
             type: MovementType.WRIST_FLEXION_EXTENSION,
           },
         },
@@ -1104,6 +1143,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -1177,7 +1217,7 @@ export const signs: Sign[] = [
               radiusOffset: {
                 value: 150,
                 leftLimitValue: 50,
-                downLimitValue: 50,
+                downLimitValue: 75,
               },
             },
           },
@@ -1222,6 +1262,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER,
           handShape: HandShape.libras.F,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -1235,7 +1276,7 @@ export const signs: Sign[] = [
           detect: [{ z: 1 }, { y: -1, z: 1 }],
           metadata: {
             description:
-              "mova a mão até a outra bola laranja em um movimento parabólico para frente",
+              "mova a mão para baixo e frente em direção a outra bola laranja",
             type: MovementType.PARABOLIC_MOTION,
           },
         },
@@ -1245,6 +1286,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_LOWER,
           handShape: HandShape.libras.F,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.FRONT,
           options: {
             location: {
               detectionRadius: 60,
@@ -1278,7 +1320,7 @@ export const signs: Sign[] = [
           detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
           metadata: {
             description:
-              "mova a mão dominante para baixo e para cima duas vezes",
+              "com o dedo apontando para baixo, mova para baixo e para cima duas vezes",
             type: MovementType.LINEAR_MOTION,
           },
         },
