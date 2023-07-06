@@ -2,7 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdInfoOutline } from "react-icons/md";
-import { FormControl, FormLabel, Spinner, Select } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  InputGroup,
+  InputRightElement,
+  IconButton,
+  Select,
+  Spinner,
+} from "@chakra-ui/react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Input, SL } from "./components";
 import moon from "./assets/moon.webp";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
@@ -20,7 +29,11 @@ export function SignUp(): JSX.Element {
   const [height, setHeight] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
+
+  const toggleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSignUp = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -107,25 +120,47 @@ export function SignUp(): JSX.Element {
             </FormControl>
             <FormControl id="password">
               <FormLabel>Senha *</FormLabel>
-              <Input
-                placeholder="senha"
-                type={"password"}
-                size="lg"
-                focusBorderColor="orange.200"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <Input
+                  placeholder="senha"
+                  type={showPassword ? "text" : "password"}
+                  focusBorderColor="orange.200"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    icon={showPassword ? <FaEyeSlash /> : <FaEye />}
+                    variant="ghost"
+                    onClick={toggleShowPassword}
+                  />
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
             <FormControl id="confirmPassword">
               <FormLabel>Confirmar Senha *</FormLabel>
-              <Input
-                placeholder="confirmar senha"
-                type={"password"}
-                size="lg"
-                focusBorderColor="orange.200"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+              <InputGroup size="lg">
+                <Input
+                  placeholder="confirmar senha"
+                  type={showPassword ? "text" : "password"}
+                  focusBorderColor="orange.200"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <InputRightElement>
+                  <IconButton
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                    icon={showPassword ? <FaEyeSlash /> : <FaEye />}
+                    variant="ghost"
+                    onClick={toggleShowPassword}
+                  />
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
             <p className="text-sm font-bold">
               A senha deve conter pelo menos: 8 caracteres, 1 número, 1
