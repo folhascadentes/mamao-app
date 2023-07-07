@@ -26,6 +26,7 @@ import {
   Results,
 } from "./core/mediapipe";
 import { MdOutlinePending, MdDone } from "react-icons/md";
+import { BsPersonVideo } from "react-icons/bs";
 import { StyleContext } from "./reducers/style.reducer";
 import jwt_decode from "jwt-decode";
 
@@ -49,6 +50,7 @@ function Recording({
   const FPS: number = cameraSettings?.frameRate ?? 24;
   const BUFFER_SIZE: number = DURATION * FPS;
 
+  const demoRef = useRef<HTMLVideoElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
@@ -60,6 +62,8 @@ function Recording({
   const signIndex = useRef<number>(
     signIndexLocalStorage === -1 ? 1 : signIndexLocalStorage + 1
   );
+
+  const [showVideo, setShowVideo] = useState(false);
   const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
   const [sign, setSign] = useState<Sign>(
     signs.find((sign) => sign.token === localStorage.getItem("signToken")) ??
@@ -77,6 +81,25 @@ function Recording({
   let movementBuffer: SubjectData[] = [];
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
+
+  const handleDemoStart = () => {
+    setShowVideo(true);
+  };
+
+  const handleDemoEnd = () => {
+    setShowVideo(false);
+  };
+
+  useEffect(() => {
+    if (demoRef.current) {
+      if (showVideo) {
+        demoRef.current.load(); // reset the video to the beginning
+        demoRef.current.play(); // play the video
+      } else {
+        demoRef.current.pause(); // pause the video
+      }
+    }
+  }, [showVideo]);
 
   const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
@@ -268,7 +291,16 @@ function Recording({
             </div>
           </div>
           <div>
-            <h1 className="text-3xl text-left mb-4">Instruções</h1>
+            <div className="flex space-x-4 items-center mb-4">
+              <h1 className="text-3xl text-left">Instruções</h1>
+              <button
+                className="hover:bg-gray-100 text-sm"
+                onClick={handleDemoStart}
+              >
+                <BsPersonVideo size={28} className="inline mr-2" />
+                Veja um exemplo
+              </button>
+            </div>
             <div className="flex flex-col space-y-1">
               <div className="flex flex-col mb-2">
                 <div className="flex space-x-3 items-center">
@@ -336,9 +368,32 @@ function Recording({
           </div>
         </div>
         <div className="flex justify-center relative">
+          <video
+            className={`border-4 border-neutral-200 ${
+              showVideo ? "" : "hidden"
+            }`}
+            width={720}
+            height={720}
+            style={{
+              maxHeight: "720px",
+              transform: "scaleX(-1)",
+              zoom:
+                window.innerWidth <= 500
+                  ? "0.50"
+                  : window.innerHeight <= 800
+                  ? "0.7"
+                  : "",
+              borderRadius: "1rem",
+            }}
+            src={`/videos/${sign.language}${sign.token}.mp4`}
+            ref={demoRef}
+            onEnded={handleDemoEnd}
+          />
           <canvas
             ref={canvasRef}
-            className="output_canvas_hands border-4 border-neutral-200"
+            className={`border-4 border-neutral-200 ${
+              showVideo ? "hidden" : ""
+            }`}
             width="720"
             height="720"
             style={{
@@ -360,6 +415,13 @@ function Recording({
               color: "rgba(253, 179, 94)",
               height: "720px",
               width: "720px",
+              zoom:
+                window.innerWidth <= 500
+                  ? "0.50"
+                  : window.innerHeight <= 800
+                  ? "0.7"
+                  : "",
+              borderRadius: "1rem",
             }}
           >
             SINAL {sign.token}

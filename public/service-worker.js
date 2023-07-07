@@ -36,7 +36,7 @@ async function imageDataToJPEGBase64(imageData) {
 
 function convertToBase64(canvas) {
   return new Promise((resolve, reject) => {
-    canvas.convertToBlob({ type: "image/jpeg", quality: 0.75 }).then((blob) => {
+    canvas.convertToBlob({ type: "image/jpeg", quality: 0.80 }).then((blob) => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = function () {
