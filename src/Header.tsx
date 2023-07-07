@@ -65,7 +65,7 @@ function Header(): JSX.Element {
                 window.innerWidth >= 768
                   ? isAuthenticated
                     ? "319.92px"
-                    : "239.92"
+                    : "239.92px"
                   : "40px",
             }}
           ></div>
