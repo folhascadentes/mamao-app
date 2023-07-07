@@ -385,7 +385,7 @@ function Recording({
                   : "",
               borderRadius: "1rem",
             }}
-            src={`/videos/${sign.language}${sign.token}.mp4`}
+            src={`/videos/${sign.language}${sign.token}.webm`}
             ref={demoRef}
             onEnded={handleDemoEnd}
           />
