@@ -32,6 +32,8 @@ import jwt_decode from "jwt-decode";
 
 const MAX_VIDEO_LENGTH = 24;
 const MIN_VIDEO_LENGTH = 4;
+const SIGN_N_TIMES: number = 10;
+const DURATION: number = 5; // in seconds
 
 function Recording({
   setLoading,
@@ -45,8 +47,6 @@ function Recording({
   const navigate = useNavigate();
   const { state } = useContext(StyleContext);
   const debuger: boolean = !!localStorage.getItem("debug");
-  const SIGN_N_TIMES: number = 10;
-  const DURATION: number = 5; // in seconds
   const FPS: number = cameraSettings?.frameRate ?? 24;
   const BUFFER_SIZE: number = DURATION * FPS;
 
