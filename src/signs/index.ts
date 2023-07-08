@@ -309,7 +309,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 45,
+              detectionRadius: 55,
               track: true,
               radiusOffset: {
                 value: 95,

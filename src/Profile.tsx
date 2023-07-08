@@ -25,12 +25,41 @@ function Profile(): JSX.Element {
   }, []);
 
   return (
-    <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
-      <div style={{ width: "720px" }}>
-        <h1 className="text-3xl xl:text-4xl mb-6 md:mb-10 text-center ">Perfil</h1>
-        <div className="flex flex-col">
-          <p>Usuário: {profile?.sub}</p>
-          <p>Sinalizações: {profile?.signs}</p>
+    <div className="px-6 xl:p-6 flex flex-col justify-center xl:text-lg font-normal mb-10">
+      <div className="flex flex-wrap md:space-x-24 justify-center">
+        <div className="flex flex-col space-y-2 mb-6">
+          <h1 className="text-3xl xl:text-4xl mb-4">Meu Perfil</h1>
+          <label className="font-black">identificador</label>
+          <p>{profile?.sub}</p>
+          <label className="font-black">E-mail</label>
+          <p>{profile?.email}</p>
+          <label className="font-black">Etinia</label>
+          <p>{profile?.ethnicity}</p>
+          <label className="font-black">Deficiência</label>
+          <p>{profile?.deficiency}</p>
+          <label className="font-black">Idade</label>
+          <p>{profile?.age} anos</p>
+          <label className="font-black">Altura</label>
+          <p>{profile?.height} cm</p>
+          <label className="font-black">Peso</label>
+          <p>{profile?.weight} Kg</p>
+        </div>
+        <div className="flex flex-col space-y-4 mb-6 w-100 md:w-1/3">
+          <label className="text-lime-500 text-3xl md:text-6xl font-bold">
+            Minhas sinalizações
+          </label>
+          <p className="text-6xl md:text-9xl text-orange-500 font-black">
+            {profile?.signs.toLocaleString("en-DE")}
+          </p>
+          <h2 className="text-xl font-black">Gerenciar conta</h2>
+          <button className="bg-red-500 hover:bg-red-600 text-white py-3 xl:py-4 px-6 text-lg xl:text-xl rounded-xl">
+            Apagar dados
+          </button>
+          <p className="text-sm w-86">
+            Caso deseje você tem todo o direito de apagar seus dados sempre
+            quiser e mudar de ideia. Respeitamos sua decisão e queremos que se
+            sinta o mais confortável possível.
+          </p>
         </div>
       </div>
     </div>
