@@ -126,7 +126,7 @@ function Instructions({
           >
             Começar <SL>I</SL>
           </button>
-          <div className="flex md:hidden font-bold">
+          <div className="flex md:hidden font-bold mb-10">
             Atualmente não é possível começar a aplicação para dispositivos
             móveis. Caso queira contribuir na coleta de vídeos, acesse a
             aplicação em um computador ou notebook.

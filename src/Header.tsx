@@ -34,6 +34,14 @@ function Header(): JSX.Element {
     }
   }
 
+  function handleRedirectProfile() {
+    navigate("/profile");
+
+    if (isOpen) {
+      onClose();
+    }
+  }
+
   function handleLogout(): void {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -129,10 +137,24 @@ function Header(): JSX.Element {
                 <div className="text-center absolute bottom-0 ml-10 mb-6">
                   <div className="flex flex-col justify-center text-center space-y-6">
                     {isAuthenticated && (
-                      // eslint-disable-next-line
-                      <a className="font-bold" href="#" onClick={handleLogout}>
-                        Sair
-                      </a>
+                      <>
+                        {/* eslint-disable-next-line */}
+                        <a
+                          className="font-bold"
+                          href="#"
+                          onClick={handleRedirectProfile  }
+                        >
+                          Perfil
+                        </a>
+                        {/* eslint-disable-next-line */}
+                        <a
+                          className="font-bold"
+                          href="#"
+                          onClick={handleLogout}
+                        >
+                          Sair
+                        </a>
+                      </>
                     )}
                     <div className="text-xs">Versão beta-0.0.0</div>
                   </div>
