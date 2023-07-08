@@ -1,11 +1,24 @@
 import React, { useContext, useEffect, useState } from "react";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  IconButton,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { MdContrast } from "react-icons/md";
 import { StyleContext } from "./reducers/style.reducer";
 import { AuthContext } from "./reducers/auth.reducer";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 import { SL } from "./components";
+import { BsPerson } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function AccessibilityMenu(): JSX.Element {
+  const navigate = useNavigate();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const { isAuthenticated } = useContext(AuthContext);
   const styleContext = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
@@ -61,6 +74,14 @@ function AccessibilityMenu(): JSX.Element {
     });
   }
 
+  function handleOpenProfileMenu(): void {
+    onOpen();
+  }
+
+  function handleProfile(): void {
+    navigate("/profile");
+  }
+
   function handleLogout(): void {
     localStorage.removeItem("token");
     window.location.href = "/login";
@@ -84,10 +105,12 @@ function AccessibilityMenu(): JSX.Element {
     hotkeyContext.dispatch({
       type: "SET_HOTKEY",
       payload: {
-        "+": () => handleIncreaseFontSize(),
         "-": () => handleDecreaseFontSize(),
+        "+": () => handleIncreaseFontSize(),
         C: () => handleHightConstast(),
+        E: () => handleProfile(),
         L: () => handleLogout(),
+        M: () => handleOpenProfileMenu(),
       },
     });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -104,7 +127,7 @@ function AccessibilityMenu(): JSX.Element {
       >
         <div className="flex space-x-2 items-center">
           <MdContrast size={32} />{" "}
-          <span className="text-sm ">
+          <span className="text-sm">
             <SL>C</SL>
           </span>
         </div>
@@ -128,17 +151,41 @@ function AccessibilityMenu(): JSX.Element {
         A-
       </button>
       {isAuthenticated && window.innerWidth >= 768 && (
-        <button
-          title="Ação de sair da conta"
-          aria-describedby="Ação de sair da conta"
-          className="w-16"
-          onClick={handleLogout}
-        >
-          Sair{" "}
-          <span>
-            <SL>L</SL>
+        <div className="flex items-center">
+          <Menu isOpen={isOpen} onClose={onClose}>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={
+                <>
+                  <BsPerson size={28} />
+                </>
+              }
+              onClick={onOpen}
+            />
+
+            <MenuList bgColor={styleContext.state.backgroundColor}>
+              <MenuItem
+                onClick={handleProfile}
+                bgColor={styleContext.state.backgroundColor}
+                textAlign={"center"}
+              >
+                <span className="mr-2">Perfil</span>
+                <SL>E</SL>
+              </MenuItem>
+              <MenuItem
+                onClick={handleLogout}
+                bgColor={styleContext.state.backgroundColor}
+              >
+                <span className="mr-2">Sair</span>
+                <SL>L</SL>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <span className="text-sm font-normal ml-1">
+            <SL>M</SL>
           </span>
-        </button>
+        </div>
       )}
     </div>
   );
