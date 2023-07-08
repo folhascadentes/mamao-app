@@ -89,12 +89,12 @@ function Instructions({
     <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
       <div style={{ width: "720px" }}>
         <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
-          Olá, <span className="text-orange-400 md:font-light">Voluntário</span>
+          Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
           !
         </h1>
         <p className="text-left mb-2">
           Agradecemos por se tornar um voluntário e nos dar{" "}
-          <span className="text-orange-400 font-bold">uma mão</span>. Antes de
+          <span className="text-orange-600 font-bold">uma mão</span>. Antes de
           começar, leia e siga as instruções abaixo:
         </p>
         <ol className="list-decimal text-left ml-4 mt-4 mb-10">

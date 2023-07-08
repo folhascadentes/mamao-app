@@ -28,12 +28,16 @@ function Footer(): JSX.Element {
     >
       {window.innerWidth > 768 && (
         <div className="flex flex-wrap">
-          <div className="flex justify-center space-x-4 text-indigo-600 ">
+          <div className="flex justify-center space-x-4 text-indigo-500 font-bold">
             <a href="https://www.mamao.dev.br" rel="noreferrer" target="_blank">
               Sobre o projeto [S]
             </a>{" "}
             <span>•</span>
-            <a href="https://app.mamao.dev.br/who-is-aiac" rel="noreferrer" target="_blank">
+            <a
+              href="https://app.mamao.dev.br/who-is-aiac"
+              rel="noreferrer"
+              target="_blank"
+            >
               Sobre nós [W]
             </a>{" "}
             <span>•</span>

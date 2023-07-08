@@ -102,7 +102,7 @@ export function SignUp(): JSX.Element {
       >
         <h1 className="text-3xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
-          <span className="text-orange-400 md:font-light">Novo Voluntário</span>
+          <span className="text-orange-500 md:font-light">Novo Voluntário</span>
         </h1>
         <div>
           <form className="flex flex-col space-y-4" onSubmit={handleSignUp}>

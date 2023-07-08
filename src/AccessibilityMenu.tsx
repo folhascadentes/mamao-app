@@ -135,7 +135,7 @@ function AccessibilityMenu(): JSX.Element {
           onClick={handleLogout}
         >
           Sair{" "}
-          <span className="text-sm">
+          <span>
             <SL>L</SL>
           </span>
         </button>

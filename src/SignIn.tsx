@@ -75,7 +75,7 @@ export function SignIn(): JSX.Element {
       >
         <h1 className="text-3xl md:text-6xl font-black mb-2">
           Bem vindo!{" "}
-          <span className="text-orange-400 md:font-light">Voluntário</span>
+          <span className="text-orange-500 md:font-light">Voluntário</span>
         </h1>
         <div>
           <form className="flex flex-col space-y-4" onSubmit={handleLogin}>
@@ -134,8 +134,8 @@ export function SignIn(): JSX.Element {
           </a>
         </div>
       </div>
-      <div className="hidden md:flex justify-center -m-16 z-50">
-        <img src={world} style={{ height: "397px" }} alt="" />
+      <div className="hidden md:flex justify-center -m-8 z-50">
+        <img src={world} style={{ height: "420px" }} alt="" />
       </div>
     </div>
   );
