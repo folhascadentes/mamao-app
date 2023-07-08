@@ -3,6 +3,7 @@ import { POSE_LANDMARKS } from "@mediapipe/pose";
 import { Results } from "./mediapipe";
 import {
   angleBetweenTwoVectors,
+  crossProduct,
   directionBetweenTwoVectors,
   findPerpendicularVector,
   getAngleWithXAxis,
@@ -430,6 +431,8 @@ export class Subject {
     beforeHandLandmarks: Coordinate[],
     afterHandLandmarks: Coordinate[]
   ): Movement {
+    const WRIST_ROTATE_UPPER_THRESHOLD = 25;
+    const WRIST_ROTATE_THRESHOLD = 20;
     const THRESHOLD = 5;
     const movement: Movement = {};
 
@@ -438,8 +441,21 @@ export class Subject {
       beforeHandLandmarks
     );
 
-    if (angle > 100) {
-      movement.wristRotate = true;
+    if (angle > WRIST_ROTATE_THRESHOLD) {
+      const direction = this.parseWristRotationDirection(
+        afterHandLandmarks,
+        beforeHandLandmarks
+      );
+
+      if (angle > WRIST_ROTATE_UPPER_THRESHOLD) {
+        movement.wristRotate = true;
+      }
+
+      if (direction === "clockwise") {
+        movement.wristRotateClockwise = true;
+      } else if (direction === "counterclockwise") {
+        movement.wristRotateCounterClockwise = true;
+      }
     }
 
     if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
@@ -509,6 +525,24 @@ export class Subject {
     );
     const angle = angleBetweenTwoVectors(afterVector, beforeVector);
     return angle;
+  }
+
+  private parseWristRotationDirection(
+    afterHandLandmarks: Coordinate[],
+    beforeHandLandmarks: Coordinate[]
+  ): "clockwise" | "counterclockwise" | "collinear" {
+    const afterVector = normalizeVector(
+      pointDifference(afterHandLandmarks[5], afterHandLandmarks[17])
+    );
+    const beforeVector = normalizeVector(
+      pointDifference(beforeHandLandmarks[5], beforeHandLandmarks[17])
+    );
+    const crossProductValue = crossProduct(afterVector, beforeVector);
+    return crossProductValue.z > 0
+      ? "clockwise"
+      : crossProductValue.z < 0
+      ? "counterclockwise"
+      : "collinear";
   }
 
   private parseSubjectHandMovimentFrontOrBack(

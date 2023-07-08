@@ -824,9 +824,16 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           detect: [
-            { wristRotate: true },
-            { wristRotate: true },
-            { wristRotate: true },
+            [
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+            ],
+            [
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+            ],
           ],
           metadata: {
             description: "gire o pulso da duas vezes",

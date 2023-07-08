@@ -82,6 +82,8 @@ export interface MovementAxis {
 
 export interface Movement extends MovementAxis {
   wristRotate?: boolean;
+  wristRotateClockwise?: boolean;
+  wristRotateCounterClockwise?: boolean;
   wristExtension?: boolean;
   wristFlexion?: boolean;
   wristAbduction?: boolean; // TODO
