@@ -477,7 +477,7 @@ function checkOrientationUtil(
     return false;
   }
   const angle = angleBetweenTwoVectors(orientation, subjectOrientation);
-  return angle < 75;
+  return angle < 65;
 }
 
 // -- Hand Location --
