@@ -279,151 +279,161 @@ function Recording({
         height="720"
       ></video>
       <div className="flex flex-col md:flex-row md:space-x-8 justify-center font-sm">
-        <div className="flex flex-col space-y-4" style={{ width: "650px" }}>
-          <div>
-            <h1 className="text-3xl text-left mb-4">
-              Sinal ({signCounter} de {SIGN_N_TIMES})
-            </h1>
-            <div>
-              Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
-              <b>{sign.language}</b> {SIGN_N_TIMES} vezes. Siga as instruções
-              abaixo
-            </div>
-          </div>
-          <div>
-            <div className="flex space-x-4 items-center mb-4">
-              <h1 className="text-3xl text-left">Instruções</h1>
-              <button
-                className="hover:bg-gray-100 text-sm"
-                onClick={handleDemoStart}
-              >
-                <BsPersonVideo size={28} className="inline mr-2" />
-                Veja um exemplo
-              </button>
-            </div>
-            <div className="flex flex-col space-y-1">
-              <div className="flex flex-col mb-2">
-                <div className="flex space-x-3 items-center">
-                  {subjectFraming ? (
-                    <MdDone className="text-green-500 font-bold " size={24} />
-                  ) : (
-                    <MdOutlinePending
-                      className="text-yellow-500 font-bold"
-                      size={24}
-                    />
-                  )}
-                  <div>Enquadre o seu corpo corretamente</div>
-                </div>
-                {!subjectFraming && (
-                  <div className="ml-8 mt-3">
-                    1. Afaste seu corpo da câmera e deixe visível desde a cabeça
-                    até o início do quadril
-                  </div>
-                )}
+        <div className="flex w-1/2">
+          <div
+            className="flex flex-col space-y-4 ml-auto"
+            style={{
+              maxWidth: `${(625 * Number(state.fontSize ?? 100)) / 100}px`,
+            }}
+          >
+            <div className="mx-4">
+              <h1 className="text-3xl text-left mb-4">
+                Sinal ({signCounter} de {SIGN_N_TIMES})
+              </h1>
+              <div>
+                Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
+                <b>{sign.language}</b> {SIGN_N_TIMES} vezes. Siga as instruções
+                abaixo
               </div>
-              {todoActions.map((step, index) => (
-                <div key={step.state} className="flex flex-col">
+            </div>
+            <div className="mx-4">
+              <div className="flex space-x-4 items-center mb-4">
+                <h1 className="text-3xl text-left">Instruções</h1>
+                <button
+                  className="hover:bg-gray-100 text-sm"
+                  onClick={handleDemoStart}
+                >
+                  <BsPersonVideo size={28} className="inline mr-2" />
+                  Veja um exemplo
+                </button>
+              </div>
+              <div className="flex flex-col space-y-1">
+                <div className="flex flex-col mb-2">
                   <div className="flex space-x-3 items-center">
-                    <MdOutlinePending
-                      className="text-yellow-500 font-bold"
-                      size={24}
-                    />
+                    {subjectFraming ? (
+                      <MdDone className="text-green-500 font-bold " size={24} />
+                    ) : (
+                      <MdOutlinePending
+                        className="text-yellow-500 font-bold"
+                        size={24}
+                      />
+                    )}
+                    <div>Enquadre o seu corpo corretamente</div>
+                  </div>
+                  {!subjectFraming && (
+                    <div className="ml-8 mt-3">
+                      1. Afaste seu corpo da câmera e deixe visível desde a
+                      cabeça até o início do quadril
+                    </div>
+                  )}
+                </div>
+                {todoActions.map((step, index) => (
+                  <div key={step.state} className="flex flex-col">
+                    <div className="flex space-x-3 items-center">
+                      <MdOutlinePending
+                        className="text-yellow-500 font-bold"
+                        size={24}
+                      />
+                      <span>{step.description}</span>
+                    </div>
+                    {index === 0 &&
+                      (step.state === DetectorStates.HAND_SHAPE ? (
+                        <HandShapeInstructions
+                          sign={sign}
+                          backgroundColor={state.backgroundColor}
+                        />
+                      ) : step.state === DetectorStates.PALM_ORIENTATION ? (
+                        <PalmOrientationInstructions sign={sign} />
+                      ) : step.state === DetectorStates.INITIAL_LOCATION ? (
+                        <InitialLocationInstructions sign={sign} />
+                      ) : step.state === DetectorStates.MOVEMENT ? (
+                        <MovementInstructions sign={sign} />
+                      ) : step.state === DetectorStates.FINAL_LOCATION ? (
+                        <FinalLocationInstructions sign={sign} />
+                      ) : step.state ===
+                        DetectorStates.FINAL_PALM_ORIENTATION ? (
+                        <FinalPalmOrientationInstructions sign={sign} />
+                      ) : step.state === DetectorStates.FINAL_HAND_SHAPE ? (
+                        <FinalHandShapeInstructions
+                          sign={sign}
+                          backgroundColor={state.backgroundColor}
+                        />
+                      ) : (
+                        ""
+                      ))}
+                  </div>
+                ))}
+              </div>
+              <div className="flex flex-col space-y-2 mt-10">
+                {doneActions.map((step) => (
+                  <div key={step.state} className="flex space-x-3 items-center">
+                    <MdDone className="text-green-500 font-bold" size={24} />
                     <span>{step.description}</span>
                   </div>
-                  {index === 0 &&
-                    (step.state === DetectorStates.HAND_SHAPE ? (
-                      <HandShapeInstructions
-                        sign={sign}
-                        backgroundColor={state.backgroundColor}
-                      />
-                    ) : step.state === DetectorStates.PALM_ORIENTATION ? (
-                      <PalmOrientationInstructions sign={sign} />
-                    ) : step.state === DetectorStates.INITIAL_LOCATION ? (
-                      <InitialLocationInstructions sign={sign} />
-                    ) : step.state === DetectorStates.MOVEMENT ? (
-                      <MovementInstructions sign={sign} />
-                    ) : step.state === DetectorStates.FINAL_LOCATION ? (
-                      <FinalLocationInstructions sign={sign} />
-                    ) : step.state === DetectorStates.FINAL_PALM_ORIENTATION ? (
-                      <FinalPalmOrientationInstructions sign={sign} />
-                    ) : step.state === DetectorStates.FINAL_HAND_SHAPE ? (
-                      <FinalHandShapeInstructions
-                        sign={sign}
-                        backgroundColor={state.backgroundColor}
-                      />
-                    ) : (
-                      ""
-                    ))}
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col space-y-2 mt-10">
-              {doneActions.map((step) => (
-                <div key={step.state} className="flex space-x-3 items-center">
-                  <MdDone className="text-green-500 font-bold" size={24} />
-                  <span>{step.description}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
-        <div className="flex justify-center relative">
-          <video
-            className={`border-4 border-neutral-200 ${
-              showVideo ? "" : "hidden"
-            }`}
-            width={720}
-            height={720}
-            style={{
-              maxHeight: "720px",
-              zoom:
-                window.innerWidth <= 500
-                  ? "0.50"
-                  : window.innerHeight <= 800
-                  ? "0.7"
-                  : "",
-              borderRadius: "1rem",
-            }}
-            src={`/videos/${sign.language}${sign.token}.webm`}
-            ref={demoRef}
-            onEnded={handleDemoEnd}
-          />
-          <canvas
-            ref={canvasRef}
-            className={`border-4 border-neutral-200 ${
-              showVideo ? "hidden" : ""
-            }`}
-            width="720"
-            height="720"
-            style={{
-              maxHeight: "720px",
-              transform: "scaleX(-1)",
-              zoom:
-                window.innerWidth <= 500
-                  ? "0.50"
-                  : window.innerHeight <= 800
-                  ? "0.7"
-                  : "",
-              borderRadius: "1rem",
-            }}
-          ></canvas>
-          <div
-            id="canvas-overlay"
-            className="flex items-center justify-center text-6xl font-bold uppercase absolute opacity-0"
-            style={{
-              color: "rgba(253, 179, 94)",
-              height: "720px",
-              width: "720px",
-              zoom:
-                window.innerWidth <= 500
-                  ? "0.50"
-                  : window.innerHeight <= 800
-                  ? "0.7"
-                  : "",
-              borderRadius: "1rem",
-            }}
-          >
-            SINAL {sign.token}
+        <div className="w-1/2">
+          <div className="flex relative mr-auto">
+            <video
+              className={`border-4 border-neutral-200 ${
+                showVideo ? "" : "hidden"
+              }`}
+              width={720}
+              height={720}
+              style={{
+                maxHeight: "720px",
+                zoom:
+                  window.innerWidth <= 500
+                    ? "0.50"
+                    : window.innerHeight <= 800
+                    ? "0.7"
+                    : "",
+                borderRadius: "1rem",
+              }}
+              src={`/videos/${sign.language}${sign.token}.webm`}
+              ref={demoRef}
+              onEnded={handleDemoEnd}
+            />
+            <canvas
+              ref={canvasRef}
+              className={`border-4 border-neutral-200 ${
+                showVideo ? "hidden" : ""
+              }`}
+              width="720"
+              height="720"
+              style={{
+                maxHeight: "720px",
+                transform: "scaleX(-1)",
+                zoom:
+                  window.innerWidth <= 500
+                    ? "0.50"
+                    : window.innerHeight <= 800
+                    ? "0.7"
+                    : "",
+                borderRadius: "1rem",
+              }}
+            ></canvas>
+            <div
+              id="canvas-overlay"
+              className="flex items-center justify-center text-6xl font-bold uppercase absolute opacity-0"
+              style={{
+                color: "rgba(253, 179, 94)",
+                height: "720px",
+                width: "720px",
+                zoom:
+                  window.innerWidth <= 500
+                    ? "0.50"
+                    : window.innerHeight <= 800
+                    ? "0.7"
+                    : "",
+                borderRadius: "1rem",
+              }}
+            >
+              SINAL {sign.token}
+            </div>
           </div>
         </div>
       </div>
