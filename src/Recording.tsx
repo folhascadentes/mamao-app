@@ -286,7 +286,7 @@ function Recording({
               maxWidth: `${(625 * Number(state.fontSize ?? 100)) / 100}px`,
             }}
           >
-            <div className="mx-4">
+            <div className="ml-4">
               <h1 className="text-3xl text-left mb-4">
                 Sinal ({signCounter} de {SIGN_N_TIMES})
               </h1>
@@ -296,7 +296,7 @@ function Recording({
                 abaixo
               </div>
             </div>
-            <div className="mx-4">
+            <div className="ml-4">
               <div className="flex space-x-4 items-center mb-4">
                 <h1 className="text-3xl text-left">Instruções</h1>
                 <button
@@ -308,7 +308,14 @@ function Recording({
                 </button>
               </div>
               <div className="flex flex-col space-y-1">
-                <div className="flex flex-col mb-2">
+                <div
+                  className="flex flex-col mb-2"
+                  style={{
+                    minWidth: `${
+                      (625 * Number(state.fontSize ?? 100)) / 100
+                    }px`,
+                  }}
+                >
                   <div className="flex space-x-3 items-center">
                     {subjectFraming ? (
                       <MdDone className="text-green-500 font-bold " size={24} />
