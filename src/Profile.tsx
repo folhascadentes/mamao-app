@@ -15,9 +15,16 @@ function Profile(): JSX.Element {
           }
         );
         const data = await response.json();
-        setProfile(data);
+
+        if (data.statusCode === 403) {
+          localStorage.removeItem("token");
+          window.location.href = "/login";
+        } else {
+          setProfile(data);
+        }
       } catch (error) {
-        console.error("Error:", error);
+        localStorage.removeItem("token");
+        window.location.href = "/login";
       }
     };
 
@@ -49,7 +56,7 @@ function Profile(): JSX.Element {
             Minhas sinalizações
           </label>
           <p className="text-6xl md:text-9xl text-orange-500 font-black">
-            {profile?.signs.toLocaleString("en-DE")}
+            {(profile?.signs ?? "0")?.toLocaleString("en-DE")}
           </p>
           <h2 className="text-xl font-black">Gerenciar conta</h2>
           <button
