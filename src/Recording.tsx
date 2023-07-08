@@ -376,7 +376,6 @@ function Recording({
             height={720}
             style={{
               maxHeight: "720px",
-              transform: "scaleX(-1)",
               zoom:
                 window.innerWidth <= 500
                   ? "0.50"
