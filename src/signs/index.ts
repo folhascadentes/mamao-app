@@ -810,7 +810,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 45,
+              detectionRadius: 30,
               radiusOffset: {
                 value: 50,
                 leftLimitValue: -10,
@@ -824,17 +824,16 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           detect: [
-            [
-              { wristRotateCounterClockwise: true },
-              { wristRotateClockwise: true },
-              { wristRotateCounterClockwise: true },
-            ],
-            [
-              { wristRotateClockwise: true },
-              { wristRotateCounterClockwise: true },
-              { wristRotateClockwise: true },
-            ],
+            { wristRotateCounterClockwise: true },
+            { wristRotateClockwise: true },
+            { wristRotateCounterClockwise: true },
+            { wristRotateClockwise: true },
           ],
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
           metadata: {
             description: "gire o pulso da duas vezes",
             type: MovementType.WRIST_ROTATE,
@@ -848,7 +847,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 45,
+              detectionRadius: 30,
               same: true,
               handLocation: HandLocation.INDEX_FINGER_TIP,
             },
@@ -869,7 +868,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 70,
+              detectionRadius: 65,
               radiusOffset: 100,
             },
           },
@@ -910,7 +909,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 70,
+              detectionRadius: 65,
               same: true,
             },
           },
@@ -1358,7 +1357,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 80,
+              detectionRadius: 69,
               radiusOffset: 100,
             },
           },
@@ -1382,7 +1381,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 80,
+              detectionRadius: 69,
               same: true,
             },
           },
@@ -1414,6 +1413,7 @@ export const signs: Sign[] = [
             { wristFlexion: true },
             { wristExtension: true },
             { wristFlexion: true },
+            { wristExtension: true },
           ],
           metadata: {
             description:
