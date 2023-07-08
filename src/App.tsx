@@ -30,6 +30,7 @@ import { HotkeyProvider } from "./reducers/hotkeys.reducer";
 import DatabaseDiversityImportance from "./DatabaseDiversityImportance";
 import WhoIsAIAC from "./WhoIsAIAC";
 import TermsPrivacyUse from "./TermsPrivacyUse";
+import Profile from "./Profile";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -135,6 +136,10 @@ export default function App(): JSX.Element {
                   element={<TermsPrivacyUse />}
                 ></Route>
                 <Route path="/who-is-aiac" element={<WhoIsAIAC />}></Route>
+                <Route
+                  path="/profile"
+                  element={<PrivateWrapper>{<Profile />}</PrivateWrapper>}
+                />
                 <Route
                   path="/instructions"
                   element={
