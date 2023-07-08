@@ -470,7 +470,7 @@ export class Subject {
     beforePoseLanmarks: Coordinate[],
     isDominant: boolean
   ): { wristFlexion: boolean } | { wristExtension: boolean } | {} {
-    const ANGLE_THRESHOLD = 50;
+    const ANGLE_THRESHOLD = 17.5;
     const MOVEMENT_THRESHOLD = 50;
 
     const mov = isDominant
