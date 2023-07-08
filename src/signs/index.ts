@@ -1172,6 +1172,7 @@ export const signs: Sign[] = [
               detectionRadius: 40,
               radiusOffset: 30,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
+              track: true,
             },
           },
         },
@@ -1215,7 +1216,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 60,
+              detectionRadius: 50,
               radiusOffset: 25,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
@@ -1318,6 +1319,7 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: 45,
+              track: true,
             },
           },
         },
@@ -1405,7 +1407,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 60,
-              radiusOffset: 60,
+              radiusOffset: 80,
             },
           },
         },

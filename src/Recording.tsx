@@ -32,7 +32,7 @@ import jwt_decode from "jwt-decode";
 
 const MAX_VIDEO_LENGTH = 24;
 const MIN_VIDEO_LENGTH = 4;
-const SIGN_N_TIMES: number = 10;
+const SIGN_N_TIMES: number = 5;
 const DURATION: number = 5; // in seconds
 
 function Recording({
