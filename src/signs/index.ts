@@ -713,6 +713,7 @@ export const signs: Sign[] = [
             location: {
               detectionRadius: 60,
               radiusOffset: 65,
+              track: true,
             },
           },
         },
@@ -761,6 +762,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.FRONT,
           options: {
             location: {
+              track: true,
               detectionRadius: 60,
               radiusOffset: 45,
             },
@@ -811,6 +813,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               detectionRadius: 30,
+              track: true,
               radiusOffset: {
                 value: 50,
                 leftLimitValue: -10,
