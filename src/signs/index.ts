@@ -309,7 +309,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 55,
+              detectionRadius: 60,
               track: true,
               radiusOffset: {
                 value: 95,
@@ -417,7 +417,7 @@ export const signs: Sign[] = [
           options: {
             location: {
               track: true,
-              detectionRadius: 45,
+              detectionRadius: 50,
               radiusOffset: {
                 value: 200,
                 leftLimitValue: 100,
@@ -558,7 +558,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.UP,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 70,
               radiusOffset: 100,
             },
           },
@@ -810,7 +810,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 35,
+              detectionRadius: 45,
               radiusOffset: {
                 value: 50,
                 leftLimitValue: -10,
@@ -841,7 +841,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 35,
+              detectionRadius: 45,
               same: true,
               handLocation: HandLocation.INDEX_FINGER_TIP,
             },
@@ -862,7 +862,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 70,
               radiusOffset: 100,
             },
           },
@@ -903,7 +903,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 70,
               same: true,
             },
           },
@@ -923,7 +923,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 65,
               radiusOffset: 100,
             },
           },
@@ -951,7 +951,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 65,
               same: true,
             },
           },
@@ -1019,7 +1019,7 @@ export const signs: Sign[] = [
           handOrientation: HandOrientation.UP,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 65,
               radiusOffset: 85,
             },
           },
@@ -1047,7 +1047,7 @@ export const signs: Sign[] = [
           palmOrientation: PalmOrientation.FRONT,
           options: {
             location: {
-              detectionRadius: 60,
+              detectionRadius: 65,
               same: true,
             },
           },
@@ -1187,54 +1187,6 @@ export const signs: Sign[] = [
               detectionRadius: 40,
               radiusOffset: 30,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
-    token: "Sim",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.FRONT,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: 60,
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [
-            { wristFlexion: true },
-            { wristExtension: true },
-            { wristFlexion: true },
-          ],
-          metadata: {
-            description:
-              "com o pulso mova a mão para frente e para atrás duas vezes",
-            type: MovementType.WRIST_FLEXION_EXTENSION,
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.FRONT,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              same: true,
             },
           },
         },
@@ -1424,6 +1376,54 @@ export const signs: Sign[] = [
             location: {
               track: true,
               detectionRadius: 80,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Sim",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: 60,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            { wristFlexion: true },
+            { wristExtension: true },
+            { wristFlexion: true },
+          ],
+          metadata: {
+            description:
+              "com o pulso mova a mão para frente e para atrás duas vezes",
+            type: MovementType.WRIST_FLEXION_EXTENSION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.FRONT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
               same: true,
             },
           },
