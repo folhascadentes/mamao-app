@@ -74,6 +74,7 @@ function Recording({
       ? Number(localStorage.getItem("signCounter"))
       : 0
   );
+  const [signCounterWrong, setSignCounterWrong] = useState<number>(0);
   const [todoActions, setTodoActions] = useState<DetectorState[]>([]);
   const [doneActions, setDoneActions] = useState<DetectorState[]>([]);
 
@@ -148,6 +149,8 @@ function Recording({
 
     if (response.invalid === true) {
       detector.setState(DetectorStates.HAND_SHAPE);
+      setActionsInstructionsState(response);
+      setSignCounterWrong((prevCounter) => prevCounter + 1);
       failure();
     } else if (
       response.state === DetectorStates.FINAL_HAND_SHAPE &&
@@ -158,12 +161,13 @@ function Recording({
         const totalFrames = end - start;
 
         if (totalFrames > MAX_VIDEO_LENGTH || totalFrames < MIN_VIDEO_LENGTH) {
+          setSignCounterWrong((prevCounter) => prevCounter + 1);
           failure();
           return;
         }
 
-        success();
         setSignCounter((prevCounter) => prevCounter + 1);
+        success();
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
@@ -189,6 +193,7 @@ function Recording({
           navigator.serviceWorker.controller.postMessage(message);
         }
       } else {
+        setSignCounterWrong((prevCounter) => prevCounter + 1);
         failure();
       }
     } else {
@@ -256,19 +261,19 @@ function Recording({
     const detector = detectorRef.current;
     const instructor = instructorRef.current;
 
-    if (signCounter === SIGN_N_TIMES) {
+    if (signCounter === SIGN_N_TIMES || signCounterWrong > SIGN_N_TIMES * 2) {
       showSign();
       setSignCounter(0);
+      setSignCounterWrong(0);
       setSign(signs[signIndex.current % signs.length]);
       detector?.setSign(signs[signIndex.current % signs.length]);
       instructor?.setSign(signs[signIndex.current % signs.length]);
       signIndex.current += 1;
     }
-    // eslint-disable-next-line
 
     localStorage.setItem("signToken", detector?.getSign()?.token ?? "");
     localStorage.setItem("signCounter", signCounter.toString());
-  }, [signCounter]);
+  }, [signCounter, signCounterWrong]);
 
   return (
     <div className="recording flex flex-col justify-center">
