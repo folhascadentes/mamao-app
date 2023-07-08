@@ -108,7 +108,7 @@ function AccessibilityMenu(): JSX.Element {
         "-": () => handleDecreaseFontSize(),
         "+": () => handleIncreaseFontSize(),
         C: () => handleHightConstast(),
-        E: () => handleProfile(),
+        F: () => handleProfile(),
         L: () => handleLogout(),
         M: () => handleOpenProfileMenu(),
       },
@@ -171,7 +171,7 @@ function AccessibilityMenu(): JSX.Element {
                 textAlign={"center"}
               >
                 <span className="mr-2">Perfil</span>
-                <SL>E</SL>
+                <SL>F</SL>
               </MenuItem>
               <MenuItem
                 onClick={handleLogout}
