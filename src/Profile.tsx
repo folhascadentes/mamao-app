@@ -52,13 +52,20 @@ function Profile(): JSX.Element {
             {profile?.signs.toLocaleString("en-DE")}
           </p>
           <h2 className="text-xl font-black">Gerenciar conta</h2>
-          <button className="bg-red-500 hover:bg-red-600 text-white py-3 xl:py-4 px-6 text-lg xl:text-xl rounded-xl">
+          <button
+            className="disabled:bg-opacity-80 bg-red-500 hover:bg-red-600 text-white py-3 xl:py-4 px-6 text-lg xl:text-xl rounded-xl"
+            disabled={true}
+          >
             Apagar dados
           </button>
           <p className="text-sm w-86">
             Caso deseje você tem todo o direito de apagar seus dados sempre
             quiser e mudar de ideia. Respeitamos sua decisão e queremos que se
             sinta o mais confortável possível.
+          </p>
+          <p className="text-sm w-86 font-bold">
+            No beta fechado ainda não é possível apagar seus dados pela
+            plataforma. Caso deseje entre em contato com renantashiro@hotmai.com
           </p>
         </div>
       </div>
