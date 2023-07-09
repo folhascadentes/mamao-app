@@ -318,6 +318,9 @@ export const signs: Sign[] = [
               sameY: true,
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
+            palmOrientation: {
+              detectionAngle: 100,
+            },
           },
         },
       },

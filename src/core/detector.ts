@@ -8,6 +8,7 @@ import {
   Movement,
   PalmOrientation,
   PalmOrientationDescriptor,
+  PalmOrientationOptions,
   Sign,
   SignConfigurationLocationOptions,
 } from "../signs";
@@ -200,7 +201,9 @@ const palmOrientationState = {
       start.dominant.palmOrientation,
       start.nonDominant?.palmOrientation,
       subject.hand.dominant.palm,
-      subject.hand.nonDominant.palm
+      subject.hand.nonDominant.palm,
+      start.dominant.options?.palmOrientation,
+      start.nonDominant?.options?.palmOrientation
     );
     const handOrientation = checkHandOrientation(
       start.dominant.handOrientation,
@@ -419,20 +422,24 @@ function checkPalmOrientation(
   dominantPalmOrientation: PalmOrientation | undefined,
   nonDominantPalmOrientation: PalmOrientation | undefined,
   subjectDominantPalmOrientation: Vector | undefined,
-  subjectNonDominantPalmOrientation: Vector | undefined
+  subjectNonDominantPalmOrientation: Vector | undefined,
+  dominantOptions?: PalmOrientationOptions,
+  nonDominantOptions?: PalmOrientationOptions
 ): { valid: boolean } {
   const dominantOkay =
     !dominantPalmOrientation ||
     checkOrientationUtil(
       PalmOrientationDescriptor[dominantPalmOrientation],
-      subjectDominantPalmOrientation
+      subjectDominantPalmOrientation,
+      dominantOptions?.detectionAngle
     );
 
   const nonDominantOkay =
     !nonDominantPalmOrientation ||
     checkOrientationUtil(
       PalmOrientationDescriptor[nonDominantPalmOrientation],
-      subjectNonDominantPalmOrientation
+      subjectNonDominantPalmOrientation,
+      nonDominantOptions?.detectionAngle
     );
 
   if (dominantOkay && nonDominantOkay) {
@@ -471,13 +478,14 @@ function checkHandOrientation(
 
 function checkOrientationUtil(
   orientation: Vector,
-  subjectOrientation?: Vector
+  subjectOrientation?: Vector,
+  detectionAngle: number = 65
 ): boolean {
   if (!subjectOrientation) {
     return false;
   }
   const angle = angleBetweenTwoVectors(orientation, subjectOrientation);
-  return angle < 65;
+  return angle < detectionAngle;
 }
 
 // -- Hand Location --
@@ -492,7 +500,7 @@ function setHandPostionsCoordinates(
 
   if (
     memory.dominantCoordinate?.x === -1 ||
-    sign.steps.start.dominant.options?.location.track
+    sign.steps.start.dominant.options?.location?.track
   ) {
     const { coordinate, offset } = findLocationCoordinate(
       sign.steps.start.dominant.location,
@@ -507,7 +515,7 @@ function setHandPostionsCoordinates(
   if (
     sign.steps.start.nonDominant?.location &&
     (memory.nonDominantCoordinate?.x === -1 ||
-      sign.steps.start.nonDominant.options?.location.track)
+      sign.steps.start.nonDominant.options?.location?.track)
   ) {
     const { coordinate, offset } = findLocationCoordinate(
       sign.steps.start.nonDominant.location,
@@ -520,7 +528,7 @@ function setHandPostionsCoordinates(
     memory.nonDominantCoordinateOffset = offset;
 
     if (
-      sign.steps.start.nonDominant.options?.location.side &&
+      sign.steps.start.nonDominant.options?.location?.side &&
       memory.dominantCoordinate
     ) {
       memory.nonDominantCoordinate.y = memory.dominantCoordinate.y;
@@ -529,9 +537,9 @@ function setHandPostionsCoordinates(
 
   if (
     memory.dominantEndCoordinate?.x === -1 ||
-    sign.steps.end.dominant.options?.location.track
+    sign.steps.end.dominant.options?.location?.track
   ) {
-    if (sign.steps.end.dominant.options?.location.same) {
+    if (sign.steps.end.dominant.options?.location?.same) {
       memory.dominantEndCoordinate = memory.dominantCoordinate;
     } else {
       const { coordinate, offset } = findLocationCoordinate(
@@ -545,14 +553,14 @@ function setHandPostionsCoordinates(
       memory.dominantEndCoordinateOffset = offset;
 
       if (
-        sign.steps.end.dominant.options?.location.sameX &&
+        sign.steps.end.dominant.options?.location?.sameX &&
         memory.dominantCoordinate
       ) {
         memory.dominantEndCoordinate.x = memory.dominantCoordinate.x;
       }
 
       if (
-        sign.steps.end.dominant.options?.location.sameY &&
+        sign.steps.end.dominant.options?.location?.sameY &&
         memory.dominantCoordinate
       ) {
         memory.dominantEndCoordinate.y = memory.dominantCoordinate.y;
@@ -563,9 +571,9 @@ function setHandPostionsCoordinates(
   if (
     sign.steps.end.nonDominant?.location &&
     (memory.nonDominantEndCoordinate?.x === -1 ||
-      sign.steps.end.nonDominant.options?.location.track)
+      sign.steps.end.nonDominant.options?.location?.track)
   ) {
-    if (sign.steps.end.nonDominant.options?.location.same) {
+    if (sign.steps.end.nonDominant.options?.location?.same) {
       memory.nonDominantEndCoordinate = memory.nonDominantCoordinate;
     } else {
       const { coordinate, offset } = findLocationCoordinate(
@@ -579,7 +587,7 @@ function setHandPostionsCoordinates(
       memory.nonDominantEndCoordinateOffset = offset;
 
       if (
-        sign.steps.end.dominant.options?.location.sameX &&
+        sign.steps.end.dominant.options?.location?.sameX &&
         memory.dominantCoordinate &&
         memory.dominantEndCoordinate
       ) {
@@ -587,13 +595,13 @@ function setHandPostionsCoordinates(
       }
 
       if (
-        sign.steps.end.dominant.options?.location.sameY &&
+        sign.steps.end.dominant.options?.location?.sameY &&
         memory.dominantCoordinate &&
         memory.dominantEndCoordinate
       ) {
         memory.dominantEndCoordinate.y = memory.dominantCoordinate.y;
       } else if (
-        sign.steps.end.nonDominant.options?.location.side &&
+        sign.steps.end.nonDominant.options?.location?.side &&
         memory.dominantEndCoordinate
       ) {
         memory.nonDominantEndCoordinate.y = memory.dominantEndCoordinate.y;

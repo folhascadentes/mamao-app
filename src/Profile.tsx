@@ -72,7 +72,7 @@ function Profile(): JSX.Element {
           </p>
           <p className="text-sm w-86 font-bold">
             No beta fechado ainda não é possível apagar seus dados pela
-            plataforma. Caso deseje entre em contato com renantashiro@hotmai.com
+            plataforma. Caso deseje entre em contato com renantashiro@hotmail.com
           </p>
         </div>
       </div>

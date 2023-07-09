@@ -25,7 +25,8 @@ interface SignConfiguration {
   palmOrientation: PalmOrientation;
   handOrientation?: HandOrientation;
   options?: {
-    location: SignConfigurationLocationOptions;
+    location?: SignConfigurationLocationOptions;
+    palmOrientation?: PalmOrientationOptions;
   };
 }
 
@@ -48,6 +49,10 @@ export interface SignConfigurationLocationOptions {
   sameY?: boolean;
   sameX?: boolean;
   side?: boolean;
+}
+
+export interface PalmOrientationOptions {
+  detectionAngle?: number;
 }
 
 interface MovementConfiguration {

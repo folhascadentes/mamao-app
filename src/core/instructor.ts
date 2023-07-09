@@ -29,7 +29,7 @@ export class Instructor {
         this.instructPosition(
           response.memory.dominantCoordinate,
           response.memory.nonDominantCoordinate,
-          this.sign.steps.start.dominant.options?.location.detectionRadius,
+          this.sign.steps.start.dominant.options?.location?.detectionRadius,
           this.sign.steps.start.nonDominant?.options?.location?.detectionRadius
         );
         this.angle = 0;
@@ -38,7 +38,7 @@ export class Instructor {
         this.instructPosition(
           response.memory.dominantEndCoordinate,
           response.memory.nonDominantEndCoordinate,
-          this.sign.steps.end.dominant.options?.location.detectionRadius,
+          this.sign.steps.end.dominant.options?.location?.detectionRadius,
           this.sign.steps.end.nonDominant?.options?.location?.detectionRadius
         );
         this.instructMovement(this.sign.steps.movement.dominant.metadata.type);
@@ -46,7 +46,7 @@ export class Instructor {
         this.instructPosition(
           response.memory.dominantEndCoordinate,
           response.memory.nonDominantEndCoordinate,
-          this.sign.steps.end.dominant.options?.location.detectionRadius,
+          this.sign.steps.end.dominant.options?.location?.detectionRadius,
           this.sign.steps.end.nonDominant?.options?.location?.detectionRadius
         );
       }
