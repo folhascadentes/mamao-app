@@ -625,6 +625,7 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           detect: [{ y: -1 }],
+          forbidden: [{ y: 1 }],
           metadata: {
             description:
               "vá abrindo a mão e movendo ela para frente descendo em direção a outra bola laranja",
@@ -1229,6 +1230,7 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           detect: [{ z: 1 }, { y: -1, z: 1 }],
+          forbidden: [{ y: 1 }],
           metadata: {
             description:
               "mova a mão até a outra bola laranja em um movimento parabólico para frente",
@@ -1280,6 +1282,7 @@ export const signs: Sign[] = [
       movement: {
         dominant: {
           detect: [{ y: -1 }, { y: -1 }],
+          forbidden: [{ y: 1 }],
           metadata: {
             description:
               "mova a mão até a outra bola laranja em um movimento parabólico para frente",
