@@ -7,14 +7,14 @@ function createMLPModel(inputSize, numClasses) {
 
   // Adicionar a primeira camada oculta
   model.add(
-    tf.layers.dense({ units: 96, activation: "relu", inputShape: [inputSize] })
+    tf.layers.dense({ units: 128, activation: "selu", inputShape: [inputSize] })
   );
 
   // Adicionar a segunda camada oculta
-  model.add(tf.layers.dense({ units: 64, activation: "relu" }));
+  model.add(tf.layers.dense({ units: 64, activation: "selu" }));
 
   // Adicionar a terceira camada oculta
-  model.add(tf.layers.dense({ units: 48, activation: "relu" }));
+  model.add(tf.layers.dense({ units: 32, activation: "selu" }));
 
   // Adicionar a camada de saída
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
@@ -103,7 +103,7 @@ model.compile({
 console.log("Modelo MLP criado com sucesso");
 
 const { inputTrain, outputTrain, inputValidation, outputValidation } =
-  trainTestSplit(inputData, outputData, 0.05);
+  trainTestSplit(inputData, outputData, 0.01);
 
 const inputTrainTensor = tf.tensor2d(inputTrain);
 const outputTrainTensor = tf.tensor2d(outputTrain);
