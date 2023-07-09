@@ -624,7 +624,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ y: -1, z: 1 }, { y: -1 }],
+          detect: [{ y: -1 }],
           metadata: {
             description:
               "vá abrindo a mão e movendo ela para frente descendo em direção a outra bola laranja",
@@ -647,7 +647,7 @@ export const signs: Sign[] = [
                 leftLimitValue: -80,
                 rightLimitValue: 80,
               },
-              handLocation: HandLocation.MIDDLE_FINGER_TIP,
+              handLocation: HandLocation.MIDDLE_FINGER_PIP,
             },
           },
         },
