@@ -7,17 +7,23 @@ function createMLPModel(inputSize, numClasses) {
 
   // Adicionar a primeira camada oculta
   model.add(
-    tf.layers.dense({ units: 128, activation: "selu", inputShape: [inputSize] })
+    tf.layers.dense({ units: 32, activation: "selu", inputShape: [inputSize] })
   );
 
   // Adicionar a segunda camada oculta
   model.add(tf.layers.dense({ units: 64, activation: "selu" }));
 
   // Adicionar a terceira camada oculta
+  model.add(tf.layers.dense({ units: 128, activation: "selu" }));
+
+  model.add(tf.layers.dense({ units: 64, activation: "selu" }));
+
   model.add(tf.layers.dense({ units: 32, activation: "selu" }));
 
   // Adicionar a camada de saída
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
+
+  console.log("Params", model.countParams());
 
   return model;
 }
@@ -84,7 +90,7 @@ function loadDataset(dirpath) {
 
 const [inputData, outputData, classes] = loadDataset(`${__dirname}/libras`);
 
-console.log(classes)
+console.log(classes);
 
 // Definir constantes
 const inputSize = inputData[0].length;
