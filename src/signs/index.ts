@@ -285,7 +285,7 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ x: 1 }, { z: 1 }, { x: 1 }, { z: -1 }],
+          detect: [{ x: 1 }, { x: 1 }, { z: -1 }],
           forbidden: [
             { x: -1 },
             { x: -1, y: 1 },

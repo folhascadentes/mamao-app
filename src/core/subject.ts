@@ -369,7 +369,7 @@ export class Subject {
   }
 
   private setSubjectHandMovement(subject: SubjectData): void {
-    const before = this.buffer[this.buffer.length - 4];
+    const before = this.buffer[this.buffer.length - 5];
     const after = this.buffer[this.buffer.length - 1];
 
     if (
@@ -377,8 +377,8 @@ export class Subject {
       after?.readings.poseWorldLandmarks.length
     ) {
       const frontOrBackMoviment = this.parseSubjectHandMovimentFrontOrBack(
-        before.readings.poseWorldLandmarks,
-        after.readings.poseWorldLandmarks
+        before.readings.poseLandmarks,
+        after.readings.poseLandmarks
       );
 
       if (
@@ -546,27 +546,27 @@ export class Subject {
   }
 
   private parseSubjectHandMovimentFrontOrBack(
-    beforePoseWolrdLanmarks: Coordinate[],
-    afterPoseWolrdLanmarks: Coordinate[]
+    beforePoseLanmarks: Coordinate[],
+    afterPoseLanmarks: Coordinate[]
   ): {
     dominant: Pick<MovementAxis, "z">;
     nonDominant: Pick<MovementAxis, "z">;
   } {
     const rightArm = this.parseSubjectHandMovimentFrontOrBackUtil(
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_WRIST],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.RIGHT_WRIST]
+      beforePoseLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
+      beforePoseLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
+      beforePoseLanmarks[POSE_LANDMARKS.RIGHT_WRIST],
+      afterPoseLanmarks[POSE_LANDMARKS.RIGHT_SHOULDER],
+      afterPoseLanmarks[POSE_LANDMARKS.RIGHT_ELBOW],
+      afterPoseLanmarks[POSE_LANDMARKS.RIGHT_WRIST]
     );
     const leftArm = this.parseSubjectHandMovimentFrontOrBackUtil(
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
-      beforePoseWolrdLanmarks[POSE_LANDMARKS.LEFT_WRIST],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
-      afterPoseWolrdLanmarks[POSE_LANDMARKS.LEFT_WRIST]
+      beforePoseLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
+      beforePoseLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
+      beforePoseLanmarks[POSE_LANDMARKS.LEFT_WRIST],
+      afterPoseLanmarks[POSE_LANDMARKS.LEFT_SHOULDER],
+      afterPoseLanmarks[POSE_LANDMARKS.LEFT_ELBOW],
+      afterPoseLanmarks[POSE_LANDMARKS.LEFT_WRIST]
     );
 
     if (this.dominantHand === "RIGHT") {
@@ -585,7 +585,7 @@ export class Subject {
     afterWrist: Coordinate
   ): Pick<MovementAxis, "z"> {
     // A challenge to find the right threshold if because the Z value is not very precise for pose landmarks
-    const THRESHOLD = 2.55;
+    const THRESHOLD = 10;
 
     const beforeV1 = pointDifference(beforeElbow, beforeShoulder);
     const beforeV2 = pointDifference(beforeElbow, beforeWrist);
