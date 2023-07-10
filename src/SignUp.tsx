@@ -226,7 +226,7 @@ export function SignUp(): JSX.Element {
               </Select>
             </FormControl>
             <FormControl id="weight">
-              <FormLabel>Peso</FormLabel>
+              <FormLabel>Peso (Kg)</FormLabel>
               <Input
                 placeholder="peso em (Kg)"
                 type={"number"}
@@ -239,7 +239,7 @@ export function SignUp(): JSX.Element {
               />
             </FormControl>
             <FormControl id="height">
-              <FormLabel>Altura</FormLabel>
+              <FormLabel>Altura (cm)</FormLabel>
               <Input
                 placeholder="altura em (cm)"
                 type={"number"}
