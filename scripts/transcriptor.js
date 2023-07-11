@@ -1,6 +1,8 @@
 const tf = require("@tensorflow/tfjs-node-gpu");
 const fs = require("fs");
 const path = require("path");
+const still = require("./data/still");
+
 
 function normalizeData(data) {
   let dominantWorldLandmarksNormalized = data.dominantWorldLandmarks
@@ -33,7 +35,7 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
   let classIndexMap = {}; // A map to store each class's index based on first appearance
   let currentIndex = 0; // Current index for class
 
-  let othersData = [];
+  let othersData = still;
 
   for (const cls of classes) {
     const classDir = path.join(dir, cls);
@@ -42,8 +44,6 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
       const filePath = path.join(classDir, file);
       const fileContent = fs.readFileSync(filePath, "utf-8");
       const data = JSON.parse(fileContent).map((d) => normalizeData(d));
-
-      othersData.push(data[0]);
 
       if (!classIndexMap.hasOwnProperty(cls)) {
         classIndexMap[cls] = currentIndex;

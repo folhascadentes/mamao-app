@@ -25,6 +25,7 @@ function Transcribe({
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
+  // let trainingData: any = [];
 
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
@@ -68,6 +69,9 @@ function Transcribe({
         buffer.map((b) => flattenizeLandmarks(b.readings))
       );
 
+      // trainingData.push(input)
+      // console.log(trainingData)
+
       const prediction = transcribeModel.predict(
         tensorflow.tensor([input])
       ) as tensorflow.Tensor<tensorflow.Rank>;
@@ -104,7 +108,9 @@ function Transcribe({
         23: "OTHERS",
       };
 
-      console.log(mapper[index], index);
+      if (max > 0.90 && index !== 23) {
+        console.log(mapper[index], index, max);
+      }
     }
   };
 
