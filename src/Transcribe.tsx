@@ -178,9 +178,11 @@ function Transcribe({
         height="720"
       ></video>
       <div className="flex flex-col md:flex-row md:space-x-8 justify-center font-sm mx-6">
-        <div className="w-1/2 flex flex-col space-y-4 text-center">
+        <div className="w-1/2 flex flex-col space-y-4 items-center justify-center text-center ">
           <h1 className="text-4xl">Transcrição</h1>
-          <div className="text-9xl text-orange-500 font-black">{predictShow}</div>
+          <div className="text-9xl text-orange-500 font-black">
+            {predictShow}
+          </div>
         </div>
         <div className="w-1/2">
           <div className="flex relative">
