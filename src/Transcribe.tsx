@@ -22,6 +22,7 @@ function Transcribe({
 }) {
   const navigate = useNavigate();
 
+  const [predictShow, setPredictShow] = React.useState("");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
@@ -29,6 +30,8 @@ function Transcribe({
 
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
+  let predictToken = "";
+  let predictCounter = 0;
 
   const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
@@ -108,8 +111,19 @@ function Transcribe({
         23: "OTHERS",
       };
 
-      if (max > 0.90 && index !== 23) {
-        console.log(mapper[index], index, max);
+      if (max > 0.9 && index !== 23) {
+        console.log(mapper[index], index, max, predictToken, predictCounter);
+
+        if (mapper[index] !== predictToken) {
+          predictToken = mapper[index];
+          predictCounter = 0;
+        } else {
+          predictCounter++;
+        }
+
+        if (predictCounter > 4) {
+          setPredictShow(predictToken);
+        }
       }
     }
   };
@@ -163,7 +177,11 @@ function Transcribe({
         width="720"
         height="720"
       ></video>
-      <div className="flex flex-col md:flex-row md:space-x-8 justify-center font-sm">
+      <div className="flex flex-col md:flex-row md:space-x-8 justify-center font-sm mx-6">
+        <div className="w-1/2 flex flex-col space-y-4 text-center">
+          <h1 className="text-4xl">Transcrição</h1>
+          <div className="text-9xl text-orange-500 font-black">{predictShow}</div>
+        </div>
         <div className="w-1/2">
           <div className="flex relative">
             <canvas
