@@ -52,7 +52,7 @@ export function SignUp(): JSX.Element {
           email,
           password,
           age: age ? Number(age) : undefined,
-          // gender,
+          others: gender,
           ethnicity,
           deficiency,
           weight: weight ? Number(weight) : undefined,
