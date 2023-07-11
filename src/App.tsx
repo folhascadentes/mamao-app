@@ -31,12 +31,15 @@ import DatabaseDiversityImportance from "./DatabaseDiversityImportance";
 import WhoIsAIAC from "./WhoIsAIAC";
 import TermsPrivacyUse from "./TermsPrivacyUse";
 import Profile from "./Profile";
+import Transcribe from "./Transcribe";
 
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<boolean>(false);
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
   const [handShapeModel, setHandShapeModel] =
+    useState<tensorflow.LayersModel>();
+  const [transcribeModel, setTranscribeModel] =
     useState<tensorflow.LayersModel>();
 
   useEffect(() => {
@@ -47,11 +50,18 @@ export default function App(): JSX.Element {
         );
         setHandShapeModel(model);
       }
+
+      if (transcribeModel === undefined) {
+        const model = await tensorflow.loadLayersModel(
+          process.env.REACT_APP_TRANSCRIBE_MODEL_URL as string
+        );
+        setTranscribeModel(model);
+      }
     })();
     // eslint-disable-next-line
   }, []);
 
-  function startRecording(): void {
+  function start(): void {
     const constraints = {
       audio: false,
       video: {
@@ -144,7 +154,7 @@ export default function App(): JSX.Element {
                   path="/instructions"
                   element={
                     <PrivateWrapper>
-                      {<Instructions startRecording={startRecording} />}
+                      {<Instructions startRecording={start} />}
                     </PrivateWrapper>
                   }
                 />
@@ -159,6 +169,24 @@ export default function App(): JSX.Element {
                             handShapeModel as tensorflow.LayersModel
                           }
                           cameraSettings={cameraSettings as MediaTrackSettings}
+                        />
+                      }
+                    </PrivateWrapper>
+                  }
+                />
+                <Route
+                  path="/transcribe"
+                  element={
+                    <PrivateWrapper>
+                      {
+                        <Transcribe
+                          setLoading={setLoading}
+                          handShapeModel={
+                            handShapeModel as tensorflow.LayersModel
+                          }
+                          transcribeModel={
+                            transcribeModel as tensorflow.LayersModel
+                          }
                         />
                       }
                     </PrivateWrapper>
