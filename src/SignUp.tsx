@@ -60,12 +60,26 @@ export function SignUp(): JSX.Element {
         }
       );
 
-      if (response.status === 201) {
+      if (
+        response.status === 201 &&
+        response.data.$metadata.httpStatusCode < 300
+      ) {
         navigate("/confirm-sign-up?email=" + email);
+      } else {
+        if (response.data.name === "InvalidPasswordException") {
+          setError("A senha não atende os requisitos mínimos.");
+        } else if (response.data.name === "UsernameExistsException") {
+          setError("O e-mail já está cadastrado.");
+        } else {
+          navigate("/confirm-sign-up?email=" + email);
+          setError("Não foi possível realizar o cadastro. Tente novamente.");
+        }
       }
     } catch (error: any) {
       // Beta testing phase
-      navigate("/confirm-sign-up?email=" + email);
+      if (error.response.status === 500) {
+        navigate("/confirm-sign-up?email=" + email);
+      }
       // end beta code
       setError(
         "Verfique se o e-mail já está cadastrado ou se as senhas são iguais e atendem os requisitos mínimos."
