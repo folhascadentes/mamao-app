@@ -7,6 +7,7 @@ import {
   createContext,
 } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -53,6 +54,8 @@ interface PrivateWrapperProps {
 }
 
 export const PrivateWrapper: FC<PrivateWrapperProps> = ({ children }) => {
+  checkTokenAndLogout();
+
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -95,3 +98,24 @@ export const PublicWrapper: FC<PrivateWrapperProps> = ({ children }) => {
 
   return <>{children}</>;
 };
+
+function checkTokenAndLogout() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return;
+  }
+
+  try {
+    const decoded: any = jwt_decode(token);
+
+    const current_time = Date.now().valueOf() / 1000;
+
+    if (decoded.exp < current_time) {
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+  } catch (err) {
+    console.log("Error decoding token:", err);
+  }
+}
