@@ -68,7 +68,7 @@ export function SignIn(): JSX.Element {
   }, []);
 
   return (
-    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16">
+    <div className="flex flex-wrap justify-center space-x-24 mt-8 xl:mt-16 mb-24">
       <div
         className="flex flex-col mx-6 md:mx-0 justify-center space-y-4"
         style={{ width: window.innerWidth <= 500 ? "auto" : "612px" }}
