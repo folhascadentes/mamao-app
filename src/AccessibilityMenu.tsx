@@ -156,6 +156,8 @@ function AccessibilityMenu(): JSX.Element {
             <MenuButton
               as={IconButton}
               aria-label="Options"
+              bg="transparent" 
+              color={textColor === "#000000" ? "black" : "white"}
               icon={
                 <>
                   <BsPerson size={28} />
