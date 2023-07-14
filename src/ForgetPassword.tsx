@@ -88,7 +88,7 @@ function ForgetPassword(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Recuperar <SL>R</SL>
+                Recuperar <SL bg="indigo-800">R</SL>
               </>
             )}
           </button>

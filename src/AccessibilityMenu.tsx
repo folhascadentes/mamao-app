@@ -171,14 +171,18 @@ function AccessibilityMenu(): JSX.Element {
                 textAlign={"center"}
               >
                 <span className="mr-2">Perfil</span>
-                <SL>F</SL>
+                <div>
+                  <SL>F</SL>
+                </div>
               </MenuItem>
               <MenuItem
                 onClick={handleLogout}
                 bgColor={styleContext.state.backgroundColor}
               >
                 <span className="mr-2">Sair</span>
-                <SL>L</SL>
+                <div>
+                  <SL>L</SL>
+                </div>
               </MenuItem>
             </MenuList>
           </Menu>

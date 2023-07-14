@@ -3,6 +3,7 @@ import React, { useContext, useEffect } from "react";
 import { StyleContext } from "./reducers/style.reducer";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 import TermsPrivacyUseModal from "./modals/terms-privacy-use.modal";
+import { SL } from "./components";
 
 function Footer(): JSX.Element {
   const { state } = useContext(StyleContext);
@@ -30,7 +31,7 @@ function Footer(): JSX.Element {
         <div className="flex flex-wrap">
           <div className="flex justify-center space-x-4 text-indigo-500 font-bold">
             <a href="https://www.mamao.dev.br" rel="noreferrer" target="_blank">
-              Sobre o projeto [S]
+              Sobre o projeto <SL>S</SL>
             </a>{" "}
             <span>•</span>
             <a
@@ -38,12 +39,12 @@ function Footer(): JSX.Element {
               rel="noreferrer"
               target="_blank"
             >
-              Sobre nós [W]
+              Sobre nós <SL>W</SL>
             </a>{" "}
             <span>•</span>
             {/* eslint-disable-next-line */}
             <a href="#" onClick={onOpen} className="cursor-pointer">
-              Privacidade e Uso [P]
+              Privacidade e Uso <SL>P</SL>
             </a>
           </div>
           <div className="flex-grow"></div>

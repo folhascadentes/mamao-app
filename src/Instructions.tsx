@@ -124,7 +124,10 @@ function Instructions({
             className="hidden md:inline bg-indigo-600 hover:bg-indigo-700 text-white py-5 xl:py-6 px-8 text-xl xl:text-2xl rounded-xl mb-10"
             disabled={isMobile}
           >
-            Começar <SL>I</SL>
+            Começar{" "}
+            <div className="inline text-lg">
+              <SL bg="indigo-700">I</SL>
+            </div>
           </button>
           <div className="flex md:hidden font-bold mb-10">
             Atualmente não é possível começar a aplicação para dispositivos
@@ -329,7 +332,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={nextState}
               >
-                Próximo <SL>D</SL>
+                Próximo <SL bg="indigo-800">D</SL>
               </button>
             )}
             {state === 5 && (
@@ -338,7 +341,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
-                Começar <SL>B</SL>
+                Começar <SL bg="indigo-800">B</SL>
               </button>
             )}
           </ModalFooter>

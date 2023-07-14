@@ -307,7 +307,7 @@ export function SignUp(): JSX.Element {
                 <Spinner />
               ) : (
                 <>
-                  Registrar <SL>U</SL>
+                  Registrar <SL bg="indigo-800">U</SL>
                 </>
               )}
             </button>
