@@ -72,8 +72,8 @@ function Header(): JSX.Element {
               minWidth:
                 window.innerWidth >= 768
                   ? isAuthenticated
-                    ? "319.39px"
-                    : "239.92px"
+                    ? "347px"
+                    : "254px"
                   : "40px",
             }}
           ></div>
