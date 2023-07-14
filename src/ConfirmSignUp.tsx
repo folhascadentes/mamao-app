@@ -120,7 +120,7 @@ function ConfirmSignUp(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Confirmar <SL bg="indigo-800">U</SL>
+                Confirmar <SL bg="purple.500">U</SL>
               </>
             )}
           </button>

@@ -118,7 +118,7 @@ export function SignIn(): JSX.Element {
                 <Spinner />
               ) : (
                 <>
-                  Entrar <SL bg="indigo-800">E</SL>
+                  Entrar <SL bg="purple.500">E</SL>
                 </>
               )}
             </button>

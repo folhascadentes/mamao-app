@@ -126,7 +126,7 @@ function Instructions({
           >
             Começar{" "}
             <div className="inline text-lg">
-              <SL bg="indigo-700">I</SL>
+              <SL bg="purple.500">I</SL>
             </div>
           </button>
           <div className="flex md:hidden font-bold mb-10">
@@ -332,7 +332,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={nextState}
               >
-                Próximo <SL bg="indigo-800">D</SL>
+                Próximo <SL bg="purple.500">D</SL>
               </button>
             )}
             {state === 5 && (
@@ -341,7 +341,7 @@ function Instructions({
                 className="bg-indigo-600 hover:bg-indigo-700 text-white py-3.5 px-6 text-lg rounded-xl mr-3 mb-6"
                 onClick={begin}
               >
-                Começar <SL bg="indigo-800">B</SL>
+                Começar <SL bg="purple.500">B</SL>
               </button>
             )}
           </ModalFooter>

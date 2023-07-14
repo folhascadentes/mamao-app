@@ -149,7 +149,7 @@ function ConfirmForgetPassword(): JSX.Element {
               <Spinner />
             ) : (
               <>
-                Confirmar <SL bg="indigo-800">R</SL>
+                Confirmar <SL bg="purple.500">R</SL>
               </>
             )}
           </button>
