@@ -72,9 +72,6 @@ function Transcribe({
         buffer.map((b) => flattenizeLandmarks(b.readings))
       );
 
-      // trainingData.push(input)
-      // console.log(trainingData)
-
       const prediction = transcribeModel.predict(
         tensorflow.tensor([input])
       ) as tensorflow.Tensor<tensorflow.Rank>;
@@ -111,7 +108,7 @@ function Transcribe({
         23: "OTHERS",
       };
 
-      if (max > 0.9 && index !== 23) {
+      if (max > 0.90 && index !== 23) {
         console.log(mapper[index], index, max, predictToken, predictCounter);
 
         if (mapper[index] !== predictToken) {

@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const still = require("./data/still");
 
-
 function normalizeData(data) {
   let dominantWorldLandmarksNormalized = data.dominantWorldLandmarks
     .map((landmark) => [landmark.x, landmark.y, landmark.z])
@@ -43,7 +42,8 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
     for (const file of files) {
       const filePath = path.join(classDir, file);
       const fileContent = fs.readFileSync(filePath, "utf-8");
-      const data = JSON.parse(fileContent).map((d) => normalizeData(d));
+      const rawData = JSON.parse(fileContent);
+      const data = rawData.map((d) => normalizeData(d));
 
       if (!classIndexMap.hasOwnProperty(cls)) {
         classIndexMap[cls] = currentIndex;
@@ -58,11 +58,23 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
         class: classOneHot,
         data: padWithZeros(data, targetLength),
       });
+
+      // Adding the first frame of each video to "OTHERS" class
+      if (rawData.length > 0) {
+        if (Math.random() > 0.5) {
+          const firstFrameData = normalizeData(rawData[0]);
+          othersData.push(firstFrameData);
+        } else {
+          const lastFrameData = normalizeData(rawData[rawData.length - 1]);
+          othersData.push(lastFrameData);
+        }
+      }
     }
   }
 
+  // Process the "OTHERS" data
   for (let data of othersData) {
-    const othersDataNormalized = padWithZeros(data, targetLength);
+    const othersDataNormalized = padWithSame(data, targetLength);
     const classOneHot = Array(24).fill(0);
     classOneHot[currentIndex] = 1;
     dataset.push({
@@ -89,6 +101,16 @@ function padWithZeros(data, targetLength) {
   return [...data, ...padding.map((p) => (p === 0 ? Math.random() : p))];
 }
 
+function padWithSame(data, targetLength) {
+  data = data.flat();
+
+  while (data.length < targetLength) {
+    data = [...data, ...data];
+  }
+
+  return data.slice(0, targetLength);
+}
+
 function shuffle(array) {
   let currentIndex = array.length,
     temporaryValue,
@@ -112,7 +134,7 @@ function createMLPModel(inputSize, numClasses) {
   model.add(tf.layers.dense({ units: 128, activation: "selu" }));
   model.add(tf.layers.dense({ units: 256, activation: "selu" }));
   model.add(tf.layers.dense({ units: 128, activation: "selu" }));
-  model.add(tf.layers.dense({ units: 65, activation: "selu" }));
+  model.add(tf.layers.dense({ units: 64, activation: "selu" }));
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
 
   console.log("Params", model.countParams());
@@ -122,7 +144,7 @@ function createMLPModel(inputSize, numClasses) {
 
 const [trainingSet, validationSet, classIndexMap] = loadAndPrepareData(
   "./dataset",
-  0.8
+  0.95
 );
 
 const numberOfClasses = trainingSet[0].class.length;
@@ -152,8 +174,28 @@ const outputValidationTensor = tf.tensor2d(
   [validationSet.map((t) => t.data).length, validationSet[0].class.length]
 );
 
-const epochs = 100;
-const batchSize = 256;
+const epochs = 150;
+const batchSize = 128;
+
+const bestModelSavePath = "file://./best_model";
+let bestValidationAcc = 0;
+
+async function onEpochEnd(epoch, logs) {
+  console.log(
+    `Epoch ${epoch + 1}: Training accuracy ${logs.acc.toFixed(
+      4
+    )}, Validation accuracy ${logs.val_acc.toFixed(4)}`
+  );
+
+  // Save the model if the current epoch's validation accuracy is better than previous best
+  if (logs.val_acc > bestValidationAcc) {
+    bestValidationAcc = logs.val_acc;
+    await model.save(bestModelSavePath);
+    console.log(
+      `New best model saved at epoch ${epoch + 1} to ${bestModelSavePath}`
+    );
+  }
+}
 
 (async function () {
   await model.fit(inputTrainTensor, outputTrainTensor, {
@@ -161,13 +203,7 @@ const batchSize = 256;
     batchSize,
     validationData: [inputValidationTensor, outputValidationTensor],
     callbacks: {
-      onEpochEnd: async (epoch, logs) => {
-        console.log(
-          `Epoch ${epoch + 1}: Acurácia de treinamento ${logs.acc.toFixed(
-            4
-          )}, Acurácia de validação ${logs.val_acc.toFixed(4)}`
-        );
-      },
+      onEpochEnd,
     },
   });
 
@@ -177,54 +213,10 @@ const batchSize = 256;
     outputValidationTensor
   );
   const validationAccuracy = evaluation[1].dataSync()[0];
-  console.log(`Acurácia de validação: ${validationAccuracy.toFixed(4)}`);
+  console.log(`Validation accuracy: ${validationAccuracy.toFixed(4)}`);
 
   const savePath = "file://./model";
   await model.save(savePath);
 })();
 
 console.log(classIndexMap);
-
-// const source = [];
-
-// const input = padWithZeros(
-//   source.map((a) => normalizeData(a)),
-//   3225
-// );
-
-// (async function () {
-//   const model = await tf.loadLayersModel("file://./model/model.json");
-
-//   const inputTensor = tf.tensor2d([input]);
-//   const prediction = model.predict(inputTensor);
-//   const predictionArray = prediction.arraySync();
-//   const maxProbability = Math.max(...predictionArray[0]);
-//   const indexOfMaxProbability = predictionArray[0].indexOf(maxProbability);
-
-//   console.log(indexOfMaxProbability, {
-//     Agosto: 0,
-//     Aqui: 1,
-//     Avisar: 2,
-//     Bom: 3,
-//     Certeza: 4,
-//     Dia: 5,
-//     Entender: 6,
-//     Futuro: 7,
-//     Gostar: 8,
-//     "Me-avisar": 9,
-//     "Meu-nome": 10,
-//     Nome: 11,
-//     Não: 12,
-//     Obrigado: 13,
-//     Oi: 14,
-//     Pessoa: 15,
-//     Quente: 16,
-//     Rapido: 17,
-//     Saúde: 18,
-//     Sim: 19,
-//     Tarde: 20,
-//     Tchau: 21,
-//     Telefone: 22,
-//     OTHERS: 23,
-//   });
-// })();

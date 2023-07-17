@@ -36,6 +36,7 @@ import Transcribe from "./Transcribe";
 export default function App(): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [loading, setLoading] = useState<boolean>(false);
+  const [to, setTo] = useState<string>("/recording");
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
   const [handShapeModel, setHandShapeModel] =
     useState<tensorflow.LayersModel>();
@@ -61,7 +62,9 @@ export default function App(): JSX.Element {
     // eslint-disable-next-line
   }, []);
 
-  function start(): void {
+  function start(to?: string): void {
+    setTo(to ?? "/recording");
+
     const constraints = {
       audio: false,
       video: {
@@ -89,7 +92,7 @@ export default function App(): JSX.Element {
       <Router>
         <StyleProvider>
           <HotkeyProvider>
-            {loading && <LoadingScreen />}
+            {loading && <LoadingScreen to={to} />}
             <div id="application">
               <Header />
               <Routes>
@@ -194,7 +197,7 @@ export default function App(): JSX.Element {
                 />
                 <Route path="*" element={<DefaultRoute />} />
               </Routes>
-              <Footer />
+              <Footer startTranscribe={() => start("/transcribe")} />
             </div>
             <EnableCameraModal
               isOpen={isOpen}

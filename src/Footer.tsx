@@ -5,7 +5,11 @@ import { HotkeyContext } from "./reducers/hotkeys.reducer";
 import TermsPrivacyUseModal from "./modals/terms-privacy-use.modal";
 import { SL } from "./components";
 
-function Footer(): JSX.Element {
+function Footer({
+  startTranscribe,
+}: {
+  startTranscribe: () => void;
+}): JSX.Element {
   const { state } = useContext(StyleContext);
   const hotkeyContext = useContext(HotkeyContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -17,6 +21,7 @@ function Footer(): JSX.Element {
         P: () => onOpen(),
         S: () => window.open("https://www.mamao.dev.br"),
         W: () => window.open("https://app.mamao.dev.br/who-is-aiac"),
+        T: () => startTranscribe(),
       },
     });
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
@@ -45,6 +50,11 @@ function Footer(): JSX.Element {
             {/* eslint-disable-next-line */}
             <a href="#" onClick={onOpen} className="cursor-pointer">
               Privacidade e Uso <SL>P</SL>
+            </a>
+            <span>•</span>
+            {/* eslint-disable-next-line */}
+            <a href="#" onClick={startTranscribe} className="cursor-pointer">
+              Transcritor <SL>T</SL>
             </a>
           </div>
           <div className="flex-grow"></div>

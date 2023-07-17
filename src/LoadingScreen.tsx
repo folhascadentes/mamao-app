@@ -10,7 +10,7 @@ interface DownloadProgress {
   url: string;
 }
 
-function LoadingScreen(): JSX.Element {
+function LoadingScreen({ to }: { to?: string }): JSX.Element {
   const { state } = useContext(StyleContext);
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ function LoadingScreen(): JSX.Element {
   }
 
   useEffect(() => {
-    navigate("/recording");
+    navigate(to ?? "/recording");
     patchXMLHttpRequest();
     // eslint-disable-next-line
   }, []);
