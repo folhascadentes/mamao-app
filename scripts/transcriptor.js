@@ -144,7 +144,7 @@ function createMLPModel(inputSize, numClasses) {
 
 const [trainingSet, validationSet, classIndexMap] = loadAndPrepareData(
   "./dataset",
-  0.95
+  0.66
 );
 
 const numberOfClasses = trainingSet[0].class.length;
@@ -174,8 +174,8 @@ const outputValidationTensor = tf.tensor2d(
   [validationSet.map((t) => t.data).length, validationSet[0].class.length]
 );
 
-const epochs = 150;
-const batchSize = 128;
+const epochs = 100;
+const batchSize = 512;
 
 const bestModelSavePath = "file://./best_model";
 let bestValidationAcc = 0;
@@ -214,9 +214,6 @@ async function onEpochEnd(epoch, logs) {
   );
   const validationAccuracy = evaluation[1].dataSync()[0];
   console.log(`Validation accuracy: ${validationAccuracy.toFixed(4)}`);
-
-  const savePath = "file://./model";
-  await model.save(savePath);
 })();
 
 console.log(classIndexMap);
