@@ -68,12 +68,10 @@ function Transcribe({
     const buffer = subject.getBuffer();
 
     if (buffer.length === 24) {
-      const input = padWithZeros(
-        buffer.map((b) => flattenizeLandmarks(b.readings))
-      );
+      const input = buffer.map((b) => flattenizeLandmarks(b.readings));
 
       const prediction = transcribeModel.predict(
-        tensorflow.tensor([input])
+        tensorflow.tensor2d(input, [24, 129])
       ) as tensorflow.Tensor<tensorflow.Rank>;
 
       const predictionData = prediction.dataSync();
@@ -108,9 +106,10 @@ function Transcribe({
         23: "OTHERS",
       };
 
-      if (max > 0.90 && index !== 23) {
+      if (index !== 23 && max > 0.7) {
         console.log(mapper[index], index, max, predictToken, predictCounter);
-
+      }
+      if (max > 0.95 && index !== 23) {
         if (mapper[index] !== predictToken) {
           predictToken = mapper[index];
           predictCounter = 0;
@@ -118,7 +117,7 @@ function Transcribe({
           predictCounter++;
         }
 
-        if (predictCounter > 4) {
+        if (predictCounter > 3) {
           setPredictShow(predictToken);
         }
       }

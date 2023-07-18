@@ -28,13 +28,33 @@ function normalizeData(data) {
   return response;
 }
 
-function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
+function reshapeArray(array, rows, cols) {
+  let output = [];
+  for (let i = 0; i < rows; i++) {
+    let row = [];
+    for (let j = 0; j < cols; j++) {
+      row.push(array[i * cols + j]);
+    }
+    output.push(row);
+  }
+  return output;
+}
+
+function loadAndPrepareData(
+  dir,
+  ratio = 0.8,
+  valRatio = 0.15,
+  frameLength = 129,
+  frameQuantity = 24
+) {
   let dataset = [];
   const classes = fs.readdirSync(dir);
   let classIndexMap = {}; // A map to store each class's index based on first appearance
   let currentIndex = 0; // Current index for class
 
-  let othersData = still;
+  let othersData = still.map((element) =>
+    reshapeArray(element, frameQuantity, frameLength)
+  );
 
   for (const cls of classes) {
     const classDir = path.join(dir, cls);
@@ -42,7 +62,7 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
     for (const file of files) {
       const filePath = path.join(classDir, file);
       const fileContent = fs.readFileSync(filePath, "utf-8");
-      const rawData = JSON.parse(fileContent);
+      const rawData = JSON.parse(fileContent).slice(0, 24);
       const data = rawData.map((d) => normalizeData(d));
 
       if (!classIndexMap.hasOwnProperty(cls)) {
@@ -56,30 +76,29 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
 
       dataset.push({
         class: classOneHot,
-        data: padWithZeros(data, targetLength),
+        data: padWithZeros(data, frameLength, frameQuantity),
       });
 
       // Adding the first frame of each video to "OTHERS" class
-      if (rawData.length > 0) {
-        if (Math.random() > 0.5) {
-          const firstFrameData = normalizeData(rawData[0]);
-          othersData.push(firstFrameData);
-        } else {
-          const lastFrameData = normalizeData(rawData[rawData.length - 1]);
-          othersData.push(lastFrameData);
-        }
-      }
+      // if (rawData.length > 0) {
+      //   if (Math.random() > 0.5) {
+      //     const firstFrameData = normalizeData(rawData[0]);
+      //     othersData.push(firstFrameData);
+      //   } else {
+      //     const lastFrameData = normalizeData(rawData[rawData.length - 1]);
+      //     othersData.push(lastFrameData);
+      //   }
+      // }
     }
   }
 
   // Process the "OTHERS" data
   for (let data of othersData) {
-    const othersDataNormalized = padWithSame(data, targetLength);
     const classOneHot = Array(24).fill(0);
     classOneHot[currentIndex] = 1;
     dataset.push({
       class: classOneHot,
-      data: othersDataNormalized,
+      data: padWithSame(data, frameQuantity),
     });
   }
 
@@ -87,28 +106,37 @@ function loadAndPrepareData(dir, ratio = 0.8, targetLength = 3225) {
     classIndexMap["OTHERS"] = currentIndex;
   }
 
-  dataset = shuffle(dataset); // Consider shuffling the dataset for better training
-  const splitIndex = Math.floor(dataset.length * ratio);
-  const trainingSet = dataset.slice(0, splitIndex);
-  const validationSet = dataset.slice(splitIndex);
-  return [trainingSet, validationSet, classIndexMap];
+  dataset = shuffle(dataset);
+  const trainSplitIndex = Math.floor(dataset.length * ratio);
+  const validationSplitIndex =
+    trainSplitIndex + Math.floor(dataset.length * valRatio);
+  const trainingSet = dataset.slice(0, trainSplitIndex);
+  const validationSet = dataset.slice(trainSplitIndex, validationSplitIndex);
+  const testingSet = dataset.slice(validationSplitIndex);
+
+  return [trainingSet, validationSet, testingSet, classIndexMap];
 }
 
-function padWithZeros(data, targetLength) {
-  data = data.flat();
-  const paddingSize = targetLength - data.length;
-  const padding = new Array(paddingSize).fill(0);
-  return [...data, ...padding.map((p) => (p === 0 ? Math.random() : p))];
-}
+function padWithZeros(data, frameLength, frameQuantity) {
+  const paddingSize = frameQuantity - data.length;
+  const padding = new Array(frameLength).fill(0);
 
-function padWithSame(data, targetLength) {
-  data = data.flat();
-
-  while (data.length < targetLength) {
-    data = [...data, ...data];
+  for (let i = 0; i < paddingSize; i++) {
+    data.push(padding);
   }
 
-  return data.slice(0, targetLength);
+  return data;
+}
+
+function padWithSame(data, frameQuantity) {
+  const paddingSize = frameQuantity - data.length;
+  const padding = data[0];
+
+  for (let i = 0; i < paddingSize; i++) {
+    data.push(padding);
+  }
+
+  return data;
 }
 
 function shuffle(array) {
@@ -125,16 +153,29 @@ function shuffle(array) {
   return array;
 }
 
-function createMLPModel(inputSize, numClasses) {
+function createRNNModel(frames, frameLength, numClasses) {
   const model = tf.sequential();
 
+  // Add a LSTM layer
   model.add(
-    tf.layers.dense({ units: 64, activation: "selu", inputShape: [inputSize] })
+    tf.layers.lstm({
+      units: 128,
+      returnSequences: true,
+      inputShape: [frames, frameLength],
+    })
   );
-  model.add(tf.layers.dense({ units: 128, activation: "selu" }));
-  model.add(tf.layers.dense({ units: 256, activation: "selu" }));
-  model.add(tf.layers.dense({ units: 128, activation: "selu" }));
-  model.add(tf.layers.dense({ units: 64, activation: "selu" }));
+  model.add(tf.layers.dropout({ rate: 0.2 }));
+
+  // Add a second LSTM layer
+  model.add(
+    tf.layers.lstm({
+      units: 64,
+      returnSequences: false,
+    })
+  );
+  model.add(tf.layers.dropout({ rate: 0.2 }));
+
+  // Output layer
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
 
   console.log("Params", model.countParams());
@@ -142,14 +183,16 @@ function createMLPModel(inputSize, numClasses) {
   return model;
 }
 
-const [trainingSet, validationSet, classIndexMap] = loadAndPrepareData(
-  "./dataset",
-  0.66
-);
+const [trainingSet, validationSet, testingSet, classIndexMap] =
+  loadAndPrepareData("./dataset");
 
 const numberOfClasses = trainingSet[0].class.length;
 
-const model = createMLPModel(trainingSet[0].data.length, numberOfClasses);
+const model = createRNNModel(
+  trainingSet[0].data.length,
+  trainingSet[0].data[0].length,
+  numberOfClasses
+);
 
 model.compile({
   optimizer: "adam",
@@ -157,25 +200,34 @@ model.compile({
   metrics: ["accuracy"],
 });
 
-const inputTrainTensor = tf.tensor2d(
+const inputTrainTensor = tf.tensor3d(
   trainingSet.map((t) => t.data),
-  [trainingSet.length, trainingSet[0].data.length]
+  [
+    trainingSet.length,
+    trainingSet[0].data.length,
+    trainingSet[0].data[0].length,
+  ]
 );
+
 const outputTrainTensor = tf.tensor2d(
   trainingSet.map((t) => t.class),
   [trainingSet.length, trainingSet[0].class.length]
 );
-const inputValidationTensor = tf.tensor2d(
+const inputValidationTensor = tf.tensor3d(
   validationSet.map((t) => t.data),
-  [validationSet.map((t) => t.data).length, validationSet[0].data.length]
+  [
+    validationSet.length,
+    validationSet[0].data.length,
+    validationSet[0].data[0].length,
+  ]
 );
 const outputValidationTensor = tf.tensor2d(
   validationSet.map((t) => t.class),
   [validationSet.map((t) => t.data).length, validationSet[0].class.length]
 );
 
-const epochs = 100;
-const batchSize = 512;
+const epochs = 75;
+const batchSize = 128;
 
 const bestModelSavePath = "file://./best_model";
 let bestValidationAcc = 0;
@@ -206,14 +258,6 @@ async function onEpochEnd(epoch, logs) {
       onEpochEnd,
     },
   });
-
-  // Avalie o modelo com os dados de validação
-  const evaluation = model.evaluate(
-    inputValidationTensor,
-    outputValidationTensor
-  );
-  const validationAccuracy = evaluation[1].dataSync()[0];
-  console.log(`Validation accuracy: ${validationAccuracy.toFixed(4)}`);
 })();
 
 console.log(classIndexMap);
