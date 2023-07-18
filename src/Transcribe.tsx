@@ -71,7 +71,7 @@ function Transcribe({
       const input = buffer.map((b) => flattenizeLandmarks(b.readings));
 
       const prediction = transcribeModel.predict(
-        tensorflow.tensor2d(input, [24, 129])
+        tensorflow.tensor3d([input], [1, 24, 129])
       ) as tensorflow.Tensor<tensorflow.Rank>;
 
       const predictionData = prediction.dataSync();
@@ -106,10 +106,8 @@ function Transcribe({
         23: "OTHERS",
       };
 
-      if (index !== 23 && max > 0.7) {
-        console.log(mapper[index], index, max, predictToken, predictCounter);
-      }
-      if (max > 0.95 && index !== 23) {
+      console.log(mapper[index], index, max, predictToken, predictCounter);
+      if (max > 0.75 && index !== 23) {
         if (mapper[index] !== predictToken) {
           predictToken = mapper[index];
           predictCounter = 0;
@@ -117,7 +115,7 @@ function Transcribe({
           predictCounter++;
         }
 
-        if (predictCounter > 3) {
+        if (predictCounter >= 1) {
           setPredictShow(predictToken);
         }
       }
@@ -231,13 +229,6 @@ function Transcribe({
     ];
 
     return response;
-  }
-
-  function padWithZeros(data: any[], targetLength = 3225) {
-    data = data.flat();
-    const paddingSize = targetLength - data.length;
-    const padding = new Array(paddingSize).fill(0);
-    return [...data, ...padding.map((p) => (p === 0 ? Math.random() : p))];
   }
 
   function renderCameraImage(image: HTMLVideoElement): void {

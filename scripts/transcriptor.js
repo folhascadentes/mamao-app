@@ -42,8 +42,8 @@ function reshapeArray(array, rows, cols) {
 
 function loadAndPrepareData(
   dir,
-  ratio = 0.8,
-  valRatio = 0.15,
+  ratio = 0.85,
+  valRatio = 0.10,
   frameLength = 129,
   frameQuantity = 24
 ) {
@@ -80,15 +80,15 @@ function loadAndPrepareData(
       });
 
       // Adding the first frame of each video to "OTHERS" class
-      // if (rawData.length > 0) {
-      //   if (Math.random() > 0.5) {
-      //     const firstFrameData = normalizeData(rawData[0]);
-      //     othersData.push(firstFrameData);
-      //   } else {
-      //     const lastFrameData = normalizeData(rawData[rawData.length - 1]);
-      //     othersData.push(lastFrameData);
-      //   }
-      // }
+      if (rawData.length > 0 && Math.random() > 0.95) {
+        if (Math.random() > 0.5) {
+          const firstFrameData = normalizeData(rawData[0]);
+          othersData.push([firstFrameData]);
+        } else {
+          const lastFrameData = normalizeData(rawData[rawData.length - 1]);
+          othersData.push([lastFrameData]);
+        }
+      }
     }
   }
 
@@ -164,7 +164,7 @@ function createRNNModel(frames, frameLength, numClasses) {
       inputShape: [frames, frameLength],
     })
   );
-  model.add(tf.layers.dropout({ rate: 0.2 }));
+  model.add(tf.layers.dropout({ rate: 0.15 }));
 
   // Add a second LSTM layer
   model.add(
@@ -173,7 +173,7 @@ function createRNNModel(frames, frameLength, numClasses) {
       returnSequences: false,
     })
   );
-  model.add(tf.layers.dropout({ rate: 0.2 }));
+  model.add(tf.layers.dropout({ rate: 0.15 }));
 
   // Output layer
   model.add(tf.layers.dense({ units: numClasses, activation: "softmax" }));
@@ -226,7 +226,7 @@ const outputValidationTensor = tf.tensor2d(
   [validationSet.map((t) => t.data).length, validationSet[0].class.length]
 );
 
-const epochs = 75;
+const epochs = 25;
 const batchSize = 128;
 
 const bestModelSavePath = "file://./best_model";

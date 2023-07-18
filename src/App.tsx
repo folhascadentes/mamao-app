@@ -180,19 +180,13 @@ export default function App(): JSX.Element {
                 <Route
                   path="/transcribe"
                   element={
-                    <PrivateWrapper>
-                      {
-                        <Transcribe
-                          setLoading={setLoading}
-                          handShapeModel={
-                            handShapeModel as tensorflow.LayersModel
-                          }
-                          transcribeModel={
-                            transcribeModel as tensorflow.LayersModel
-                          }
-                        />
+                    <Transcribe
+                      setLoading={setLoading}
+                      handShapeModel={handShapeModel as tensorflow.LayersModel}
+                      transcribeModel={
+                        transcribeModel as tensorflow.LayersModel
                       }
-                    </PrivateWrapper>
+                    />
                   }
                 />
                 <Route path="*" element={<DefaultRoute />} />
