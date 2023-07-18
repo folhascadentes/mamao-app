@@ -107,7 +107,7 @@ function Transcribe({
       };
 
       console.log(mapper[index], index, max, predictToken, predictCounter);
-      if (max > 0.75 && index !== 23) {
+      if (max > 0.65 && index !== 23) {
         if (mapper[index] !== predictToken) {
           predictToken = mapper[index];
           predictCounter = 0;
@@ -115,7 +115,7 @@ function Transcribe({
           predictCounter++;
         }
 
-        if (predictCounter >= 1) {
+        if (predictCounter >= 3) {
           setPredictShow(predictToken);
         }
       }
