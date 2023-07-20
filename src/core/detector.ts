@@ -255,6 +255,8 @@ const movementState = {
     memory.startFrame = undefined;
   },
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    setHandPostionsCoordinates(sign, subject, memory);
+
     const dominantMoves = sign.steps.movement.dominant.detect;
     const nonDominantMoves = sign.steps.movement.nonDominant?.detect;
     const dominantForbiddenMoves = sign.steps.movement.dominant.forbidden;
@@ -341,6 +343,8 @@ const movementState = {
 
 const finalLocationState = {
   onRun: (sign: Sign, subject: SubjectData, memory: DetectorMemory) => {
+    setHandPostionsCoordinates(sign, subject, memory);
+
     const response = checkHandPosition(
       memory.dominantEndCoordinate as Coordinate,
       memory.nonDominantEndCoordinate as Coordinate,
