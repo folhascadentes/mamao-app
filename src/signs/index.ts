@@ -11,6 +11,72 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
+    token: "Mais-ou-menos",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              track: true,
+              radiusOffset: {
+                value: 80,
+                downLimitValue: -10,
+              },
+            },
+            palmOrientation: {
+              detectionAngle: 120,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+            ],
+            [
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+            ],
+          ],
+          metadata: {
+            description: "gire o pulso da duas vezes",
+            type: MovementType.WRIST_ROTATE,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              same: true,
+            },
+            palmOrientation: {
+              detectionAngle: 120,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Palmas",
     steps: {
       start: {
@@ -18,6 +84,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER_RIGHT,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 80,
@@ -58,6 +125,7 @@ export const signs: Sign[] = [
           location: Location.TORAX_UPPER_RIGHT,
           handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 80,
