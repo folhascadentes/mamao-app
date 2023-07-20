@@ -11,6 +11,55 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
+    token: "Não-beleza",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.DOWN_FRONT,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              radiusOffset: 125,
+            },
+            palmOrientation: {
+              detectionAngle: 120,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [[{ y: 1 }, { y: -1 }]],
+          metadata: {
+            description: "mova a mão para cima e depois para baixo",
+            type: MovementType.SHAKE_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.DOWN_FRONT,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              same: true,
+              detectionRadius: 80,
+            },
+            palmOrientation: {
+              detectionAngle: 180,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Beleza",
     steps: {
       start: {
@@ -32,17 +81,10 @@ export const signs: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [
-            [{ y: 1 }, { y: 1 }],
-            [{ x: 1 }, { x: 1 }],
-            [{ y: -1 }, { y: -1 }],
-            [{ x: -1 }, { x: -1 }],
-            [{ z: 1 }, { z: 1 }],
-            [{ z: -1 }, { z: -1 }],
-          ],
+          detect: [[{ y: 1 }, { y: -1 }]],
           metadata: {
-            description: "mova a mão dentro da bolta laranja",
-            type: MovementType.STATIC,
+            description: "mova a mão para cima e depois para baixo",
+            type: MovementType.SHAKE_MOTION,
           },
         },
       },

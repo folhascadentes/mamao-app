@@ -232,6 +232,7 @@ export enum PalmOrientation {
   DOWN_RIGHT = "DOWN_RIGHT",
   DOWN_LEFT = "DOWN_LEFT",
   DOWN_BACK = "DOWN_BACK",
+  DOWN_FRONT = "DOWN_FRONT",
   BACK_LEFT = "BACL_LEFT",
 }
 
@@ -249,6 +250,7 @@ export const PalmOrientationDescriptor: {
   [PalmOrientation.DOWN_RIGHT]: { x: 1, y: -1, z: 0 },
   [PalmOrientation.DOWN_LEFT]: { x: -1, y: -1, z: 0 },
   [PalmOrientation.DOWN_BACK]: { x: 0, y: -1, z: -1 },
+  [PalmOrientation.DOWN_FRONT]: { x: 0, y: -1, z: 1 },
   [PalmOrientation.BACK_LEFT]: { x: -1, y: 0, z: -1 },
 };
 
@@ -264,6 +266,7 @@ export const PalmOrientationDescription: { [K in PalmOrientation]: string } = {
   [PalmOrientation.DOWN_RIGHT]: "baixo e direita",
   [PalmOrientation.DOWN_LEFT]: "baixo e esquerda",
   [PalmOrientation.DOWN_BACK]: "baixo e para si",
+  [PalmOrientation.DOWN_FRONT]: "baixo e para frente",
   [PalmOrientation.BACK_LEFT]: "para si e esquerda",
 };
 
