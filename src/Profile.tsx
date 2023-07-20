@@ -24,6 +24,10 @@ function Profile(): JSX.Element {
           window.location.href = "/login";
         } else {
           setProfile(data);
+
+          if (data.signs > 1000) {
+            localStorage.setItem("batchSecond", "true");
+          }
         }
       } catch (error) {
         localStorage.removeItem("token");

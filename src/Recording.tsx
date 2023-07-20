@@ -8,6 +8,7 @@ import {
   PalmOrientationDescription,
   Sign,
   signs,
+  signsBatchSecond,
 } from "./signs";
 import { Subject, SubjectData } from "./core/subject";
 import {
@@ -44,6 +45,10 @@ function Recording({
   handShapeModel: tensorflow.LayersModel;
   cameraSettings: MediaTrackSettings;
 }) {
+  const signsSource = localStorage.getItem("batchSecond")
+    ? signsBatchSecond
+    : signs;
+
   const navigate = useNavigate();
   const { state } = useContext(StyleContext);
   const debuger: boolean = !!localStorage.getItem("debug");
@@ -56,7 +61,7 @@ function Recording({
   const subjectRef = useRef<Subject>();
   const detectorRef = useRef<Detector>();
   const instructorRef = useRef<Instructor>();
-  const signIndexLocalStorage = signs.findIndex(
+  const signIndexLocalStorage = signsSource.findIndex(
     (sign) => sign.token === localStorage.getItem("signToken")
   );
   const signIndex = useRef<number>(
@@ -65,9 +70,11 @@ function Recording({
 
   const [showVideo, setShowVideo] = useState(false);
   const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
+
   const [sign, setSign] = useState<Sign>(
-    signs.find((sign) => sign.token === localStorage.getItem("signToken")) ??
-      signs[0]
+    signsSource.find(
+      (sign) => sign.token === localStorage.getItem("signToken")
+    ) ?? signsSource[0]
   );
   const [signCounter, setSignCounter] = useState<number>(
     localStorage.getItem("signCounter")
@@ -265,15 +272,15 @@ function Recording({
       showSign();
       setSignCounter(0);
       setSignCounterWrong(0);
-      setSign(signs[signIndex.current % signs.length]);
-      detector?.setSign(signs[signIndex.current % signs.length]);
-      instructor?.setSign(signs[signIndex.current % signs.length]);
+      setSign(signsSource[signIndex.current % signsSource.length]);
+      detector?.setSign(signsSource[signIndex.current % signsSource.length]);
+      instructor?.setSign(signsSource[signIndex.current % signsSource.length]);
       signIndex.current += 1;
     }
 
     localStorage.setItem("signToken", detector?.getSign()?.token ?? "");
     localStorage.setItem("signCounter", signCounter.toString());
-  }, [signCounter, signCounterWrong]);
+  }, [signsSource, signCounter, signCounterWrong]);
 
   return (
     <div className="recording flex flex-col justify-center">
