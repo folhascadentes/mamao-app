@@ -11,6 +11,62 @@ import {
 export const signs: Sign[] = [
   {
     language: "Libras",
+    token: "Beleza",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.BACK_LEFT,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              radiusOffset: 125,
+            },
+            palmOrientation: {
+              detectionAngle: 120,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [{ y: 1 }, { y: 1 }],
+            [{ x: 1 }, { x: 1 }],
+            [{ y: -1 }, { y: -1 }],
+            [{ x: -1 }, { x: -1 }],
+            [{ z: 1 }, { z: 1 }],
+            [{ z: -1 }, { z: -1 }],
+          ],
+          metadata: {
+            description: "mova a mão dentro da bolta laranja",
+            type: MovementType.STATIC,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.THUMB_FINGER,
+          palmOrientation: PalmOrientation.BACK_LEFT,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              same: true,
+              detectionRadius: 80,
+            },
+            palmOrientation: {
+              detectionAngle: 180,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Mais-ou-menos",
     steps: {
       start: {
@@ -1616,46 +1672,6 @@ export const signs: Sign[] = [
   //             track: true,
   //             detectionRadius: 60,
   //             same: true,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
-  // {
-  //   language: "Libras",
-  //   token: "Beleza",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: Location.TORAX,
-  //         handShape: HandShape.libras.THUMB_FINGER,
-  //         palmOrientation: PalmOrientation.BACK,
-  //         options: {
-  //           location: {
-  //             detectionRadius: 60,
-  //             radiusOffset: 125,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     movement: {
-  //       dominant: {
-  //         metadata: {
-  //           description: "permanceça com a mão na posição",
-  //           type: MovementType.STATIC,
-  //         },
-  //       },
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: Location.TORAX,
-  //         handShape: HandShape.libras.THUMB_FINGER,
-  //         palmOrientation: PalmOrientation.BACK,
-  //         options: {
-  //           location: {
-  //             same: true,
-  //             detectionRadius: 60,
   //           },
   //         },
   //       },
