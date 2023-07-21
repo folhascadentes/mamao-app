@@ -1213,6 +1213,67 @@ export const signs: Sign[] = [
 export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
+    token: "Agredir",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 120,
+                rightLimitValue: 60,
+                leftLimitValue: 0,
+                downLimitValue: 20,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
+          forbidden: [
+            { x: 1 },
+            { x: 1, y: 1 },
+            { x: 1, y: -1 },
+            { wristRotate: true },
+          ],
+          metadata: {
+            description:
+              "faça o movimento com a mão em direção a outra bola laranja",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_LEFT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 120,
+                leftLimitValue: -60,
+                rightLimitValue: 0,
+                downLimitValue: 20,
+              },
+              sameY: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Arrepender",
     steps: {
       start: {
