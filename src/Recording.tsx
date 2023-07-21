@@ -178,6 +178,7 @@ function Recording({
 
         movementBuffer = subject?.getBuffer(start, end) as SubjectData[];
 
+        console.log(navigator.serviceWorker.controller);
         if (
           process.env.REACT_APP_ENV !== "development" &&
           navigator.serviceWorker.controller

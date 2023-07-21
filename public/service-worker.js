@@ -1,6 +1,8 @@
 self.addEventListener("message", async (event) => {
   const { data } = event;
 
+  console.log(data);
+
   try {
     const images = [];
     for (let image of data.frames) {
@@ -36,7 +38,7 @@ async function imageDataToJPEGBase64(imageData) {
 
 function convertToBase64(canvas) {
   return new Promise((resolve, reject) => {
-    canvas.convertToBlob({ type: "image/jpeg", quality: 0.80 }).then((blob) => {
+    canvas.convertToBlob({ type: "image/jpeg", quality: 0.8 }).then((blob) => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = function () {
