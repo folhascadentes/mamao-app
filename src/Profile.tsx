@@ -25,7 +25,7 @@ function Profile(): JSX.Element {
         } else {
           setProfile(data);
 
-          if (data.signs > 1000) {
+          if (data.signs > 500) {
             localStorage.setItem("batchSecond", "true");
           }
         }
