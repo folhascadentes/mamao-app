@@ -1223,12 +1223,15 @@ export const signsBatchSecond: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 65,
+              detectionRadius: 70,
               radiusOffset: {
                 value: 90,
                 upLimitValue: 0,
-                downLimitValue: -60,
+                leftLimitValue: 0,
+                rightLimitValue: 0,
+                downLimitValue: -90,
               },
+              handLocation: HandLocation.INDEX_FINGER_DIP,
             },
           },
         },
@@ -1255,7 +1258,7 @@ export const signsBatchSecond: Sign[] = [
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 50,
+              detectionRadius: 70,
               track: true,
               radiusOffset: {
                 value: 30,
@@ -1264,6 +1267,7 @@ export const signsBatchSecond: Sign[] = [
                 rightLimitValue: 0,
                 downLimitValue: -30,
               },
+              handLocation: HandLocation.INDEX_FINGER_DIP,
             },
           },
         },
