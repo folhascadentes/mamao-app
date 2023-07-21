@@ -1989,7 +1989,7 @@ export const signsBatchSecond: Sign[] = [
           handOrientation: HandOrientation.FRONT,
           options: {
             location: {
-              detectionRadius: 80,
+              detectionRadius: 65,
               radiusOffset: 80,
             },
           },
@@ -2013,7 +2013,7 @@ export const signsBatchSecond: Sign[] = [
           handOrientation: HandOrientation.FRONT,
           options: {
             location: {
-              detectionRadius: 80,
+              detectionRadius: 65,
               same: true,
             },
           },
