@@ -1213,6 +1213,57 @@ export const signs: Sign[] = [
 export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
+    token: "Ancião",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.CHIN,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              radiusOffset: {
+                value: 60,
+                upLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+          metadata: {
+            description: "mova a mão para cima e para baixo duas vezes",
+            type: MovementType.SHAKE_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Agredir",
     steps: {
       start: {
