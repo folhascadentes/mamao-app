@@ -1225,8 +1225,9 @@ export const signsBatchSecond: Sign[] = [
             location: {
               detectionRadius: 65,
               radiusOffset: {
-                value: 60,
+                value: 90,
                 upLimitValue: 0,
+                downLimitValue: -60,
               },
             },
           },
@@ -1234,9 +1235,9 @@ export const signsBatchSecond: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
+          detect: [{ y: 1 }, { y: -1 }, { y: 1 }],
           metadata: {
-            description: "mova a mão para cima e para baixo duas vezes",
+            description: "bata no queixo duas vezes",
             type: MovementType.SHAKE_MOTION,
           },
           options: {
@@ -1248,14 +1249,21 @@ export const signsBatchSecond: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.TORAX,
+          location: Location.CHIN,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.LEFT,
           options: {
             location: {
-              detectionRadius: 65,
-              same: true,
+              detectionRadius: 50,
+              track: true,
+              radiusOffset: {
+                value: 30,
+                upLimitValue: 0,
+                leftLimitValue: 0,
+                rightLimitValue: 0,
+                downLimitValue: -30,
+              },
             },
           },
         },
@@ -1347,7 +1355,7 @@ export const signsBatchSecond: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ y: 1, z: -1 }, { z: -1 }],
+          detect: [{ y: 1 }, { y: 1 }],
           metadata: {
             description:
               "mova mão para cima e para sua direção até a outra bola laranja",
@@ -1395,7 +1403,7 @@ export const signsBatchSecond: Sign[] = [
       },
       movement: {
         dominant: {
-          detect: [{ y: 1, z: -1 }, { z: -1 }],
+          detect: [{ y: 1 }, { y: 1 }],
           metadata: {
             description:
               "mova mão para cima e para sua direção até a outra bola laranja",

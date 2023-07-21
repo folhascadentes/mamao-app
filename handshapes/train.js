@@ -117,9 +117,12 @@ const inputValidationTensor = tf.tensor2d(inputValidation);
 const outputValidationTensor = tf.tensor2d(outputValidation);
 
 const epochs = 450;
-const batchSize = 64;
+const batchSize = 256;
 
 (async function () {
+  let bestValAcc = 0; // to keep track of the best validation accuracy
+  const savePath = "file://./model"; // path to save the best model
+
   await model.fit(inputTrainTensor, outputTrainTensor, {
     epochs,
     batchSize,
@@ -131,18 +134,16 @@ const batchSize = 64;
             4
           )}, Acurácia de validação ${logs.val_acc.toFixed(4)}`
         );
+
+        // Save the model if it has a better validation accuracy than previously seen
+        if (logs.val_acc > bestValAcc) {
+          bestValAcc = logs.val_acc;
+          console.log(
+            `Better model found at epoch ${epoch + 1}, saving model...`
+          );
+          await model.save(savePath);
+        }
       },
     },
   });
-
-  // Avalie o modelo com os dados de validação
-  const evaluation = model.evaluate(
-    inputValidationTensor,
-    outputValidationTensor
-  );
-  const validationAccuracy = evaluation[1].dataSync()[0];
-  console.log(`Acurácia de validação: ${validationAccuracy.toFixed(4)}`);
-
-  const savePath = "file://./model";
-  await model.save(savePath);
 })();
