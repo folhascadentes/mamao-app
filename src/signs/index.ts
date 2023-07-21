@@ -1213,6 +1213,57 @@ export const signs: Sign[] = [
 export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
+    token: "Arrepender",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.A,
+          palmOrientation: PalmOrientation.UP,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 80,
+                downLimitValue: 0,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: 1, z: -1 }, { z: -1 }],
+          metadata: {
+            description:
+              "mova mão para cima e para sua direção até a outra bola laranja",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.FOREHEAD_RIGHT,
+          handShape: HandShape.libras.A,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 40,
+              },
+              handLocation: HandLocation.MIDDLE_FINGER_MCP,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Atrás",
     steps: {
       start: {
