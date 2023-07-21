@@ -2249,54 +2249,67 @@ export const signsBatchSecond: Sign[] = [
       },
     },
   },
-  // {
-  //   language: "Libras",
-  //   token: "Saudade",
-  //   steps: {
-  //     start: {
-  //       dominant: {
-  //         location: Location.TORAX,
-  //         handShape: HandShape.libras.S,
-  //         palmOrientation: PalmOrientation.BACK,
-  //         handOrientation: HandOrientation.LEFT,
-  //         options: {
-  //           location: {
-  //             detectionRadius: 60,
-  //             radiusOffset: 65,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     movement: {
-  //       dominant: {
-  //         detect: [{ y: -1 }, { y: 1 }, { y: -1 }, { y: 1 }],
-  //         metadata: {
-  //           description: "mova a mão para baixo e para cima duas vezes",
-  //           type: MovementType.SHAKE_MOTION,
-  //         },
-  //         options: {
-  //           detect: {
-  //             circular: true,
-  //           },
-  //         },
-  //       },
-  //     },
-  //     end: {
-  //       dominant: {
-  //         location: Location.TORAX,
-  //         handShape: HandShape.libras.S,
-  //         palmOrientation: PalmOrientation.BACK,
-  //         handOrientation: HandOrientation.LEFT,
-  //         options: {
-  //           location: {
-  //             same: true,
-  //             detectionRadius: 60,
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  {
+    language: "Libras",
+    token: "Saudade",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { y: 1, x: 1 },
+              { y: -1, x: 1 },
+              { y: -1, x: -1 },
+              { y: 1, x: -1 },
+            ],
+            [
+              { y: 1, x: -1 },
+              { y: -1, x: -1 },
+              { y: -1, x: 1 },
+              { y: 1, x: 1 },
+            ],
+          ],
+          metadata: {
+            description: "faça um movimento circular com a mão dominante",
+            type: MovementType.CIRCULAR_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
   {
     language: "Libras",
     token: "Ter",
