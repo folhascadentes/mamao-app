@@ -1188,7 +1188,12 @@ export const signs: Sign[] = [
             location: {
               track: true,
               detectionRadius: 50,
-              radiusOffset: 25,
+              radiusOffset: {
+                value: 30,
+                leftLimitValue: 0,
+                downLimitValue: 0,
+                upLimitValue: 0,
+              },
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
           },
@@ -1207,7 +1212,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.TORAX_UPPER,
+          location: Location.CHIN,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           handOrientation: HandOrientation.FRONT,
@@ -1215,7 +1220,12 @@ export const signs: Sign[] = [
             location: {
               track: true,
               detectionRadius: 60,
-              radiusOffset: 80,
+              radiusOffset: {
+                value: 70,
+                upLimitValue: 40,
+                downLimitValue: -70,
+                leftLimitValue: -40,
+              },
               handLocation: HandLocation.MIDDLE_FINGER_TIP,
             },
           },
