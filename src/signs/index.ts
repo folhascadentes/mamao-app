@@ -1213,6 +1213,60 @@ export const signs: Sign[] = [
 export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
+    token: "Receber",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.SHOULDER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.UP,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: -1 }],
+          metadata: {
+            description:
+              "mova a mão em direção a outra bola laranja fechando ela",
+            type: MovementType.SHAKE_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              track: true,
+              radiusOffset: {
+                value: 60,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
     token: "Ancião",
     steps: {
       start: {
@@ -1300,12 +1354,7 @@ export const signsBatchSecond: Sign[] = [
       movement: {
         dominant: {
           detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
-          forbidden: [
-            { x: 1 },
-            { x: 1, y: 1 },
-            { x: 1, y: -1 },
-            { wristRotate: true },
-          ],
+          forbidden: [{ x: 1 }, { x: 1, y: 1 }, { x: 1, y: -1 }],
           metadata: {
             description:
               "faça o movimento com a mão em direção a outra bola laranja",
@@ -1329,6 +1378,9 @@ export const signsBatchSecond: Sign[] = [
                 downLimitValue: 20,
               },
               sameY: true,
+            },
+            handShape: {
+              extraDetect: [HandShape.libras.A],
             },
           },
         },
