@@ -700,30 +700,37 @@ function randomizeRadiusOffset(
         downLimitValue?: number;
       }
 ): Coordinate {
-  const radiusValue = typeof radius === "number" ? radius : radius.value;
-  const angle = Math.random() * 2 * Math.PI;
-  const r = Math.random() * radiusValue;
-
+  let radiusValue,
+    leftLimitValue,
+    rightLimitValue,
+    upLimitValue,
+    downLimitValue;
   if (typeof radius === "number") {
-    const x = r * Math.cos(angle);
-    const y = r * Math.sin(angle);
-    return { x, y, z: 0 };
+    radiusValue = radius;
+    leftLimitValue = -radius;
+    rightLimitValue = radius;
+    downLimitValue = -radius;
+    upLimitValue = radius;
   } else {
-    const x = r * Math.cos(angle);
-    const y = r * Math.sin(angle);
-
-    const cropedX = Math.min(
-      radius.rightLimitValue ?? Number.MAX_SAFE_INTEGER,
-      Math.max(x, radius.leftLimitValue ?? Number.MIN_SAFE_INTEGER)
-    );
-
-    const cropedY = Math.min(
-      radius.upLimitValue ?? Number.MAX_SAFE_INTEGER,
-      Math.max(y, radius.downLimitValue ?? Number.MIN_SAFE_INTEGER)
-    );
-
-    return { x: cropedX, y: cropedY, z: 0 };
+    radiusValue = radius.value;
+    leftLimitValue = radius.leftLimitValue ?? -radius.value;
+    rightLimitValue = radius.rightLimitValue ?? radius.value;
+    downLimitValue = radius.downLimitValue ?? -radius.value;
+    upLimitValue = radius.upLimitValue ?? radius.value;
   }
+
+  let x = Math.random() * (rightLimitValue - leftLimitValue) + leftLimitValue;
+  let y = Math.random() * (upLimitValue - downLimitValue) + downLimitValue;
+
+  // Check if the coordinates exceed the radius distance from the center
+  const distance = Math.sqrt(x * x + y * y);
+  if (distance > radiusValue) {
+    const scalingFactor = radiusValue / distance;
+    x *= scalingFactor;
+    y *= scalingFactor;
+  }
+
+  return { x, y, z: 0 };
 }
 
 function randomizeHorizontalOffset(offset: number) {
