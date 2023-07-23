@@ -4,6 +4,7 @@ import {
   HandLocation,
   HandOrientation,
   HandOrientationDescriptor,
+  HandShapeOptions,
   Location,
   Movement,
   PalmOrientation,
@@ -188,7 +189,9 @@ const handConfigurationState: State = {
       start.dominant.handShape,
       start.nonDominant?.handShape,
       subject.hand.dominant.handShape,
-      subject.hand.nonDominant.handShape
+      subject.hand.nonDominant.handShape,
+      start.dominant.options?.handShape,
+      start.nonDominant?.options?.handShape
     );
   },
   nextState: DetectorStates.PALM_ORIENTATION,
@@ -390,7 +393,9 @@ const finalHandShapeState = {
       end.dominant.handShape,
       end.nonDominant?.handShape,
       subject.hand.dominant.handShape,
-      subject.hand.nonDominant.handShape
+      subject.hand.nonDominant.handShape,
+      end.dominant.options?.handShape,
+      end.nonDominant?.options?.handShape
     );
 
     if (response.valid) {
@@ -407,12 +412,22 @@ function checkHandShape(
   dominantShape: string | undefined,
   nonDominantShape: string | undefined,
   detectedDominantShape: string | undefined,
-  detectedNonDominantShape: string | undefined
+  detectedNonDominantShape: string | undefined,
+  dominantHandShapeOptions?: HandShapeOptions,
+  nonDominantHandShapeOptions?: HandShapeOptions
 ): { valid: boolean } {
   const dominantOkay =
-    !dominantShape || detectedDominantShape === dominantShape;
+    !dominantShape ||
+    detectedDominantShape === dominantShape ||
+    dominantHandShapeOptions?.extraDetect?.includes(
+      detectedDominantShape ?? ""
+    );
   const nonDominantOkay =
-    !nonDominantShape || detectedNonDominantShape === nonDominantShape;
+    !nonDominantShape ||
+    detectedNonDominantShape === nonDominantShape ||
+    nonDominantHandShapeOptions?.extraDetect?.includes(
+      detectedNonDominantShape ?? ""
+    );
 
   if (dominantOkay && nonDominantOkay) {
     return { valid: true };

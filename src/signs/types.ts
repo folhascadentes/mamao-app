@@ -27,6 +27,7 @@ interface SignConfiguration {
   options?: {
     location?: SignConfigurationLocationOptions;
     palmOrientation?: PalmOrientationOptions;
+    handShape?: HandShapeOptions;
   };
 }
 
@@ -53,6 +54,10 @@ export interface SignConfigurationLocationOptions {
 
 export interface PalmOrientationOptions {
   detectionAngle?: number;
+}
+
+export interface HandShapeOptions {
+  extraDetect: HandShapeType[];
 }
 
 interface MovementConfiguration {
@@ -234,7 +239,7 @@ export enum PalmOrientation {
   DOWN_BACK = "DOWN_BACK",
   DOWN_FRONT = "DOWN_FRONT",
   BACK_LEFT = "BACK_LEFT",
-  BACK_RIGHT = "BACK_RIGHT"
+  BACK_RIGHT = "BACK_RIGHT",
 }
 
 export const PalmOrientationDescriptor: {
