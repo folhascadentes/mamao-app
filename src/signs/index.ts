@@ -1772,7 +1772,7 @@ export const signsBatchSecond: Sign[] = [
           options: {
             location: {
               detectionRadius: 65,
-              radiusOffset: 100,
+              radiusOffset: 70,
             },
           },
         },
