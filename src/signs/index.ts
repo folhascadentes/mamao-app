@@ -1213,60 +1213,6 @@ export const signs: Sign[] = [
 export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
-    token: "Receber",
-    steps: {
-      start: {
-        dominant: {
-          location: Location.SHOULDER_RIGHT,
-          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          palmOrientation: PalmOrientation.UP,
-          handOrientation: HandOrientation.FRONT,
-          options: {
-            location: {
-              detectionRadius: 60,
-              radiusOffset: {
-                value: 60,
-              },
-            },
-          },
-        },
-      },
-      movement: {
-        dominant: {
-          detect: [{ y: -1 }, { y: -1 }],
-          metadata: {
-            description:
-              "mova a mão em direção a outra bola laranja fechando ela",
-            type: MovementType.SHAKE_MOTION,
-          },
-          options: {
-            detect: {
-              circular: true,
-            },
-          },
-        },
-      },
-      end: {
-        dominant: {
-          location: Location.TORAX_RIGHT,
-          handShape: HandShape.libras.S,
-          palmOrientation: PalmOrientation.BACK,
-          handOrientation: HandOrientation.UP,
-          options: {
-            location: {
-              detectionRadius: 60,
-              track: true,
-              radiusOffset: {
-                value: 60,
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-  {
-    language: "Libras",
     token: "Ancião",
     steps: {
       start: {
@@ -1623,6 +1569,60 @@ export const signsBatchSecond: Sign[] = [
             },
             palmOrientation: {
               detectionAngle: 180,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Receber",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.SHOULDER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.UP,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 60,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: -1 }, { y: -1 }],
+          metadata: {
+            description:
+              "mova a mão em direção a outra bola laranja fechando ela",
+            type: MovementType.SHAKE_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.S,
+          palmOrientation: PalmOrientation.BACK,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 60,
+              track: true,
+              radiusOffset: {
+                value: 60,
+              },
             },
           },
         },
