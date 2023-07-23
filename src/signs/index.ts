@@ -1615,7 +1615,6 @@ export const signsBatchSecond: Sign[] = [
           location: Location.TORAX_RIGHT,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.BACK,
-          handOrientation: HandOrientation.UP,
           options: {
             location: {
               detectionRadius: 60,
@@ -1623,6 +1622,9 @@ export const signsBatchSecond: Sign[] = [
               radiusOffset: {
                 value: 60,
               },
+            },
+            palmOrientation: {
+              detectionAngle: 150,
             },
           },
         },
