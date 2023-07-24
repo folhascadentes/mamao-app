@@ -106,10 +106,9 @@ function ConfirmSignUp(): JSX.Element {
           <div className="text-sm font-bold">
             <MdInfoOutline size={24} className="mb-2" />
             Olá, agradecemos o seu interesse em participar do nosso projeto.
-            Atualmente estamos em fase beta fechado de testes, caso queria
-            continuar a verificação do seu cadastro será feita manualmente,
-            entre em contato no e-mail renantashiro@hotmail.com para solicitar o
-            seu acesso.
+            Atualmente estamos em fase beta de testes, caso tenha
+            problemas em confirmar seu cadastro entre em contato no e-mail
+            renantashiro@hotmail.com para solicitar o seu acesso.
           </div>
           <button
             type="submit"
