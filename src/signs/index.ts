@@ -1872,6 +1872,106 @@ export const signsBatchSecond: Sign[] = [
   },
 ];
 
+export const signsBatchThird: Sign[] = [
+  {
+    language: "Libras",
+    token: "Lado",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.DOWN,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 90,
+                leftLimitValue: -30,
+              },
+              track: true,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
+          metadata: {
+            description: "mova a mão para outra bola virando o lado dela",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.UP,
+          handOrientation: HandOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 60,
+              radiusOffset: {
+                value: 180,
+                leftLimitValue: 90,
+              },
+              sameY: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  // Feliz
+  // Idade
+  // Olá
+  {
+    language: "Libras",
+    token: "Amigo",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              radiusOffset: 70,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ z: -1 }, { z: 1 }, { z: -1 }],
+          metadata: {
+            description: "bata no peito duas vezes",
+            type: MovementType.LINEAR_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          palmOrientation: PalmOrientation.UP,
+          options: {
+            location: {
+              track: true,
+              detectionRadius: 60,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+];
+
 export const poorDetectedSigns: Sign[] = [
   {
     language: "Libras",
