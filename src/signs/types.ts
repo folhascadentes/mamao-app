@@ -82,6 +82,7 @@ export enum MovementType {
   SHAKE_MOTION = "SHAKE_MOTION",
   WRIST_FLEXION_EXTENSION = "WRIST_FLEXION_EXTENSION",
   WRIST_ROTATE = "WRIST_ROTATE",
+  ZIG_ZAG = "ZIG_ZAG",
 }
 
 export interface MovementAxis {
@@ -238,6 +239,7 @@ export enum PalmOrientation {
   DOWN_LEFT = "DOWN_LEFT",
   DOWN_BACK = "DOWN_BACK",
   DOWN_FRONT = "DOWN_FRONT",
+  FRONT_LEFT = "FRONT_LEFT",
   BACK_LEFT = "BACK_LEFT",
   BACK_RIGHT = "BACK_RIGHT",
 }
@@ -257,6 +259,7 @@ export const PalmOrientationDescriptor: {
   [PalmOrientation.DOWN_LEFT]: { x: -1, y: -1, z: 0 },
   [PalmOrientation.DOWN_BACK]: { x: 0, y: -1, z: -1 },
   [PalmOrientation.DOWN_FRONT]: { x: 0, y: -1, z: 1 },
+  [PalmOrientation.FRONT_LEFT]: { x: -1, y: 0, z: 1 },
   [PalmOrientation.BACK_LEFT]: { x: -1, y: 0, z: -1 },
   [PalmOrientation.BACK_RIGHT]: { x: 1, y: 0, z: -1 },
 };
@@ -274,6 +277,7 @@ export const PalmOrientationDescription: { [K in PalmOrientation]: string } = {
   [PalmOrientation.DOWN_LEFT]: "baixo e esquerda",
   [PalmOrientation.DOWN_BACK]: "baixo e para si",
   [PalmOrientation.DOWN_FRONT]: "baixo e para frente",
+  [PalmOrientation.FRONT_LEFT]: "frente e esquerda",
   [PalmOrientation.BACK_LEFT]: "para si e esquerda",
   [PalmOrientation.BACK_RIGHT]: "para si e direita",
 };
