@@ -1924,9 +1924,161 @@ export const signsBatchThird: Sign[] = [
       },
     },
   },
-  // Feliz
-  // Idade
-  // Olá
+  {
+    language: "Libras",
+    token: "Feliz",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.F,
+          palmOrientation: PalmOrientation.FRONT_LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 80,
+              track: true,
+              radiusOffset: {
+                value: 80,
+                downLimitValue: -10,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { y: -1, x: 1 },
+              { y: -1, x: -1 },
+              { y: -1, x: 1 },
+            ],
+            [
+              { y: -1, x: -1 },
+              { y: -1, x: 1 },
+              { y: -1, x: -1 },
+            ],
+          ],
+          metadata: {
+            description: "mova a mão para baixo em zig e zag",
+            type: MovementType.ZIG_ZAG,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_RIGHT,
+          handShape: HandShape.libras.F,
+          palmOrientation: PalmOrientation.FRONT_LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 80,
+              sameX: true,
+              radiusOffset: {
+                value: 80,
+                upLimitValue: 10,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Idade",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK_LEFT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              track: true,
+              radiusOffset: {
+                value: 80,
+                rightLimitValue: 40,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ wristExtension: true }, { wristExtension: true }],
+          metadata: {
+            description: "risque seu peito duas vezes",
+            type: MovementType.WRIST_FLEXION_EXTENSION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.Y,
+          palmOrientation: PalmOrientation.BACK_LEFT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    language: "Libras",
+    token: "Olá",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              track: true,
+              radiusOffset: {
+                value: 80,
+              },
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [{ y: 1 }, { x: 1, y: 1 }],
+          metadata: {
+            description: "mova a mão em direção a outra bola laranja",
+            type: MovementType.PARABOLIC_MOTION,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          palmOrientation: PalmOrientation.FRONT,
+          options: {
+            location: {
+              detectionRadius: 80,
+              radiusOffset: {
+                value: 200,
+                leftLimitValue: 100,
+                downLimitValue: 100,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   {
     language: "Libras",
     token: "Amigo",
