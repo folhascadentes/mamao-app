@@ -67,7 +67,6 @@ function Recording({
       sign.language === currentSignLabel?.language &&
       sign.token === currentSignLabel?.token
   );
-
   const [sign, setSign] = useState<Sign>(newSign as Sign);
   const [signCounter, setSignCounter] = useState<number>(
     localStorage.getItem("signCounter")
@@ -209,7 +208,9 @@ function Recording({
       return;
     }
 
-    initSetSign();
+    setSignProgress(
+      (10 - JSON.parse(localStorage.getItem("session") ?? "[]").length) * 10
+    );
 
     const subject = new Subject(
       canvasRef.current as HTMLCanvasElement,
@@ -267,11 +268,12 @@ function Recording({
 
     if (signCounter === SIGN_N_TIMES || signCounterWrong >= SIGN_N_TIMES * 2) {
       const session = JSON.parse(localStorage.getItem("session") ?? "[]");
-      const newSignLabel = session?.pop();
 
+      session?.pop();
       setSignProgress((10 - session.length) * 10);
       localStorage.setItem("session", JSON.stringify(session));
 
+      const newSignLabel = session[session.length - 1];
       const newSign = signs.find(
         (sign) =>
           sign.language === newSignLabel?.language &&
@@ -315,9 +317,9 @@ function Recording({
                 <h1 className="text-3xl text-left mb-4">
                   Sinal ({signCounter} de {SIGN_N_TIMES})
                 </h1>
-                <div>
+                <div className="mb-1.5">
                   <CircularProgress
-                    size="30px"
+                    size="45px"
                     value={signProgress}
                     color="orange.500"
                   />
@@ -479,23 +481,6 @@ function Recording({
       </div>
     </div>
   );
-
-  function initSetSign() {
-    const session = JSON.parse(localStorage.getItem("session") ?? "[]");
-    const currentSignLabel = session[session.length - 1];
-
-    setSignProgress((10 - session.length) * 10);
-
-    const newSign = signs.find(
-      (sign) =>
-        sign.language === currentSignLabel?.language &&
-        sign.token === currentSignLabel?.token
-    );
-
-    if (newSign === undefined) {
-      navigate("/instructions");
-    }
-  }
 
   function setActionsInstructionsState(response: DetectorData) {
     const todo: DetectorState[] = [];

@@ -43,27 +43,27 @@ export default function App(): JSX.Element {
   const [transcribeModel, setTranscribeModel] =
     useState<tensorflow.LayersModel>();
 
+  const fetchSession = async () => {
+    const session = JSON.parse(localStorage.getItem("session") ?? "[]");
+
+    if (!session.length) {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACK_END_API}/session`,
+        {
+          headers: {
+            Authorization: localStorage.getItem("token") ?? "",
+          },
+        }
+      );
+      const data = await response.json();
+
+      data.reverse();
+
+      localStorage.setItem("session", JSON.stringify(data));
+    }
+  };
+
   useEffect(() => {
-    const fetchSession = async () => {
-      const session = JSON.parse(localStorage.getItem("session") ?? "[]");
-
-      if (!session.length) {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACK_END_API}/session`,
-          {
-            headers: {
-              Authorization: localStorage.getItem("token") ?? "",
-            },
-          }
-        );
-        const data = await response.json();
-
-        data.reverse();
-
-        localStorage.setItem("session", JSON.stringify(data.reverse()));
-      }
-    };
-
     (async function () {
       if (handShapeModel === undefined) {
         const model = await tensorflow.loadLayersModel(
@@ -85,6 +85,11 @@ export default function App(): JSX.Element {
   }, []);
 
   function start(to?: string): void {
+    if (!localStorage.getItem("session")?.length) {
+      fetchSession();
+      return;
+    }
+
     setTo(to ?? "/recording");
 
     const constraints = {
