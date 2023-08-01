@@ -8,7 +8,6 @@ import {
   PalmOrientationDescription,
   Sign,
   signs,
-  signsBatchSecond,
 } from "./signs";
 import { Subject, SubjectData } from "./core/subject";
 import {
@@ -30,6 +29,7 @@ import { MdOutlinePending, MdDone } from "react-icons/md";
 import { BsPersonVideo } from "react-icons/bs";
 import { StyleContext } from "./reducers/style.reducer";
 import jwt_decode from "jwt-decode";
+import { CircularProgress } from "@chakra-ui/react";
 
 const MAX_VIDEO_LENGTH = 24;
 const MIN_VIDEO_LENGTH = 3;
@@ -45,10 +45,6 @@ function Recording({
   handShapeModel: tensorflow.LayersModel;
   cameraSettings: MediaTrackSettings;
 }) {
-  const signsSource = localStorage.getItem("batchSecond")
-    ? signsBatchSecond
-    : signs;
-
   const navigate = useNavigate();
   const { state } = useContext(StyleContext);
   const debuger: boolean = !!localStorage.getItem("debug");
@@ -61,26 +57,24 @@ function Recording({
   const subjectRef = useRef<Subject>();
   const detectorRef = useRef<Detector>();
   const instructorRef = useRef<Instructor>();
-  const signIndexLocalStorage = signsSource.findIndex(
-    (sign) => sign.token === localStorage.getItem("signToken")
-  );
-  const signIndex = useRef<number>(
-    signIndexLocalStorage === -1 ? 1 : signIndexLocalStorage + 1
-  );
-
   const [showVideo, setShowVideo] = useState(false);
   const [subjectFraming, setSubjectFraming] = useState<boolean>(false);
 
-  const [sign, setSign] = useState<Sign>(
-    signsSource.find(
-      (sign) => sign.token === localStorage.getItem("signToken")
-    ) ?? signsSource[0]
+  const session = JSON.parse(localStorage.getItem("session") ?? "[]");
+  const currentSignLabel = session[session.length - 1];
+  const newSign = signs.find(
+    (sign) =>
+      sign.language === currentSignLabel?.language &&
+      sign.token === currentSignLabel?.token
   );
+
+  const [sign, setSign] = useState<Sign>(newSign as Sign);
   const [signCounter, setSignCounter] = useState<number>(
     localStorage.getItem("signCounter")
       ? Number(localStorage.getItem("signCounter"))
       : 0
   );
+  const [signProgress, setSignProgress] = useState<number>(0);
   const [signCounterWrong, setSignCounterWrong] = useState<number>(0);
   const [todoActions, setTodoActions] = useState<DetectorState[]>([]);
   const [doneActions, setDoneActions] = useState<DetectorState[]>([]);
@@ -91,7 +85,7 @@ function Recording({
   let poseWorldLandmarks: Coordinate[] = [];
 
   const handleDemoStart = () => {
-    setShowVideo(true);
+    setShowVideo((state) => !state);
   };
 
   const handleDemoEnd = () => {
@@ -101,10 +95,10 @@ function Recording({
   useEffect(() => {
     if (demoRef.current) {
       if (showVideo) {
-        demoRef.current.load(); // reset the video to the beginning
-        demoRef.current.play(); // play the video
+        demoRef.current.load();
+        demoRef.current.play();
       } else {
-        demoRef.current.pause(); // pause the video
+        demoRef.current.pause();
       }
     }
   }, [showVideo]);
@@ -215,6 +209,8 @@ function Recording({
       return;
     }
 
+    initSetSign();
+
     const subject = new Subject(
       canvasRef.current as HTMLCanvasElement,
       BUFFER_SIZE,
@@ -269,19 +265,34 @@ function Recording({
     const detector = detectorRef.current;
     const instructor = instructorRef.current;
 
-    if (signCounter === SIGN_N_TIMES || signCounterWrong > SIGN_N_TIMES * 2) {
-      showSign();
-      setSignCounter(0);
-      setSignCounterWrong(0);
-      setSign(signsSource[signIndex.current % signsSource.length]);
-      detector?.setSign(signsSource[signIndex.current % signsSource.length]);
-      instructor?.setSign(signsSource[signIndex.current % signsSource.length]);
-      signIndex.current += 1;
+    if (signCounter === SIGN_N_TIMES || signCounterWrong >= SIGN_N_TIMES * 2) {
+      const session = JSON.parse(localStorage.getItem("session") ?? "[]");
+      const newSignLabel = session?.pop();
+
+      setSignProgress((10 - session.length) * 10);
+      localStorage.setItem("session", JSON.stringify(session));
+
+      const newSign = signs.find(
+        (sign) =>
+          sign.language === newSignLabel?.language &&
+          sign.token === newSignLabel?.token
+      );
+
+      if (newSign) {
+        showSign();
+        setSignCounter(0);
+        setSignCounterWrong(0);
+        setSign(newSign);
+        detector?.setSign(newSign);
+        instructor?.setSign(newSign);
+      } else {
+        // acabou a sessão :)
+        navigate("/instructions");
+      }
     }
 
-    localStorage.setItem("signToken", detector?.getSign()?.token ?? "");
     localStorage.setItem("signCounter", signCounter.toString());
-  }, [signsSource, signCounter, signCounterWrong]);
+  }, [navigate, signCounter, signCounterWrong]);
 
   return (
     <div className="recording flex flex-col justify-center">
@@ -300,9 +311,18 @@ function Recording({
             }}
           >
             <div className="ml-4">
-              <h1 className="text-3xl text-left mb-4">
-                Sinal ({signCounter} de {SIGN_N_TIMES})
-              </h1>
+              <div className="flex space-x-2.5 items-center">
+                <h1 className="text-3xl text-left mb-4">
+                  Sinal ({signCounter} de {SIGN_N_TIMES})
+                </h1>
+                <div>
+                  <CircularProgress
+                    size="30px"
+                    value={signProgress}
+                    color="orange.500"
+                  />
+                </div>
+              </div>
               <div>
                 Você vai sinalizar o sinal <b>{sign.token}</b> em{" "}
                 <b>{sign.language}</b> {SIGN_N_TIMES} vezes. Siga as instruções
@@ -459,6 +479,23 @@ function Recording({
       </div>
     </div>
   );
+
+  function initSetSign() {
+    const session = JSON.parse(localStorage.getItem("session") ?? "[]");
+    const currentSignLabel = session[session.length - 1];
+
+    setSignProgress((10 - session.length) * 10);
+
+    const newSign = signs.find(
+      (sign) =>
+        sign.language === currentSignLabel?.language &&
+        sign.token === currentSignLabel?.token
+    );
+
+    if (newSign === undefined) {
+      navigate("/instructions");
+    }
+  }
 
   function setActionsInstructionsState(response: DetectorData) {
     const todo: DetectorState[] = [];

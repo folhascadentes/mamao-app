@@ -1208,9 +1208,6 @@ export const signs: Sign[] = [
       },
     },
   },
-];
-
-export const signsBatchSecond: Sign[] = [
   {
     language: "Libras",
     token: "Ancião",
@@ -1872,7 +1869,7 @@ export const signsBatchSecond: Sign[] = [
   },
 ];
 
-export const signsBatchThird: Sign[] = [
+export const signStaged: Sign[] = [
   {
     language: "Libras",
     token: "Lado",
