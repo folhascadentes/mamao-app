@@ -2184,7 +2184,66 @@ export const signStaged: Sign[] = [
         },
       },
     },
-  },  
+  },
+  {
+    language: "Libras",
+    token: "Outubro",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.O,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              radiusOffset: 100,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { y: 1, x: 1 },
+              { y: -1, x: 1 },
+              { y: -1, x: -1 },
+              { y: 1, x: -1 },
+            ],
+            [
+              { y: 1, x: -1 },
+              { y: -1, x: -1 },
+              { y: -1, x: 1 },
+              { y: 1, x: 1 },
+            ],
+          ],
+          metadata: {
+            description: "faça um movimento circular com a mão dominante",
+            type: MovementType.CIRCULAR_MOTION,
+          },
+          options: {
+            detect: {
+              circular: true,
+            },
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX,
+          handShape: HandShape.libras.O,
+          palmOrientation: PalmOrientation.LEFT,
+          options: {
+            location: {
+              detectionRadius: 65,
+              same: true,
+            },
+          },
+        },
+      },
+    },
+  },
 ];
 
 export const poorDetectedSigns: Sign[] = [
