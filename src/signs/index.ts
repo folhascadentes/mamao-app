@@ -155,7 +155,7 @@ export const signs: Sign[] = [
           detect: [{ x: 1 }, { x: 1 }],
           metadata: {
             description:
-              "faça o movimento em diagonal para direita até a outra bola laranja",
+              "faça o movimento em diagonal até a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -842,7 +842,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: -1 }, { x: -1 }, { x: -1 }],
           metadata: {
-            description: "mova a mão da direita para esquerda",
+            description: "mova a mão da até a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
@@ -934,7 +934,7 @@ export const signs: Sign[] = [
         dominant: {
           detect: [{ x: 1 }, { x: 1 }, { x: 1 }],
           metadata: {
-            description: "mova a mão da esquerda para direita",
+            description: "mova a mão da até a outra bola laranja",
             type: MovementType.LINEAR_MOTION,
           },
         },
