@@ -16,11 +16,13 @@ import handshapeTwo from "./assets/handshapeTwo.webp";
 import handshapeThree from "./assets/handshapeThree.webp";
 import movement from "./assets/movement.webp";
 import orientation from "./assets/orientation.webp";
-import location from "./assets/location.webp";
+import locationImg from "./assets/location.webp";
 import wrapping from "./assets/wrapping.webp";
 import { StyleContext } from "./reducers/style.reducer";
 import { HotkeyContext } from "./reducers/hotkeys.reducer";
 import { SL } from "./components";
+import SessionComplete from "./modals/session-complete";
+import { useLocation } from "react-router-dom";
 
 function Instructions({
   startRecording,
@@ -32,7 +34,8 @@ function Instructions({
   const hotkeyContext = useContext(HotkeyContext);
 
   const showTutorial: boolean = !localStorage.getItem("tutorialViewed");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const aboutSignLanguageModal = useDisclosure();
+  const sessionCompleteModal = useDisclosure();
   const [state, setState] = useState(0);
   const finalRef = useRef(null);
   const title = [
@@ -43,6 +46,17 @@ function Instructions({
     "Orientação da mão",
     "Juntando tudo!",
   ];
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const finish = params.get("finished");
+
+    if (finish === "true") {
+      sessionCompleteModal.onOpen();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function nextState() {
     setState((value) => (value < 5 ? value + 1 : 5));
@@ -53,7 +67,7 @@ function Instructions({
 
   function start() {
     if (showTutorial) {
-      onOpen();
+      aboutSignLanguageModal.onOpen();
     } else {
       startRecording();
     }
@@ -62,7 +76,7 @@ function Instructions({
   function begin() {
     startRecording();
     localStorage.setItem("tutorialViewed", "true");
-    onClose();
+    aboutSignLanguageModal.onClose();
   }
 
   useEffect(() => {
@@ -87,6 +101,11 @@ function Instructions({
 
   return (
     <div className="px-6 xl:p-6 flex justify-center xl:text-lg font-normal">
+      <SessionComplete
+        isOpen={sessionCompleteModal.isOpen}
+        onOpen={sessionCompleteModal.onOpen}
+        onClose={sessionCompleteModal.onClose}
+      ></SessionComplete>
       <div style={{ width: "720px" }}>
         <h1 className="text-3xl xl:text-4xl text-center mb-6 md:mb-10">
           Olá, <span className="text-orange-600 md:font-light">Voluntário</span>
@@ -148,8 +167,8 @@ function Instructions({
 
       <Modal
         finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={aboutSignLanguageModal.isOpen}
+        onClose={aboutSignLanguageModal.onClose}
         isCentered
         size={isMobile ? "full" : "xl"}
       >
@@ -201,7 +220,7 @@ function Instructions({
               {state === 3 && (
                 <div className="flex justify-center">
                   <img
-                    src={location}
+                    src={locationImg}
                     alt=""
                     style={{
                       height: window.innerHeight <= 800 ? "150px" : "200px",

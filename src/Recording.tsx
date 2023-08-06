@@ -289,7 +289,7 @@ function Recording({
         instructor?.setSign(newSign);
       } else {
         // acabou a sessão :)
-        navigate("/instructions");
+        navigate("/instructions?finished=true");
       }
     }
 
@@ -313,15 +313,15 @@ function Recording({
             }}
           >
             <div className="ml-4">
-              <div className="flex space-x-2.5 items-center">
+              <div className="flex space-x-4 items-center">
                 <h1 className="text-3xl text-left mb-4">
                   Sinal ({signCounter} de {SIGN_N_TIMES})
                 </h1>
-                <div className="mb-1.5">
+                <div className="mb-3">
                   <CircularProgress
-                    size="45px"
+                    size="36px"
                     value={signProgress}
-                    color="orange.500"
+                    color="orange.400"
                   />
                 </div>
               </div>
