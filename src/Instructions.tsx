@@ -95,9 +95,18 @@ function Instructions({
         <p className="text-left mb-2">
           Agradecemos por se tornar um voluntário e nos dar{" "}
           <span className="text-orange-600 font-bold">uma mão</span>. Antes de
-          começar, leia e siga as instruções abaixo:
+          começar, leia e siga os comentários abaixo:
         </p>
         <ol className="list-decimal text-left ml-4 mt-4 mb-10">
+          <li className="mb-2">
+            Você irá realizar alguns sinais da Libras, seguindo as instruções
+            presenteas na tela após apertar em "Começar".
+          </li>
+          <li>
+            Ao todo serão 10 sinais que serão feitos com 5 repetições, após isso
+            você voltará para essa tela. Você pode fazer quantas sessões quiser,
+            basta apenas apertar em "Começar" novamente.
+          </li>
           <li className="mb-2">
             Encerre programas pesados no seu computador para melhorar o
             desempenho da plataforma. Ela utiliza inteligência artificial para
@@ -113,8 +122,8 @@ function Instructions({
             funcionamento.
           </li>
           <li>
-            Siga as instruções exibidas na tela para concluir os passos com
-            sucesso.
+            Você poderá ver um vídeo de exemplo do sinal clicando em "Veja um
+            exemplo" ou seguindo as instruções em texto e imagem.
           </li>
         </ol>
         <div className="text-center">
