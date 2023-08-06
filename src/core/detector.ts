@@ -106,9 +106,10 @@ export class Detector {
   private currentState: DetectorStates;
   private memory: DetectorMemory;
   private states: { [K in DetectorStates]: State };
+  private dominantHand: "RIGHT" | "LEFT" = "RIGHT";
 
-  constructor(sign: Sign) {
-    this.sign = sign;
+  constructor(sign: Sign, dominantHand: "RIGHT" | "LEFT" = "RIGHT") {
+    this.sign = JSON.parse(JSON.stringify(sign));
     this.currentState = DetectorStates.HAND_SHAPE;
     this.memory = {};
     this.states = {
@@ -120,12 +121,37 @@ export class Detector {
       [DetectorStates.FINAL_PALM_ORIENTATION]: finalPalmOrientationState,
       [DetectorStates.FINAL_HAND_SHAPE]: finalHandShapeState,
     };
+    this.dominantHand = dominantHand;
+
+    if (this.dominantHand === "LEFT") {
+      this.swapDirections(this.sign);
+    }
   }
 
   public setSign(sign: Sign): void {
-    this.sign = sign;
+    this.sign = JSON.parse(JSON.stringify(sign));
     this.currentState = DetectorStates.HAND_SHAPE;
     this.memory = {};
+
+    if (this.dominantHand === "LEFT") {
+      this.swapDirections(this.sign);
+    }
+  }
+
+  private swapDirections(json: any) {
+    for (let key in json) {
+      if (typeof json[key] === "object" && json[key] !== null) {
+        this.swapDirections(json[key]);
+      } else {
+        if (key === "x" && typeof json[key] === "number") {
+          json[key] = -json[key];
+        } else if (typeof json[key] === "string") {
+          json[key] = json[key].replace("_LEFT", "_TEMP");
+          json[key] = json[key].replace("_RIGHT", "_LEFT");
+          json[key] = json[key].replace("_TEMP", "_RIGHT");
+        }
+      }
+    }
   }
 
   public getSign(): Sign {
