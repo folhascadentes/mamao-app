@@ -1724,11 +1724,13 @@ export const signs: Sign[] = [
               { wristRotateCounterClockwise: true },
               { wristRotateClockwise: true },
               { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
             ],
             [
               { wristRotateClockwise: true },
               { wristRotateCounterClockwise: true },
               { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
             ],
           ],
           metadata: {
