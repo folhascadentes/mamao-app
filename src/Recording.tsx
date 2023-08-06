@@ -660,7 +660,7 @@ function HandShapeInstructions({
       {dominantHandShape && (
         <div>
           <div>
-            1. Configure e mantenha a <b>mão direita</b> conforme as imagens
+            1. Configure e mantenha a <b>mão dominante</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-16 mt-4">
@@ -690,8 +690,8 @@ function HandShapeInstructions({
       {nonDominantHandShape && (
         <div>
           <div>
-            2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
-            abaixo
+            2. Configure e mantenha a <b>mão não dominante</b> conforme as
+            imagens abaixo
           </div>
           <div className="flex space-x-16 mt-4">
             {HandshapeImages[nonDominantHandShape] &&
@@ -728,12 +728,12 @@ function PalmOrientationInstructions({ sign }: { sign: Sign }): JSX.Element {
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Direcione e mantenha palma da mão <b>direita</b> apontado para{" "}
+        1. Direcione e mantenha palma da mão <b>dominante</b> apontado para{" "}
         <b>{PalmOrientationDescription[dominantCategory]}</b>
       </div>
       {nonDominantCategory && (
         <div>
-          2. Direcione e mantenha da mão <b>esquerda</b> apontado para{" "}
+          2. Direcione e mantenha da mão <b>não dominante</b> apontado para{" "}
           <b>{PalmOrientationDescription[nonDominantCategory]}</b>
         </div>
       )}
@@ -801,12 +801,12 @@ function FinalPalmOrientationInstructions({
   return (
     <div className="flex flex-col mx-8 my-4">
       <div>
-        1. Direcione e mantenha palma da mão <b>direita</b> apontando para{" "}
+        1. Direcione e mantenha palma da mão <b>dominante</b> apontando para{" "}
         <b>{PalmOrientationDescription[dominantCategory]}</b>
       </div>
       {nonDominantCategory && (
         <div>
-          2. Direcione e mantenha da mão <b>esquerda</b> apontando para{" "}
+          2. Direcione e mantenha da mão <b>não dominante</b> apontando para{" "}
           <b>{PalmOrientationDescription[nonDominantCategory]}</b>
         </div>
       )}
@@ -829,7 +829,7 @@ function FinalHandShapeInstructions({
       {dominantHandShape && (
         <div>
           <div>
-            1. Configure e mantenha a <b>mão direita</b> conforme as imagens
+            1. Configure e mantenha a <b>mão dominante</b> conforme as imagens
             abaixo
           </div>
           <div className="flex space-x-8 mt-4">
@@ -859,8 +859,8 @@ function FinalHandShapeInstructions({
       {nonDominantHandShape && (
         <div>
           <div>
-            2. Configure e mantenha a <b>mão esquerda</b> conforme as imagens
-            abaixo
+            2. Configure e mantenha a <b>mão não dominante</b> conforme as
+            imagens abaixo
           </div>
           <div className="flex space-x-8 mt-4">
             {HandshapeImages[nonDominantHandShape] &&

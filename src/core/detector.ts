@@ -146,9 +146,9 @@ export class Detector {
         if (key === "x" && typeof json[key] === "number") {
           json[key] = -json[key];
         } else if (typeof json[key] === "string") {
-          json[key] = json[key].replace("_LEFT", "_TEMP");
-          json[key] = json[key].replace("_RIGHT", "_LEFT");
-          json[key] = json[key].replace("_TEMP", "_RIGHT");
+          json[key] = json[key].replace("LEFT", "TEMP");
+          json[key] = json[key].replace("RIGHT", "LEFT");
+          json[key] = json[key].replace("TEMP", "RIGHT");
         }
       }
     }
