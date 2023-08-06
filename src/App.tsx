@@ -85,8 +85,9 @@ export default function App(): JSX.Element {
   }, []);
 
   function start(to?: string): void {
-    const session = localStorage.getItem("session");
-    if (session && session?.length <= 2) {
+    const session = localStorage.getItem("session") ?? "";
+
+    if (!session || session?.length <= 2) {
       fetchSession();
       return;
     }
