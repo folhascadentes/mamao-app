@@ -2119,6 +2119,72 @@ export const signStaged: Sign[] = [
       },
     },
   },
+  {
+    language: "Libras",
+    token: "Fevereiro",
+    steps: {
+      start: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.F,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 80,
+              track: true,
+              radiusOffset: {
+                value: 80,
+                downLimitValue: -10,
+              },
+            },
+            palmOrientation: {
+              detectionAngle: 180,
+            },
+          },
+        },
+      },
+      movement: {
+        dominant: {
+          detect: [
+            [
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+            ],
+            [
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+              { wristRotateClockwise: true },
+              { wristRotateCounterClockwise: true },
+            ],
+          ],
+          metadata: {
+            description: "gire o pulso da duas vezes",
+            type: MovementType.WRIST_ROTATE,
+          },
+        },
+      },
+      end: {
+        dominant: {
+          location: Location.TORAX_UPPER_RIGHT,
+          handShape: HandShape.libras.F,
+          palmOrientation: PalmOrientation.LEFT,
+          handOrientation: HandOrientation.UP,
+          options: {
+            location: {
+              detectionRadius: 80,
+              same: true,
+            },
+            palmOrientation: {
+              detectionAngle: 180,
+            },
+          },
+        },
+      },
+    },
+  },  
 ];
 
 export const poorDetectedSigns: Sign[] = [
