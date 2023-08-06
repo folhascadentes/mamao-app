@@ -24,9 +24,8 @@ export function SignUp(): JSX.Element {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [ethnicity, setEthnicity] = useState("");
+  const [dominantHand, setDominantHand] = useState("");
   const [deficiency, setDeficiency] = useState("");
-  const [weight, setWeight] = useState("");
-  const [height, setHeight] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -52,11 +51,9 @@ export function SignUp(): JSX.Element {
           email,
           password,
           age: age ? Number(age) : undefined,
-          others: gender,
+          others: JSON.stringify({ dominantHand, gender }),
           ethnicity,
           deficiency,
-          weight: weight ? Number(weight) : undefined,
-          height: height ? Number(height) : undefined,
         }
       );
 
@@ -239,31 +236,18 @@ export function SignUp(): JSX.Element {
                 <option value="amarelo">Amarelo</option>
               </Select>
             </FormControl>
-            <FormControl id="weight">
-              <FormLabel>Peso (Kg)</FormLabel>
-              <Input
-                placeholder="peso em (Kg)"
-                type={"number"}
+            <FormControl id="ethnicity">
+              <FormLabel>Mão dominante</FormLabel>
+              <Select
+                placeholder="Selecione sua mão dominante"
                 size="lg"
                 focusBorderColor="orange.200"
-                min={1}
-                max={200}
-                value={weight}
-                onChange={(e) => setWeight(e.target.value)}
-              />
-            </FormControl>
-            <FormControl id="height">
-              <FormLabel>Altura (cm)</FormLabel>
-              <Input
-                placeholder="altura em (cm)"
-                type={"number"}
-                size="lg"
-                focusBorderColor="orange.200"
-                min={1}
-                max={300}
-                value={height}
-                onChange={(e) => setHeight(e.target.value)}
-              />
+                value={ethnicity}
+                onChange={(e) => setDominantHand(e.target.value)}
+              >
+                <option value="right">Direita</option>
+                <option value="left">Esqeurda</option>
+              </Select>
             </FormControl>
             <FormControl id="deficiency">
               <FormLabel>

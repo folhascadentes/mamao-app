@@ -23,11 +23,11 @@ function Profile(): JSX.Element {
           localStorage.removeItem("token");
           window.location.href = "/login";
         } else {
-          setProfile(data);
+          try {
+            data.others = JSON.parse(data.others ?? "{}");
+          } catch (e) {}
 
-          if (data.signs > 500) {
-            localStorage.setItem("batchSecond", "true");
-          }
+          setProfile(data);
         }
       } catch (error) {
         localStorage.removeItem("token");
@@ -55,23 +55,28 @@ function Profile(): JSX.Element {
           </Skeleton>
           <label className="font-black">Etinia</label>
           <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
-            {profile?.ethnicity}
+            {profile?.ethnicity
+              ? profile?.ethnicity.charAt(0).toUpperCase() +
+                profile?.ethnicity.slice(1)
+              : "Não informado"}
+          </Skeleton>
+          <label className="font-black">Mão dominante</label>
+          <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
+            {profile?.others?.dominantHand === "right" || !profile?.dominantHand
+              ? "Direita"
+              : "Esquerda"}
           </Skeleton>
           <label className="font-black">Deficiência</label>
           <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
-            {profile?.deficiency}
+            {profile?.deficiency === "none" ? "Nenhuma" : profile?.deficiency}
           </Skeleton>
           <label className="font-black">Idade</label>
           <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
             {profile?.age} anos
           </Skeleton>
-          <label className="font-black">Altura</label>
+          <label className="font-black">Gênero Biológico</label>
           <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
-            {profile?.height} cm
-          </Skeleton>
-          <label className="font-black">Peso</label>
-          <Skeleton height="24px" rounded={"md"} isLoaded={!isLoading}>
-            {profile?.weight} Kg
+            {profile?.others?.gender ?? "Não informado"}
           </Skeleton>
         </div>
         <div className="flex flex-col space-y-4 mb-6 w-100 md:w-1/3">
