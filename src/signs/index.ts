@@ -72,6 +72,9 @@ export const signs: Sign[] = [
               detectionRadius: 60,
               radiusOffset: 70,
             },
+            handShape: {
+              extraDetect: [HandShape.libras.OPEN_HAND],
+            },
           },
         },
       },
@@ -243,6 +246,9 @@ export const signs: Sign[] = [
                 leftLimitValue: -30,
               },
               track: true,
+            },
+            handShape: {
+              extraDetect: [HandShape.libras.OPEN_HAND],
             },
           },
         },
