@@ -277,6 +277,7 @@ export class Subject {
 
     if (CAPTURE_HAND_DATA && isSpacedPressed) {
       this.dataset.push(inputData);
+      (window as any).DATASET = this.dataset;
       console.log(this.dataset);
     }
 
