@@ -57,7 +57,10 @@ export default function App(): JSX.Element {
       );
       const data = await response.json();
 
-      data.reverse();
+      if (data) {
+        data.reverse();
+      }
+      
 
       localStorage.setItem("session", JSON.stringify(data));
     }
