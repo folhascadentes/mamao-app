@@ -14,7 +14,7 @@ import {
 import { HandShapeType, Movement, MovementAxis } from "../signs";
 
 // Developement mode only for capture dataset for handshape
-const CAPTURE_HAND_DATA = true;
+const CAPTURE_HAND_DATA = false;
 
 export interface SubjectData {
   frame: number;
@@ -76,11 +76,11 @@ export class Subject {
     this.dataset = [];
   }
 
-  public parse(results: Results, isSpacedPressed = false): SubjectData {
+  public parse(results: Results): SubjectData {
     const subject = this.initializeSujectObject(results);
 
     this.setSubjectBodyAngle(subject, results);
-    this.setSubjectHandShape(subject, isSpacedPressed);
+    this.setSubjectHandShape(subject);
     this.setSubjectHandPointing(subject);
     this.setSubjectHandPalm(subject);
     this.updateBuffer(subject);
@@ -232,10 +232,7 @@ export class Subject {
     };
   }
 
-  private setSubjectHandShape(
-    subject: SubjectData,
-    isSpacedPressed = false
-  ): void {
+  private setSubjectHandShape(subject: SubjectData): void {
     const dominantWorldLandmarks = subject.readings.dominantWorldLandmarks;
     const nonDominantWorldLandmarks =
       subject.readings.nonDominantWorldLandmarks;
@@ -243,8 +240,7 @@ export class Subject {
 
     if (dominantWorldLandmarks.length) {
       const { handShape, probability } = this.detectHandShape(
-        dominantWorldLandmarks,
-        isSpacedPressed
+        dominantWorldLandmarks
       );
 
       if (probability > PROBABILITY_THRESHOLD) {
@@ -254,8 +250,7 @@ export class Subject {
 
     if (nonDominantWorldLandmarks.length) {
       const { handShape, probability } = this.detectHandShape(
-        nonDominantWorldLandmarks,
-        isSpacedPressed
+        nonDominantWorldLandmarks
       );
 
       if (probability > PROBABILITY_THRESHOLD) {
@@ -264,10 +259,7 @@ export class Subject {
     }
   }
 
-  private detectHandShape(
-    landmarks: Coordinate[],
-    isSpacedPressed = false
-  ): {
+  private detectHandShape(landmarks: Coordinate[]): {
     handShape: HandShapeType;
     probability: number;
   } {
@@ -275,7 +267,7 @@ export class Subject {
       .map((landmark) => [landmark.x, landmark.y, landmark.z])
       .flat();
 
-    if (CAPTURE_HAND_DATA && isSpacedPressed) {
+    if (CAPTURE_HAND_DATA) {
       this.dataset.push(inputData);
       (window as any).DATASET = this.dataset;
       console.log(this.dataset);

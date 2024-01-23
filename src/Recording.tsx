@@ -62,21 +62,6 @@ function Recording({
 
   const spaceRef = useRef<boolean>(false);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
-        spaceRef.current = !spaceRef.current;
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-    // eslint-disable-next-line
-  }, []);
-
   const session = JSON.parse(localStorage.getItem("session") ?? "[]");
   const currentSignLabel = session[session.length - 1];
   const newSign = signs.find(
@@ -156,7 +141,7 @@ function Recording({
       poseWorldLandmarks,
     };
 
-    const subjectData = subject.parse(results, spaceRef.current);
+    const subjectData = subject.parse(results);
     const response = detector.run(subjectData);
     instructor?.instruct(subjectData, response);
 
