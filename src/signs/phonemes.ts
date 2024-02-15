@@ -26,7 +26,7 @@ export const signsStates: {
         shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.FRONT,
         pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX,
+        location: Location.TORAX_LEFT,
       },
       {
         shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
