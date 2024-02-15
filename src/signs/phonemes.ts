@@ -5,18 +5,24 @@ import {
   PalmOrientationDescriptor,
 } from "./types";
 
+export type ParametersConfig = {
+  shape?: string;
+  orientation?: Vector;
+  pointing?: Vector;
+  movement?: Movement;
+  location?: Location;
+  locationPivot?: Location;
+  orientationAngle?: number;
+  pointingAngle?: number;
+};
+
 export const signsStates: {
   id: string;
   index: number;
   frame: number;
   states: {
-    shape?: string;
-    orientation?: Vector;
-    pointing?: Vector;
-    movement?: Movement;
-    location?: Location;
-    orientationAngle?: number;
-    pointingAngle?: number;
+    right: ParametersConfig;
+    left?: ParametersConfig;
   }[];
 }[] = [
   {
@@ -25,16 +31,20 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_LEFT,
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX_LEFT,
+        },
       },
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_RIGHT,
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX_RIGHT,
+        },
       },
     ],
   },
@@ -44,16 +54,20 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_LEFT,
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX_LEFT,
+        },
       },
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_RIGHT,
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX_RIGHT,
+        },
       },
     ],
   },
@@ -63,9 +77,11 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.FRONT,
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.FRONT,
+        },
       },
     ],
   },
@@ -75,9 +91,11 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.INDEX_FINGER,
-        pointing: PalmOrientationDescriptor.BACK,
-        pointingAngle: 90,
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          pointing: PalmOrientationDescriptor.BACK,
+          pointingAngle: 90,
+        },
       },
     ],
   },
@@ -87,16 +105,20 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX,
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX,
+        },
       },
       {
-        shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.SHOULDER_RIGHT,
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.SHOULDER_RIGHT,
+        },
       },
     ],
   },
@@ -106,10 +128,12 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.OPEN_HAND_THUMB_APART,
-        orientation: PalmOrientationDescriptor.UP,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
+        right: {
+          shape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          orientation: PalmOrientationDescriptor.UP,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+        },
       },
     ],
   },
@@ -119,25 +143,31 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.F,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        movement: {
-          wristRotateCounterClockwise: true,
+        right: {
+          shape: HandShape.libras.F,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
         },
       },
       {
-        shape: HandShape.libras.F,
-        pointing: PalmOrientationDescriptor.UP,
-        movement: {
-          wristRotateClockwise: true,
+        right: {
+          shape: HandShape.libras.F,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
         },
       },
       {
-        shape: HandShape.libras.F,
-        pointing: PalmOrientationDescriptor.UP,
-        movement: {
-          wristRotateCounterClockwise: true,
+        right: {
+          shape: HandShape.libras.F,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
         },
       },
     ],
@@ -148,35 +178,43 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.O,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: 1,
-          y: 1,
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: 1,
+            y: 1,
+          },
         },
       },
       {
-        shape: HandShape.libras.O,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: 1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: 1,
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.O,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: -1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: -1,
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.O,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: -1,
-          y: 1,
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: -1,
+            y: 1,
+          },
         },
       },
     ],
@@ -187,12 +225,16 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.OPEN_HAND,
-        orientation: PalmOrientationDescriptor.DOWN,
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.DOWN,
+        },
       },
       {
-        shape: HandShape.libras.OPEN_HAND,
-        orientation: PalmOrientationDescriptor.UP,
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.UP,
+        },
       },
     ],
   },
@@ -202,21 +244,43 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.F,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
-        movement: {
-          x: 1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.F,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: 1,
+            y: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.F,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: -1,
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.F,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
-        movement: {
-          x: -1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.F,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: -1,
+            y: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.F,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: 1,
+            y: -1,
+          },
         },
       },
     ],
@@ -227,11 +291,13 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.BACK,
-        location: Location.TORAX_RIGHT,
-        movement: {
-          wristFlexion: true,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.TORAX_RIGHT,
+          movement: {
+            wristFlexion: true,
+          },
         },
       },
     ],
@@ -242,16 +308,20 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX_LEFT,
+        right: {
+          shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX_LEFT,
+        },
       },
       {
-        shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX_RIGHT,
+        right: {
+          shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX_RIGHT,
+        },
       },
     ],
   },
@@ -261,10 +331,12 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.FACE_MOUTH,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.FACE_MOUTH,
+        },
       },
     ],
   },
@@ -274,12 +346,14 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.D,
-        orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.FACE,
-        movement: {
-          x: 1,
-          y: 1,
+        right: {
+          shape: HandShape.libras.D,
+          orientation: PalmOrientationDescriptor.LEFT,
+          location: Location.FACE,
+          movement: {
+            x: 1,
+            y: 1,
+          },
         },
       },
     ],
@@ -290,36 +364,44 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.OI,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: 1,
-          y: 1,
+        right: {
+          shape: HandShape.libras.OI,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: 1,
+            y: 1,
+          },
         },
       },
       {
-        shape: HandShape.libras.OI,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: 1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.OI,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: 1,
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.OI,
-        orientation: PalmOrientationDescriptor.LEFT,
-        movement: {
-          x: -1,
-          y: -1,
+        right: {
+          shape: HandShape.libras.OI,
+          orientation: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: -1,
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.OI,
-        orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
-        movement: {
-          x: -1,
-          y: 1,
+        right: {
+          shape: HandShape.libras.OI,
+          orientation: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            x: -1,
+            y: 1,
+          },
         },
       },
     ],
@@ -330,13 +412,17 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.O,
-        orientation: PalmOrientationDescriptor.BACK,
-        location: Location.FACE_MOUTH,
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.FACE_MOUTH,
+        },
       },
       {
-        shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-        orientation: PalmOrientationDescriptor.BACK,
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.BACK,
+        },
       },
     ],
   },
@@ -346,21 +432,25 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.A,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
-        movement: {
-          y: -1,
+        right: {
+          shape: HandShape.libras.A,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            y: -1,
+          },
         },
       },
       {
-        shape: HandShape.libras.A,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
-        movement: {
-          y: 1,
+        right: {
+          shape: HandShape.libras.A,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            y: 1,
+          },
         },
       },
     ],
@@ -371,14 +461,18 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.UP,
+        },
       },
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.FRONT,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.FRONT,
+        },
       },
     ],
   },
@@ -396,6 +490,24 @@ export const signsStates: {
         shape: HandShape.libras.Y,
         orientation: PalmOrientationDescriptor.LEFT,
         pointing: PalmOrientationDescriptor.UP,
+      },
+    ],
+  },
+  {
+    id: "Entender",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          orientation: PalmOrientationDescriptor.LEFT,
+          location: Location.FACE_FOREHEAD_RIGHT,
+          locationPivot: Location.HAND_INDEX_RIGHT,
+          movement: {
+            wristRotate: true,
+          },
+        },
       },
     ],
   },
