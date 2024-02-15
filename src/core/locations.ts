@@ -9,7 +9,7 @@ export function getLocationCoordinate(
   readings: SubjectReadings
 ): Coordinate {
   const { poseLandmarks, dominantLandmarks, nonDominantLandmarks } = readings;
-  const mapper: { [key in Location]: () => Coordinate } = {
+  const mapper: Partial<{ [Pakey in Location]: () => Coordinate }> = {
     [Location.FACE_FOREHEAD]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
@@ -346,5 +346,5 @@ export function getLocationCoordinate(
     },
   };
 
-  return mapper[type]();
+  return mapper[type]?.() ?? { x: 0, y: 0, z: 0 };
 }

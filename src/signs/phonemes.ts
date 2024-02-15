@@ -15,6 +15,8 @@ export const signsStates: {
     pointing?: Vector;
     movement?: Movement;
     location?: Location;
+    orientationAngle?: number;
+    pointingAngle?: number;
   }[];
 }[] = [
   {
@@ -75,6 +77,7 @@ export const signsStates: {
       {
         shape: HandShape.libras.INDEX_FINGER,
         pointing: PalmOrientationDescriptor.BACK,
+        pointingAngle: 90,
       },
     ],
   },
@@ -147,7 +150,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: 1,
           y: 1,
@@ -156,7 +158,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: 1,
           y: -1,
@@ -165,7 +166,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: -1,
           y: -1,
@@ -174,7 +174,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: -1,
           y: 1,
@@ -293,7 +292,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.OI,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: 1,
           y: 1,
@@ -302,7 +300,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.OI,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: 1,
           y: -1,
@@ -311,7 +308,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.OI,
         orientation: PalmOrientationDescriptor.LEFT,
-        location: Location.TORAX,
         movement: {
           x: -1,
           y: -1,

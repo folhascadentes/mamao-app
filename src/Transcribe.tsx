@@ -115,14 +115,14 @@ function Transcribe({
         checkOrientationUtil(
           sign.states[sign.index].orientation as any,
           subjectData.hand.dominant.palm,
-          90
+          sign.states[sign.index].orientationAngle ?? 65
         );
       const samePointing =
         sign.states[sign.index].pointing === undefined ||
         checkOrientationUtil(
           sign.states[sign.index].pointing as any,
           subjectData.hand.dominant.ponting,
-          90
+          sign.states[sign.index].pointingAngle ?? 65
         );
       const sameMovement =
         sign.states[sign.index].movement === undefined ||
