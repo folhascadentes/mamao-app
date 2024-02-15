@@ -14,7 +14,7 @@ import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
-import { signsStates } from "./signs/Phoneme";
+import { signsStates } from "./signs/phoneme";
 
 function Transcribe({
   setLoading,
