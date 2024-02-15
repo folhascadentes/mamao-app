@@ -23,13 +23,13 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_MIDDLE_AND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.FRONT,
         pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX,
       },
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_MIDDLE_AND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.FRONT,
         pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX_RIGHT,
@@ -42,13 +42,13 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_MIDDLE_AND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.BACK,
         pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX_LEFT,
       },
       {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_MIDDLE_AND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.BACK,
         pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX_RIGHT,
@@ -61,7 +61,7 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_INDEX_FINGER,
         orientation: PalmOrientationDescriptor.LEFT,
         pointing: PalmOrientationDescriptor.FRONT,
       },
@@ -73,7 +73,7 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.INDEX_FINGER,
+        shape: HandShape.libras.CLOSE_HAND_INDEX_FINGER,
         pointing: PalmOrientationDescriptor.BACK,
       },
     ],
@@ -175,6 +175,25 @@ export const signsStates: {
           x: -1,
           y: 1,
         },
+      },
+    ],
+  },
+  {
+    id: "Lado",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        shape: HandShape.libras.OPEN_HAND,
+        orientation: PalmOrientationDescriptor.DOWN,
+        pointing: PalmOrientationDescriptor.FRONT,
+        location: Location.TORAX,
+      },
+      {
+        shape: HandShape.libras.OPEN_HAND,
+        orientation: PalmOrientationDescriptor.UP,
+        pointing: PalmOrientationDescriptor.FRONT,
+        location: Location.TORAX_RIGHT,
       },
     ],
   },

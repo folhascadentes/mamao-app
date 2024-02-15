@@ -14,7 +14,7 @@ import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
-import { signsStates } from "./signs/phoneme";
+import { signsStates } from "./signs/phonemes";
 
 function Transcribe({
   setLoading,
@@ -115,7 +115,10 @@ function Transcribe({
 
       const sameHandsape =
         sign.states[sign.index].shape === undefined ||
-        sign.states[sign.index].shape === subjectData.hand.dominant.handShape;
+        (subjectData.hand.dominant.handShape &&
+          subjectData.hand.dominant.handShape.includes(
+            sign.states[sign.index].shape as string
+          ));
       const sameOrientation =
         sign.states[sign.index].orientation === undefined ||
         checkOrientationUtil(

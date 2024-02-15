@@ -212,17 +212,18 @@ export const HandShape = {
     X: "x",
     Y: "y",
     Z: "z",
-    CLAW: "claws",
-    INDEX_FINGER: "indexFinger",
-    MIDDLE_AND_INDEX_FINGER: "middleAndIndexFinger",
-    MIDDLE_FINGER_BENDED_FINGERS_APART: "middleFingerBendedFingersApart",
+    CLOSE_HAND_INDEX_FINGER: "closeHandIndexFinger",
+    CLOSE_HAND_MIDDLE_AND_INDEX_FINGER: "closeHandMiddleAndIndexFinger",
     OI: "oi",
+    OPEN_HAND_CLAW: "openHandClaws",
     OPEN_HAND_FINGERS_APART: "openHandFingersApart",
+    OPEN_HAND_MIDDLE_FINGER_BENDED_FINGERS_APART:
+      "openHandMiddleFingerBendedFingersApart",
     OPEN_HAND_THUMB_APART: "openHandThumbApart",
     OPEN_HAND: "openHand",
     THUMB_FINGER: "thumbFinger",
-    THUMB_TOUCH_INDEX_FINGERS_OPEN: "thumbTouchIndexFingersOpen",
     THUMB_TOUCH_INDEX_FINGERS_CLOSED: "thumbTouchIndexFingersClosed",
+    THUMB_TOUCH_INDEX_FINGERS_OPEN: "thumbTouchIndexFingersOpen",
   },
 };
 
