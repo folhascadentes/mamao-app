@@ -83,13 +83,7 @@ function Transcribe({
         Location.SHOULDER_LEFT,
         Location.SHOULDER_RIGHT,
         Location.TORAX_LEFT,
-        Location.TORAX_LOWER_LEFT,
-        Location.TORAX_LOWER_RIGHT,
-        Location.TORAX_LOWER,
         Location.TORAX_RIGHT,
-        Location.TORAX_UPPER_LEFT,
-        Location.TORAX_UPPER_RIGHT,
-        Location.TORAX_UPPER,
       ];
 
       let currentDistance = 10000000000;
@@ -120,13 +114,15 @@ function Transcribe({
         sign.states[sign.index].orientation === undefined ||
         checkOrientationUtil(
           sign.states[sign.index].orientation as any,
-          subjectData.hand.dominant.palm
+          subjectData.hand.dominant.palm,
+          90
         );
       const samePointing =
         sign.states[sign.index].pointing === undefined ||
         checkOrientationUtil(
           sign.states[sign.index].pointing as any,
-          subjectData.hand.dominant.ponting
+          subjectData.hand.dominant.ponting,
+          90
         );
       const sameMovement =
         sign.states[sign.index].movement === undefined ||
@@ -141,6 +137,13 @@ function Transcribe({
             sign.states[sign.index].location as string
           ));
 
+      if (sign.id === "Lado") {
+        console.log(
+          subjectData.hand.dominant.location,
+          subjectData.hand.dominant.handShape
+        );
+      }
+
       if (
         sameHandsape &&
         sameOrientation &&
@@ -148,7 +151,6 @@ function Transcribe({
         sameMovement &&
         sameLocation
       ) {
-        console.log(sign.id);
         sign.index++;
         sign.frame = subjectData.frame;
         if (sign.index === sign.states.length) {
