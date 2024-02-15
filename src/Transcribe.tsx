@@ -115,10 +115,7 @@ function Transcribe({
 
       const sameHandsape =
         sign.states[sign.index].shape === undefined ||
-        (subjectData.hand.dominant.handShape &&
-          subjectData.hand.dominant.handShape.includes(
-            sign.states[sign.index].shape as string
-          ));
+        sign.states[sign.index].shape === subjectData.hand.dominant.handShape;
       const sameOrientation =
         sign.states[sign.index].orientation === undefined ||
         checkOrientationUtil(
