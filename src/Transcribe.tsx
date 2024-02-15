@@ -10,93 +10,11 @@ import {
   Results,
 } from "./core/mediapipe";
 import { Subject } from "./core/subject";
-import { HandShape, Movement, PalmOrientationDescriptor } from "./signs/types";
 import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
-
-const signsStates: {
-  id: string;
-  index: number;
-  frame: number;
-  states: {
-    shape?: string;
-    orientation?: Vector;
-    pointing?: Vector;
-    movement?: Movement;
-    location?: Location;
-  }[];
-}[] = [
-  {
-    id: "Nome",
-    index: 0,
-    frame: 0,
-    states: [
-      {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX,
-      },
-      {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.FRONT,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_RIGHT,
-      },
-    ],
-  },
-  {
-    id: "Meu-Nome",
-    index: 0,
-    frame: 0,
-    states: [
-      {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_LEFT,
-      },
-      {
-        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.BACK,
-        pointing: PalmOrientationDescriptor.UP,
-        location: Location.TORAX_RIGHT,
-      },
-    ],
-  },
-  {
-    id: "Você",
-    index: 0,
-    frame: 0,
-    states: [
-      {
-        shape: HandShape.libras.INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.FRONT,
-      },
-    ],
-  },
-  {
-    id: "Eu",
-    index: 0,
-    frame: 0,
-    states: [
-      {
-        shape: HandShape.libras.INDEX_FINGER,
-        orientation: PalmOrientationDescriptor.RIGHT,
-        pointing: PalmOrientationDescriptor.BACK,
-      },
-    ],
-  },
-  {
-    id: "Olá",
-    index: 0,
-    frame: 0,
-    states: [{}],
-  },
-];
+import { signsStates } from "./signs/Phoneme";
 
 function Transcribe({
   setLoading,
@@ -152,22 +70,26 @@ function Transcribe({
 
     try {
       const rightHandCoordinates = getLocationCoordinate(
-        Location.PALM_RIGHT,
+        Location.HAND_PALM_RIGHT,
         subjectData.readings
       );
 
       const positions = [
+        Location.BELLY_LEFT,
+        Location.BELLY_RIGHT,
+        Location.BELLY,
+        Location.FACE_FOREHEAD,
+        Location.FACE_MOUTH,
+        Location.SHOULDER_LEFT,
+        Location.SHOULDER_RIGHT,
         Location.TORAX_LEFT,
+        Location.TORAX_LOWER_LEFT,
+        Location.TORAX_LOWER_RIGHT,
+        Location.TORAX_LOWER,
         Location.TORAX_RIGHT,
         Location.TORAX_UPPER_LEFT,
         Location.TORAX_UPPER_RIGHT,
-        Location.TORAX_LOWER_LEFT,
-        Location.TORAX_LOWER_RIGHT,
-        Location.SHOULDER_LEFT,
-        Location.SHOULDER_RIGHT,
-        Location.BELLY,
-        Location.MOUTH,
-        Location.FOREHEAD,
+        Location.TORAX_UPPER,
       ];
 
       let currentDistance = 10000000000;
@@ -226,6 +148,7 @@ function Transcribe({
         sameMovement &&
         sameLocation
       ) {
+        console.log(sign.id);
         sign.index++;
         sign.frame = subjectData.frame;
         if (sign.index === sign.states.length) {

@@ -10,7 +10,7 @@ export function getLocationCoordinate(
 ): Coordinate {
   const { poseLandmarks, dominantLandmarks, nonDominantLandmarks } = readings;
   const mapper: { [key in Location]: () => Coordinate } = {
-    [Location.FOREHEAD]: () => {
+    [Location.FACE_FOREHEAD]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
         getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
@@ -26,7 +26,7 @@ export function getLocationCoordinate(
         z: 0,
       };
     },
-    [Location.FOREHEAD_LEFT]: () => {
+    [Location.FACE_FOREHEAD_LEFT]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
         getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
@@ -38,7 +38,7 @@ export function getLocationCoordinate(
         z: 0,
       };
     },
-    [Location.FOREHEAD_RIGHT]: () => {
+    [Location.FACE_FOREHEAD_RIGHT]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
         getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
@@ -50,34 +50,34 @@ export function getLocationCoordinate(
         z: 0,
       };
     },
-    [Location.NOSE]: () => {
+    [Location.FACE_NOSE]: () => {
       return poseLandmarks[0];
     },
-    [Location.EYE_LEFT]: () => {
+    [Location.FACE_EYE_LEFT]: () => {
       return poseLandmarks[2];
     },
-    [Location.EYE_LEFT_INNER]: () => {
+    [Location.FACE_EYE_LEFT_INNER]: () => {
       return poseLandmarks[1];
     },
-    [Location.EYE_LEFT_OUTER]: () => {
+    [Location.FACE_EYE_LEFT_OUTER]: () => {
       return poseLandmarks[3];
     },
-    [Location.EYE_RIGHT]: () => {
+    [Location.FACE_EYE_RIGHT]: () => {
       return poseLandmarks[5];
     },
-    [Location.EYE_RIGHT_INNER]: () => {
+    [Location.FACE_EYE_RIGHT_INNER]: () => {
       return poseLandmarks[4];
     },
-    [Location.EYE_RIGHT_OUTER]: () => {
+    [Location.FACE_EYE_RIGHT_OUTER]: () => {
       return poseLandmarks[6];
     },
-    [Location.EAR_LEFT]: () => {
+    [Location.FACE_EAR_LEFT]: () => {
       return poseLandmarks[7];
     },
-    [Location.EAR_RIGHT]: () => {
+    [Location.FACE_EAR_RIGHT]: () => {
       return poseLandmarks[8];
     },
-    [Location.CHEEK_LEFT]: () => {
+    [Location.FACE_CHEEK_LEFT]: () => {
       const middleMouthEar = getMiddlePoint([
         getMiddlePoint([poseLandmarks[9], poseLandmarks[7]]),
         poseLandmarks[7],
@@ -85,7 +85,7 @@ export function getLocationCoordinate(
 
       return { x: middleMouthEar.x, y: poseLandmarks[9].y, z: 0 };
     },
-    [Location.CHEEK_RIGHT]: () => {
+    [Location.FACE_CHEEK_RIGHT]: () => {
       const middleMouthEar = getMiddlePoint([
         getMiddlePoint([poseLandmarks[10], poseLandmarks[8]]),
         poseLandmarks[8],
@@ -93,16 +93,16 @@ export function getLocationCoordinate(
 
       return { x: middleMouthEar.x, y: poseLandmarks[10].y, z: 0 };
     },
-    [Location.MOUTH]: () => {
+    [Location.FACE_MOUTH]: () => {
       return getMiddlePoint([poseLandmarks[9], poseLandmarks[10]]);
     },
-    [Location.MOUTH_LEFT]: () => {
+    [Location.FACE_MOUTH_LEFT]: () => {
       return poseLandmarks[9];
     },
-    [Location.MOUTH_RIGHT]: () => {
+    [Location.FACE_MOUTH_RIGHT]: () => {
       return poseLandmarks[10];
     },
-    [Location.CHIN]: () => {
+    [Location.FACE_CHIN]: () => {
       const distanceBetweenNoseMouth = pointDifference(
         poseLandmarks[0],
         getMiddlePoint([poseLandmarks[9], poseLandmarks[10]])
@@ -120,52 +120,52 @@ export function getLocationCoordinate(
     [Location.SHOULDER_RIGHT]: () => {
       return poseLandmarks[12];
     },
-    [Location.ELBOW_LEFT]: () => {
+    [Location.ARM_ELBOW_LEFT]: () => {
       return poseLandmarks[13];
     },
-    [Location.ELBOW_RIGHT]: () => {
+    [Location.ARM_ELBOW_RIGHT]: () => {
       return poseLandmarks[14];
     },
-    [Location.WRIST_LEFT]: () => {
+    [Location.HAND_WRIST_LEFT]: () => {
       return poseLandmarks[15];
     },
-    [Location.WRIST_RIGHT]: () => {
+    [Location.HAND_WRIST_RIGHT]: () => {
       return poseLandmarks[16];
     },
-    [Location.PALM_LEFT]: () => {
+    [Location.HAND_PALM_LEFT]: () => {
       return getMiddlePoint([nonDominantLandmarks[0], nonDominantLandmarks[9]]);
     },
-    [Location.PALM_RIGHT]: () => {
+    [Location.HAND_PALM_RIGHT]: () => {
       return getMiddlePoint([dominantLandmarks[0], dominantLandmarks[9]]);
     },
-    [Location.THUMB_LEFT]: () => {
+    [Location.HAND_THUMB_LEFT]: () => {
       return nonDominantLandmarks[4];
     },
-    [Location.THUMB_RIGHT]: () => {
+    [Location.HAND_THUMB_RIGHT]: () => {
       return dominantLandmarks[4];
     },
-    [Location.INDEX_LEFT]: () => {
+    [Location.HAND_INDEX_LEFT]: () => {
       return nonDominantLandmarks[8];
     },
-    [Location.INDEX_RIGHT]: () => {
+    [Location.HAND_INDEX_RIGHT]: () => {
       return dominantLandmarks[8];
     },
-    [Location.MIDDLE_LEFT]: () => {
+    [Location.HAND_MIDDLE_LEFT]: () => {
       return nonDominantLandmarks[12];
     },
-    [Location.MIDDLE_RIGHT]: () => {
+    [Location.HAND_MIDDLE_RIGHT]: () => {
       return dominantLandmarks[12];
     },
-    [Location.RING_LEFT]: () => {
+    [Location.HAND_RING_LEFT]: () => {
       return nonDominantLandmarks[16];
     },
-    [Location.RING_RIGHT]: () => {
+    [Location.HAND_RING_RIGHT]: () => {
       return dominantLandmarks[16];
     },
-    [Location.PINKY_LEFT]: () => {
+    [Location.HAND_PINKY_LEFT]: () => {
       return nonDominantLandmarks[20];
     },
-    [Location.PINKY_RIGHT]: () => {
+    [Location.HAND_PINKY_RIGHT]: () => {
       return dominantLandmarks[20];
     },
     [Location.TORAX]: () => {
@@ -338,10 +338,10 @@ export function getLocationCoordinate(
         z: 0,
       };
     },
-    [Location.HIP_LEFT]: () => {
+    [Location.BELLY_LEFT]: () => {
       return poseLandmarks[23];
     },
-    [Location.HIP_RIGHT]: () => {
+    [Location.BELLY_RIGHT]: () => {
       return poseLandmarks[24];
     },
   };

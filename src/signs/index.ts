@@ -489,7 +489,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.CHEEK_RIGHT,
+          location: Location.FACE_CHEEK_RIGHT,
           handShape: HandShape.libras.Y,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -513,7 +513,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.D,
           palmOrientation: PalmOrientation.LEFT,
           handOrientation: HandOrientation.UP,
@@ -542,7 +542,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.D,
           palmOrientation: PalmOrientation.LEFT,
           handOrientation: HandOrientation.UP,
@@ -745,7 +745,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.O,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.UP,
@@ -940,7 +940,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
           palmOrientation: PalmOrientation.LEFT,
           options: {
@@ -978,7 +978,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.OPEN_HAND_THUMB_APART,
           palmOrientation: PalmOrientation.LEFT,
           options: {
@@ -1296,7 +1296,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.FOREHEAD_LEFT,
+          location: Location.FACE_FOREHEAD_LEFT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.LEFT,
@@ -1321,7 +1321,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.LEFT,
@@ -1342,7 +1342,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.FOREHEAD,
+          location: Location.FACE_FOREHEAD,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -1373,7 +1373,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           options: {
@@ -1592,7 +1592,7 @@ export const signs: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.LEFT,
@@ -1627,7 +1627,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.S,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.LEFT,
@@ -1742,7 +1742,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.FOREHEAD_RIGHT,
+          location: Location.FACE_FOREHEAD_RIGHT,
           handShape: HandShape.libras.A,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.UP,
@@ -1790,7 +1790,7 @@ export const signs: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.EAR_RIGHT,
+          location: Location.FACE_EAR_RIGHT,
           handShape: HandShape.libras.THUMB_FINGER,
           palmOrientation: PalmOrientation.LEFT,
           handOrientation: HandOrientation.UP,
@@ -2258,7 +2258,7 @@ export const poorDetectedSigns: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.MOUTH,
+          location: Location.FACE_MOUTH,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.BACK,
           handOrientation: HandOrientation.UP,
@@ -2284,7 +2284,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.MOUTH,
+          location: Location.FACE_MOUTH,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           handOrientation: HandOrientation.FRONT,
@@ -2347,7 +2347,7 @@ export const poorDetectedSigns: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
           palmOrientation: PalmOrientation.LEFT,
           options: {
@@ -2369,7 +2369,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_CLOSED,
           palmOrientation: PalmOrientation.LEFT,
           options: {
@@ -2614,7 +2614,7 @@ export const poorDetectedSigns: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.ELBOW_LEFT,
+          location: Location.ARM_ELBOW_LEFT,
           handShape: HandShape.libras.L,
           palmOrientation: PalmOrientation.DOWN,
           options: {
@@ -2654,7 +2654,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.WRIST_LEFT,
+          location: Location.HAND_WRIST_LEFT,
           handShape: HandShape.libras.L,
           palmOrientation: PalmOrientation.DOWN,
           options: {
@@ -2699,7 +2699,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.CHIN,
+          location: Location.FACE_CHIN,
           handShape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -2754,7 +2754,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.INDEX_LEFT,
+          location: Location.HAND_INDEX_LEFT,
           handShape: HandShape.libras.INDEX_FINGER,
           palmOrientation: PalmOrientation.BACK,
           options: {
@@ -2866,7 +2866,7 @@ export const poorDetectedSigns: Sign[] = [
     steps: {
       start: {
         dominant: {
-          location: Location.ELBOW_LEFT,
+          location: Location.ARM_ELBOW_LEFT,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           options: {
@@ -2906,7 +2906,7 @@ export const poorDetectedSigns: Sign[] = [
       },
       end: {
         dominant: {
-          location: Location.WRIST_LEFT,
+          location: Location.HAND_WRIST_LEFT,
           handShape: HandShape.libras.OPEN_HAND,
           palmOrientation: PalmOrientation.UP,
           options: {
