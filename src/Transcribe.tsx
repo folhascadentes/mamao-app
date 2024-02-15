@@ -10,6 +10,93 @@ import {
   Results,
 } from "./core/mediapipe";
 import { Subject } from "./core/subject";
+import { HandShape, Movement, PalmOrientationDescriptor } from "./signs/types";
+import { checkOrientationUtil, checkSameMovement } from "./core/detector";
+import { getLocationCoordinate } from "./core/locations";
+import { Location } from "./signs/types";
+import { getDistance } from "./core/geometrics";
+
+const signsStates: {
+  id: string;
+  index: number;
+  frame: number;
+  states: {
+    shape?: string;
+    orientation?: Vector;
+    pointing?: Vector;
+    movement?: Movement;
+    location?: Location;
+  }[];
+}[] = [
+  {
+    id: "Nome",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.FRONT,
+        pointing: PalmOrientationDescriptor.UP,
+        location: Location.TORAX,
+      },
+      {
+        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.FRONT,
+        pointing: PalmOrientationDescriptor.UP,
+        location: Location.TORAX_RIGHT,
+      },
+    ],
+  },
+  {
+    id: "Meu-Nome",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.BACK,
+        pointing: PalmOrientationDescriptor.UP,
+        location: Location.TORAX_LEFT,
+      },
+      {
+        shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.BACK,
+        pointing: PalmOrientationDescriptor.UP,
+        location: Location.TORAX_RIGHT,
+      },
+    ],
+  },
+  {
+    id: "Você",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        shape: HandShape.libras.INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.LEFT,
+        pointing: PalmOrientationDescriptor.FRONT,
+      },
+    ],
+  },
+  {
+    id: "Eu",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        shape: HandShape.libras.INDEX_FINGER,
+        orientation: PalmOrientationDescriptor.RIGHT,
+        pointing: PalmOrientationDescriptor.BACK,
+      },
+    ],
+  },
+  {
+    id: "Olá",
+    index: 0,
+    frame: 0,
+    states: [{}],
+  },
+];
 
 function Transcribe({
   setLoading,
@@ -26,12 +113,9 @@ function Transcribe({
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
-  // let trainingData: any = [];
 
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
-  let predictToken = "";
-  let predictCounter = 0;
 
   const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
@@ -64,59 +148,92 @@ function Transcribe({
       poseWorldLandmarks,
     };
 
-    subject.parse(results);
-    const buffer = subject.getBuffer();
+    const subjectData = subject.parse(results);
 
-    if (buffer.length === 24) {
-      const input = buffer.map((b) => flattenizeLandmarks(b.readings));
+    try {
+      const rightHandCoordinates = getLocationCoordinate(
+        Location.PALM_RIGHT,
+        subjectData.readings
+      );
 
-      const prediction = transcribeModel.predict(
-        tensorflow.tensor3d([input], [1, 24, 129])
-      ) as tensorflow.Tensor<tensorflow.Rank>;
+      const positions = [
+        Location.TORAX_LEFT,
+        Location.TORAX_RIGHT,
+        Location.TORAX_UPPER_LEFT,
+        Location.TORAX_UPPER_RIGHT,
+        Location.TORAX_LOWER_LEFT,
+        Location.TORAX_LOWER_RIGHT,
+        Location.SHOULDER_LEFT,
+        Location.SHOULDER_RIGHT,
+        Location.BELLY,
+        Location.MOUTH,
+        Location.FOREHEAD,
+      ];
 
-      const predictionData = prediction.dataSync();
+      let currentDistance = 10000000000;
 
-      const max = Math.max(...predictionData);
-      const index = predictionData.indexOf(max);
-
-      const mapper: any = {
-        0: "Agosto",
-        1: "Aqui",
-        2: "Avisar",
-        3: "Bom",
-        4: "Certeza",
-        5: "Dia",
-        6: "Entender",
-        7: "Futuro",
-        8: "Gostar",
-        9: "Me-avisar",
-        10: "Meu-nome",
-        11: "Nome",
-        12: "Não",
-        13: "Obrigado",
-        14: "Oi",
-        15: "Pessoa",
-        16: "Quente",
-        17: "Rapido",
-        18: "Saúde",
-        19: "Sim",
-        20: "Tarde",
-        21: "Tchau",
-        22: "Telefone",
-        23: "OTHERS",
-      };
-
-      console.log(mapper[index], index, max, predictToken, predictCounter);
-      if (max > 0.65 && index !== 23) {
-        if (mapper[index] !== predictToken) {
-          predictToken = mapper[index];
-          predictCounter = 0;
-        } else {
-          predictCounter++;
+      for (let position of positions) {
+        const coordinates = getLocationCoordinate(
+          position,
+          subjectData.readings
+        );
+        const distance = getDistance(rightHandCoordinates, coordinates);
+        if (currentDistance > distance) {
+          currentDistance = distance;
+          subjectData.hand.dominant.location = position;
         }
+      }
+    } catch (e) {}
 
-        if (predictCounter >= 3) {
-          setPredictShow(predictToken);
+    for (let sign of signsStates) {
+      if (subjectData.frame - sign.frame > 15) {
+        sign.index = 0;
+        sign.frame = subjectData.frame;
+      }
+
+      const sameHandsape =
+        sign.states[sign.index].shape === undefined ||
+        sign.states[sign.index].shape === subjectData.hand.dominant.handShape;
+      const sameOrientation =
+        sign.states[sign.index].orientation === undefined ||
+        checkOrientationUtil(
+          sign.states[sign.index].orientation as any,
+          subjectData.hand.dominant.palm
+        );
+      const samePointing =
+        sign.states[sign.index].pointing === undefined ||
+        checkOrientationUtil(
+          sign.states[sign.index].pointing as any,
+          subjectData.hand.dominant.ponting
+        );
+      const sameMovement =
+        sign.states[sign.index].movement === undefined ||
+        checkSameMovement(
+          subjectData.hand.dominant.movement,
+          sign.states[sign.index].movement as any
+        );
+      const sameLocation =
+        sign.states[sign.index].location === undefined ||
+        (subjectData.hand.dominant.location &&
+          subjectData.hand.dominant.location.includes(
+            sign.states[sign.index].location as string
+          ));
+
+      if (
+        sameHandsape &&
+        sameOrientation &&
+        samePointing &&
+        sameMovement &&
+        sameLocation
+      ) {
+        sign.index++;
+        sign.frame = subjectData.frame;
+        if (sign.index === sign.states.length) {
+          setPredictShow(sign.id);
+
+          for (let sign of signsStates) {
+            sign.index = 0;
+          }
         }
       }
     }
@@ -202,34 +319,6 @@ function Transcribe({
       </div>
     </div>
   );
-
-  function flattenizeLandmarks(data: {
-    dominantWorldLandmarks: Coordinate[];
-    poseWorldLandmarks: Coordinate[];
-  }) {
-    let dominantWorldLandmarksNormalized = data.dominantWorldLandmarks
-      .map((landmark) => [landmark.x, landmark.y, landmark.z])
-      .flat();
-
-    if (dominantWorldLandmarksNormalized.length === 0) {
-      dominantWorldLandmarksNormalized = Array(63).fill(0);
-    }
-
-    let poseWorldLandmarksNormalized = data.poseWorldLandmarks
-      .map((landmark) => [landmark.x, landmark.y]) // , landmark.z
-      .flat();
-
-    if (poseWorldLandmarksNormalized.length === 0) {
-      poseWorldLandmarksNormalized = Array(66).fill(0);
-    }
-
-    const response = [
-      ...dominantWorldLandmarksNormalized,
-      ...poseWorldLandmarksNormalized,
-    ];
-
-    return response;
-  }
 
   function renderCameraImage(image: HTMLVideoElement): void {
     if (canvasRef.current) {

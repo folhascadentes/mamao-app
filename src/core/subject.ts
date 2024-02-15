@@ -40,6 +40,7 @@ interface SubjectHandData {
   palm: Vector | undefined;
   handShape: HandShapeType | undefined;
   movement: Movement;
+  location?: string;
 }
 
 export interface SubjectReadings {

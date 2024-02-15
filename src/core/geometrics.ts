@@ -125,3 +125,9 @@ export function getMiddlePoint(
 
   return { x: midX + offset.x, y: midY + offset.y, z: 0 };
 }
+
+export function getDistance(v1: Coordinate, v2: Coordinate) {
+  const x = v2.x - v1.x;
+  const y = v2.y - v1.y;
+  return Math.sqrt(x * x + y * y);
+}

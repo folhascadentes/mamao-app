@@ -521,7 +521,7 @@ function checkHandOrientation(
   }
 }
 
-function checkOrientationUtil(
+export function checkOrientationUtil(
   orientation: Vector,
   subjectOrientation?: Vector,
   detectionAngle: number = 65
@@ -921,7 +921,7 @@ function checkForbiddenMovement(
   );
 }
 
-function checkSameMovement(
+export function checkSameMovement(
   subjectMovement: Movement,
   expectedMovement: Movement
 ): boolean {
