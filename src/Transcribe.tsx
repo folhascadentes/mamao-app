@@ -9,12 +9,12 @@ import {
   PoseResults,
   Results,
 } from "./core/mediapipe";
-import { Subject } from "./core/subject";
+import { Subject, SubjectData } from "./core/subject";
 import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
-import { signsStates } from "./signs/phonemes";
+import { ParametersConfig, signsStates } from "./signs/phonemes";
 
 function Transcribe({
   setLoading,
@@ -68,91 +68,23 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
-    try {
-      const rightHandCoordinates = getLocationCoordinate(
-        Location.HAND_PALM_RIGHT,
-        subjectData.readings
-      );
-
-      const positions = [
-        Location.BELLY_LEFT,
-        Location.BELLY_RIGHT,
-        Location.BELLY,
-        Location.FACE_FOREHEAD,
-        Location.FACE_MOUTH,
-        Location.SHOULDER_LEFT,
-        Location.SHOULDER_RIGHT,
-        Location.TORAX_LEFT,
-        Location.TORAX_RIGHT,
-      ];
-
-      let currentDistance = 10000000000;
-
-      for (let position of positions) {
-        const coordinates = getLocationCoordinate(
-          position,
-          subjectData.readings
-        );
-        const distance = getDistance(rightHandCoordinates, coordinates);
-        if (currentDistance > distance) {
-          currentDistance = distance;
-          subjectData.hand.dominant.location = position;
-        }
-      }
-    } catch (e) {}
-
     for (let sign of signsStates) {
       if (subjectData.frame - sign.frame > 15) {
         sign.index = 0;
         sign.frame = subjectData.frame;
       }
 
-      const sameHandsape =
-        sign.states[sign.index].shape === undefined ||
-        sign.states[sign.index].shape === subjectData.hand.dominant.handShape;
-      const sameOrientation =
-        sign.states[sign.index].orientation === undefined ||
-        checkOrientationUtil(
-          sign.states[sign.index].orientation as any,
-          subjectData.hand.dominant.palm,
-          sign.states[sign.index].orientationAngle ?? 65
-        );
-      const samePointing =
-        sign.states[sign.index].pointing === undefined ||
-        checkOrientationUtil(
-          sign.states[sign.index].pointing as any,
-          subjectData.hand.dominant.ponting,
-          sign.states[sign.index].pointingAngle ?? 65
-        );
-      const sameMovement =
-        sign.states[sign.index].movement === undefined ||
-        checkSameMovement(
-          subjectData.hand.dominant.movement,
-          sign.states[sign.index].movement as any
-        );
-      const sameLocation =
-        sign.states[sign.index].location === undefined ||
-        (subjectData.hand.dominant.location &&
-          subjectData.hand.dominant.location.includes(
-            sign.states[sign.index].location as string
-          ));
-
-      if (sign.id === "Lado") {
-        console.log(
-          subjectData.hand.dominant.location,
-          subjectData.hand.dominant.handShape
-        );
-      }
-
       if (
-        sameHandsape &&
-        sameOrientation &&
-        samePointing &&
-        sameMovement &&
-        sameLocation
+        detectPhoneme(sign.states[sign.index].right, subjectData) &&
+        (sign.states[sign.index].left === undefined ||
+          detectPhoneme(
+            sign.states[sign.index].left as ParametersConfig,
+            subjectData
+          ))
       ) {
         sign.index++;
         sign.frame = subjectData.frame;
+
         if (sign.index === sign.states.length) {
           setPredictShow(sign.id);
 
@@ -268,3 +200,92 @@ function Transcribe({
 }
 
 export default Transcribe;
+
+function detectLocation(
+  pivot: Location,
+  subjectData: SubjectData
+): Location | undefined {
+  let currentLocation: Location | undefined;
+
+  try {
+    const pivotCoordinates = getLocationCoordinate(pivot, subjectData.readings);
+
+    const positions = [
+      Location.BELLY_LEFT,
+      Location.BELLY_RIGHT,
+      Location.BELLY,
+      Location.FACE_FOREHEAD,
+      Location.FACE_FOREHEAD_RIGHT,
+      Location.FACE_FOREHEAD_LEFT,
+      Location.FACE_MOUTH,
+      Location.SHOULDER_LEFT,
+      Location.SHOULDER_RIGHT,
+      Location.TORAX_LEFT,
+      Location.TORAX_RIGHT,
+    ];
+
+    let currentDistance = 10000000000;
+
+    for (let position of positions) {
+      const coordinates = getLocationCoordinate(position, subjectData.readings);
+      const distance = getDistance(pivotCoordinates, coordinates);
+      if (currentDistance > distance) {
+        currentDistance = distance;
+        currentLocation = position;
+      }
+    }
+  } catch (e) {}
+
+  return currentLocation;
+}
+
+function detectPhoneme(
+  param: ParametersConfig,
+  subjectData: SubjectData
+): boolean {
+  const sameHandsape =
+    param.shape === undefined ||
+    param.shape === subjectData.hand.dominant.handShape;
+
+  const sameOrientation =
+    param.orientation === undefined ||
+    checkOrientationUtil(
+      param.orientation as any,
+      subjectData.hand.dominant.palm,
+      param.orientationAngle ?? 65
+    );
+
+  const samePointing =
+    param.pointing === undefined ||
+    checkOrientationUtil(
+      param.pointing as any,
+      subjectData.hand.dominant.ponting,
+      param.pointingAngle ?? 65
+    );
+
+  const sameMovement =
+    param.movement === undefined ||
+    checkSameMovement(
+      subjectData.hand.dominant.movement,
+      param.movement as any
+    );
+
+  const location = detectLocation(
+    param.locationPivot ?? Location.HAND_PALM_RIGHT,
+    subjectData
+  );
+
+  const sameLocation =
+    param.location === undefined ||
+    (location !== undefined &&
+      subjectData.hand.dominant.location !== undefined &&
+      location.includes(param.location));
+
+  return (
+    sameHandsape &&
+    sameOrientation &&
+    samePointing &&
+    sameMovement &&
+    sameLocation
+  );
+}
