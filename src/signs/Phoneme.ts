@@ -143,7 +143,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX,
         movement: {
           x: 1,
@@ -153,7 +152,6 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX,
         movement: {
           x: 1,
@@ -163,10 +161,18 @@ export const signsStates: {
       {
         shape: HandShape.libras.O,
         orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
         location: Location.TORAX,
         movement: {
-          x: 1,
+          x: -1,
+          y: -1,
+        },
+      },
+      {
+        shape: HandShape.libras.O,
+        orientation: PalmOrientationDescriptor.LEFT,
+        location: Location.TORAX,
+        movement: {
+          x: -1,
           y: 1,
         },
       },
