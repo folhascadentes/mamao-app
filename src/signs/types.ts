@@ -89,6 +89,12 @@ export interface MovementAxis {
   x?: 1 | -1;
   y?: 1 | -1;
   z?: 1 | -1;
+  landmarks?: {
+    [landmark: number]: {
+      x?: 1 | -1;
+      y?: 1 | -1;
+    };
+  };
 }
 
 export interface Movement extends MovementAxis {

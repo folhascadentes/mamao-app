@@ -256,7 +256,7 @@ function detectPhoneme(
     checkOrientationUtil(
       param.orientation as any,
       detect.palm,
-      param.orientationAngle ?? 65
+      param.options?.orientationAngle ?? 65
     );
 
   const samePointing =
@@ -264,7 +264,7 @@ function detectPhoneme(
     checkOrientationUtil(
       param.pointing as any,
       detect.ponting,
-      param.pointingAngle ?? 65
+      param.options?.pointingAngle ?? 65
     );
 
   const sameMovement =
@@ -272,7 +272,7 @@ function detectPhoneme(
     checkSameMovement(detect.movement, param.movement as any);
 
   const location = detectLocation(
-    param.locationPivot ?? Location.HAND_PALM_RIGHT,
+    param.options?.locationPivot ?? Location.HAND_PALM_RIGHT,
     readings
   );
 
