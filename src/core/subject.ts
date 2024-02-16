@@ -489,6 +489,47 @@ export class Subject {
       movement.y = 1;
     }
 
+    movement.landmarks = this.parseSubjectHandLandmarksMovements(
+      beforeHandLandmarks,
+      afterHandLandmarks
+    );
+
+    return movement;
+  }
+
+  private parseSubjectHandLandmarksMovements(
+    beforeHandLandmarks: Coordinate[],
+    afterHandLandmarks: Coordinate[]
+  ): { [landmark: number]: { x?: 1 | -1; y?: 1 | -1 } } {
+    const ZONE_SIZE = 75;
+    const movement: { [landmark: number]: { x?: 1 | -1; y?: 1 | -1 } } = {};
+
+    for (let i = 0; i < 21; i++) {
+      movement[i] = {};
+
+      const differenceX = beforeHandLandmarks[i].x - afterHandLandmarks[i].x;
+      const differenceY = beforeHandLandmarks[i].y - afterHandLandmarks[i].y;
+
+      const moveX =
+        Math.floor(Math.abs(differenceX / ZONE_SIZE)) *
+        (differenceX < 0 ? -1 : 1);
+      const moveY =
+        Math.floor(Math.abs(differenceY / ZONE_SIZE)) *
+        (differenceY < 0 ? -1 : 1);
+
+      if (moveX <= -1) {
+        movement[i].x = -1;
+      } else if (moveX >= 1) {
+        movement[i].x = 1;
+      }
+
+      if (moveY <= -1) {
+        movement[i].y = -1;
+      } else if (moveY >= 1) {
+        movement[i].y = 1;
+      }
+    }
+
     return movement;
   }
 
