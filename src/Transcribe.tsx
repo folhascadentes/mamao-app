@@ -224,7 +224,6 @@ function detectLocation(
       Location.BELLY_LEFT,
       Location.BELLY_RIGHT,
       Location.BELLY,
-      Location.FACE_FOREHEAD,
       Location.FACE_FOREHEAD_RIGHT,
       Location.FACE_FOREHEAD_LEFT,
       Location.FACE_MOUTH,
