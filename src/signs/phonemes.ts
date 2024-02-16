@@ -482,14 +482,18 @@ export const signsStates: {
     frame: 0,
     states: [
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.FRONT,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.FRONT,
+        },
       },
       {
-        shape: HandShape.libras.Y,
-        orientation: PalmOrientationDescriptor.LEFT,
-        pointing: PalmOrientationDescriptor.UP,
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.UP,
+        },
       },
     ],
   },
@@ -512,6 +516,3 @@ export const signsStates: {
     ],
   },
 ];
-
-// Lado - handshape detection and perhaps orientation
-// Idade - Movement detection

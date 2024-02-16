@@ -9,7 +9,12 @@ import {
   PoseResults,
   Results,
 } from "./core/mediapipe";
-import { Subject, SubjectData } from "./core/subject";
+import {
+  Subject,
+  SubjectData,
+  SubjectHandData,
+  SubjectReadings,
+} from "./core/subject";
 import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
@@ -75,11 +80,16 @@ function Transcribe({
       }
 
       if (
-        detectPhoneme(sign.states[sign.index].right, subjectData) &&
+        detectPhoneme(
+          sign.states[sign.index].right,
+          subjectData.hand.dominant,
+          subjectData.readings
+        ) &&
         (sign.states[sign.index].left === undefined ||
           detectPhoneme(
             sign.states[sign.index].left as ParametersConfig,
-            subjectData
+            subjectData.hand.nonDominant,
+            subjectData.readings
           ))
       ) {
         sign.index++;
@@ -203,12 +213,12 @@ export default Transcribe;
 
 function detectLocation(
   pivot: Location,
-  subjectData: SubjectData
+  readings: SubjectReadings
 ): Location | undefined {
   let currentLocation: Location | undefined;
 
   try {
-    const pivotCoordinates = getLocationCoordinate(pivot, subjectData.readings);
+    const pivotCoordinates = getLocationCoordinate(pivot, readings);
 
     const positions = [
       Location.BELLY_LEFT,
@@ -227,7 +237,7 @@ function detectLocation(
     let currentDistance = 10000000000;
 
     for (let position of positions) {
-      const coordinates = getLocationCoordinate(position, subjectData.readings);
+      const coordinates = getLocationCoordinate(position, readings);
       const distance = getDistance(pivotCoordinates, coordinates);
       if (currentDistance > distance) {
         currentDistance = distance;
@@ -241,17 +251,17 @@ function detectLocation(
 
 function detectPhoneme(
   param: ParametersConfig,
-  subjectData: SubjectData
+  detect: SubjectHandData,
+  readings: SubjectReadings
 ): boolean {
   const sameHandsape =
-    param.shape === undefined ||
-    param.shape === subjectData.hand.dominant.handShape;
+    param.shape === undefined || param.shape === detect.handShape;
 
   const sameOrientation =
     param.orientation === undefined ||
     checkOrientationUtil(
       param.orientation as any,
-      subjectData.hand.dominant.palm,
+      detect.palm,
       param.orientationAngle ?? 65
     );
 
@@ -259,26 +269,23 @@ function detectPhoneme(
     param.pointing === undefined ||
     checkOrientationUtil(
       param.pointing as any,
-      subjectData.hand.dominant.ponting,
+      detect.ponting,
       param.pointingAngle ?? 65
     );
 
   const sameMovement =
     param.movement === undefined ||
-    checkSameMovement(
-      subjectData.hand.dominant.movement,
-      param.movement as any
-    );
+    checkSameMovement(detect.movement, param.movement as any);
 
   const location = detectLocation(
     param.locationPivot ?? Location.HAND_PALM_RIGHT,
-    subjectData
+    readings
   );
 
   const sameLocation =
     param.location === undefined ||
     (location !== undefined &&
-      subjectData.hand.dominant.location !== undefined &&
+      location !== undefined &&
       location.includes(param.location));
 
   return (

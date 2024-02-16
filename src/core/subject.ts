@@ -29,7 +29,7 @@ export interface SubjectData {
   readings: SubjectReadings;
 }
 
-interface SubjectHandData {
+export interface SubjectHandData {
   // x [+] dominant hand oposite direction [-1] dominant hand direction
   // y [+] up [-1] down
   // z [+] front [-1] back
