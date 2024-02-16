@@ -80,11 +80,11 @@ export class Subject {
   public parse(results: Results, isSpacedPressed = false): SubjectData {
     const subject = this.initializeSujectObject(results);
 
+    this.updateBuffer(subject);
     this.setSubjectBodyAngle(subject, results);
     this.setSubjectHandShape(subject, isSpacedPressed);
     this.setSubjectHandPointing(subject);
     this.setSubjectHandPalm(subject);
-    this.updateBuffer(subject);
     this.setSubjectHandMovement(subject);
 
     return subject;
@@ -443,7 +443,7 @@ export class Subject {
   ): Movement {
     const WRIST_ROTATE_UPPER_THRESHOLD = 25;
     const WRIST_ROTATE_THRESHOLD = 20;
-    const THRESHOLD = 5;
+    const ZONE_SIZE = 75;
     const movement: Movement = {};
 
     const angle = this.parseWristRotationAngle(
@@ -468,21 +468,24 @@ export class Subject {
       }
     }
 
-    if (afterHandLandmarks[0].x - beforeHandLandmarks[0].x > THRESHOLD) {
+    const differenceX = beforeHandLandmarks[0].x - afterHandLandmarks[0].x;
+    const differenceY = beforeHandLandmarks[0].y - afterHandLandmarks[0].y;
+    const moveX =
+      Math.floor(Math.abs(differenceX / ZONE_SIZE)) *
+      (differenceX < 0 ? -1 : 1);
+    const moveY =
+      Math.floor(Math.abs(differenceY / ZONE_SIZE)) *
+      (differenceY < 0 ? -1 : 1);
+
+    if (moveX <= -1) {
       movement.x = -1;
-    } else if (
-      afterHandLandmarks[0].x - beforeHandLandmarks[0].x <
-      -THRESHOLD
-    ) {
+    } else if (moveX >= 1) {
       movement.x = 1;
     }
 
-    if (afterHandLandmarks[0].y - beforeHandLandmarks[0].y > THRESHOLD) {
+    if (moveY <= -1) {
       movement.y = -1;
-    } else if (
-      afterHandLandmarks[0].y - beforeHandLandmarks[0].y <
-      -THRESHOLD
-    ) {
+    } else if (moveY >= 1) {
       movement.y = 1;
     }
 
