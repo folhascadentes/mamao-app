@@ -558,7 +558,7 @@ export const signsStates: {
     ],
   },
   {
-    id: "Rápido",
+    id: "Rápido", // Sentimento - Parecidos
     index: 0,
     frame: 0,
     states: [
@@ -618,6 +618,26 @@ export const signsStates: {
     index: 0,
     frame: 0,
     states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: 1,
+          },
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -940,7 +960,6 @@ export const signsStates: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           orientation: PalmOrientationDescriptor.UP,
           pointing: PalmOrientationDescriptor.FRONT,
-          location: Location.SHOULDER_RIGHT,
         },
       },
       {
@@ -949,6 +968,481 @@ export const signsStates: {
           orientation: PalmOrientationDescriptor.BACK,
           pointing: PalmOrientationDescriptor.UP,
           location: Location.TORAX,
+        },
+      },
+    ],
+  },
+  {
+    id: "Mais-ou-menos",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Palmas",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Saudade",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          movement: {
+            x: 1,
+            y: 1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          movement: {
+            x: 1,
+            y: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          movement: {
+            x: -1,
+            y: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.TORAX,
+          movement: {
+            x: -1,
+            y: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Ter",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+        },
+      },
+    ],
+  },
+  {
+    id: "Frente",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.FRONT,
+          location: Location.TORAX,
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.LEFT,
+          pointing: PalmOrientationDescriptor.UP,
+          location: Location.TORAX,
+        },
+      },
+    ],
+  },
+  {
+    id: "Direita",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.RIGHT,
+          movement: {
+            x: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Esquerda",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.BACK,
+          pointing: PalmOrientationDescriptor.LEFT,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Exceção-De",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            y: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.RIGHT,
+          pointing: PalmOrientationDescriptor.FRONT,
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Leste",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: PalmOrientationDescriptor.FRONT,
+          location: Location.TORAX,
+          movement: {
+            x: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Norte",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.TORAX,
+          movement: {
+            y: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Oeste",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.O,
+          orientation: PalmOrientationDescriptor.LEFT,
+          location: Location.TORAX,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Sul",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.FRONT,
+          movement: {
+            y: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "A-Mesma-Coisa",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: 1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: 1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.DOWN,
+          pointing: PalmOrientationDescriptor.FRONT,
+          movement: {
+            x: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Abaixar",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.DOWN,
+          location: Location.TORAX,
+          movement: {
+            y: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.DOWN,
+          location: Location.TORAX,
+          movement: {
+            y: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Branco",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: PalmOrientationDescriptor.LEFT,
+          location: Location.FACE_MOUTH,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "BÓSNIA-HERZEGOVINA",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.TORAX,
+          movement: {
+            x: 1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.BACK,
+          location: Location.TORAX,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.FRONT,
+          location: Location.TORAX,
+        },
+        left: {
+          shape: HandShape.libras.S,
+          orientation: PalmOrientationDescriptor.FRONT,
+          location: Location.TORAX,
+        },
+      },
+    ],
+  },
+  {
+    id: "De-Nada (1)",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: PalmOrientationDescriptor.FRONT,
+          pointing: PalmOrientationDescriptor.UP,
+          movement: {
+            x: 1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "De-Nada (3)",
+    index: 0,
+    frame: 0,
+    states: [
+      {
+        right: {
+          shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
+          orientation: PalmOrientationDescriptor.UP,
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: PalmOrientationDescriptor.UP,
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.D,
+          orientation: PalmOrientationDescriptor.UP,
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: PalmOrientationDescriptor.UP,
         },
       },
     ],

@@ -11,7 +11,6 @@ import {
 } from "./core/mediapipe";
 import {
   Subject,
-  SubjectData,
   SubjectHandData,
   SubjectReadings,
 } from "./core/subject";
