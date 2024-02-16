@@ -240,7 +240,7 @@ export class Subject {
     const dominantWorldLandmarks = subject.readings.dominantWorldLandmarks;
     const nonDominantWorldLandmarks =
       subject.readings.nonDominantWorldLandmarks;
-    const PROBABILITY_THRESHOLD = 0.8;
+    const PROBABILITY_THRESHOLD = 0.7;
 
     if (dominantWorldLandmarks.length) {
       const { handShape, probability } = this.detectHandShape(

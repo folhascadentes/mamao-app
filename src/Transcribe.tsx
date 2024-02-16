@@ -9,11 +9,7 @@ import {
   PoseResults,
   Results,
 } from "./core/mediapipe";
-import {
-  Subject,
-  SubjectHandData,
-  SubjectReadings,
-} from "./core/subject";
+import { Subject, SubjectHandData, SubjectReadings } from "./core/subject";
 import { checkOrientationUtil, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
@@ -284,7 +280,7 @@ function detectPhoneme(
     param.location === undefined ||
     (location !== undefined &&
       location !== undefined &&
-      location.includes(param.location));
+      param.location.some((l) => location.includes(l)));
 
   return (
     sameHandsape &&
