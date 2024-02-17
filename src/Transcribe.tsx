@@ -10,7 +10,7 @@ import {
   Results,
 } from "./core/mediapipe";
 import { Subject, SubjectHandData, SubjectReadings } from "./core/subject";
-import { checkOrientationUtil, checkSameMovement } from "./core/detector";
+import { checkMostOrientation, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
@@ -253,19 +253,11 @@ function detectPhoneme(
 
   const sameOrientation =
     param.orientation === undefined ||
-    checkOrientationUtil(
-      param.orientation as any,
-      detect.palm,
-      param.options?.orientationAngle ?? 65
-    );
+    param.orientation === checkMostOrientation(detect.palm);
 
   const samePointing =
     param.pointing === undefined ||
-    checkOrientationUtil(
-      param.pointing as any,
-      detect.ponting,
-      param.options?.pointingAngle ?? 65
-    );
+    param.pointing === checkMostOrientation(detect.ponting);
 
   const sameMovement =
     param.movement === undefined ||

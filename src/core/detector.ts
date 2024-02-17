@@ -533,6 +533,39 @@ export function checkOrientationUtil(
   return angle < detectionAngle;
 }
 
+export function checkMostOrientation(
+  vector: Vector | undefined
+): HandOrientation | undefined {
+  if (vector === undefined) {
+    return undefined;
+  }
+
+  let orientation;
+  let angle = 960;
+  let orientationDescriptorList = [
+    HandOrientation.BACK,
+    HandOrientation.FRONT,
+    HandOrientation.DOWN,
+    HandOrientation.UP,
+    HandOrientation.LEFT,
+    HandOrientation.RIGHT,
+  ];
+
+  for (let orientationDescriptor of orientationDescriptorList) {
+    const distance = angleBetweenTwoVectors(
+      vector,
+      PalmOrientationDescriptor[orientationDescriptor]
+    );
+
+    if (distance < angle) {
+      angle = distance;
+      orientation = orientationDescriptor;
+    }
+  }
+
+  return orientation;
+}
+
 // -- Hand Location --
 function setHandPostionsCoordinates(
   sign: Sign,
