@@ -68,12 +68,14 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
-    for (let sign of signsStates) {
-      if (subjectData.frame - sign.frame > 15) {
-        sign.index = 0;
-        sign.frame = subjectData.frame;
-      }
+    // console.log(
+    //   subjectData.hand.dominant.movement.x === 1 ? "RIGHT" : "",
+    //   subjectData.hand.dominant.movement.x === -1 ? "LEFT" : "",
+    //   subjectData.hand.dominant.movement.y === 1 ? "UP" : "",
+    //   subjectData.hand.dominant.movement.y === -1 ? "DOWN" : ""
+    // );
 
+    for (let sign of signsStates) {
       if (
         detectPhoneme(
           sign.states[sign.index].right,
@@ -87,6 +89,7 @@ function Transcribe({
             subjectData.readings
           ))
       ) {
+        console.log(`${sign.id}-${sign.index}`);
         sign.index++;
         sign.frame = subjectData.frame;
 
@@ -232,14 +235,20 @@ function detectPhoneme(
         )
     );
 
+  const movementPivot =
+    param.options?.movementPivot &&
+    detect.movement.landmarks?.[param.options?.movementPivot];
+
   const sameMovement =
     param.movement === undefined ||
-    checkSameMovement(detect.movement, param.movement as any);
+    checkSameMovement(movementPivot || detect.movement, param.movement as any);
 
   const location = detectLocation(
     param.options?.locationPivot ?? Location.HAND_PALM_RIGHT,
     readings
   );
+
+  // console.log(detect.handShape, checkMostOrientation(detect.palm), location);
 
   const sameLocation =
     param.location === undefined ||
