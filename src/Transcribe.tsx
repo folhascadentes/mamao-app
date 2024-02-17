@@ -248,6 +248,20 @@ function detectPhoneme(
       location !== undefined &&
       param.location.some((l) => location.includes(l)));
 
+  // console.log(
+  //   sameHandsape,
+  //   sameOrientation,
+  //   samePointing,
+  //   sameMovement,
+  //   sameLocation,
+  //   param.pointing,
+  //   checkMostOrientation(
+  //     detect.pontingFingers?.[
+  //       param.options?.pontingFinger as FingersLocation
+  //     ] ?? detect.ponting
+  //   )
+  // );
+
   return (
     sameHandsape &&
     sameOrientation &&

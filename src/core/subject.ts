@@ -356,7 +356,7 @@ export class Subject {
       );
       try {
         subject.hand.dominant.pontingFingers =
-        this.parseSubjectHandPointingFingers(dominantWorldLandmarks);
+          this.parseSubjectHandPointingFingers(dominantWorldLandmarks);
       } catch (e) {}
     }
   }
@@ -377,32 +377,32 @@ export class Subject {
     return {
       [FingersLocation.PINKY]: normalizeVector(
         pointDifference(
-          handWorldLandmarks[HandLocation.PINKY_TIP],
-          handWorldLandmarks[HandLocation.PINKY_DIP]
+          handWorldLandmarks[HandLocation.PINKY_MCP],
+          handWorldLandmarks[HandLocation.WRIST]
         )
       ),
       [FingersLocation.RING]: normalizeVector(
         pointDifference(
-          handWorldLandmarks[HandLocation.RING_FINGER_TIP],
-          handWorldLandmarks[HandLocation.RING_FINGER_DIP]
+          handWorldLandmarks[HandLocation.RING_FINGER_MCP],
+          handWorldLandmarks[HandLocation.WRIST]
         )
       ),
       [FingersLocation.MIDDLE]: normalizeVector(
         pointDifference(
-          handWorldLandmarks[HandLocation.MIDDLE_FINGER_TIP],
-          handWorldLandmarks[HandLocation.MIDDLE_FINGER_DIP]
+          handWorldLandmarks[HandLocation.MIDDLE_FINGER_MCP],
+          handWorldLandmarks[HandLocation.WRIST]
         )
       ),
       [FingersLocation.INDEX]: normalizeVector(
         pointDifference(
-          handWorldLandmarks[HandLocation.INDEX_FINGER_TIP],
-          handWorldLandmarks[HandLocation.INDEX_FINGER_DIP]
+          handWorldLandmarks[HandLocation.INDEX_FINGER_MCP],
+          handWorldLandmarks[HandLocation.WRIST]
         )
       ),
       [FingersLocation.THUMB]: normalizeVector(
         pointDifference(
-          handWorldLandmarks[HandLocation.THUMB_TIP],
-          handWorldLandmarks[HandLocation.THUMB_IP]
+          handWorldLandmarks[HandLocation.THUMB_MCP],
+          handWorldLandmarks[HandLocation.WRIST]
         )
       ),
     };

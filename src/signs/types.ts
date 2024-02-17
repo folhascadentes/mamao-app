@@ -164,7 +164,7 @@ export enum HandLocation {
   WRIST = 0,
   THUMB_CMC = 1,
   THUMB_MCP = 2,
-  THUMB_IP = 3,
+  THUMB_DIP = 3,
   THUMB_TIP = 4,
   INDEX_FINGER_MCP = 5,
   INDEX_FINGER_PIP = 6,
