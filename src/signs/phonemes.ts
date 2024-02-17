@@ -1288,9 +1288,9 @@ export const signsStates: {
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-          orientation: [HandOrientation.BACK],
-          pointing: [HandOrientation.DOWN],
-          location: [Location.TORAX],
+          orientation: [HandOrientation.BACK, HandOrientation.DOWN],
+          pointing: [HandOrientation.DOWN, HandOrientation.FRONT],
+          location: [Location.TORAX, Location.SHOULDER],
           movement: {
             y: 1,
           },
