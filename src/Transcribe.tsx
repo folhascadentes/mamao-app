@@ -68,12 +68,6 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
-    console.log(
-      checkMostOrientation(subjectData.hand.dominant.ponting),
-      checkMostOrientation(subjectData.hand.dominant.palm),
-      subjectData.hand.dominant.handShape
-    );
-
     for (let sign of signsStates) {
       if (subjectData.frame - sign.frame > 15) {
         sign.index = 0;
@@ -222,16 +216,21 @@ function detectPhoneme(
 
   const sameOrientation =
     param.orientation === undefined ||
-    param.orientation === checkMostOrientation(detect.palm);
+    param.orientation.some(
+      (orientation) => orientation === checkMostOrientation(detect.palm)
+    );
 
   const samePointing =
     param.pointing === undefined ||
-    param.pointing ===
-      checkMostOrientation(
-        detect.pontingFingers?.[
-          param.options?.pontingFinger as FingersLocation
-        ] ?? detect.ponting
-      );
+    param.pointing.some(
+      (pointing) =>
+        pointing ===
+        checkMostOrientation(
+          detect.pontingFingers?.[
+            param.options?.pontingFinger as FingersLocation
+          ] ?? detect.ponting
+        )
+    );
 
   const sameMovement =
     param.movement === undefined ||
@@ -247,20 +246,6 @@ function detectPhoneme(
     (location !== undefined &&
       location !== undefined &&
       param.location.some((l) => location.includes(l)));
-
-  // console.log(
-  //   sameHandsape,
-  //   sameOrientation,
-  //   samePointing,
-  //   sameMovement,
-  //   sameLocation,
-  //   param.pointing,
-  //   checkMostOrientation(
-  //     detect.pontingFingers?.[
-  //       param.options?.pontingFinger as FingersLocation
-  //     ] ?? detect.ponting
-  //   )
-  // );
 
   return (
     sameHandsape &&
