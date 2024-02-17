@@ -184,6 +184,14 @@ export enum HandLocation {
   PINKY_TIP = 20,
 }
 
+export enum FingersLocation {
+  THUMB = "THUMB",
+  INDEX = "INDEX",
+  MIDDLE = "MIDDLE",
+  RING = "RING",
+  PINKY = "PINKY",
+}
+
 type LeafValues<T> = T extends object
   ? {
       [K in keyof T]: LeafValues<T[K]>;

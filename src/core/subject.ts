@@ -11,7 +11,13 @@ import {
   normalizeVector,
   pointDifference,
 } from "./geometrics";
-import { HandShapeType, Movement, MovementAxis } from "../signs";
+import {
+  FingersLocation,
+  HandLocation,
+  HandShapeType,
+  Movement,
+  MovementAxis,
+} from "../signs";
 
 // Developement mode only for capture dataset for handshape
 const CAPTURE_HAND_DATA = true;
@@ -34,6 +40,13 @@ export interface SubjectHandData {
   // y [+] up [-1] down
   // z [+] front [-1] back
   ponting: Vector | undefined;
+  pontingFingers?: {
+    [FingersLocation.PINKY]: Vector | undefined;
+    [FingersLocation.RING]: Vector | undefined;
+    [FingersLocation.MIDDLE]: Vector | undefined;
+    [FingersLocation.INDEX]: Vector | undefined;
+    [FingersLocation.THUMB]: Vector | undefined;
+  };
   // [+] dominant hand oposite direction [-1] dominant hand direction
   // [+] up [-1] down
   // [+] front [-1] back
@@ -134,12 +147,14 @@ export class Subject {
       hand: {
         dominant: {
           ponting: undefined,
+          pointingFingers: undefined,
           palm: undefined,
           handShape: undefined,
           movement: {},
         },
         nonDominant: {
           ponting: undefined,
+          pointingFingers: undefined,
           palm: undefined,
           handShape: undefined,
           movement: {},
@@ -328,12 +343,21 @@ export class Subject {
       subject.hand.dominant.ponting = this.parseSubjectHandPointing(
         dominantWorldLandmarks
       );
+
+      try {
+        subject.hand.dominant.pontingFingers =
+          this.parseSubjectHandPointingFingers(dominantWorldLandmarks);
+      } catch (e) {}
     }
 
     if (nonDominantWorldLandmarks.length) {
       subject.hand.nonDominant.ponting = this.parseSubjectHandPointing(
         nonDominantWorldLandmarks
       );
+      try {
+        subject.hand.dominant.pontingFingers =
+        this.parseSubjectHandPointingFingers(dominantWorldLandmarks);
+      } catch (e) {}
     }
   }
 
@@ -341,6 +365,47 @@ export class Subject {
     return normalizeVector(
       pointDifference(handWorldLandmarks[9], handWorldLandmarks[0])
     );
+  }
+
+  private parseSubjectHandPointingFingers(handWorldLandmarks: Coordinate[]): {
+    [FingersLocation.PINKY]: Vector | undefined;
+    [FingersLocation.RING]: Vector | undefined;
+    [FingersLocation.MIDDLE]: Vector | undefined;
+    [FingersLocation.INDEX]: Vector | undefined;
+    [FingersLocation.THUMB]: Vector | undefined;
+  } {
+    return {
+      [FingersLocation.PINKY]: normalizeVector(
+        pointDifference(
+          handWorldLandmarks[HandLocation.PINKY_TIP],
+          handWorldLandmarks[HandLocation.PINKY_DIP]
+        )
+      ),
+      [FingersLocation.RING]: normalizeVector(
+        pointDifference(
+          handWorldLandmarks[HandLocation.RING_FINGER_TIP],
+          handWorldLandmarks[HandLocation.RING_FINGER_DIP]
+        )
+      ),
+      [FingersLocation.MIDDLE]: normalizeVector(
+        pointDifference(
+          handWorldLandmarks[HandLocation.MIDDLE_FINGER_TIP],
+          handWorldLandmarks[HandLocation.MIDDLE_FINGER_DIP]
+        )
+      ),
+      [FingersLocation.INDEX]: normalizeVector(
+        pointDifference(
+          handWorldLandmarks[HandLocation.INDEX_FINGER_TIP],
+          handWorldLandmarks[HandLocation.INDEX_FINGER_DIP]
+        )
+      ),
+      [FingersLocation.THUMB]: normalizeVector(
+        pointDifference(
+          handWorldLandmarks[HandLocation.THUMB_TIP],
+          handWorldLandmarks[HandLocation.THUMB_IP]
+        )
+      ),
+    };
   }
 
   private setSubjectHandPalm(subject: SubjectData): void {

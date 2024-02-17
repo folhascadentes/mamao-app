@@ -12,7 +12,7 @@ import {
 import { Subject, SubjectHandData, SubjectReadings } from "./core/subject";
 import { checkMostOrientation, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
-import { Location } from "./signs/types";
+import { FingersLocation, Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
 import { ParametersConfig, signsStates } from "./signs/phonemes";
 
@@ -67,6 +67,12 @@ function Transcribe({
     };
 
     const subjectData = subject.parse(results);
+
+    console.log(
+      checkMostOrientation(subjectData.hand.dominant.ponting),
+      checkMostOrientation(subjectData.hand.dominant.palm),
+      subjectData.hand.dominant.handShape
+    );
 
     for (let sign of signsStates) {
       if (subjectData.frame - sign.frame > 15) {
@@ -206,6 +212,51 @@ function Transcribe({
 
 export default Transcribe;
 
+function detectPhoneme(
+  param: ParametersConfig,
+  detect: SubjectHandData,
+  readings: SubjectReadings
+): boolean {
+  const sameHandsape =
+    param.shape === undefined || param.shape === detect.handShape;
+
+  const sameOrientation =
+    param.orientation === undefined ||
+    param.orientation === checkMostOrientation(detect.palm);
+
+  const samePointing =
+    param.pointing === undefined ||
+    param.pointing ===
+      checkMostOrientation(
+        detect.pontingFingers?.[
+          param.options?.pontingFinger as FingersLocation
+        ] ?? detect.ponting
+      );
+
+  const sameMovement =
+    param.movement === undefined ||
+    checkSameMovement(detect.movement, param.movement as any);
+
+  const location = detectLocation(
+    param.options?.locationPivot ?? Location.HAND_PALM_RIGHT,
+    readings
+  );
+
+  const sameLocation =
+    param.location === undefined ||
+    (location !== undefined &&
+      location !== undefined &&
+      param.location.some((l) => location.includes(l)));
+
+  return (
+    sameHandsape &&
+    sameOrientation &&
+    samePointing &&
+    sameMovement &&
+    sameLocation
+  );
+}
+
 function detectLocation(
   pivot: Location,
   readings: SubjectReadings
@@ -241,44 +292,4 @@ function detectLocation(
   } catch (e) {}
 
   return currentLocation;
-}
-
-function detectPhoneme(
-  param: ParametersConfig,
-  detect: SubjectHandData,
-  readings: SubjectReadings
-): boolean {
-  const sameHandsape =
-    param.shape === undefined || param.shape === detect.handShape;
-
-  const sameOrientation =
-    param.orientation === undefined ||
-    param.orientation === checkMostOrientation(detect.palm);
-
-  const samePointing =
-    param.pointing === undefined ||
-    param.pointing === checkMostOrientation(detect.ponting);
-
-  const sameMovement =
-    param.movement === undefined ||
-    checkSameMovement(detect.movement, param.movement as any);
-
-  const location = detectLocation(
-    param.options?.locationPivot ?? Location.HAND_PALM_RIGHT,
-    readings
-  );
-
-  const sameLocation =
-    param.location === undefined ||
-    (location !== undefined &&
-      location !== undefined &&
-      param.location.some((l) => location.includes(l)));
-
-  return (
-    sameHandsape &&
-    sameOrientation &&
-    samePointing &&
-    sameMovement &&
-    sameLocation
-  );
 }

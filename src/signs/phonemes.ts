@@ -4,6 +4,7 @@ import {
   Movement,
   HandLocation,
   HandOrientation,
+  FingersLocation,
 } from "./types";
 
 export type ParametersConfig = {
@@ -15,8 +16,7 @@ export type ParametersConfig = {
   options?: {
     movementPivot?: HandLocation;
     locationPivot?: Location;
-    orientationAngle?: number;
-    pointingAngle?: number;
+    pontingFinger?: FingersLocation;
   };
 };
 
@@ -63,6 +63,9 @@ export const signsStates: {
           orientation: HandOrientation.BACK,
           pointing: HandOrientation.UP,
           location: [Location.TORAX_LEFT],
+          options: {
+            pontingFinger: FingersLocation.INDEX,
+          },
         },
       },
       {
@@ -71,6 +74,9 @@ export const signsStates: {
           orientation: HandOrientation.BACK,
           pointing: HandOrientation.UP,
           location: [Location.TORAX_RIGHT],
+          options: {
+            pontingFinger: FingersLocation.INDEX,
+          },
         },
       },
     ],
@@ -99,7 +105,7 @@ export const signsStates: {
           shape: HandShape.libras.INDEX_FINGER,
           pointing: HandOrientation.BACK,
           options: {
-            pointingAngle: 90,
+            pontingFinger: FingersLocation.INDEX,
           },
         },
       },
@@ -1014,8 +1020,7 @@ export const signsStates: {
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          orientation: HandOrientation.BACK,
-          pointing: HandOrientation.LEFT,
+          orientation: HandOrientation.DOWN,
           location: [Location.TORAX],
           movement: {
             wristRotate: true,
