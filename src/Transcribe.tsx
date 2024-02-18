@@ -183,11 +183,14 @@ function Transcribe({
           <div>
             <h2 className="text-2xl mb-4">Últimas transcrições</h2>
             <div className="flex flex-col space-y-2 text-3xl">
-              {lastSignsDected.map((sign, index) => (
-                <span key={index} className="mx-2">
-                  {sign}
-                </span>
-              ))}
+              {lastSignsDected
+                .slice()
+                .reverse()
+                .map((sign, index) => (
+                  <span key={index} className="mx-2">
+                    {sign}
+                  </span>
+                ))}
             </div>
           </div>
         </div>
