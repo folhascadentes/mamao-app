@@ -7,7 +7,7 @@ import {
   FingersLocation,
 } from "./types";
 
-export type ParametersConfig = {
+export type PhonemeDescriptor = {
   shape?: string;
   orientation?: HandOrientation[];
   pointing?: HandOrientation[];
@@ -20,20 +20,18 @@ export type ParametersConfig = {
   };
 };
 
-export const signsStates: {
+export type SignDescriptor = {
   id: string;
-  index: number;
-  frame: number;
-  states: {
-    right: ParametersConfig;
-    left?: ParametersConfig;
+  phonemes: {
+    right: PhonemeDescriptor;
+    left?: PhonemeDescriptor;
   }[];
-}[] = [
+};
+
+export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Nome",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
@@ -62,9 +60,7 @@ export const signsStates: {
   },
   {
     id: "Meu-Nome",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
@@ -93,9 +89,7 @@ export const signsStates: {
   },
   {
     id: "Você",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.INDEX_FINGER,
@@ -110,9 +104,7 @@ export const signsStates: {
   },
   {
     id: "Eu",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.INDEX_FINGER,
@@ -126,9 +118,7 @@ export const signsStates: {
   },
   {
     id: "Olá",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -148,9 +138,7 @@ export const signsStates: {
   },
   {
     id: "Amigo",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_THUMB_APART,
@@ -163,9 +151,7 @@ export const signsStates: {
   },
   {
     id: "Fevereiro",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.F,
@@ -197,9 +183,7 @@ export const signsStates: {
   },
   {
     id: "Outubro",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.O,
@@ -240,9 +224,7 @@ export const signsStates: {
   },
   {
     id: "Lado",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -261,9 +243,7 @@ export const signsStates: {
   },
   {
     id: "Feliz",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.F,
@@ -300,9 +280,7 @@ export const signsStates: {
   },
   {
     id: "Idade",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.Y,
@@ -317,9 +295,7 @@ export const signsStates: {
   },
   {
     id: "Saúde",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
@@ -346,9 +322,7 @@ export const signsStates: {
   },
   {
     id: "Telefone",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.Y,
@@ -364,9 +338,7 @@ export const signsStates: {
   },
   {
     id: "Dia",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.D,
@@ -381,9 +353,7 @@ export const signsStates: {
   },
   {
     id: "Oi",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OI,
@@ -425,9 +395,7 @@ export const signsStates: {
   },
   {
     id: "Bom",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.O,
@@ -445,9 +413,7 @@ export const signsStates: {
   },
   {
     id: "Agosto",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.A,
@@ -480,9 +446,7 @@ export const signsStates: {
   },
   {
     id: "Avisar",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.Y,
@@ -506,9 +470,7 @@ export const signsStates: {
   },
   {
     id: "Me-Avisar",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.Y,
@@ -532,9 +494,7 @@ export const signsStates: {
   },
   {
     id: "Entender",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_THUMB_APART,
@@ -565,9 +525,7 @@ export const signsStates: {
   },
   {
     id: "Gostar",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -609,9 +567,7 @@ export const signsStates: {
   },
   {
     id: "Rápido", // Sentimento - Parecidos
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.CLAW,
@@ -644,9 +600,7 @@ export const signsStates: {
   },
   {
     id: "Não",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.INDEX_FINGER,
@@ -677,9 +631,7 @@ export const signsStates: {
   },
   {
     id: "Tchau",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -723,9 +675,7 @@ export const signsStates: {
   },
   {
     id: "Quente",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.C,
@@ -750,9 +700,7 @@ export const signsStates: {
   },
   {
     id: "Certeza",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.THUMB_TOUCH_INDEX_FINGERS_OPEN,
@@ -771,9 +719,7 @@ export const signsStates: {
   },
   {
     id: "Pessoa",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.MIDDLE_FINGER_BENDED_FINGERS_APART,
@@ -800,9 +746,7 @@ export const signsStates: {
   },
   {
     id: "Obrigado",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -827,9 +771,7 @@ export const signsStates: {
   },
   {
     id: "Tarde",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -850,7 +792,7 @@ export const signsStates: {
   //   id: "Futuro",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.F,
@@ -869,9 +811,7 @@ export const signsStates: {
   // },
   {
     id: "Aqui",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.INDEX_FINGER,
@@ -885,7 +825,7 @@ export const signsStates: {
   //   id: "Sim",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.S,
@@ -901,7 +841,7 @@ export const signsStates: {
   //   id: "Ancião",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.S,
@@ -928,7 +868,7 @@ export const signsStates: {
   //   id: "Agredir",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.S,
@@ -949,7 +889,7 @@ export const signsStates: {
   //   id: "Arrepender",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.A,
@@ -976,9 +916,7 @@ export const signsStates: {
   // },
   {
     id: "Atrás",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.THUMB_FINGER,
@@ -1005,9 +943,7 @@ export const signsStates: {
   },
   {
     id: "Beleza",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.THUMB_FINGER,
@@ -1020,9 +956,7 @@ export const signsStates: {
   },
   {
     id: "Não-Beleza",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.THUMB_FINGER,
@@ -1037,7 +971,7 @@ export const signsStates: {
   //   id: "Receber",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -1057,9 +991,7 @@ export const signsStates: {
   // },
   {
     id: "Mais-ou-menos",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -1086,7 +1018,7 @@ export const signsStates: {
   //   id: "Palmas",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -1125,7 +1057,7 @@ export const signsStates: {
   //   id: "Saudade",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.S,
@@ -1173,7 +1105,7 @@ export const signsStates: {
   //   id: "Ter",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.L,
@@ -1188,7 +1120,7 @@ export const signsStates: {
   //   id: "Frente",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.OPEN_HAND,
@@ -1209,9 +1141,7 @@ export const signsStates: {
   // },
   {
     id: "Direita",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -1226,9 +1156,7 @@ export const signsStates: {
   },
   {
     id: "Esquerda",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -1245,7 +1173,7 @@ export const signsStates: {
   //   id: "A-Exceção-De",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.INDEX_FINGER,
@@ -1265,9 +1193,7 @@ export const signsStates: {
   // },
   {
     id: "A-Leste",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.L,
@@ -1282,9 +1208,7 @@ export const signsStates: {
   },
   {
     id: "A-Norte",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
@@ -1300,9 +1224,7 @@ export const signsStates: {
   },
   {
     id: "A-Oeste",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.O,
@@ -1317,9 +1239,7 @@ export const signsStates: {
   },
   {
     id: "A-Sul",
-    index: 0,
-    frame: 0,
-    states: [
+    phonemes: [
       {
         right: {
           shape: HandShape.libras.S,
@@ -1335,7 +1255,7 @@ export const signsStates: {
   //   id: "A-Mesma-Coisa",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.INDEX_FINGER,
@@ -1396,7 +1316,7 @@ export const signsStates: {
   //   id: "Abaixar",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.OPEN_HAND,
@@ -1421,7 +1341,7 @@ export const signsStates: {
   //   id: "Branco",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.L,
@@ -1438,7 +1358,7 @@ export const signsStates: {
   //   id: "BÓSNIA-HERZEGOVINA",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.S,
@@ -1475,7 +1395,7 @@ export const signsStates: {
   //   id: "De-Nada (1)",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.OPEN_HAND,
@@ -1502,7 +1422,7 @@ export const signsStates: {
   //   id: "De-Nada (3)",
   //   index: 0,
   //   frame: 0,
-  //   states: [
+  //   phonemes: [
   //     {
   //       right: {
   //         shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,

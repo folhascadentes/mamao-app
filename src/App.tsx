@@ -40,8 +40,6 @@ export default function App(): JSX.Element {
   const [cameraSettings, setCameraSettings] = useState<MediaTrackSettings>();
   const [handShapeModel, setHandShapeModel] =
     useState<tensorflow.LayersModel>();
-  const [transcribeModel, setTranscribeModel] =
-    useState<tensorflow.LayersModel>();
 
   const fetchSession = async () => {
     const session = JSON.parse(localStorage.getItem("session") ?? "[]");
@@ -72,13 +70,6 @@ export default function App(): JSX.Element {
           process.env.REACT_APP_HAND_SHAPE_MODEL_URL as string
         );
         setHandShapeModel(model);
-      }
-
-      if (transcribeModel === undefined) {
-        const model = await tensorflow.loadLayersModel(
-          process.env.REACT_APP_TRANSCRIBE_MODEL_URL as string
-        );
-        setTranscribeModel(model);
       }
 
       fetchSession();
@@ -210,15 +201,7 @@ export default function App(): JSX.Element {
                 />
                 <Route
                   path="/transcribe"
-                  element={
-                    <Transcribe
-                      setLoading={setLoading}
-                      handShapeModel={handShapeModel as tensorflow.LayersModel}
-                      transcribeModel={
-                        transcribeModel as tensorflow.LayersModel
-                      }
-                    />
-                  }
+                  element={<Transcribe setLoading={setLoading} />}
                 />
                 <Route path="*" element={<DefaultRoute />} />
               </Routes>

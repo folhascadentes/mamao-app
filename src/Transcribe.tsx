@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as tensorflow from "@tensorflow/tfjs";
-import { useNavigate } from "react-router-dom";
 import { Camera } from "@mediapipe/camera_utils";
 import {
   HandResults,
@@ -9,24 +8,29 @@ import {
   PoseResults,
   Results,
 } from "./core/mediapipe";
-import { Subject, SubjectHandData, SubjectReadings } from "./core/subject";
+import {
+  Subject,
+  SubjectData,
+  SubjectHandData,
+  SubjectReadings,
+} from "./core/subject";
 import { checkMostOrientation, checkSameMovement } from "./core/detector";
 import { getLocationCoordinate } from "./core/locations";
 import { FingersLocation, Location } from "./signs/types";
 import { getDistance } from "./core/geometrics";
-import { ParametersConfig, signsStates } from "./signs/phonemes";
+import {
+  PhonemeDescriptor,
+  SignDescriptor,
+  signsDescriptors,
+} from "./signs/phonemes";
 
 function Transcribe({
   setLoading,
-  handShapeModel,
-  transcribeModel,
 }: {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  handShapeModel: tensorflow.LayersModel;
-  transcribeModel: tensorflow.LayersModel;
 }) {
-  const navigate = useNavigate();
-
+  const [handShapeModel, setHandShapeModel] =
+    useState<tensorflow.LayersModel>();
   const [predictShow, setPredictShow] = React.useState("");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -34,6 +38,8 @@ function Transcribe({
 
   let poseLandmarks: Coordinate[] = [];
   let poseWorldLandmarks: Coordinate[] = [];
+  let phonemes: (SubjectData | undefined)[] = [];
+  let memory: Set<string> = new Set();
 
   const onResultPoseCallback = (results: PoseResults) => {
     if (results.poseWorldLandmarks) {
@@ -68,52 +74,67 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
-    // console.log(
-    //   subjectData.hand.dominant.movement.x === 1 ? "RIGHT" : "",
-    //   subjectData.hand.dominant.movement.x === -1 ? "LEFT" : "",
-    //   subjectData.hand.dominant.movement.y === 1 ? "UP" : "",
-    //   subjectData.hand.dominant.movement.y === -1 ? "DOWN" : ""
-    // );
+    if (
+      subjectData.readings.dominantLandmarks.length === 0 &&
+      subjectData.readings.nonDominantLandmarks.length === 0 &&
+      phonemes[phonemes.length - 1] !== undefined
+    ) {
+      phonemes.push(undefined);
+    }
 
-    for (let sign of signsStates) {
-      if (
-        detectPhoneme(
-          sign.states[sign.index].right,
-          subjectData.hand.dominant,
-          subjectData.readings
-        ) &&
-        (sign.states[sign.index].left === undefined ||
-          detectPhoneme(
-            sign.states[sign.index].left as ParametersConfig,
-            subjectData.hand.nonDominant,
-            subjectData.readings
-          ))
-      ) {
-        console.log(`${sign.id}-${sign.index}`);
-        sign.index++;
-        sign.frame = subjectData.frame;
+    let memoryHasPrior = memory.size > 0;
 
-        if (sign.index === sign.states.length) {
-          setPredictShow(sign.id);
+    for (let sign of signsDescriptors) {
+      for (let phoneme of sign.phonemes) {
+        const phonemeDetected = detectPhoneme(phoneme, subjectData);
+        const hash = hashPhoneme(phoneme);
 
-          for (let sign of signsStates) {
-            sign.index = 0;
-          }
+        if (memoryHasPrior && phonemeDetected && !memory.has(hash)) {
+          memory.clear();
+          memoryHasPrior = false;
+        }
+
+        if (phonemeDetected && !memory.has(hash)) {
+          memory.add(hash);
         }
       }
+    }
+
+    if (memoryHasPrior === false && memory.size > 0) {
+      phonemes.push(subjectData);
+      console.log(memory, phonemes.length);
+    }
+
+    const { remainingPhonemes, matchedSignId } = parseSigns(
+      phonemes,
+      signsDescriptors
+    );
+
+    phonemes = remainingPhonemes;
+    phonemes = phonemes.slice(-10);
+
+    if (matchedSignId) {
+      setPredictShow(matchedSignId);
     }
   };
 
   useEffect(() => {
-    if (!transcribeModel) {
-      navigate("/instructions");
-      return;
-    }
+    (async function () {
+      if (handShapeModel === undefined) {
+        const model = await tensorflow.loadLayersModel(
+          process.env.REACT_APP_HAND_SHAPE_MODEL_URL as string
+        );
+        setHandShapeModel(model);
+      }
+    })();
+    // eslint-disable-next-line
+  }, []);
 
+  useEffect(() => {
     const subject = new Subject(
       canvasRef.current as HTMLCanvasElement,
       24,
-      handShapeModel
+      handShapeModel as tensorflow.LayersModel
     );
     subjectRef.current = subject;
 
@@ -143,7 +164,7 @@ function Transcribe({
       pose.close();
     };
     // eslint-disable-next-line
-  }, []);
+  }, [handShapeModel]);
 
   return (
     <div className="recording flex flex-col justify-center">
@@ -209,8 +230,100 @@ function Transcribe({
 
 export default Transcribe;
 
+function parseSigns(
+  phonemes: (SubjectData | undefined)[],
+  signs: SignDescriptor[]
+): {
+  remainingPhonemes: (SubjectData | undefined)[];
+  matchedSignId: string | undefined;
+} {
+  const phonemeMatchLength: { [signId: string]: number } = {};
+
+  signs.forEach((sign) => {
+    for (let i = 0; i < Math.min(phonemes.length, sign.phonemes.length); i++) {
+      if (!detectPhoneme(sign.phonemes[i], phonemes[i])) {
+        break;
+      }
+      phonemeMatchLength[sign.id] = i + 1;
+    }
+  });
+
+  const matchedSigns = Object.entries(phonemeMatchLength)
+    .map(([signId, length]) => ({
+      signId,
+      length,
+      isCompleteMatch:
+        length === signs.find((sign) => sign.id === signId)?.phonemes.length,
+    }))
+    .sort((a, b) => b.length - a.length);
+
+  if (
+    matchedSigns.length &&
+    matchedSigns[0].isCompleteMatch &&
+    (matchedSigns.length === 1 || matchedSigns[1].length < phonemes.length)
+  ) {
+    return {
+      remainingPhonemes: phonemes.slice(matchedSigns[0].length),
+      matchedSignId: matchedSigns[0].signId,
+    };
+  }
+
+  return {
+    remainingPhonemes: !matchedSigns.some((sign) => sign.isCompleteMatch)
+      ? phonemes.slice(1)
+      : phonemes,
+    matchedSignId: undefined,
+  };
+}
+
+function hashPhoneme(phoneme: {
+  right: PhonemeDescriptor;
+  left?: PhonemeDescriptor;
+}): string {
+  return (
+    hashPhonemeUtil(phoneme.right) +
+    (phoneme.left ? hashPhonemeUtil(phoneme.left) : "")
+  );
+}
+
+function hashPhonemeUtil(descriptor: PhonemeDescriptor): string {
+  const { shape, orientation, pointing, movement, location } = descriptor;
+
+  return `(${shape ? shape + ";" : ""}${
+    orientation ? orientation.sort().join(",") + ";" : ""
+  }${pointing ? pointing.sort().join(",") + ";" : ""}${
+    movement ? JSON.stringify(movement) + ";" : ""
+  }${location ? location.sort().join(",") + ";" : ""})`;
+}
+
 function detectPhoneme(
-  param: ParametersConfig,
+  phoneme: {
+    right: PhonemeDescriptor;
+    left?: PhonemeDescriptor;
+  },
+  subjectData: SubjectData | undefined
+): boolean {
+  if (subjectData === undefined) {
+    return false;
+  }
+
+  return (
+    detectPhonemeUtil(
+      phoneme.right,
+      subjectData.hand.dominant,
+      subjectData.readings
+    ) &&
+    (phoneme.left === undefined ||
+      detectPhonemeUtil(
+        phoneme.left as PhonemeDescriptor,
+        subjectData.hand.nonDominant,
+        subjectData.readings
+      ))
+  );
+}
+
+function detectPhonemeUtil(
+  param: PhonemeDescriptor,
   detect: SubjectHandData,
   readings: SubjectReadings
 ): boolean {
@@ -247,8 +360,6 @@ function detectPhoneme(
     param.options?.locationPivot ?? Location.HAND_PALM_RIGHT,
     readings
   );
-
-  // console.log(detect.handShape, checkMostOrientation(detect.palm), location);
 
   const sameLocation =
     param.location === undefined ||
