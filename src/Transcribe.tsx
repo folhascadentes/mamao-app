@@ -290,7 +290,11 @@ function parseSigns(
     })
     .sort((a, b) => {
       if (a.isCompleteMatch && b.isCompleteMatch) {
-        return b.detectedLength - a.detectedLength;
+        if (a.startDetectionIndex === b.startDetectionIndex) {
+          return b.detectedLength - a.detectedLength;
+        } else {
+          return a.startDetectionIndex - b.startDetectionIndex;
+        }
       } else {
         return a.isCompleteMatch ? -1 : 1;
       }
@@ -311,6 +315,7 @@ function parseSigns(
   );
 
   if (hasCompletedMatch && !hasPotencialMatch) {
+    console.log(matchedSigns);
     return {
       remainingPhonemes: phonemes.slice(matchedSigns[0].endDetectionIndex + 1),
       matchedSignId: matchedSigns[0].signId,
