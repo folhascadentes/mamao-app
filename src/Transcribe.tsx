@@ -74,14 +74,6 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
-    if (
-      subjectData.readings.dominantLandmarks.length === 0 &&
-      subjectData.readings.nonDominantLandmarks.length === 0 &&
-      phonemes[phonemes.length - 1] !== undefined
-    ) {
-      phonemes.push(undefined);
-    }
-
     let memoryHasPrior = memory.size > 0;
 
     for (let sign of signsDescriptors) {
@@ -102,7 +94,24 @@ function Transcribe({
 
     if (memoryHasPrior === false && memory.size > 0) {
       phonemes.push(subjectData);
-      console.log(memory, phonemes.length);
+      console.log(
+        Array.from(memory.values())
+          .map((v) => v)
+          .join("#"),
+        phonemes.length
+      );
+    }
+
+    // Some times any handmark is detected even when the hand is in the camera,
+    // triggering the prediction with an empty phoneme list
+    if (
+      subjectData.readings.dominantLandmarks.length === 0 &&
+      subjectData.readings.nonDominantLandmarks.length === 0 &&
+      phonemes.length > 0 &&
+      phonemes[phonemes.length - 1] !== undefined
+    ) {
+      // console.log("EMPTY", subjectData.readings.dominantLandmarks.length);
+      // phonemes.push(undefined);
     }
 
     const { remainingPhonemes, matchedSignId } = parseSigns(
@@ -111,10 +120,10 @@ function Transcribe({
     );
 
     phonemes = remainingPhonemes;
-    phonemes = phonemes.slice(-10);
 
     if (matchedSignId) {
       setPredictShow(matchedSignId);
+      console.log("PREDICTION", phonemes.length);
     }
   };
 
@@ -237,41 +246,79 @@ function parseSigns(
   remainingPhonemes: (SubjectData | undefined)[];
   matchedSignId: string | undefined;
 } {
-  const phonemeMatchLength: { [signId: string]: number } = {};
+  const phonemeMatchLength: {
+    [signId: string]: {
+      startDetectionIndex: number; // Index of the phoneme list where the detection started
+      endDetectionIndex: number; // Index of the phoneme list where the detection ended
+      detectedLength: number; // Length of the detected phonemes
+    };
+  } = {};
 
   signs.forEach((sign) => {
-    for (let i = 0; i < Math.min(phonemes.length, sign.phonemes.length); i++) {
-      if (!detectPhoneme(sign.phonemes[i], phonemes[i])) {
-        break;
+    for (
+      let detectedIndex = 0, signIndex = 0;
+      detectedIndex < phonemes.length && signIndex < sign.phonemes.length;
+      detectedIndex++
+    ) {
+      if (detectPhoneme(sign.phonemes[signIndex], phonemes[detectedIndex])) {
+        signIndex++;
+
+        if (phonemeMatchLength[sign.id] === undefined) {
+          phonemeMatchLength[sign.id] = {
+            startDetectionIndex: detectedIndex,
+            endDetectionIndex: detectedIndex,
+            detectedLength: 1,
+          };
+        } else {
+          phonemeMatchLength[sign.id].detectedLength = signIndex;
+          phonemeMatchLength[sign.id].endDetectionIndex = detectedIndex;
+        }
       }
-      phonemeMatchLength[sign.id] = i + 1;
     }
   });
 
   const matchedSigns = Object.entries(phonemeMatchLength)
-    .map(([signId, length]) => ({
-      signId,
-      length,
-      isCompleteMatch:
-        length === signs.find((sign) => sign.id === signId)?.phonemes.length,
-    }))
-    .sort((a, b) => b.length - a.length);
+    .map(([signId, data]) => {
+      const sign = signs.find((sign) => sign.id === signId);
+      return {
+        signId,
+        startDetectionIndex: data.startDetectionIndex,
+        endDetectionIndex: data.endDetectionIndex,
+        detectedLength: data.detectedLength,
+        isCompleteMatch: data.detectedLength === sign?.phonemes.length,
+      };
+    })
+    .sort((a, b) => {
+      if (a.isCompleteMatch && b.isCompleteMatch) {
+        return b.detectedLength - a.detectedLength;
+      } else {
+        return a.isCompleteMatch ? -1 : 1;
+      }
+    });
 
-  if (
-    matchedSigns.length &&
-    matchedSigns[0].isCompleteMatch &&
-    (matchedSigns.length === 1 || matchedSigns[1].length < phonemes.length)
-  ) {
+  // If any sign is completed matched, we have at least one sign to return
+  const hasCompletedMatch = matchedSigns[0]?.isCompleteMatch;
+
+  // we will not return yet with new phonemes could lead to a longer sign matched
+  // for instance:
+  //  SA = #a#b
+  //  sB = #a
+  //  phonemes = #a
+  // if we return now, we will not be able to match the sign SA
+  const hasPotencialMatch = matchedSigns.find(
+    (sign) =>
+      !sign.isCompleteMatch && sign.endDetectionIndex + 1 === phonemes.length
+  );
+
+  if (hasCompletedMatch && !hasPotencialMatch) {
     return {
-      remainingPhonemes: phonemes.slice(matchedSigns[0].length),
+      remainingPhonemes: phonemes.slice(matchedSigns[0].endDetectionIndex + 1),
       matchedSignId: matchedSigns[0].signId,
     };
   }
 
   return {
-    remainingPhonemes: !matchedSigns.some((sign) => sign.isCompleteMatch)
-      ? phonemes.slice(1)
-      : phonemes,
+    remainingPhonemes: phonemes,
     matchedSignId: undefined,
   };
 }
