@@ -32,6 +32,7 @@ function Transcribe({
   const [handShapeModel, setHandShapeModel] =
     useState<tensorflow.LayersModel>();
   const [predictShow, setPredictShow] = React.useState("");
+  const [lastSignsDected, setLastSignsDected] = React.useState<string[]>([]);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const subjectRef = useRef<Subject>();
@@ -102,18 +103,6 @@ function Transcribe({
       );
     }
 
-    // Some times any handmark is detected even when the hand is in the camera,
-    // triggering the prediction with an empty phoneme list
-    if (
-      subjectData.readings.dominantLandmarks.length === 0 &&
-      subjectData.readings.nonDominantLandmarks.length === 0 &&
-      phonemes.length > 0 &&
-      phonemes[phonemes.length - 1] !== undefined
-    ) {
-      // console.log("EMPTY", subjectData.readings.dominantLandmarks.length);
-      // phonemes.push(undefined);
-    }
-
     const { remainingPhonemes, matchedSignId } = parseSigns(
       phonemes,
       signsDescriptors
@@ -122,8 +111,10 @@ function Transcribe({
     phonemes = remainingPhonemes;
 
     if (matchedSignId) {
+      setLastSignsDected((signs) => {
+        return signs.concat(matchedSignId).slice(-5);
+      });
       setPredictShow(matchedSignId);
-      console.log("PREDICTION", phonemes.length);
     }
   };
 
@@ -188,6 +179,16 @@ function Transcribe({
           <h1 className="text-4xl">Transcrição</h1>
           <div className="text-9xl text-orange-500 font-black">
             {predictShow}
+          </div>
+          <div>
+            <h2 className="text-2xl mb-4">Últimas transcrições</h2>
+            <div className="flex flex-col space-y-2 text-3xl">
+              {lastSignsDected.map((sign, index) => (
+                <span key={index} className="mx-2">
+                  {sign}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
         <div className="w-1/2">
