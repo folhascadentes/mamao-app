@@ -1296,6 +1296,13 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.L,
           orientation: [HandOrientation.FRONT],
           location: [Location.TORAX],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: [HandOrientation.FRONT],
+          location: [Location.TORAX],
           movement: {
             x: 1,
           },
