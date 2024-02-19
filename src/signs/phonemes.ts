@@ -78,6 +78,18 @@ export const signsDescriptors: SignDescriptor[] = [
     ],
   },
   {
+    id: "L",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: [HandOrientation.FRONT],
+          location: [Location.TORAX_RIGHT, Location.SHOULDER_RIGHT],
+        },
+      },
+    ],
+  },
+  {
     id: "O",
     phonemes: [
       {
@@ -1109,108 +1121,98 @@ export const signsDescriptors: SignDescriptor[] = [
       },
     ],
   },
-  // {
-  //   id: "Palmas",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           wristRotate: true,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           wristRotate: true,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           wristRotate: true,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           wristRotate: true,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: "Saudade",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.BACK],
-  //         movement: {
-  //           x: 1,
-  //           y: 1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.BACK],
-  //         movement: {
-  //           x: 1,
-  //           y: -1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.BACK],
-  //         movement: {
-  //           x: -1,
-  //           y: -1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.BACK],
-  //         location: [Location.TORAX],
-  //         movement: {
-  //           x: -1,
-  //           y: 1,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: "Ter",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.L,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.LEFT],
-  //         location: [Location.TORAX],
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "Palmas",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: [HandOrientation.UP],
+          movement: {
+            wristRotate: true,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: [HandOrientation.UP],
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: [HandOrientation.UP],
+          movement: {
+            wristRotate: true,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          pointing: [HandOrientation.UP],
+          movement: {
+            wristRotate: true,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Saudade",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          movement: {
+            y: 1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          movement: {
+            x: 1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          movement: {
+            y: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          location: [Location.TORAX],
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Ter",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.LEFT],
+          location: [Location.TORAX],
+        },
+      },
+    ],
+  },
   // {
   //   id: "Frente",
   //   index: 0,
@@ -1420,48 +1422,51 @@ export const signsDescriptors: SignDescriptor[] = [
   //     },
   //   ],
   // },
-  // {
-  //   id: "Abaixar",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND,
-  //         orientation: [HandOrientation.DOWN],
-  //         location: [Location.TORAX],
-  //         movement: {
-  //           y: -1,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.OPEN_HAND,
-  //         orientation: [HandOrientation.DOWN],
-  //         location: [Location.TORAX],
-  //         movement: {
-  //           y: -1,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: "Branco",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.L,
-  //         orientation: [HandOrientation.LEFT],
-  //         location: [Location.FACE_MOUTH],
-  //         movement: {
-  //           x: -1,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "Abaixar",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.DOWN],
+          location: [Location.TORAX],
+          movement: {
+            y: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.DOWN],
+          location: [Location.TORAX],
+          movement: {
+            y: -1,
+          },
+        },
+      },
+    ],
+  },
+  {
+    id: "Branco",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: [HandOrientation.LEFT],
+          location: [Location.FACE_MOUTH],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.L,
+          orientation: [HandOrientation.LEFT],
+          location: [Location.FACE_MOUTH],
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
   // {
   //   id: "BÓSNIA-HERZEGOVINA",
   //   index: 0,
@@ -1499,33 +1504,38 @@ export const signsDescriptors: SignDescriptor[] = [
   //     },
   //   ],
   // },
-  // {
-  //   id: "De-Nada (1)",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND,
-  //         orientation: [HandOrientation.FRONT],
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           x: -1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND,
-  //         orientation: [HandOrientation.FRONT],
-  //         pointing: [HandOrientation.UP],
-  //         movement: {
-  //           x: 1,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "De-Nada (1)",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.UP],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.UP],
+          movement: {
+            x: -1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.UP],
+          movement: {
+            x: 1,
+          },
+        },
+      },
+    ],
+  },
   // {
   //   id: "De-Nada (3)",
   //   index: 0,
