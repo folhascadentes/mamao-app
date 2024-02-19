@@ -36,7 +36,7 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.A,
           orientation: [HandOrientation.FRONT],
-          location: [Location.TORAX_RIGHT],
+          location: [Location.TORAX_RIGHT, Location.SHOULDER_RIGHT],
         },
       },
     ],
@@ -47,7 +47,26 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.C,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.FRONT],
+          location: [Location.TORAX_RIGHT],
+        },
+      },
+    ],
+  },
+  {
+    id: "A/C",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.FRONT],
+          location: [Location.TORAX_RIGHT],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.C,
+          orientation: [HandOrientation.FRONT],
           location: [Location.TORAX_RIGHT],
         },
       },
@@ -71,7 +90,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.F,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.FRONT],
           location: [Location.TORAX_RIGHT],
         },
       },
@@ -107,7 +126,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.O,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.FRONT],
           location: [Location.TORAX_RIGHT],
         },
       },
@@ -276,6 +295,12 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.F,
           pointing: [HandOrientation.UP],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.F,
+          pointing: [HandOrientation.UP],
           movement: {
             wristRotateClockwise: true,
           },
@@ -304,6 +329,12 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Outubro",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.O,
+          orientation: [HandOrientation.LEFT],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.O,
@@ -349,14 +380,14 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.OPEN_HAND,
           orientation: [HandOrientation.DOWN],
-          location: [Location.TORAX_LEFT],
+          location: [Location.TORAX_LEFT, Location.SHOULDER_LEFT],
         },
       },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
           orientation: [HandOrientation.UP],
-          location: [Location.TORAX_RIGHT],
+          location: [Location.TORAX_RIGHT, Location.SHOULDER_RIGHT],
         },
       },
     ],
@@ -368,16 +399,10 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.F,
           pointing: [HandOrientation.UP],
-          movement: {
-            x: 1,
-          },
         },
         left: {
           shape: HandShape.libras.F,
           pointing: [HandOrientation.UP],
-          movement: {
-            x: -1,
-          },
         },
       },
       {
@@ -385,14 +410,14 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.F,
           pointing: [HandOrientation.UP],
           movement: {
-            x: -1,
+            x: 1,
           },
         },
         left: {
           shape: HandShape.libras.F,
           pointing: [HandOrientation.UP],
           movement: {
-            x: 1,
+            x: -1,
           },
         },
       },
@@ -401,6 +426,13 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Idade",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.Y,
+          orientation: [HandOrientation.BACK],
+          location: [Location.SHOULDER_RIGHT],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.Y,
@@ -462,8 +494,14 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.D,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.LEFT, HandOrientation.FRONT],
           location: [Location.FACE],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.D,
+          orientation: [HandOrientation.LEFT, HandOrientation.FRONT],
           movement: {
             x: 1,
           },
@@ -474,6 +512,12 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Oi",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OI,
+          orientation: [HandOrientation.LEFT],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OI,
@@ -540,6 +584,17 @@ export const signsDescriptors: SignDescriptor[] = [
           orientation: [HandOrientation.BACK],
           pointing: [HandOrientation.LEFT],
           location: [Location.TORAX, Location.SHOULDER],
+          options: {
+            movementPivot: HandLocation.THUMB_TIP,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.LEFT],
+          location: [Location.TORAX, Location.SHOULDER],
           movement: {
             y: -1,
           },
@@ -572,7 +627,7 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.Y,
           orientation: [HandOrientation.LEFT],
           pointing: [HandOrientation.UP],
-          location: [Location.FACE_MOUTH],
+          location: [Location.FACE],
           options: {
             locationPivot: Location.HAND_MIDDLE_RIGHT,
           },
@@ -604,7 +659,7 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.Y,
           orientation: [HandOrientation.LEFT],
           pointing: [HandOrientation.UP],
-          location: [Location.FACE_MOUTH],
+          location: [Location.FACE],
           options: {
             locationPivot: Location.HAND_MIDDLE_RIGHT,
           },
@@ -615,6 +670,16 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Entender",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_THUMB_APART,
+          orientation: [HandOrientation.LEFT],
+          location: [Location.FACE_FOREHEAD_RIGHT],
+          options: {
+            locationPivot: Location.HAND_INDEX_RIGHT,
+          },
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_THUMB_APART,
@@ -646,6 +711,13 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Gostar",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.BACK],
+          location: [Location.TORAX],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -686,8 +758,19 @@ export const signsDescriptors: SignDescriptor[] = [
     ],
   },
   {
-    id: "Rápido", // Sentimento - Parecidos
+    id: "Rápido",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.CLAW,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.LEFT],
+          location: [Location.TORAX],
+          options: {
+            movementPivot: HandLocation.MIDDLE_FINGER_TIP,
+          },
+        },
+      },
       {
         right: {
           shape: HandShape.libras.CLAW,
@@ -726,6 +809,16 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.INDEX_FINGER,
           orientation: [HandOrientation.FRONT],
           pointing: [HandOrientation.UP],
+          options: {
+            movementPivot: HandLocation.INDEX_FINGER_TIP,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.UP],
           movement: {
             x: -1,
           },
@@ -752,6 +845,16 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Tchau",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.UP],
+          options: {
+            movementPivot: HandLocation.INDEX_FINGER_TIP,
+          },
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -799,7 +902,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.C,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.LEFT, HandOrientation.FRONT],
           location: [Location.TORAX_RIGHT, Location.SHOULDER_RIGHT],
         },
       },
@@ -912,27 +1015,25 @@ export const signsDescriptors: SignDescriptor[] = [
       },
     ],
   },
-  // {
-  //   id: "Futuro",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.F,
-  //         orientation: [HandOrientation.LEFT],
-  //         pointing: [HandOrientation.UP],
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.Y,
-  //         orientation: [HandOrientation.LEFT],
-  //         pointing: [HandOrientation.FRONT],
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "Futuro",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.F,
+          orientation: [HandOrientation.LEFT],
+          pointing: [HandOrientation.UP],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.F,
+          orientation: [HandOrientation.LEFT],
+          pointing: [HandOrientation.FRONT],
+        },
+      },
+    ],
+  },
   {
     id: "Aqui",
     phonemes: [
@@ -995,56 +1096,52 @@ export const signsDescriptors: SignDescriptor[] = [
   //     },
   //   ],
   // },
-  // {
-  //   id: "Agredir",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.LEFT],
-  //         pointing: [HandOrientation.FRONT],
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //       },
-  //     },
-  //   ],
-  // },
-  // {
-  //   id: "Arrepender",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.A,
-  //         orientation: [HandOrientation.UP],
-  //         pointing: [HandOrientation.FRONT],
-  //         location: [Location.TORAX_RIGHT],
-  //         options: {
-  //           locationPivot: Location.HAND_MIDDLE_RIGHT,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.A,
-  //         orientation: [HandOrientation.BACK],
-  //         pointing: [HandOrientation.UP],
-  //         location: [Location.FACE_FOREHEAD_RIGHT],
-  //         options: {
-  //           locationPivot: Location.HAND_MIDDLE_RIGHT,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "Agredir",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.LEFT],
+          pointing: [HandOrientation.FRONT],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+        },
+      },
+    ],
+  },
+  {
+    id: "Arrepender",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.UP],
+          pointing: [HandOrientation.FRONT],
+          location: [Location.TORAX_RIGHT, Location.SHOULDER_RIGHT],
+          options: {
+            locationPivot: Location.HAND_MIDDLE_RIGHT,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.UP],
+          location: [Location.FACE],
+          options: {
+            locationPivot: Location.HAND_MIDDLE_RIGHT,
+          },
+        },
+      },
+    ],
+  },
   {
     id: "Atrás",
     phonemes: [
@@ -1061,7 +1158,7 @@ export const signsDescriptors: SignDescriptor[] = [
       },
       {
         right: {
-          shape: HandShape.libras.THUMB_FINGER,
+          // shape: HandShape.libras.THUMB_FINGER,
           orientation: [HandOrientation.LEFT],
           pointing: [HandOrientation.UP],
           location: [Location.FACE_FOREHEAD_RIGHT],
@@ -1098,31 +1195,36 @@ export const signsDescriptors: SignDescriptor[] = [
       },
     ],
   },
-  // {
-  //   id: "Receber",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-  //         orientation: [HandOrientation.UP],
-  //         pointing: [HandOrientation.FRONT],
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.S,
-  //         orientation: [HandOrientation.BACK],
-  //         pointing: [HandOrientation.UP],
-  //         location: [Location.TORAX],
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "Receber",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.UP],
+          pointing: [HandOrientation.FRONT],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.UP],
+          location: [Location.TORAX, Location.SHOULDER],
+        },
+      },
+    ],
+  },
   {
     id: "Mais-ou-menos",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.DOWN],
+          location: [Location.TORAX, Location.SHOULDER],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
@@ -1152,16 +1254,10 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           pointing: [HandOrientation.UP],
-          movement: {
-            wristRotate: true,
-          },
         },
         left: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
           pointing: [HandOrientation.UP],
-          movement: {
-            wristRotate: true,
-          },
         },
       },
       {
@@ -1185,6 +1281,13 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Saudade",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.S,
+          orientation: [HandOrientation.BACK],
+          location: [Location.TORAX],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.S,
@@ -1268,6 +1371,13 @@ export const signsDescriptors: SignDescriptor[] = [
           shape: HandShape.libras.OPEN_HAND,
           orientation: [HandOrientation.FRONT],
           pointing: [HandOrientation.RIGHT],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.FRONT],
+          pointing: [HandOrientation.RIGHT],
           movement: {
             x: 1,
           },
@@ -1278,6 +1388,13 @@ export const signsDescriptors: SignDescriptor[] = [
   {
     id: "Esquerda",
     phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.LEFT],
+        },
+      },
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
@@ -1318,7 +1435,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.L,
-          orientation: [HandOrientation.FRONT],
+          orientation: [HandOrientation.FRONT, HandOrientation.LEFT],
           location: [Location.TORAX],
         },
       },
@@ -1364,7 +1481,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.O,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.FRONT, HandOrientation.LEFT],
           location: [Location.TORAX],
         },
       },
@@ -1400,67 +1517,59 @@ export const signsDescriptors: SignDescriptor[] = [
       },
     ],
   },
-  // {
-  //   id: "A-Mesma-Coisa",
-  //   index: 0,
-  //   frame: 0,
-  //   phonemes: [
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: -1,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: 1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: 1,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: -1,
-  //         },
-  //       },
-  //     },
-  //     {
-  //       right: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: -1,
-  //         },
-  //       },
-  //       left: {
-  //         shape: HandShape.libras.INDEX_FINGER,
-  //         orientation: [HandOrientation.DOWN],
-  //         pointing: [HandOrientation.FRONT],
-  //         movement: {
-  //           x: 1,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    id: "A-Mesma-Coisa",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+          movement: {
+            x: -1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+          movement: {
+            x: 1,
+          },
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+          movement: {
+            x: 1,
+          },
+        },
+        left: {
+          shape: HandShape.libras.INDEX_FINGER,
+          orientation: [HandOrientation.DOWN],
+          pointing: [HandOrientation.FRONT],
+          movement: {
+            x: -1,
+          },
+        },
+      },
+    ],
+  },
   {
     id: "Abaixar",
     phonemes: [
@@ -1468,7 +1577,18 @@ export const signsDescriptors: SignDescriptor[] = [
         right: {
           shape: HandShape.libras.OPEN_HAND,
           orientation: [HandOrientation.DOWN],
-          location: [Location.TORAX],
+          location: [Location.TORAX, Location.SHOULDER],
+        },
+        left: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.DOWN],
+          location: [Location.TORAX, Location.SHOULDER],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND,
+          orientation: [HandOrientation.DOWN],
           movement: {
             y: -1,
           },
@@ -1476,7 +1596,6 @@ export const signsDescriptors: SignDescriptor[] = [
         left: {
           shape: HandShape.libras.OPEN_HAND,
           orientation: [HandOrientation.DOWN],
-          location: [Location.TORAX],
           movement: {
             y: -1,
           },
