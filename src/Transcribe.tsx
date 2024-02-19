@@ -112,7 +112,11 @@ function Transcribe({
 
     if (matchedSignId) {
       setLastSignsDected((signs) => {
-        return signs.concat(matchedSignId).slice(-5);
+        if (signs[signs.length - 1] === matchedSignId) {
+          return signs;
+        } else {
+          return signs.concat(matchedSignId).slice(-5);
+        }
       });
       setPredictShow(matchedSignId);
     }
@@ -319,7 +323,10 @@ function parseSigns(
   );
 
   if (hasCompletedMatch && !hasPotencialMatch) {
-    console.log(matchedSigns);
+    console.log(
+      matchedSigns,
+      phonemes.slice(matchedSigns[0].endDetectionIndex + 1).length
+    );
     return {
       remainingPhonemes: phonemes.slice(matchedSigns[0].endDetectionIndex + 1),
       matchedSignId: matchedSigns[0].signId,
