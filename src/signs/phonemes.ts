@@ -917,19 +917,13 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.S,
-          orientation: [HandOrientation.FRONT],
-          movement: {
-            wristFlexion: true,
-          },
+          orientation: [HandOrientation.DOWN],
         },
       },
       {
         right: {
           shape: HandShape.libras.S,
           orientation: [HandOrientation.FRONT],
-          movement: {
-            wristExtension: true,
-          },
         },
       },
     ],
