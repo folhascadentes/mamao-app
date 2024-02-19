@@ -30,6 +30,35 @@ export type SignDescriptor = {
 
 export const signsDescriptors: SignDescriptor[] = [
   {
+    id: "Porque",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.D,
+          location: [Location.TORAX],
+        },
+        left: {
+          shape: HandShape.libras.D,
+          location: [Location.TORAX],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.D,
+          movement: {
+            y: 1,
+          },
+          options: {
+            movementPivot: HandLocation.INDEX_FINGER_TIP,
+          },
+        },
+        left: {
+          shape: HandShape.libras.D,
+        },
+      },
+    ],
+  },
+  {
     id: "A",
     phonemes: [
       {
