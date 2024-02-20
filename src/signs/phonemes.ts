@@ -30,6 +30,48 @@ export type SignDescriptor = {
 
 export const signsDescriptors: SignDescriptor[] = [
   {
+    id: "Bonito",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.LEFT],
+          pointing: [HandOrientation.UP],
+          location: [Location.FACE],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.LEFT],
+          location: [Location.FACE],
+        },
+      },
+    ],
+  },
+  {
+    id: "Amor",
+    phonemes: [
+      {
+        right: {
+          shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
+          orientation: [HandOrientation.LEFT],
+          pointing: [HandOrientation.UP],
+          location: [Location.TORAX],
+        },
+      },
+      {
+        right: {
+          shape: HandShape.libras.A,
+          orientation: [HandOrientation.BACK],
+          pointing: [HandOrientation.LEFT],
+          location: [Location.TORAX],
+        },
+      },
+    ],
+  },
+  {
     id: "Porque",
     phonemes: [
       {
