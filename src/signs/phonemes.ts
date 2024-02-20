@@ -203,7 +203,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-          orientation: [HandOrientation.LEFT],
+          orientation: [HandOrientation.LEFT, HandOrientation.FRONT],
           pointing: [HandOrientation.UP],
           location: [Location.TORAX_LEFT, Location.SHOULDER_LEFT],
           options: {
@@ -1257,7 +1257,6 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          orientation: [HandOrientation.DOWN],
           location: [Location.TORAX, Location.SHOULDER],
           movement: {
             wristRotate: true,
@@ -1267,7 +1266,6 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND_FINGERS_APART,
-          orientation: [HandOrientation.BACK],
           location: [Location.TORAX, Location.SHOULDER],
           movement: {
             wristRotate: true,
@@ -1410,6 +1408,9 @@ export const signsDescriptors: SignDescriptor[] = [
           movement: {
             x: 1,
           },
+          options: {
+            movementPivot: HandLocation.INDEX_FINGER_TIP,
+          },
         },
       },
     ],
@@ -1431,6 +1432,9 @@ export const signsDescriptors: SignDescriptor[] = [
           pointing: [HandOrientation.LEFT],
           movement: {
             x: -1,
+          },
+          options: {
+            movementPivot: HandLocation.INDEX_FINGER_TIP,
           },
         },
       },
@@ -1486,7 +1490,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-          orientation: [HandOrientation.BACK, HandOrientation.DOWN],
+          // orientation: [HandOrientation.BACK, HandOrientation.DOWN],
           pointing: [HandOrientation.DOWN, HandOrientation.FRONT],
           location: [Location.TORAX, Location.SHOULDER],
         },
@@ -1494,7 +1498,7 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.MIDDLE_AND_INDEX_FINGER,
-          orientation: [HandOrientation.BACK, HandOrientation.DOWN],
+          // orientation: [HandOrientation.BACK, HandOrientation.DOWN],
           pointing: [HandOrientation.DOWN, HandOrientation.FRONT],
           location: [Location.TORAX, Location.SHOULDER],
           movement: {
