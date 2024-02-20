@@ -1438,7 +1438,6 @@ export const signsDescriptors: SignDescriptor[] = [
       {
         right: {
           shape: HandShape.libras.OPEN_HAND,
-          orientation: [HandOrientation.FRONT],
           pointing: [HandOrientation.RIGHT],
         },
       },
