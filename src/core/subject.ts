@@ -508,7 +508,7 @@ export class Subject {
   ): Movement {
     const WRIST_ROTATE_UPPER_THRESHOLD = 25;
     const WRIST_ROTATE_THRESHOLD = 20;
-    const ZONE_SIZE = 35;
+    const ZONE_SIZE = 27;
     const movement: Movement = {};
 
     const angle = this.parseWristRotationAngle(
@@ -566,7 +566,7 @@ export class Subject {
     beforeHandLandmarks: Coordinate[],
     afterHandLandmarks: Coordinate[]
   ): { [landmark: number]: { x?: 1 | -1; y?: 1 | -1 } } {
-    const ZONE_SIZE = 35;
+    const ZONE_SIZE = 27;
     const movement: { [landmark: number]: { x?: 1 | -1; y?: 1 | -1 } } = {};
 
     for (let i = 0; i < 21; i++) {

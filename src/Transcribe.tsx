@@ -75,6 +75,13 @@ function Transcribe({
 
     const subjectData = subject.parse(results);
 
+    // console.log(
+    // detectLocation(Location.HAND_PALM_RIGHT, subjectData.readings),
+    // detectLocation(Location.HAND_PALM_LEFT, subjectData.readings)
+    // subjectData.hand.dominant.handShape,
+    // subjectData.hand.nonDominant.handShape
+    // );
+
     let memoryHasPrior = memory.size > 0;
 
     for (let sign of signsDescriptors) {
@@ -430,6 +437,14 @@ function detectPhonemeUtil(
     (location !== undefined &&
       location !== undefined &&
       param.location.some((l) => location.includes(l)));
+
+  // console.log(
+  //   sameHandsape,
+  //   sameOrientation,
+  //   samePointing,
+  //   sameMovement,
+  //   sameLocation
+  // );
 
   return (
     sameHandsape &&
