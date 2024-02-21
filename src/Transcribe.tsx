@@ -391,7 +391,8 @@ function detectPhonemeUtil(
   readings: SubjectReadings
 ): boolean {
   const sameHandsape =
-    param.shape === undefined || param.shape === detect.handShape;
+    param.shape === undefined ||
+    (detect.handShape && param.shape.includes(detect.handShape));
 
   const sameOrientation =
     param.orientation === undefined ||
